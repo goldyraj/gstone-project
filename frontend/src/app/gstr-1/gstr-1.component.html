@@ -1,0 +1,805 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3 navbar-header-gst">
+      <div class="navbar-brand"> <a href="index.html">
+        <h2 class="gst_logo">GST</h2>
+      </a> </div>
+    </div>
+    <div class="col-md-6"> </div>
+    <div class="col-md-3">
+      <div class="user_profile">
+        <label>Contact Mail</label>
+        <div class="btn-group pull-right" role="group">
+          <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> User email <span class="caret"></span> </button>
+          <ul class="dropdown-menu">
+            <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
+            <li><a href="#"><i class="fa fa-cog"></i> Setting</a></li>
+            <li><a href="#"><i class="fa fa-key"></i> Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<header class="main-header">
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Navigation  navbar-static-top -->
+      <nav class="navbar navbar-inverse">
+        <div class="container navbar-header-gst">
+          <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+          </div>
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+              <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+              <li> <a class="page-scroll" href="#">User Name <span> GSTIN No</span></a> </li>
+              <li> <a class="page-scroll" href="summarypage">Dashboard</a> </li>
+              <li> <a class="page-scroll" href="#">Returns</a> </li>
+              <li> <a class="page-scroll" href="#">Notification </a> </li>
+              <li> <a class="page-scroll" href="#">Updates </a> </li>
+              <li> <a class="page-scroll" href="#">videos </a> </li>
+            </ul>
+          </div>
+          <!-- /.navbar-collapse -->
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+
+
+
+<div class="container">
+<!-- summary Tab -->
+ <div class="tabs">
+  									
+						<div class="clearfix"></div> 
+						
+					       <div class="col-md-8 col-sm-8 col-xs-12 form-group">                  
+                      <!-- <button class="btn btn-primary" routerLink="/summarypage"> Summary </button> -->
+					    <a routerLink="/summarypage"> Summary</a> 
+					   &nbsp;&nbsp;&nbsp;
+                       <!-- </button> -->
+                     
+                        <a routerLink="/gstr">Invoice Wise Detail</a>&nbsp;&nbsp;&nbsp; 
+                          <!-- <button class="btn btn-primary" routerLink="/gstr"> Invoice Wise Detail </button>  -->
+                     <!-- <button class="btn btn-primary"> -->
+                         <!-- <a routerLink="/#">Export Invoice</a> &nbsp;&nbsp;&nbsp;  -->
+                      <!-- <button class="btn btn-primary" routerLink="/"> Other </button> -->
+                      <a routerLink="/other"> Other </a>
+					  &nbsp;&nbsp;&nbsp;
+                      <!-- </button> -->
+                     <!-- <button class="btn btn-primary">  -->
+                        <a routerLink="/"> Submit </a>
+                        &nbsp;&nbsp;&nbsp;
+                       <!-- <button class="btn btn-primary" routerLink="/">Submit </button>&nbsp;&nbsp;&nbsp; -->
+                      <!-- </button> -->
+                     <!-- <button class="btn btn-primary"> -->
+                        <a routerLink="/"> File </a>
+                        <!-- <button class="btn btn-primary" routerLink="/">File </button>&nbsp;&nbsp;&nbsp; -->
+                      <!-- </button> -->
+            </div>
+            
+												 <div class="col-md-4 col-sm-4 col-xs-12 form-group">
+                           
+					</div>
+
+</div>
+	<div class="clearfix"></div>  
+<ngb-tabset type="pills" [orientation]="currentOrientation">
+ <ngb-tab>
+    <ng-template ngbTabTitle><b>Invoice</b></ng-template>
+    <ng-template ngbTabContent>
+
+			 <div class="row ">
+
+		<div class="section-bottom-10 section-top-10" ><!-- manage alignment -->
+
+								<!-- &nbsp;&nbsp;&nbsp;&nbsp;		<label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Normal_Invoice"> Normal Invoice
+					</label>
+										<label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="Reverse_Charge"> Reverse Charge
+					</label>
+										<label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="E-commerce"> E-commerce
+					</label>
+										<label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio4" value="Debit_Note"> Debit Note
+					</label>
+										<label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio5" value="Credit_Note"> Credit Note
+					</label> -->
+
+
+					<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                         <div class="col-sm-7">
+                          <select >
+                           <option *ngFor="let inv of Invoice" [value]="inv">{{inv}}</option>
+														<!-- <option value="">Show All</option>
+														<option value="">Show Normal Sales</option>
+														<option value="">Show RC Sales</option>
+														<option value="">Show E-com Sales </option>
+														<option value="">Show Debit Notes</option>
+														<option value="">Show Credits Notes</option> -->
+														</select>
+													</div>
+													</div>
+
+														<div class="col-md-4 col-sm-4 col-xs-12 form-group">
+                         <div class="col-sm-7">
+                          <select >
+                           <option *ngFor="let file of Filter" [value]="file">{{file}}</option>
+														<!-- <option value="">Not Uploaded</option>
+														<option value="">Uploaded</option>
+														<option value="">Filed</option> -->
+														
+														</select>
+													</div>
+                          </div>
+                        
+                          <div class="col-md-2 col-sm-2 col-xs-12 form-group">
+
+                            <button routerLink="/newinvoice" class="btn btn-success"> Add New Invoice </button>
+
+                          </div>
+									</div>
+
+      
+    
+    
+      <div class="section-top-10 col-md-12 col-sm-12 section-bottom-20">
+        <div class="table-responsive gsttable">
+          <!-- <table class="table table-condensed  table-hover table-bordered">
+            <tr>
+              <td>-->
+								<table class="table table-condensed table-wrapper table-bordered"> 
+                <thead>
+                  <tr>
+										 <th rowspan="2">S.No</th>
+                    <th rowspan="2" width="100px">Invoice No</th>
+                    <th rowspan="2">Date</th>
+										<th rowspan="2" width="100px">Customer</th>
+                    <th rowspan="2">GSTIN</th>
+                    <th rowspan="2">Taxable Value </th>
+                    
+                    <th rowspan="2"> Tax</th>
+                    <th rowspan="2">Total</th>
+                    <th rowspan="2">Filing State</th>
+                     <th rowspan="2">Action</th>
+                  </tr>
+                 
+                </thead>
+                <tbody>
+                  <tr>
+										<td align="center"> 1</td>
+										<td><input type="text" class="form-control" value="1235654"></td>
+                    <td><input type="text" class="form-control" value="Mesuarement"></td>
+                    <td><input type="text" class="form-control" value="HSN"></td>
+                    <td><input type="text" class="form-control" value="500"></td>
+                    <td><input type="text" class="form-control" value="Mesuarement"></td>
+                    <td><input type="text" class="form-control" value="49"></td>
+                    <td><input type="text" class="form-control" value="345"></td>
+										<td><input type="text" class="form-control" value="34"></td>
+										<td><a href="editinvoice" class="pull-right"><i class="fa fa-edit btn btn-primary btn-sm" title="Edit"> Edit</i></a></td>
+                    
+                  </tr>
+                  <tr>
+										<td align="center"> 2</td>
+										<td><input type="text" class="form-control" value="1235654"></td>
+                    <td><input type="text" class="form-control" value="Mesuarement"></td>
+                    <td><input type="text" class="form-control" value="HSN"></td>
+                    <td><input type="text" class="form-control" value="500"></td>
+                    <td><input type="text" class="form-control" value="Mesuarement"></td>
+                    <td><input type="text" class="form-control" value="49"></td>
+                    <td><input type="text" class="form-control" value="345"></td>
+                    <td><input type="text" class="form-control" value="34"></td>
+                    <td><a href="editinvoice" class="pull-right"><i class="fa fa-edit btn btn-primary btn-sm" title="Edit"> Edit</i></a></td>
+                  </tr>
+                  <tr>
+										<td align="center"> 3</td>
+										<td><input type="text" class="form-control" value="1235654"></td>
+                    <td><input type="text" class="form-control" value="Mesuarement"></td>
+                    <td><input type="text" class="form-control" value="HSN"></td>
+                    <td><input type="text" class="form-control" value="500"></td>
+                    <td><input type="text" class="form-control" value="Mesuarement"></td>
+                    <td><input type="text" class="form-control" value="49"></td>
+                    <td><input type="text" class="form-control" value="345"></td>
+                    <td><input type="text" class="form-control" value="34"></td>
+                    <td><a href="editinvoice" class="pull-right"><i class="fa fa-edit btn btn-primary btn-sm" title="Edit"> Edit</i></a></td>
+                  </tr>
+                  <!-- <tr>
+                    <td><input type="text" class="form-control" value=""></td>
+                    <td colspan="8" align="right">Total in Words</td>
+                    <td colspan="4" align="right"><b>Grand Total =</b></td>
+                  </tr> -->
+                </tbody>
+							 </table>
+							<!--</td> -->
+              <!-- <td><table class="table table-condensed table-bordered fixed-column">
+                <thead>
+                  <tr>
+                    <th rowspan="2"><br>Total<br> &nbsp;</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="text" class="form-control" value="900.00/-"></td>
+                  </tr>
+                  <tr>
+                    <td><input type="text" class="form-control" value="12,000.00/-"></td>
+                  </tr>
+                  <tr>
+                    <td><input type="text" class="form-control" value="45,000.00/-"></td>
+                  </tr>
+                  <tr>
+                    <td><input type="text" class="form-control" value="57,900.00/-" ></td>
+                  </tr>
+                </tbody>
+              </table></td> -->
+            <!-- </tr>
+          </table> -->
+        </div>
+      </div>
+    <!-- <div class="col-md-12 col-sm-12  col-xs-12 form-group invoice">
+      <label for="label">Customer Notes:</label>
+      <textarea name="textarea" rows="5" class="form-control" id="label" type="text" ></textarea>
+    </div>
+    <div class="col-md-12 col-sm-12 col-xs-12 form-group invoice">
+      <label for="label">Terms And Conditions:</label>
+      <textarea name="textarea" rows="5" class="form-control" id="label" type="email" ></textarea>
+    </div> -->
+    <!-- <div class="text-center section-bottom-60">
+      <button class="btn btn-primary"> Save Invoice</button>
+    </div> -->
+  </div>
+
+
+
+    </ng-template>
+	</ngb-tab>
+
+	<!--Invoice Tab -->
+
+  <ngb-tab>
+    <ng-template ngbTabTitle><b>Bill Of Supply</b></ng-template>
+    <ng-template ngbTabContent>
+
+			
+
+ <div class="row ">
+
+		<div class="section-bottom-10 section-top-10" ><!-- manage alignment -->
+
+								<!-- &nbsp;&nbsp;&nbsp;&nbsp;		<label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Normal_Invoice"> Normal Invoice
+					</label>
+										<label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="Reverse_Charge"> Reverse Charge
+					</label>
+										<label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="E-commerce"> E-commerce
+					</label>
+										<label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio4" value="Debit_Note"> Debit Note
+					</label>
+										<label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio5" value="Credit_Note"> Credit Note
+					</label> -->
+
+
+				
+
+														<div class="col-md-4 col-sm-4 col-xs-12 form-group">
+                         <div class="col-sm-7">
+                          <select >
+                           <option *ngFor="let file of Filter" [value]="file">{{file}}</option>
+														<!-- <option value="">Not Uploaded</option>
+														<option value="">Uploaded</option>
+														<option value="">Filed</option> -->
+														
+														</select>
+													</div>
+                          </div>
+
+                       
+                        
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+
+                        </div>
+                         <div class="col-md-2 col-sm-2 col-xs-12 form-group">
+
+                            <button routerLink="/addbos" class="btn btn-success" > Add BOS </button>
+
+                          </div>
+									</div>
+
+      
+    
+    
+      <div class="section-top-10 col-md-12 col-sm-12 section-bottom-20">
+        <div class="table-responsive gsttable">
+          <!-- <table class="table table-condensed  table-hover table-bordered">
+            <tr>
+              <td>-->
+								<table class="table table-condensed table-wrapper table-bordered"> 
+                <thead>
+                  <tr>
+										 <th rowspan="2">S.No</th>
+                    <th rowspan="2" width="100px">Invoice No</th>
+                    <th rowspan="2">Date</th>
+										<th rowspan="2" width="100px">Customer</th>
+                    <th rowspan="2">GSTIN</th>
+                    <th rowspan="2">Taxable Value </th>
+                    
+                    <th rowspan="2"> Tax</th>
+                    <th rowspan="2">Total</th>
+                    <th rowspan="2">Filing State</th>
+                     <th rowspan="2">Action</th>
+                  </tr>
+                 
+                </thead>
+                <tbody>
+                  <tr>
+										<td align="center"> 1</td>
+										<td><input type="text" class="form-control" value="1235654"></td>
+                    <td><input type="text" class="form-control" value="Mesuarement"></td>
+                    <td><input type="text" class="form-control" value="HSN"></td>
+                    <td><input type="text" class="form-control" value="500"></td>
+                    <td><input type="text" class="form-control" value="Mesuarement"></td>
+                    <td><input type="text" class="form-control" value="49"></td>
+                    <td><input type="text" class="form-control" value="345"></td>
+										<td><input type="text" class="form-control" value="34"></td>
+										<td><a href="editinvoice" class="pull-right"><i class="fa fa-edit btn btn-primary btn-sm" title="Edit"> Edit</i></a></td>
+                    
+                  </tr>
+                  <tr>
+										<td align="center"> 2</td>
+										<td><input type="text" class="form-control" value="1235654"></td>
+                    <td><input type="text" class="form-control" value="Mesuarement"></td>
+                    <td><input type="text" class="form-control" value="HSN"></td>
+                    <td><input type="text" class="form-control" value="500"></td>
+                    <td><input type="text" class="form-control" value="Mesuarement"></td>
+                    <td><input type="text" class="form-control" value="49"></td>
+                    <td><input type="text" class="form-control" value="345"></td>
+                    <td><input type="text" class="form-control" value="34"></td>
+                    <td><a href="editinvoice" class="pull-right"><i class="fa fa-edit btn btn-primary btn-sm" title="Edit"> Edit</i></a></td>
+                  </tr>
+                  <tr>
+										<td align="center"> 3</td>
+										<td><input type="text" class="form-control" value="1235654"></td>
+                    <td><input type="text" class="form-control" value="Mesuarement"></td>
+                    <td><input type="text" class="form-control" value="HSN"></td>
+                    <td><input type="text" class="form-control" value="500"></td>
+                    <td><input type="text" class="form-control" value="Mesuarement"></td>
+                    <td><input type="text" class="form-control" value="49"></td>
+                    <td><input type="text" class="form-control" value="345"></td>
+                    <td><input type="text" class="form-control" value="34"></td>
+                    <td><a href="editinvoice" class="pull-right"><i class="fa fa-edit btn btn-primary btn-sm" title="Edit"> Edit</i></a></td>
+                  </tr>
+                  <!-- <tr>
+                    <td><input type="text" class="form-control" value=""></td>
+                    <td colspan="8" align="right">Total in Words</td>
+                    <td colspan="4" align="right"><b>Grand Total =</b></td>
+                  </tr> -->
+                </tbody>
+							 </table>
+							<!--</td> -->
+              <!-- <td><table class="table table-condensed table-bordered fixed-column">
+                <thead>
+                  <tr>
+                    <th rowspan="2"><br>Total<br> &nbsp;</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="text" class="form-control" value="900.00/-"></td>
+                  </tr>
+                  <tr>
+                    <td><input type="text" class="form-control" value="12,000.00/-"></td>
+                  </tr>
+                  <tr>
+                    <td><input type="text" class="form-control" value="45,000.00/-"></td>
+                  </tr>
+                  <tr>
+                    <td><input type="text" class="form-control" value="57,900.00/-" ></td>
+                  </tr>
+                </tbody>
+              </table></td> -->
+            <!-- </tr>
+          </table> -->
+        </div>
+      </div>
+    <!-- <div class="col-md-12 col-sm-12  col-xs-12 form-group invoice">
+      <label for="label">Customer Notes:</label>
+      <textarea name="textarea" rows="5" class="form-control" id="label" type="text" ></textarea>
+    </div>
+    <div class="col-md-12 col-sm-12 col-xs-12 form-group invoice">
+      <label for="label">Terms And Conditions:</label>
+      <textarea name="textarea" rows="5" class="form-control" id="label" type="email" ></textarea>
+    </div> -->
+    <!-- <div class="text-center section-bottom-60">
+      <button class="btn btn-primary"> Save Invoice</button>
+    </div> -->
+  </div>
+		
+
+
+    </ng-template>
+	</ngb-tab>
+	
+	<!--Other Details -->
+
+
+  <ngb-tab>
+    <ng-template ngbTabTitle><b>Export Invoice</b></ng-template>
+    <ng-template ngbTabContent>
+
+
+		 <div class="row ">
+
+		<div class="section-bottom-10 section-top-10" ><!-- manage alignment -->
+
+								<!-- &nbsp;&nbsp;&nbsp;&nbsp;		<label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Normal_Invoice"> Normal Invoice
+					</label>
+										<label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="Reverse_Charge"> Reverse Charge
+					</label>
+										<label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="E-commerce"> E-commerce
+					</label>
+										<label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio4" value="Debit_Note"> Debit Note
+					</label>
+										<label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio5" value="Credit_Note"> Credit Note
+					</label> -->
+
+
+					<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                         <div class="col-sm-7">
+                          <select >
+                           <option *ngFor="let inv of Invoice" [value]="inv">{{inv}}</option>
+														<!-- <option value="">Show All</option>
+														<option value="">Show Normal Sales</option>
+														<option value="">Show RC Sales</option>
+														<option value="">Show E-com Sales </option>
+														<option value="">Show Debit Notes</option>
+														<option value="">Show Credits Notes</option> -->
+														</select>
+													</div>
+													</div>
+
+														<div class="col-md-4 col-sm-4 col-xs-12 form-group">
+                         <div class="col-sm-7">
+                          <select >
+                           <option *ngFor="let file of Filter" [value]="file">{{file}}</option>
+														<!-- <option value="">Not Uploaded</option>
+														<option value="">Uploaded</option>
+														<option value="">Filed</option> -->
+														
+														</select>
+													</div>
+                          </div>
+                         <div class="col-md-2 col-sm-2 col-xs-12 form-group">
+
+                            <button routerLink="/exportinv" class="btn btn-success"> Add Export Invoice </button>
+
+                          </div>
+									</div>
+
+      
+    
+    
+      <div class="section-top-10 col-md-12 col-sm-12 section-bottom-20">
+        <div class="table-responsive gsttable">
+          <!-- <table class="table table-condensed  table-hover table-bordered">
+            <tr>
+              <td>-->
+								<table class="table table-condensed table-wrapper table-bordered"> 
+                <thead>
+                  <tr>
+										 <th rowspan="2">S.No</th>
+                    <th rowspan="2" width="100px">Invoice No</th>
+                    <th rowspan="2">Date</th>
+										<th rowspan="2" width="100px">Customer</th>
+                    <th rowspan="2">GSTIN</th>
+                    <th rowspan="2">Taxable Value </th>
+                    
+                    <th rowspan="2"> Tax</th>
+                    <th rowspan="2">Total</th>
+                    <th rowspan="2">Filing State</th>
+                     <th rowspan="2">Action</th>
+                  </tr>
+                 
+                </thead>
+                <tbody>
+                  <tr>
+										<td align="center"> 1</td>
+										<td><input type="text" class="form-control" value="1235654"></td>
+                    <td><input type="text" class="form-control" value="Mesuarement"></td>
+                    <td><input type="text" class="form-control" value="HSN"></td>
+                    <td><input type="text" class="form-control" value="500"></td>
+                    <td><input type="text" class="form-control" value="Mesuarement"></td>
+                    <td><input type="text" class="form-control" value="49"></td>
+                    <td><input type="text" class="form-control" value="345"></td>
+										<td><input type="text" class="form-control" value="34"></td>
+										<td><a href="editinvoice" class="pull-right"><i class="fa fa-edit btn btn-primary btn-sm" title="Edit"> Edit</i></a></td>
+                    
+                  </tr>
+                  <tr>
+										<td align="center"> 2</td>
+										<td><input type="text" class="form-control" value="1235654"></td>
+                    <td><input type="text" class="form-control" value="Mesuarement"></td>
+                    <td><input type="text" class="form-control" value="HSN"></td>
+                    <td><input type="text" class="form-control" value="500"></td>
+                    <td><input type="text" class="form-control" value="Mesuarement"></td>
+                    <td><input type="text" class="form-control" value="49"></td>
+                    <td><input type="text" class="form-control" value="345"></td>
+                    <td><input type="text" class="form-control" value="34"></td>
+                    <td><a href="editinvoice" class="pull-right"><i class="fa fa-edit btn btn-primary btn-sm" title="Edit"> Edit</i></a></td>
+                  </tr>
+                  <tr>
+										<td align="center"> 3</td>
+										<td><input type="text" class="form-control" value="1235654"></td>
+                    <td><input type="text" class="form-control" value="Mesuarement"></td>
+                    <td><input type="text" class="form-control" value="HSN"></td>
+                    <td><input type="text" class="form-control" value="500"></td>
+                    <td><input type="text" class="form-control" value="Mesuarement"></td>
+                    <td><input type="text" class="form-control" value="49"></td>
+                    <td><input type="text" class="form-control" value="345"></td>
+                    <td><input type="text" class="form-control" value="34"></td>
+                    <td><a href="editinvoice" class="pull-right"><i class="fa fa-edit btn btn-primary btn-sm" title="Edit"> Edit</i></a></td>
+                  </tr>
+                  <!-- <tr>
+                    <td><input type="text" class="form-control" value=""></td>
+                    <td colspan="8" align="right">Total in Words</td>
+                    <td colspan="4" align="right"><b>Grand Total =</b></td>
+                  </tr> -->
+                </tbody>
+							 </table>
+							<!--</td> -->
+              <!-- <td><table class="table table-condensed table-bordered fixed-column">
+                <thead>
+                  <tr>
+                    <th rowspan="2"><br>Total<br> &nbsp;</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="text" class="form-control" value="900.00/-"></td>
+                  </tr>
+                  <tr>
+                    <td><input type="text" class="form-control" value="12,000.00/-"></td>
+                  </tr>
+                  <tr>
+                    <td><input type="text" class="form-control" value="45,000.00/-"></td>
+                  </tr>
+                  <tr>
+                    <td><input type="text" class="form-control" value="57,900.00/-" ></td>
+                  </tr>
+                </tbody>
+              </table></td> -->
+            <!-- </tr>
+          </table> -->
+        </div>
+      </div>
+    <!-- <div class="col-md-12 col-sm-12  col-xs-12 form-group invoice">
+      <label for="label">Customer Notes:</label>
+      <textarea name="textarea" rows="5" class="form-control" id="label" type="text" ></textarea>
+    </div>
+    <div class="col-md-12 col-sm-12 col-xs-12 form-group invoice">
+      <label for="label">Terms And Conditions:</label>
+      <textarea name="textarea" rows="5" class="form-control" id="label" type="email" ></textarea>
+    </div> -->
+    <!-- <div class="text-center section-bottom-60">
+      <button class="btn btn-primary"> Save Invoice</button>
+    </div> -->
+  </div>
+
+
+    </ng-template>
+	</ngb-tab>
+	
+
+	<!-- Submit -->
+
+
+
+	<ngb-tab>
+    <ng-template ngbTabTitle><b>Amendment</b></ng-template>
+    <ng-template ngbTabContent>
+
+ <div class="row ">
+
+		<div class="section-bottom-10 section-top-10" ><!-- manage alignment -->
+
+								<!-- &nbsp;&nbsp;&nbsp;&nbsp;		<label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Normal_Invoice"> Normal Invoice
+					</label>
+										<label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="Reverse_Charge"> Reverse Charge
+					</label>
+										<label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="E-commerce"> E-commerce
+					</label>
+										<label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio4" value="Debit_Note"> Debit Note
+					</label>
+										<label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio5" value="Credit_Note"> Credit Note
+					</label> -->
+
+
+					<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                         <div class="col-sm-7">
+                          <!-- <select >
+                           <option *ngFor="let inv of Invoice" [value]="inv">{{inv}}</option>
+														
+														</select> -->
+													</div>
+													</div>
+
+														<div class="col-md-4 col-sm-4 col-xs-12 form-group">
+                         <div class="col-sm-7">
+                          <!-- <select >
+                           <option *ngFor="let file of Filter" [value]="file">{{file}}</option>
+														
+                            </select> -->
+                          
+                            <button routerLink="/amendment" class="btn btn-success"> Add Amendment </button>
+													</div>
+													</div>
+									</div>
+
+      
+    
+    
+      <div class="section-top-10 col-md-12 col-sm-12 section-bottom-20">
+        <div class="table-responsive gsttable">
+          <!-- <table class="table table-condensed  table-hover table-bordered">
+            <tr>
+              <td>-->
+								<table class="table table-condensed table-wrapper table-bordered"> 
+                <thead>
+                  <tr>
+										 <th rowspan="2">S.No</th>
+                    <th rowspan="2" width="100px">Invoice No</th>
+										<th rowspan="2">Date</th>
+										<th rowspan="2" width="120px">Invoice Type</th>
+										<th rowspan="2" width="100px">Customer</th>
+                    <th rowspan="2">GSTIN</th>
+                    <th rowspan="2">Taxable Value </th>
+                    
+                    <th rowspan="2"> Tax</th>
+                    <th rowspan="2">Total</th>
+                    <th rowspan="2">Filing State</th>
+                     <th rowspan="2">Action</th>
+                  </tr>
+                 
+                </thead>
+                <tbody>
+                  <tr>
+										<td align="center"> 1</td>
+										<td><input type="text" class="form-control" value="1235654"></td>
+                    <td><input type="text" class="form-control" value="Mesuarement"></td>
+										<td><input type="text" class="form-control" value="HSN"></td>
+										<td><input type="text" class="form-control" value="HSN"></td>
+                    <td><input type="text" class="form-control" value="500"></td>
+                    <td><input type="text" class="form-control" value="Mesuarement"></td>
+                    <td><input type="text" class="form-control" value="49"></td>
+                    <td><input type="text" class="form-control" value="345"></td>
+										<td><input type="text" class="form-control" value="34"></td>
+										<td><a href="editinvoice" class="pull-right"><i class="fa fa-edit btn btn-primary btn-sm" title="Edit"> Edit</i></a></td>
+                    
+                  </tr>
+                  <tr>
+										<td align="center"> 2</td>
+										<td><input type="text" class="form-control" value="1235654"></td>
+                    <td><input type="text" class="form-control" value="Mesuarement"></td>
+										<td><input type="text" class="form-control" value="HSN"></td>
+										<td><input type="text" class="form-control" value="HSN"></td>
+                    <td><input type="text" class="form-control" value="500"></td>
+                    <td><input type="text" class="form-control" value="Mesuarement"></td>
+                    <td><input type="text" class="form-control" value="49"></td>
+                    <td><input type="text" class="form-control" value="345"></td>
+                    <td><input type="text" class="form-control" value="34"></td>
+                    <td><a href="editinvoice" class="pull-right"><i class="fa fa-edit btn btn-primary btn-sm" title="Edit"> Edit</i></a></td>
+                  </tr>
+                  <tr>
+										<td align="center"> 3</td>
+										<td><input type="text" class="form-control" value="1235654"></td>
+                    <td><input type="text" class="form-control" value="Mesuarement"></td>
+										<td><input type="text" class="form-control" value="HSN"></td>
+										<td><input type="text" class="form-control" value="HSN"></td>
+                    <td><input type="text" class="form-control" value="500"></td>
+                    <td><input type="text" class="form-control" value="Mesuarement"></td>
+                    <td><input type="text" class="form-control" value="49"></td>
+                    <td><input type="text" class="form-control" value="345"></td>
+                    <td><input type="text" class="form-control" value="34"></td>
+                    <td><a href="editinvoice" class="pull-right"><i class="fa fa-edit btn btn-primary btn-sm" title="Edit"> Edit</i></a></td>
+                  </tr>
+                  <!-- <tr>
+                    <td><input type="text" class="form-control" value=""></td>
+                    <td colspan="8" align="right">Total in Words</td>
+                    <td colspan="4" align="right"><b>Grand Total =</b></td>
+                  </tr> -->
+                </tbody>
+							 </table>
+							<!--</td> -->
+              <!-- <td><table class="table table-condensed table-bordered fixed-column">
+                <thead>
+                  <tr>
+                    <th rowspan="2"><br>Total<br> &nbsp;</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="text" class="form-control" value="900.00/-"></td>
+                  </tr>
+                  <tr>
+                    <td><input type="text" class="form-control" value="12,000.00/-"></td>
+                  </tr>
+                  <tr>
+                    <td><input type="text" class="form-control" value="45,000.00/-"></td>
+                  </tr>
+                  <tr>
+                    <td><input type="text" class="form-control" value="57,900.00/-" ></td>
+                  </tr>
+                </tbody>
+              </table></td> -->
+            <!-- </tr>
+          </table> -->
+        </div>
+      </div>
+    <!-- <div class="col-md-12 col-sm-12  col-xs-12 form-group invoice">
+      <label for="label">Customer Notes:</label>
+      <textarea name="textarea" rows="5" class="form-control" id="label" type="text" ></textarea>
+    </div>
+    <div class="col-md-12 col-sm-12 col-xs-12 form-group invoice">
+      <label for="label">Terms And Conditions:</label>
+      <textarea name="textarea" rows="5" class="form-control" id="label" type="email" ></textarea>
+    </div> -->
+    <!-- <div class="text-center section-bottom-60">
+      <button class="btn btn-primary"> Save Invoice</button>
+    </div> -->
+  </div>
+
+    </ng-template>
+	</ngb-tab>
+
+<!-- File -->
+
+
+
+
+
+  
+</ngb-tabset>
+
+<!-- <div class="btn-group" ngbRadioGroup [(ngModel)]="currentOrientation">
+  <label ngbButtonLabel class="btn-outline-primary btn-sm">
+    <input ngbButton type="radio" value="horizontal">Horizontal
+  </label>
+  <label ngbButtonLabel class="btn-outline-primary btn-sm">
+    <input ngbButton type="radio" value="vertical">Vertical
+  </label>
+</div> -->
+</div>
+
+
+<!-- Footer Start -->
+<footer class="unicod-footer bg-style">
+  <div class="container-fluid unicod-copyright">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3 text-center">
+        <div class="Copyright">
+          <p>Copyright 2017, GST.  All Rights Reserved </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

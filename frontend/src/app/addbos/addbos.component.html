@@ -1,0 +1,277 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3 navbar-header-gst">
+      <div class="navbar-brand"> <a href="index.html">
+        <h2 class="gst_logo">GST</h2>
+      </a> </div>
+    </div>
+    <div class="col-md-6"> </div>
+    <div class="col-md-3">
+      <div class="user_profile">
+        <label>Contact Mail</label>
+        <div class="btn-group pull-right" role="group">
+          <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> User email <span class="caret"></span> </button>
+          <ul class="dropdown-menu">
+            <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
+            <li><a href="#"><i class="fa fa-cog"></i> Setting</a></li>
+            <li><a href="#"><i class="fa fa-key"></i> Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<header class="main-header">
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Navigation  navbar-static-top -->
+      <nav class="navbar navbar-inverse">
+        <div class="container navbar-header-gst">
+          <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+          </div>
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+              <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+              <li> <a class="page-scroll" href="#">User Name <span> GSTIN No</span></a> </li>
+              <li> <a class="page-scroll" href="summarypage">Dashboard</a> </li>
+              <li> <a class="page-scroll" href="#">Returns</a> </li>
+              <li> <a class="page-scroll" href="#">Notification </a> </li>
+              <li> <a class="page-scroll" href="#">Updates </a> </li>
+              <li> <a class="page-scroll" href="#">videos </a> </li>
+            </ul>
+          </div>
+          <!-- /.navbar-collapse -->
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<!-- summary Tab -->
+
+<div class="tabs">
+  									
+						<div class="clearfix"></div> 
+						
+					       <div class="col-md-8 col-sm-8 col-xs-12 form-group">                  
+                     <!-- <button class="btn btn-primary"> -->
+                       <a routerLink="/summarypage"> Summary</a>&nbsp;&nbsp;&nbsp;
+                       <!-- </button> -->
+                     <!-- <button class="btn btn-primary">  -->
+                       <a  routerLink="/gstr">Invoice Wise Detail</a>&nbsp;&nbsp;&nbsp;
+                          <!-- </button> -->
+                     <!-- <button class="btn btn-primary"> -->
+                        <!-- <a href="#">Export Invoice</a> &nbsp;&nbsp;&nbsp; -->
+                      <!-- </button> -->
+                     <!-- <button class="btn btn-primary">  -->
+                      <a routerLink="/other"> Other </a>&nbsp;&nbsp;&nbsp;
+                      <!-- </button> -->
+                     <!-- <button class="btn btn-primary">  -->
+                      <a routerLink="#"> Submit </a>&nbsp;&nbsp;&nbsp;
+                      <!-- </button> -->
+                     <!-- <button class="btn btn-primary"> -->
+                        <a routerLink="#">File </a>&nbsp;&nbsp;&nbsp;
+                      <!-- </button> -->
+            </div>
+            
+												 <div class="col-md-4 col-sm-4 col-xs-12 form-group">
+                           
+					</div>
+
+</div>
+  <div class="clearfix"></div> 
+
+  <div class="col-md-12 col-sm-12">
+									<div class="col-md-6 col-xs-12">
+										<h2 class="text-invoice">Create BOS</h2>
+									</div>
+									<div class="col-md-2 col-xs-12">
+									</div>
+									<div class="col-md-2 col-xs-12">
+                    <!-- <a href="#"><input type="button" class="btn btn-success pull-right" value="Back"></a> -->
+                     <button routerLink="/gstr" class="btn btn-success"> Back </button>
+									</div>
+
+									<div class="col-md-2 pull-right col-xs-12">
+										<a href="newinvoice"><input type="button" class="btn btn-success pull-right" value="Save Data"></a>
+									</div>
+                </div>
+                
+                  <div class="clearfix"></div> 
+
+                 <div class="section-bottom-10 section-top-10">
+
+
+                              <div class="col-md-4 col-sm-4 col-xs-12 form-group">                  
+                        <label for="inputEmail3" class="col-sm-5 control-label">Name</label>
+                        <div class="col-sm-7">
+                          <input type="text" class="form-control" id="inputEmail3" value="" >
+                        </div>
+            </div>
+            <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                        <label for="inputEmail3" class="col-sm-5 control-label">Bill of Supply No</label>
+                        <div class="col-sm-7">
+                          <input type="text" class="form-control" id="inputEmail3" value="" >
+                        </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12 form-group">
+                        <label for="inputEmail3" class="col-sm-5 control-label">POS</label>
+                        <div class="col-sm-7">
+                           <select>
+                            <option *ngFor="let pl of place" [value]="pl"> {{pl}}</option>
+                            <!-- <option value="" selected="selected" > AP</option>
+                            <option value=""> BH</option>
+                            <option value=""> MH</option>
+                            <option value=""> MP</option>
+                            <option value=""> UK</option>
+                            <option value=""> UP</option>
+                            <option value=""> TN</option> -->
+                          </select>
+                        </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12 form-group">
+                        <label for="inputEmail3" class="col-sm-5 control-label"> GSTIN No.</label>
+                        <div class="col-sm-7">
+                         <select >
+                            <option *ngFor="let gstn of GSTIN" [value]="gstn"> {{gstn}} </option>
+                            <!-- <option value="" selected="selected" >AGPTK234L61Z6</option>
+                            <option value="">AGPTK234L61Z6</option>
+                            <option value="">AGPTK214M61Z6</option>
+                            <option value="">AGPTK894K61Z6</option>
+                            <option value="">SJPTK234L61Z6</option>
+                            <option value="">AWRTK236S61Z6</option>
+                            <option value="">ATDTK237Z61Z6</option> -->
+                          </select>
+                        </div>
+            </div>
+            <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                        <label for="inputEmail3" class="col-sm-5 control-label">Date</label>
+                        <div class="col-sm-7">
+                          <input type="text" class="form-control" id="inputEmail3" value="" >
+                        </div>
+            </div>
+
+                 </div>
+
+
+                   <div class="section-top-10 col-md-12 col-sm-12 section-bottom-20">
+										
+										<div class="table-responsive gsttable">
+											<table class="table table-condensed table-bordered">
+															<thead>
+																<tr>
+																	<th>S.No</th>
+																	<th>Description </th>
+																	<th width="100px">Goods Services</th>
+																	<th>HSN / SAC </th>
+																	<th>QTY</th>
+																	<th width="100px">Unit Of Measurement</th>
+																	<th>Taxable Value</th>
+                                                                    <th>Total</th>
+																</tr>
+															</thead>
+															<tbody >
+																<tr>
+																	<td align="center"> 1</td>
+																	<td><input type="text" class="form-control"  required></td>
+																	<td>
+																			<select>
+                             <option *ngFor="let sr of serice"[value]="sr">{{sr}}</option>
+							</select>
+																	</td>
+																	<td><input type="text" class="form-control" required></td>
+																	<td><input type="text" class="form-control" required></td>
+																	<td>
+                                  
+                                    <select>
+                                       <option *ngFor="let un of unit" [value]="un"> {{un}}</option>
+					                      		</select>
+																		
+																	</td>
+																	<td><input type="text" class="form-control" required></td>
+																	<td><input type="text" class="form-control" required></td>
+																
+																</tr>
+																<tr>
+																	<td align="center"> 2</td>
+																	<td><input type="text" class="form-control"  required></td>
+																	<td>
+																	<select>
+                             <option *ngFor="let sr of serice"[value]="sr">{{sr}}</option>
+							</select>
+																	</td>
+																	<td><input type="text" class="form-control" required></td>
+																	<td><input type="text" class="form-control" required></td>
+																	<td>
+																		<select>
+                            <option *ngFor="let un of unit" [value]="un"> {{un}}</option>
+							</select>
+																	
+																	</td>
+																	<td><input type="text" class="form-control" required></td>
+																	<td><input type="text" class="form-control" required></td>
+																
+																</tr>
+																<tr>
+																	<td align="center"> 3</td>
+																	<td><input type="text" class="form-control"  required></td>
+																	<td>
+<select>
+                             <option *ngFor="let sr of serice"[value]="sr">{{sr}}</option>
+							</select>
+																	</td>
+																	<td><input type="text" class="form-control" required></td>
+																	<td><input type="text" class="form-control" required></td>
+																	<td>
+																		<select>
+                            <option *ngFor="let un of unit" [value]="un"> {{un}}</option>
+							</select>
+																	</td>
+																	<td><input type="text" class="form-control"  required></td>
+																	<td><input type="text" class="form-control" required></td>
+																
+																</tr>
+																<tr>
+																	<td align="center"> 4</td>
+																	<td><input type="text" class="form-control"  required></td>
+																	<td>
+																	<select>
+                             <option *ngFor="let sr of serice"[value]="sr">{{sr}}</option>
+							</select>
+																	</td>
+																	<td><input type="text" class="form-control" required></td>
+																	<td><input type="text" class="form-control" required></td>
+																	<td>
+																		<select>
+                            <option *ngFor="let un of unit" [value]="un"> {{un}}</option>
+							</select>
+																	</td>
+																	<td><input type="text" class="form-control"  required></td>
+																	<td><input type="text" class="form-control" required></td>
+																
+																</tr>
+															</tbody>
+														</table>
+										</div>
+									</div>
+
+                   <div class="clearfix"></div> 
+          <div class="text-center section-bottom-60">
+      <button class="btn btn-success"> Save Data</button>
+    </div>
+
+ <div class="clearfix"></div> 
+<!-- Footer Start -->
+<footer class="unicod-footer bg-style">
+  <div class="container-fluid unicod-copyright">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3 text-center">
+        <div class="Copyright">
+          <p>Copyright 2017, GST.  All Rights Reserved </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

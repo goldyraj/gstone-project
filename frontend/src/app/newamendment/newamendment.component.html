@@ -1,0 +1,884 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3 navbar-header-gst">
+      <div class="navbar-brand">
+        <a href="index.html">
+          <h2 class="gst_logo">GST</h2>
+        </a>
+      </div>
+    </div>
+    <div class="col-md-6"> </div>
+    <div class="col-md-3">
+      <div class="user_profile">
+        <label>Contact Mail</label>
+        <div class="btn-group pull-right" role="group">
+          <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> User email <span class="caret"></span> </button>
+          <ul class="dropdown-menu">
+            <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
+            <li><a href="#"><i class="fa fa-cog"></i> Setting</a></li>
+            <li><a href="#"><i class="fa fa-key"></i> Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<header class="main-header">
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Navigation  navbar-static-top -->
+      <nav class="navbar navbar-inverse">
+        <div class="container navbar-header-gst">
+          <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+          </div>
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+              <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+              <li> <a class="page-scroll" href="#">User Name <span> GSTIN No</span></a> </li>
+              <li> <a class="page-scroll" href="summarypage">Dashboard</a> </li>
+              <li> <a class="page-scroll" href="#">Returns</a> </li>
+              <li> <a class="page-scroll" href="#">Notification </a> </li>
+              <li> <a class="page-scroll" href="#">Updates </a> </li>
+              <li> <a class="page-scroll" href="#">videos </a> </li>
+            </ul>
+          </div>
+          <!-- /.navbar-collapse -->
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<!-- summary Tab -->
+
+<div class="tabs">
+
+  <div class="clearfix"></div>
+
+  <div class="col-md-8 col-sm-8 col-xs-12 form-group">
+    <!-- <button class="btn btn-primary"> -->
+    <a routerLink="/summarypage"> Summary</a>&nbsp;&nbsp;&nbsp;
+    <!-- </button> -->
+    <!-- <button class="btn btn-primary">  -->
+    <a routerLink="/gstr">Invoice Wise Detail</a>&nbsp;&nbsp;&nbsp;
+    <!-- </button> -->
+    <!-- <button class="btn btn-primary"> -->
+    <!-- <a href="#">Export Invoice</a> &nbsp;&nbsp;&nbsp; -->
+    <!-- </button> -->
+    <!-- <button class="btn btn-primary">  -->
+    <a routerLink="/other"> Other </a>&nbsp;&nbsp;&nbsp;
+    <!-- </button> -->
+    <!-- <button class="btn btn-primary">  -->
+    <a href="#"> Submit </a>&nbsp;&nbsp;&nbsp;
+    <!-- </button> -->
+    <!-- <button class="btn btn-primary"> -->
+    <a href="#">File </a>&nbsp;&nbsp;&nbsp;
+    <!-- </button> -->
+  </div>
+
+  <div class="col-md-4 col-sm-4 col-xs-12 form-group">
+
+  </div>
+
+</div>
+<div class="clearfix"></div>
+
+<div class="section-top-20 section-bottom-10 row">
+
+  <div class="col-md-12 col-sm-12">
+    <div class="col-md-6 col-xs-12">
+      <h2 class="text-invoice"> Amendment </h2>
+    </div>
+    <div class="col-md-2 col-xs-12">
+
+    </div>
+    <div class="col-md-2 col-xs-12">
+      <a routerLink="/gstr"><input type="button" class="btn btn-success pull-right" value="Back"/></a>
+    </div>
+
+    <div class="col-md-2 pull-right col-xs-12">
+      <input type="button" class="btn btn-success pull-right" value="Save Data" />
+    </div>
+  </div>
+</div>
+
+
+<div class="clearfix"></div>
+
+
+<div>
+  <!-- &nbsp;&nbsp;&nbsp;&nbsp;		<label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio6" value="Export With IGST"> Invoice
+					</label>
+										<label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio7" value="Export Under Bond/LUT"> Bill of Supply
+					</label>
+										<label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio8" value="SEZ Export"> Export Invoice
+					</label>
+             -->
+  <div class="radio">
+    <label><input type="radio" [(ngModel)]="type" name="type" value="INV">Invoice</label>
+  </div>
+  <div class="radio">
+    <label><input type="radio" [(ngModel)]="type" name="type" value= "BOS">Bill of Supply</label>
+  </div>
+  <div class="radio">
+    <label><input type="radio" [(ngModel)]="type" name="type" value="EXINV">Export Invoice</label>
+  </div>
+</div>
+
+
+<div class="clearfix"></div>
+
+
+<div *ngIf="type === 'INV'">
+
+
+  <!-- Invoice -->
+
+  <div class="section-top-20 section-bottom-10 row">
+
+    <div class="col-md-12 col-sm-12">
+      <div class="col-md-6 col-xs-12">
+        <h4 class="text-invoice">Invoice</h4>
+      </div>
+      <div class="col-md-2 col-xs-12">
+
+      </div>
+      <div class="col-md-2 col-xs-12">
+        <!-- <a routerLink="/gstr"><input type="button" class="btn btn-success pull-right" value="Back"/></a> -->
+      </div>
+
+      <div class="col-md-2 pull-right col-xs-12">
+        <!-- <input type="button" class="btn btn-success pull-right" value="Save Data"/> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="section-top-20 section-bottom-10 row">
+
+    <div class="col-md-12 col-sm-12">
+      <div class="col-md-6 col-xs-12">
+        <!-- <h2 class="text-invoice">Create Invoice</h2> -->
+      </div>
+      <div class="col-md-2 col-xs-12">
+      </div>
+      <div class="col-md-2 col-xs-12">
+        <!-- <a href="#"><input type="button" class="btn btn-success pull-right" value="Back"></a> -->
+        <!-- <button routerLink="/gstr" class="btn btn-success"> Back </button> -->
+      </div>
+
+      <div class="col-md-2 pull-right col-xs-12">
+        <!-- <a href="newinvoice"><input type="button" class="btn btn-success pull-right" value="Save Data"></a> -->
+      </div>
+    </div>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;
+     <label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Normal_Invoice" checked="checked"> Normal Invoice
+					</label>
+    <label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="Reverse_Charge"> Reverse Charge
+					</label>
+    <label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="E-commerce"> E-commerce
+					</label>
+    <label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio4" value="Debit_Note"> Debit Note
+					</label>
+    <label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio5" value="Credit_Note"> Credit Note
+          </label> 
+
+            <!-- <div class="radio">
+              <label><input type="radio" [(ngModel)]="Inv-type" name="Inv-type" value="Normal_Invoice" >Normal Invoice</label>
+            </div>
+            <div class="radio">
+              <label><input type="radio" [(ngModel)]="Inv-type" name="Inv-type" value= "Reverse_Charge">Reverse Charge</label>
+            </div>
+            <div class="radio">
+              <label><input type="radio" [(ngModel)]="Inv-type" name="Inv-type" value="commerce">E-commerce</label>
+
+            </div>
+            <div class="radio">
+              <label><input type="radio" [(ngModel)]="Inv-type" name="Inv-type" value= "Debit_Note">Debit Note</label>
+            </div>
+            <div class="radio">
+              <label><input type="radio" [(ngModel)]="Inv-type" name="Inv-type" value="Credit_Note">Credit Note</label>
+              
+            </div> -->
+              
+                </div>	
+
+  <!-- </div> -->
+
+  <div class="section-bottom-10 section-top-10">
+    <div class="col-md-4 col-sm-4 col-xs-12 form-group">
+      <label for="inputEmail3" class="col-sm-5 control-label">Name</label>
+      <div class="col-sm-7">
+        <input type="text" class="form-control" id="inputEmail3" value="Patrika">
+      </div>
+    </div>
+    <div class="col-md-4 col-sm-4 col-xs-12 form-group">
+      <label for="inputEmail3" class="col-sm-5 control-label">Invoice No.</label>
+      <div class="col-sm-7">
+        <input type="text" class="form-control" id="inputEmail3" value="34L61Z634L61Z6">
+      </div>
+    </div>
+    <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+      <label for="inputEmail3" class="col-sm-5 control-label">Date</label>
+      <div class="col-sm-7">
+        <input type="text" class="form-control" id="inputEmail3" value="19-SEP-2017">
+      </div>
+    </div>
+
+    <div class="col-md-4 col-sm-4 col-xs-12">
+      <label for="inputEmail3" class="col-sm-5 control-label">GSTIN No</label>
+      <div class="col-sm-7">
+        <input type="text" class="form-control" id="inputEmail3" value="AGPTK234L61Z6">
+      </div>
+    </div>
+    <div class="col-md-4 col-sm-4 col-xs-12 form-group">
+      <label for="inputEmail3" class="col-sm-5 control-label">POS</label>
+      <div class="col-sm-7">
+        <select>
+                            <option *ngFor="let pl of place" [value]="pl"> {{pl}}</option>
+                            <!-- <option value="" selected="selected" > AP</option>
+                            <option value=""> BH</option>
+                            <option value=""> MH</option>
+                            <option value=""> MP</option>
+                            <option value=""> UK</option>
+                            <option value=""> UP</option>
+                            <option value=""> TN</option> -->
+                          </select>
+      </div>
+    </div>
+    <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+      <label for="inputEmail3" class="col-sm-5 control-label">E-Com GSTIN</label>
+      <div class="col-sm-7">
+        <input type="text" class="form-control" id="inputEmail3" value="AGPTK234L61Z6">
+      </div>
+    </div>
+
+  </div>
+
+  <div class="table-responsive gsttable">
+    <table class="table table-condensed  table-hover table-bordered">
+      <tr>
+        <td>
+          <table class="table table-condensed table-wrapper table-bordered">
+            <thead>
+              <tr>
+                <th rowspan="2">S.No</th>
+                <th rowspan="2">Description</th>
+                <th rowspan="2">Goods Services</th>
+                <th rowspan="2">HSN / SAC </th>
+                <th rowspan="2">QTY </th>
+                <th rowspan="2">Unit Of Measurement</th>
+                <th rowspan="2">Taxable Value</th>
+                <th rowspan="2" width="90px">Rate Of Tax</th>
+                <th rowspan="2">CGST</th>
+                <th rowspan="2">SGST</th>
+                <th rowspan="2">IGST</th>
+                <th colspan="2">CESS</th>
+              </tr>
+              <tr>
+                <th>Rate</th>
+                <th>AMT </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td align="center"> 1</td>
+                <td><input type="text" class="form-control" value="Mesuarement"></td>
+                <td><select>
+                            <option *ngFor="let sr of serice"[value]="sr">{{sr}}</option>
+                            <!-- <option value="">Goods</option>
+                            <option value="">Services</option> -->
+							</select>
+                </td>
+                <td><input type="text" class="form-control" value="HSN"></td>
+                <td><input type="text" class="form-control" value="500"></td>
+                <td>
+                  <!-- <select name="select" class="form-control"> -->
+                  <select>
+                             <option *ngFor="let un of unit" [value]="un"> {{un}}</option>
+							</select>
+                </td>
+                <td><input type="text" class="form-control" value="49"></td>
+                <td>
+
+                  <select>
+                            <option *ngFor="let rt of rate" [value]="rt"> {{rt}} </option>
+                          </select>
+
+                </td>
+                <td><input type="text" class="form-control" value="345"></td>
+                <td><input type="text" class="form-control" value="34"></td>
+                <td><input type="text" class="form-control" value="34"></td>
+                <td><input type="text" class="form-control" value="4"></td>
+                <td><input type="text" class="form-control" value="45"></td>
+              </tr>
+              <tr>
+                <td align="center"> 2</td>
+                <td><input type="text" class="form-control" value="Mesuarement"></td>
+                <td>
+                  <select>
+                           <option *ngFor="let sr of serice"[value]="sr">{{sr}}</option>
+							</select>
+                </td>
+                <td><input type="text" class="form-control" value="HSN"></td>
+                <td><input type="text" class="form-control" value="500"></td>
+                <td>
+                  <select>
+                            <option *ngFor="let un of unit" [value]="un"> {{un}}</option>
+							</select>
+                </td>
+                <td><input type="text" class="form-control" value="49"></td>
+                <td>
+                  <select>
+                            <option *ngFor="let rt of rate" [value]="rt"> {{rt}} </option>
+                          </select>
+                </td>
+                <td><input type="text" class="form-control" value="345"></td>
+                <td><input type="text" class="form-control" value="34"></td>
+                <td><input type="text" class="form-control" value="34"></td>
+                <td><input type="text" class="form-control" value="4"></td>
+                <td><input type="text" class="form-control" value="45"></td>
+              </tr>
+              <tr>
+                <td align="center"> 3</td>
+                <td><input type="text" class="form-control" value="Mesuarement"></td>
+                <td>
+                  <select>
+                             <option *ngFor="let sr of serice"[value]="sr">{{sr}}</option>
+							</select>
+                </td>
+                <td><input type="text" class="form-control" value="HSN"></td>
+                <td><input type="text" class="form-control" value="500"></td>
+                <td>
+                  <select>
+                            <option *ngFor="let un of unit" [value]="un"> {{un}}</option>
+							</select>
+                </td>
+                <td><input type="text" class="form-control" value="49"></td>
+                <td>
+                  <select>
+                            <option *ngFor="let rt of rate" [value]="rt"> {{rt}} </option>
+                          </select>
+                </td>
+                <td><input type="text" class="form-control" value="345"></td>
+                <td><input type="text" class="form-control" value="34"></td>
+                <td><input type="text" class="form-control" value="34"></td>
+                <td><input type="text" class="form-control" value="4"></td>
+                <td><input type="text" class="form-control" value="45"></td>
+              </tr>
+              <tr>
+                <td><input type="text" class="form-control" value=""></td>
+                <td colspan="8" align="right">Total in Words</td>
+                <td colspan="4" align="right"><b>Grand Total =</b></td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>
+          <table class="table table-condensed table-bordered fixed-column">
+            <thead>
+              <tr>
+                <th rowspan="2"><br>Total<br> &nbsp;</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="text" class="form-control" value="900.00/-"></td>
+              </tr>
+              <tr>
+                <td><input type="text" class="form-control" value="12,000.00/-"></td>
+              </tr>
+              <tr>
+                <td><input type="text" class="form-control" value="45,000.00/-"></td>
+              </tr>
+              <tr>
+                <td><input type="text" class="form-control" value="57,900.00/-"></td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="text-center section-bottom-60">
+    <button class="btn btn-success"> Save Data</button>
+  </div>
+
+
+  <!-- Invoice -->
+</div>
+
+
+<div *ngIf="type === 'BOS'">
+
+  <!-- bos -->
+  <div class="section-top-20 section-bottom-10 row">
+
+    <div class="col-md-12 col-sm-12">
+      <div class="col-md-6 col-xs-12">
+        <h4 class="text-invoice">Bill Of Supply</h4>
+      </div>
+      <div class="col-md-2 col-xs-12">
+
+      </div>
+      <div class="col-md-2 col-xs-12">
+        <!-- <a routerLink="/gstr"><input type="button" class="btn btn-success pull-right" value="Back"/></a> -->
+      </div>
+
+      <div class="col-md-2 pull-right col-xs-12">
+        <!-- <input type="button" class="btn btn-success pull-right" value="Save Data"/> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="section-bottom-10 section-top-10">
+
+
+    <div class="col-md-4 col-sm-4 col-xs-12 form-group">
+      <label for="inputEmail3" class="col-sm-5 control-label">Name</label>
+      <div class="col-sm-7">
+        <input type="text" class="form-control" id="inputEmail3" value="">
+      </div>
+    </div>
+    <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+      <label for="inputEmail3" class="col-sm-5 control-label">Bill of Supply No</label>
+      <div class="col-sm-7">
+        <input type="text" class="form-control" id="inputEmail3" value="">
+      </div>
+    </div>
+    <div class="col-md-4 col-sm-4 col-xs-12 form-group">
+      <label for="inputEmail3" class="col-sm-5 control-label">POS</label>
+      <div class="col-sm-7">
+        <select>
+                            <option *ngFor="let pl of place" [value]="pl"> {{pl}}</option>
+                            <!-- <option value="" selected="selected" > AP</option>
+                            <option value=""> BH</option>
+                            <option value=""> MH</option>
+                            <option value=""> MP</option>
+                            <option value=""> UK</option>
+                            <option value=""> UP</option>
+                            <option value=""> TN</option> -->
+                          </select>
+      </div>
+    </div>
+    <div class="col-md-4 col-sm-4 col-xs-12 form-group">
+      <label for="inputEmail3" class="col-sm-5 control-label"> GSTIN No.</label>
+      <div class="col-sm-7">
+        <select>
+                            <option *ngFor="let gstn of GSTIN" [value]="gstn"> {{gstn}} </option>
+                            <!-- <option value="" selected="selected" >AGPTK234L61Z6</option>
+                            <option value="">AGPTK234L61Z6</option>
+                            <option value="">AGPTK214M61Z6</option>
+                            <option value="">AGPTK894K61Z6</option>
+                            <option value="">SJPTK234L61Z6</option>
+                            <option value="">AWRTK236S61Z6</option>
+                            <option value="">ATDTK237Z61Z6</option> -->
+                          </select>
+      </div>
+    </div>
+    <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+      <label for="inputEmail3" class="col-sm-5 control-label">Date</label>
+      <div class="col-sm-7">
+        <input type="text" class="form-control" id="inputEmail3" value="">
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="section-top-10 col-md-12 col-sm-12 section-bottom-20">
+
+    <div class="table-responsive gsttable">
+      <table class="table table-condensed table-bordered">
+        <thead>
+          <tr>
+            <th>S.No</th>
+            <th>Description </th>
+            <th width="100px">Goods Services</th>
+            <th>HSN / SAC </th>
+            <th>QTY</th>
+            <th width="100px">Unit Of Measurement</th>
+            <th>Taxable Value</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td align="center"> 1</td>
+            <td><input type="text" class="form-control" required></td>
+            <td>
+              <select>
+                             <option *ngFor="let sr of serice"[value]="sr">{{sr}}</option>
+							</select>
+            </td>
+            <td><input type="text" class="form-control" required></td>
+            <td><input type="text" class="form-control" required></td>
+            <td>
+
+              <select>
+                                       <option *ngFor="let un of unit" [value]="un"> {{un}}</option>
+					                      		</select>
+
+            </td>
+            <td><input type="text" class="form-control" required></td>
+            <td><input type="text" class="form-control" required></td>
+
+          </tr>
+          <tr>
+            <td align="center"> 2</td>
+            <td><input type="text" class="form-control" required></td>
+            <td>
+              <select>
+                             <option *ngFor="let sr of serice"[value]="sr">{{sr}}</option>
+							</select>
+            </td>
+            <td><input type="text" class="form-control" required></td>
+            <td><input type="text" class="form-control" required></td>
+            <td>
+              <select>
+                            <option *ngFor="let un of unit" [value]="un"> {{un}}</option>
+							</select>
+
+            </td>
+            <td><input type="text" class="form-control" required></td>
+            <td><input type="text" class="form-control" required></td>
+
+          </tr>
+          <tr>
+            <td align="center"> 3</td>
+            <td><input type="text" class="form-control" required></td>
+            <td>
+              <select>
+                             <option *ngFor="let sr of serice"[value]="sr">{{sr}}</option>
+							</select>
+            </td>
+            <td><input type="text" class="form-control" required></td>
+            <td><input type="text" class="form-control" required></td>
+            <td>
+              <select>
+                            <option *ngFor="let un of unit" [value]="un"> {{un}}</option>
+							</select>
+            </td>
+            <td><input type="text" class="form-control" required></td>
+            <td><input type="text" class="form-control" required></td>
+
+          </tr>
+          <tr>
+            <td align="center"> 4</td>
+            <td><input type="text" class="form-control" required></td>
+            <td>
+              <select>
+                             <option *ngFor="let sr of serice"[value]="sr">{{sr}}</option>
+							</select>
+            </td>
+            <td><input type="text" class="form-control" required></td>
+            <td><input type="text" class="form-control" required></td>
+            <td>
+              <select>
+                            <option *ngFor="let un of unit" [value]="un"> {{un}}</option>
+							</select>
+            </td>
+            <td><input type="text" class="form-control" required></td>
+            <td><input type="text" class="form-control" required></td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="clearfix"></div>
+  <div class="text-center section-bottom-60">
+    <button class="btn btn-success"> Save Data</button>
+  </div>
+
+  <div class="clearfix"></div>
+
+  <!-- BOS -->
+
+
+</div>
+
+<div *ngIf="type === 'EXINV'">
+
+  <!-- EXPORT Invoice -->
+
+  <div class="section-top-20 section-bottom-10 row">
+
+    <div class="col-md-12 col-sm-12">
+      <div class="col-md-6 col-xs-12">
+        <h4 class="text-invoice">Export Invoice</h4>
+      </div>
+      <div class="col-md-2 col-xs-12">
+
+      </div>
+      <div class="col-md-2 col-xs-12">
+        <!-- <a routerLink="/gstr"><input type="button" class="btn btn-success pull-right" value="Back"/></a> -->
+      </div>
+
+      <div class="col-md-2 pull-right col-xs-12">
+        <!-- <input type="button" class="btn btn-success pull-right" value="Save Data"/> -->
+      </div>
+    </div>
+  </div>
+
+
+  <div class="clearfix"></div>
+
+
+  <div>
+    &nbsp;&nbsp;&nbsp;&nbsp; <label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio6" value="Export With IGST"> Export With IGST
+					</label>
+    <label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio7" value="Export Under Bond/LUT"> Export Under Bond/LUT
+					</label>
+    <label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio8" value="SEZ Export"> SEZ Export
+					</label>
+    <label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="inlineRadio9" value="Deemed Export"> Deemed Export
+					</label>
+  </div>
+
+
+  <div class="clearfix"></div>
+
+  <br/>
+  <div class="row">
+    <div class="col-md-4 col-sm-4 col-xs-12 form-group">
+
+      <label for="inputEmail3" class="col-sm-5 control-label">Name</label>
+      <div class="col-sm-7">
+        <input type="text" class="form-control" id="inputEmail3" placeholder="Patrika">
+      </div>
+    </div>
+    <div class="col-md-4 col-sm-4 col-xs-12 form-group">
+      <label for="inputEmail3" class="col-sm-5 control-label">POS</label>
+      <div class="col-sm-7">
+        <select>
+                            <option *ngFor="let pl of place" [value]="pl"> {{pl}}</option>
+                           
+                          </select>
+      </div>
+    </div>
+    <div class="col-md-4 col-sm-4 col-xs-12 form-group">
+      <label for="inputEmail3" class="col-sm-5 control-label">Invoice Number</label>
+      <div class="col-sm-7">
+        <input type="text" class="form-control" id="inputEmail3" placeholder="34L61Z634L61Z6">
+      </div>
+    </div>
+    <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+      <label for="inputEmail3" class="col-sm-5 control-label">Date</label>
+      <div class="col-sm-7">
+        <input type="text" class="form-control" id="inputEmail3" value="19-SEP-2017">
+      </div>
+    </div>
+
+
+    <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+      <label for="inputEmail3" class="col-sm-5 control-label">Shipping Bill No</label>
+      <div class="col-sm-7">
+        <input type="text" class="form-control" id="inputEmail3" value="AGPTK234L61Z6">
+      </div>
+    </div>
+    <div class="col-md-4 col-sm-4 col-xs-12">
+
+    </div>
+  </div>
+
+  <div class="clearfix"></div>
+
+
+  <div class="col-lg-12">
+    <div class="table-responsive gsttable">
+      <table class="table table-condensed table-bordered">
+        <thead>
+          <tr>
+            <th>S.No</th>
+            <th>Description </th>
+            <th width="100px">Goods Services</th>
+            <th>HSN / SAC </th>
+            <th>QTY</th>
+            <th width="100px">Unit Of Measurement</th>
+            <th>Taxable Value</th>
+            <th width="100px">Rate Of Tax</th>
+            <th>IGST</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td align="center"> 1</td>
+            <td><input type="text" class="form-control" required></td>
+            <td>
+              <select>
+                                    <option *ngFor="let sr of serice"[value]="sr">{{sr}}</option>
+				                      			</select>
+
+            </td>
+            <td><input type="text" class="form-control" required></td>
+            <td><input type="text" class="form-control" required></td>
+            <td>
+
+              <select>
+                                       <option *ngFor="let un of unit" [value]="un"> {{un}}</option>
+					                      		</select>
+
+            </td>
+            <td><input type="text" class="form-control" required></td>
+            <td>
+
+              <select>
+                                     <option *ngFor="let rt of rate" [value]="rt"> {{rt}} </option>
+                                  </select>
+
+            </td>
+            <td><input type="text" class="form-control" required></td>
+            <td><input type="text" class="form-control" required></td>
+
+          </tr>
+          <tr>
+            <td align="center"> 2</td>
+            <td><input type="text" class="form-control" required></td>
+            <td>
+
+              <select>
+                                    <option *ngFor="let sr of serice"[value]="sr">{{sr}}</option>
+                                    </select>
+
+            </td>
+            <td><input type="text" class="form-control" required></td>
+            <td><input type="text" class="form-control" required></td>
+            <td>
+
+              <select>
+                                       <option *ngFor="let un of unit" [value]="un"> {{un}}</option>
+					                      		</select>
+
+            </td>
+            <td><input type="text" class="form-control" required></td>
+            <td>
+
+              <select>
+                                     <option *ngFor="let rt of rate" [value]="rt"> {{rt}} </option>
+                                  </select>
+
+
+            </td>
+            <td><input type="text" class="form-control" required></td>
+            <td><input type="text" class="form-control" required></td>
+
+          </tr>
+          <tr>
+            <td align="center"> 3</td>
+            <td><input type="text" class="form-control" required></td>
+            <td>
+
+              <select>
+                                    <option *ngFor="let sr of serice"[value]="sr">{{sr}}</option>
+                                    </select>
+
+            </td>
+            <td><input type="text" class="form-control" required></td>
+            <td><input type="text" class="form-control" required></td>
+            <td>
+
+              <select>
+                                       <option *ngFor="let un of unit" [value]="un"> {{un}}</option>
+					                      		</select>
+
+            </td>
+            <td><input type="text" class="form-control" required></td>
+            <td>
+
+              <select>
+                                     <option *ngFor="let rt of rate" [value]="rt"> {{rt}} </option>
+                                  </select>
+
+
+            </td>
+            <td><input type="text" class="form-control" required></td>
+            <td><input type="text" class="form-control" required></td>
+
+          </tr>
+          <tr>
+            <td align="center"> 4</td>
+            <td><input type="text" class="form-control" required></td>
+            <td>
+
+              <select>
+                                    <option *ngFor="let sr of serice"[value]="sr">{{sr}}</option>
+                                    </select>
+
+            </td>
+            <td><input type="text" class="form-control" required></td>
+            <td><input type="text" class="form-control" required></td>
+            <td>
+
+              <select>
+                                       <option *ngFor="let un of unit" [value]="un"> {{un}}</option>
+					                      		</select>
+
+            </td>
+            <td><input type="text" class="form-control" required></td>
+            <td>
+
+
+              <select>
+                                     <option *ngFor="let rt of rate" [value]="rt"> {{rt}} </option>
+                                  </select>
+
+
+
+            </td>
+            <td><input type="text" class="form-control" required>
+
+            </td>
+            <td><input type="text" class="form-control" required></td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="clearfix"></div>
+
+  <div class="text-center section-bottom-60">
+    <button class="btn btn-success"> Save Data</button>
+  </div>
+
+
+
+
+  <!-- EXPORT Invoice -->
+</div>
+
+
+<div class="clearfix"></div>
+
+
+<!-- Footer Start -->
+<footer class="unicod-footer bg-style">
+  <div class="container-fluid unicod-copyright">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3 text-center">
+        <div class="Copyright">
+          <p>Copyright 2017, GST. All Rights Reserved </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

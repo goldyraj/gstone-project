@@ -1,0 +1,155 @@
+{
+  "id": "Get-B2B-Schema",
+  "properties": {
+    "b2b": {
+      "items": {
+        "properties": {
+          "cfs": {
+            "description": "GSTR2 filing status of counter party",
+            "type": "string"
+          },
+          "ctin": {
+            "type": "string",
+            "maxLength": 15,
+            "minLength": 15,
+            "pattern": "^[a-zA-Z0-9._\\s]+$",
+            "description": "GSTIN/UID of the Receiver taxpayer/UN,Govt Bodies"
+          },
+          "inv": {
+            "items": {
+              "properties": {
+                "cflag": {
+                  "description": "Status of counter party",
+                  "type": "string"
+                },
+                "etin": {
+                  "description": "Ecom Tin",
+                  "type": "string",
+                  "maxLength": 15,
+                  "minLength": 15,
+                  "pattern": "^[a-zA-Z0-9._\\s]+$"
+                },
+                "inum": {
+                  "maxLength": 16,
+                  "description": "Supplier Invoice Number",
+                  "type": "string"
+                },
+                "chksum": {
+                  "maxLength": 64,
+                  "description": "Invoice checksum value",
+                  "type": "string",
+                  "pattern": "^[a-zA-Z0-9]+$",
+                  "minLength": 1
+                },
+                "idt": {
+                  "description": "Supplier Invoice Date",
+                  "type": "string",
+                  "pattern": "^((0[1-9]|[12][0-9]|3[01])[-](0[1-9]|1[012])[-]((19|20)\\d\\d))$"
+                },
+                "inv_typ": {
+                  "description": " Invoice Type",
+                  "type": "string"
+                },
+                "itms": {
+                  "items": {
+                    "properties": {
+                      "itm_det": {
+                        "properties": {
+                          "rt": {
+                            "description": "rate as per invoice",
+                            "type": "number"
+                          },
+                          "iamt": {
+                            "description": "IGST Amount as per invoice",
+                            "type": "number"
+                          },
+                          "camt": {
+                            "description": "CGST Amount as per invoice",
+                            "type": "number"
+                          },
+                          "samt": {
+                            "description": "SGST Amount as per invoice",
+                            "type": "number"
+                          },
+                          "csamt": {
+                            "description": "Cess Amount as per invoice",
+                            "type": "number"
+                          },
+                          "txval": {
+                            "description": "Taxable value of Goods or Service as per invoice",
+                            "type": "number",
+                            "minLength": 1
+                          }
+                        },
+                        "required": [
+                          "rt",
+                          "txval"
+                        ],
+                        "type": "object"
+                      },
+                      "num": {
+                        "description": "Serial no",
+                        "type": "number",
+                        "minLength": 1
+                      }
+                    },
+                    "required": [
+                      "itm_det",
+                      "num"
+                    ],
+                    "type": "object"
+                  },
+                  "type": "array"
+                },
+                "pos": {
+                  "description": "Actual Place of Supply",
+                  "maxLength": 2,
+                  "minLength": 2,
+                  "type": "string"
+                },
+                "rchrg": {
+                  "description": "Reverse Charge",
+                  "type": "string"
+                },
+                "updby": {
+                  "description": "Uploaded by",
+                  "type": "string"
+                },
+                "val": {
+                  "description": "Supplier Invoice Value",
+                  "type": "number"
+                }
+              },
+              "required": [
+                "etin",
+                "inv_typ",
+                "itms",
+                "val",
+                "rchrg",
+                "idt",
+                "updby",
+                "pos",
+                "inum",
+                "cflag",
+                "chksum"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "ctin",
+          "inv",
+          "cfs"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "b2b"
+  ],
+  "type": "object"
+}

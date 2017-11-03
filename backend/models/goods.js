@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const crypto = require('crypto')
 const config = require('../config')
-
+var mongoosePaginate = require('mongoose-paginate');
   
 const Goods = new Schema({
     description: String,
@@ -23,7 +23,7 @@ Goods.statics.create = function(description, hsn_code,unit,rate) {
     // return the Promise
     return Goods.save()
 }
-
+Goods.plugin(mongoosePaginate);
 // find one user by using username
 Goods.statics.findOneByUsername = function(description) {
     return this.findOne({

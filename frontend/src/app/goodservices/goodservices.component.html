@@ -134,7 +134,7 @@
 							<td align="center">{{item.unit}}</td>
 							<td align="center">{{item.rate}}</td>
 							<td align="center">
-								<a data-toggle="modal" data-target=".bs-user-lg-edit">
+								<a data-toggle="modal" data-target=".bs-GSTIN-lg-edit">
 									<button class="fa fa-edit btn btn-primary btn-sm" title="Edit" (click)="editGoodsServicesRecord(item)"></button>
 								</a>
 								<a href="" data-toggle="modal" data-target=".bs-delete-sm">
@@ -188,16 +188,16 @@
 					<div class="row">
 						<div class="col-md-1 col-sm-1"></div>
 						<div class="col-md-10 col-sm-10">
-							<form [formGroup]="addNewGoodsFormEdit" novalidate (ngSubmit)="saveGoodsAndServices(addNewGoodsFormEdit.valid)">
+							<form [formGroup]="addNewGoodsForm" novalidate (ngSubmit)="saveGoodsAndServices(addNewGoodsForm.valid)">
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="description" placeholder="Name" required>
-									<small [hidden]="addNewGoodsFormEdit.controls.description.valid || (addNewGoodsFormEdit.controls.description.pristine && !submitted)">
+									<small [hidden]="addNewGoodsForm.controls.description.valid || (addNewGoodsForm.controls.description.pristine && !submitted)">
 										Description is required !
 									</small>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="hsn_code" placeholder="Contact No.">
-									<small [hidden]="addNewGoodsFormEdit.controls.hsn_code.valid || (addNewGoodsFormEdit.controls.hsn_code.pristine && !submitted)">
+									<small [hidden]="addNewGoodsForm.controls.hsn_code.valid || (addNewGoodsForm.controls.hsn_code.pristine && !submitted)">
 										HSN Code is required !
 									</small>
 								</div>
@@ -213,7 +213,7 @@
 										<option value="">18%</option>
 										<option value="">28%</option>
 									</select>
-									<small *ngIf="addNewGoodsFormEdit.controls.rate.value=='-1' && submitted">
+									<small *ngIf="addNewGoodsForm.controls.rate.value=='-1' && submitted">
 										Please select rate !
 									</small>
 								</div>
@@ -225,7 +225,7 @@
 										<option value="">Gram</option>
 										<option value="">Meter</option>
 									</select>
-									<small *ngIf="addNewGoodsFormEdit.controls.unit.value=='-1' && submitted">
+									<small *ngIf="addNewGoodsForm.controls.unit.value=='-1' && submitted">
 										Please select unit !
 									</small>
 								</div>
@@ -257,7 +257,7 @@
 					<span class="modal-text" aria-hidden="true">X</span>
 				</button>
 				<h4 class="modal-title modal-text" align="center">
-					<b> Add New Goods/Services</b>
+					<b> Edit Goods/Services</b>
 				</h4>
 			</div>
 			<div class="modal-body">
@@ -265,22 +265,22 @@
 					<div class="row">
 						<div class="col-md-1 col-sm-1"></div>
 						<div class="col-md-10 col-sm-10">
-							<form [formGroup]="addNewGoodsFormEdit" novalidate (ngSubmit)="saveGoodsAndServices(addNewGoodsFormEdit.valid)">
+							<form [formGroup]="addNewGoodsFormEdit" novalidate (ngSubmit)="updateGoodsAndServicesRecord(addNewGoodsFormEdit.valid)">
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<input type="text" class="form-control" formControlName="description" placeholder="Name" required>
-									<small [hidden]="addNewGoodsFormEdit.controls.description.valid || (addNewGoodsFormEdit.controls.description.pristine && !submitted)">
+									<input type="text" class="form-control" formControlName="descriptionEdit" placeholder="Name" required>
+									<small [hidden]="addNewGoodsFormEdit.controls.descriptionEdit.valid || (addNewGoodsFormEdit.controls.description.pristine && !submitted)">
 										Description is required !
 									</small>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<input type="text" class="form-control" formControlName="hsn_code" placeholder="Contact No.">
-									<small [hidden]="addNewGoodsFormEdit.controls.hsn_code.valid || (addNewGoodsFormEdit.controls.hsn_code.pristine && !submitted)">
+									<input type="text" class="form-control" formControlName="hsn_codeEdit" placeholder="Contact No." required>
+									<small [hidden]="addNewGoodsFormEdit.controls.hsn_codeEdit.valid || (addNewGoodsFormEdit.controls.hsn_code.pristine && !submitted)">
 										HSN Code is required !
 									</small>
 								</div>
 
 								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
-									<select class="form-control" formControlName="rate" required>
+									<select class="form-control" formControlName="rateEdit" required>
 										<option value="-1" selected="selected"> -- Rate of Tax -- </option>
 										<option value="">0.1%</option>
 										<option value="">0.5%</option>
@@ -290,25 +290,25 @@
 										<option value="">18%</option>
 										<option value="">28%</option>
 									</select>
-									<small *ngIf="addNewGoodsFormEdit.controls.rate.value=='-1' && submitted">
+									<small *ngIf="addNewGoodsFormEdit.controls.rateEdit.value=='-1' && submitted">
 										Please select rate !
 									</small>
 								</div>
 
-								<div class="col-md-12 col-sm-12 col-xs-12 form-group" formControlName="unit" required>
+								<div class="col-md-12 col-sm-12 col-xs-12 form-group" formControlName="unitEdit" required>
 									<select class="form-control">
 										<option value="-1" selected="selected"> -- Unit -- </option>
 										<option value="">Kilogram</option>
 										<option value="">Gram</option>
 										<option value="">Meter</option>
 									</select>
-									<small *ngIf="addNewGoodsFormEdit.controls.unit.value=='-1' && submitted">
+									<small *ngIf="addNewGoodsFormEdit.controls.unitEdit.value=='-1' && submitted">
 										Please select unit !
 									</small>
 								</div>
 
 								<div class="col-md-12 col-sm-12 col-xs-12 form-group" align="center">
-									<button type="submit" class="btn btn-primary">Create</button>
+									<button type="submit" class="btn btn-primary">Update</button>
 									<button type="button" class="btn btn-primary" data-dismiss="modal" value="Cancel">
 										Cancel
 									</button>

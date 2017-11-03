@@ -30,6 +30,7 @@ import{AdminDealerTypeComponent} from './admin-dealer-type/admin-dealer-type.com
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import {AdminLoginComponent} from './admin-login/admin-login.component';
 import { AdminFaqsComponent } from './admin-faqs/admin-faqs.component';
+import { AdminGovNotificationComponent } from './admin-gov-notification/admin-gov-notification.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/admin-hsn-code', pathMatch: 'full' },
@@ -60,7 +61,8 @@ const routes: Routes = [
   {path:'admin-dealer-type',component:AdminDealerTypeComponent},
   {path: 'admin-dashboard',component: AdminDashboardComponent},
   {path:'admin-login',component:AdminLoginComponent},
-  {path:'admin-faqs', component:AdminFaqsComponent}
+  {path:'admin-faqs', component:AdminFaqsComponent},
+  { path: 'admin_gov_notification', component: AdminGovNotificationComponent },
   //{ path: 'heroes',     component: HeroesComponent }
 ];
 

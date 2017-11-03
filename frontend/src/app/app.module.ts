@@ -35,6 +35,7 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { AdminLoginComponent } from './admin-login/admin-login.component';
 import {ApiserviceService} from './apiservice.service';
 import { AdminFaqsComponent } from './admin-faqs/admin-faqs.component';
+import { AdminGovNotificationComponent } from './admin-gov-notification/admin-gov-notification.component'
 // import { DatepickerModule } from 'angular2-material-datepicker';
 
 
@@ -69,6 +70,7 @@ import { AdminFaqsComponent } from './admin-faqs/admin-faqs.component';
     AdminDashboardComponent,
     AdminLoginComponent,
     AdminFaqsComponent,
+    AdminGovNotificationComponent
     //DatepickerModule
   ],
   imports: [

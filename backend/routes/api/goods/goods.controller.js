@@ -48,15 +48,15 @@ Goods.paginate(query,option).then(goods=>
 
 exports.list = (req, res) => {
     // refuse if not an admin
-    if(!req.decoded.admin) {
-        return res.status(403).json({
-            message: 'you are not an admin'
-        })
-    }
+    // if(!req.decoded.admin) {
+        // return res.status(403).json({
+            // message: 'you are not an admin'
+        // })
+    // }
  Goods.find({}).exec()
     .then(
         goods=> {
-            res.json({goods})
+            res.json(goods)
         }
     )
    }
@@ -91,7 +91,7 @@ exports.create = (req, res) => {
     let newUser = null
  if(!req.decoded.admin) {
         return res.status(403).json({
-            message: 'you are not an admin'
+            // message: 'you are not an admin'
         })
     }
     // create a new user if does not exist

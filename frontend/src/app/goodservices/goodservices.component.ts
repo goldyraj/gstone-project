@@ -12,7 +12,7 @@ import { ApiserviceService } from '../apiservice.service';
 export class GoodservicesComponent implements OnInit {
 
   @ViewChild('closeBtn') closeBtn: ElementRef;
-  // @ViewChild('closeBtn2') closeBtn2: ElementRef;
+  @ViewChild('closeBtn2') closeBtn2: ElementRef;
   url;
   goodsAndServicesDataList=[];
   rowDataIndex;
@@ -27,15 +27,15 @@ export class GoodservicesComponent implements OnInit {
     this.addNewGoodsForm = new FormGroup({
       description: new FormControl('', [<any>Validators.required]),
       hsn_code: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      unit: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
+      unit: new FormControl('', [<any>Validators.required]),
       rate: new FormControl('', [<any>Validators.required])
     });
 
     this.addNewGoodsFormEdit=new FormGroup({
-      description: new FormControl('', [<any>Validators.required]),
-      hsn_code: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      unit: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      rate: new FormControl('', [<any>Validators.required])
+      descriptionEdit: new FormControl('', [<any>Validators.required]),
+      hsn_codeEdit: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
+      unitEdit: new FormControl('', [<any>Validators.required]),
+      rateEdit: new FormControl('', [<any>Validators.required])
     });
 
     this.getGoodsAndServicesList();
@@ -174,15 +174,15 @@ export class GoodservicesComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/goods/list', options)
+    this.http.get('http://localhost:3000/api/goods/index', options)
       .subscribe(
       response => {
         console.log("BRANCH_LIST_API_RESPONSE", response.json());
-        console.log("BRANCH_LIST_API_RESPONSE_2", response.json().goods);
+        console.log("BRANCH_LIST_API_RESPONSE_2", response.json().docs);
         // for (let data of response.json().goods) {
         //   this.goodsAndServicesDataList.push(data);
         // }
-        this.goodsAndServicesDataList=response.json().goods;
+        this.goodsAndServicesDataList=response.json().docs;
       },
       error => {
         alert(error.text());
@@ -199,62 +199,59 @@ export class GoodservicesComponent implements OnInit {
     {
       console.log("DATA",data);
       
-      this.addNewGoodsFormEdit.get("description").setValue(data.description);
-      this.addNewGoodsFormEdit.get("hsn_code").setValue(data.hsn_code);
-      this.addNewGoodsFormEdit.get("unit").setValue(data.unit);
-      this.addNewGoodsFormEdit.get("rate").setValue(data.rate);
+      this.addNewGoodsFormEdit.get("descriptionEdit").setValue(data.description);
+      this.addNewGoodsFormEdit.get("hsn_codeEdit").setValue(data.hsn_code);
+      this.addNewGoodsFormEdit.get("unitEdit").setValue(data.unit);
+      this.addNewGoodsFormEdit.get("rateEdit").setValue(data.rate);
       // this.addNewGoodsFormEdit.get("state").setValue(data.state);
     }
     this.goodsAndServicesRowData=data;
   }
 
-  // updateGoodsAndServicesRecord(isValid: boolean)
-  // {
-  //   this.submittedEdit = true; // set form submit to true
-  //   console.log(isValid);
-  //   console.log("hi form module is called from page");
+  updateGoodsAndServicesRecord(isValid: boolean)
+  {
+
+    console.log("EDIITITITT");
+    this.submitted = true; // set form submit to true
+    console.log(isValid);
   
-  //   // if (isValid == true && this.addNewGoodsFormEdit.value.selectedstateDropdown!='Select State') {
-  //     if (isValid == true ) {
+    // if (isValid == true && this.addNewGoodsFormEdit.value.selectedstateDropdown!='Select State') {
+      if (isValid == true ) {
      
-  //     var access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
-  //     const headers = new Headers();
+      var access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
+      const headers = new Headers();
   
-  //     headers.append('Content-Type', 'application/json');
-  //     headers.append('x-access-token', access_token);
-  //     const requestOptions = new RequestOptions({ headers: headers });
+      headers.append('Content-Type', 'application/json');
+      headers.append('x-access-token', access_token);
+      const requestOptions = new RequestOptions({ headers: headers });
       
-  //     const body = {
-  //       "_id":this.customerRowData._id,
-  //       "name": this.addNewGoodsFormEdit.value.name,
-  //       "pan_no": this.addNewGoodsFormEdit.value.pan_no,
-  //       "gstin": this.addNewGoodsFormEdit.value.gstin,
-  //       "city":this.addNewGoodsFormEdit.value.city,
-  //       "email":this.addNewGoodsFormEdit.value.email,
-  //       "address":this.addNewGoodsFormEdit.value.address,
-  //       "state":this.addNewGoodsFormEdit.value.selectedstateDropdown,
-  //       "contact":this.addNewGoodsFormEdit.value.contact
-  //     };
+      const body = {
+        "_id":this.goodsAndServicesRowData._id,
+        "description": this.addNewGoodsFormEdit.value.descriptionEdit,
+        "hsn_code": this.addNewGoodsFormEdit.value.hsn_codeEdit,
+        "unit": this.addNewGoodsFormEdit.value.unitEdit,
+        "rate": this.addNewGoodsFormEdit.value.rateEdit
+      };
       
-  //     this.url = "http://localhost:3000/api/customer/update";
-  //     return this.http.put(this.url, body, requestOptions)
-  //       .subscribe(
-  //       response => {
-  //         console.log("suceessfull data", response.json().message);
-  //         this.closeEditModal();
-  //         this.submittedEdit=false;
-  //         // this.hsnCodeData.push(body);
-  //         this.custList[this.rowDataIndex]=body;
-  //         alert(response.json().message);
-  //       },
-  //       error => {
-  //         // this.closeEditModal();
-  //         console.log("error", error.message);
-  //         console.log(error.text());
-  //       }
-  //       );
-  //   }
-  // }
+      this.url = "http://localhost:3000/api/goods/update";
+      return this.http.put(this.url, body, requestOptions)
+        .subscribe(
+        response => {
+          console.log("suceessfull data", response.json().message);
+          this.closeEditModal();
+          this.submitted=false;
+          // this.hsnCodeData.push(body);
+          this.goodsAndServicesDataList[this.rowDataIndex]=body;
+          alert(response.json().message);
+        },
+        error => {
+          // this.closeEditModal();
+          console.log("error", error.message);
+          console.log(error.text());
+        }
+        );
+    }
+  }
 
   saveGoodsAndServices(isValid: boolean) {
     this.submitted = true; // set form submit to true
@@ -286,6 +283,7 @@ export class GoodservicesComponent implements OnInit {
           this.closeModal();
           alert(response.json().message);
           this.getGoodsAndServicesList();
+          this.submitted=false;
         },
         error => {
           alert(error.message);
@@ -301,9 +299,9 @@ export class GoodservicesComponent implements OnInit {
     this.closeBtn.nativeElement.click();
   }
 
-  // closeEditModal()
-  // {
-  //   this.closeBtn2.nativeElement.click();
-  // }
+  closeEditModal()
+  {
+    this.closeBtn2.nativeElement.click();
+  }
 
 }

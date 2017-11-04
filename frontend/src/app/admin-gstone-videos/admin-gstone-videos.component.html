@@ -44,95 +44,95 @@
     </header>
     <!-- Left side column. contains the logo and sidebar -->
     <aside class="main-sidebar">
-        
-              <section class="sidebar">
-        
-                <ul class="sidebar-menu" data-widget="tree">
-                  <li>
-                    <a routerLink="/admin-dashboard">
-                      <i class="fa fa-dashboard"></i>
-                      <span>Dashboard</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a routerLink="/admin-state">
-                      <i class="fa fa-user"></i>
-                      <span>State</span>
-                    </a>
-                  </li>
-                  <!-- <li>
+
+      <section class="sidebar">
+
+        <ul class="sidebar-menu" data-widget="tree">
+          <li>
+            <a routerLink="/admin-dashboard">
+              <i class="fa fa-dashboard"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/admin-state">
+              <i class="fa fa-user"></i>
+              <span>State</span>
+            </a>
+          </li>
+          <!-- <li>
                             <a routerLink="/admin-dealer-type">
                               <i class="fa fa-users"></i>
                               <span>Dealer types</span>
                             </a>
                           </li> -->
-                  <li>
-                    <a routerLink="/admin-hsn-code">
-                      <i class="fa fa-envelope"></i>
-                      <span>HSN code</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a routerLink="/admin-gov-notification">
-                      <i class="fa fa-files-o"></i>
-                      <span>Gov. Notifications</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a routerLink="/admin-internal-updates">
-                      <i class="fa fa-th"></i>
-                      <span>Internal Updates</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a routerLink="/admin-gstone-videos">
-                      <i class="fa fa-th"></i>
-                      <span>GstOne channel Videos</span>
-                    </a>
-                  </li>
-        
-                  <!-- <li>
+          <li>
+            <a routerLink="/admin-hsn-code">
+              <i class="fa fa-envelope"></i>
+              <span>HSN code</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/admin-gov-notification">
+              <i class="fa fa-files-o"></i>
+              <span>Gov. Notifications</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/admin-internal-updates">
+              <i class="fa fa-th"></i>
+              <span>Internal Updates</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/admin-gstone-videos">
+              <i class="fa fa-th"></i>
+              <span>GstOne channel Videos</span>
+            </a>
+          </li>
+
+          <!-- <li>
                             <a routerLink="/admin-goods-services">
                               <i class="fa fa-th"></i>
                               <span>Goods/Services</span>
                             </a>
                           </li> -->
-        
-                  <!-- <li>
+
+          <!-- <li>
                     <a routerLink="/admin-work-returns">
                       <i class="fa fa-envelope"></i>
                       <span>Work on Returns</span>
                     </a>
                   </li> -->
-                  <li>
-                    <a routerLink="/admin-about-us">
-                      <i class="fa fa-th"></i>
-                      <span>About Us page </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a routerLink="/admin-privacy-policy">
-                      <i class="fa fa-th"></i>
-                      <span>Privacy policy</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a routerLink="/admin-contact-us">
-                      <i class="fa fa-th"></i>
-                      <span>Contact us</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a routerLink="/admin-faqs">
-                      <i class="fa fa-th"></i>
-                      <span>FAQ</span>
-                    </a>
-                  </li>
-        
-                </ul>
-              </section>
-        
-            </aside>
+          <li>
+            <a routerLink="/admin-about-us">
+              <i class="fa fa-th"></i>
+              <span>About Us page </span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/admin-privacy-policy">
+              <i class="fa fa-th"></i>
+              <span>Privacy policy</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/admin-contact-us">
+              <i class="fa fa-th"></i>
+              <span>Contact us</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/admin-faqs">
+              <i class="fa fa-th"></i>
+              <span>FAQ</span>
+            </a>
+          </li>
+
+        </ul>
+      </section>
+
+    </aside>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -144,7 +144,7 @@
             <a href="index.html">
               <i class="fa fa-dashboard"></i> Home</a>
           </li>
-          <li class="active">Gov. Notifications List</li>
+          <li class="active">GstOne channel Videos List</li>
         </ol>
       </section>
 
@@ -155,13 +155,13 @@
 
             <div class="col-md-8 col-xs-12">
               <div class="box-header">
-                <h3 class="text-blue">Gov. Notifications List</h3>
+                <h3 class="text-blue">GstOne channel Videos List</h3>
               </div>
             </div>
 
             <div class="col-md-4 col-xs-12">
               <div class="text-right">
-                <!-- <input type="button" class="btn btn-primary" value="Import CSV"> -->
+                <input type="button" class="btn btn-primary" value="Import CSV">
 
                 <input type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-user-lg" value="Add New">
               </div>
@@ -169,7 +169,19 @@
 
             <div class="clearfix"></div>
 
-
+            <div class="col-md-3 col-xs-12">
+              <div class="form-group">
+                <select class="form-control select2" style="width: 100%;">
+                  <option selected="selected">Alabama</option>
+                  <option>Alaska</option>
+                  <option>California</option>
+                  <option>Delaware</option>
+                  <option>Tennessee</option>
+                  <option>Texas</option>
+                  <option>Washington</option>
+                </select>
+              </div>
+            </div>
             <div class="col-md-3 col-xs-12">
               <div class="input-group">
                 <input type="text" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
@@ -178,12 +190,12 @@
                 </div>
               </div>
             </div>
-            <!-- <div class="col-md-3 col-xs-12">
+            <div class="col-md-3 col-xs-12">
               <input type="text" class="form-control">
             </div>
             <div class="col-md-3 col-xs-12">
               <input type="text" class="form-control">
-            </div> -->
+            </div>
 
             <div class="col-lg-12 col-xs-12">
 
@@ -193,34 +205,27 @@
                   <thead>
                     <tr>
                       <th width="2%">#</th>
-                      <th width="20%">Title</th>
-                      <th width="15%">Link</th>
+                      <th width="12%">Title</th>
+                      <th width="6%">Link</th>
                       <th width="6%">Date</th>
-                      <!-- <th width="8%">D</th> -->
-                      <th width="14%" class="text-center">Action</th>
+                      <th width="12%" class="text-center">Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let item of notificationList ;let i = index;">
+
+                    <tr *ngFor="let item of videosList ;let i = index;">
                       <td align="center">{{pageSize * (currentPage-1)+i+1}}</td>
                       <td align="center">{{item.title}}</td>
                       <td align="center">
                         <a href="{{item.link}}" target="_blank">{{item.description}}</a>
                       </td>
                       <td align="center">11-7-2017</td>
-                      <!-- <td align="center">
-                        <span class="label label-warning">Pending</span>
-                      </td> -->
                       <td align="center">
-                        <!-- <i class="fa fa-eye btn btn-primary btn-sm" title="View"></i> -->
-                        <!-- <a href="">
-                          <i class="fa fa-edit btn btn-warning btn-sm" title="Edit"></i>
-                        </a> -->
                         <a data-toggle="modal" data-target=".bs-user-lg-edit">
-                          <button class="fa fa-edit btn btn-primary btn-sm" title="Edit" (click)="editNotificationRecord(item)"></button>
+                          <button class="fa fa-edit btn btn-primary btn-sm" title="Edit" (click)="editVideosRecord(item)"></button>
                         </a>
                         <a href="" data-toggle="modal" data-target=".bs-delete-sm">
-                          <i class="fa fa-trash btn btn-danger btn-sm" (click)="deleteNotiRecord(item)" title="Delete"></i>
+                          <i class="fa fa-trash btn btn-danger btn-sm" (click)="deleteVideosRecord(item)" title="Delete"></i>
                         </a>
                       </td>
                     </tr>
@@ -243,19 +248,6 @@
                     <!-- <a href="#">Next</a> -->
                   </li>
                 </ul>
-                <!-- <div class="btn-group pull-right">
-                  <ul class="pagination">
-                    <li [ngClass]="{'disabled': (currentIndex == 1 || pageNumber == 0)}">
-                      <button (click)="prevPage()" >Prev</button>
-                    </li>
-                    <li *ngFor="let page of pagesIndex" [ngClass]="{'active': (currentIndex == page)}">
-                      <button (click)="setPage(page)">{{page}}</button>
-                    </li>
-                    <li [ngClass]="{'disabled': (currentIndex == pageNumber || pageNumber == 0)}">
-                      <button (click)="nextPage()" >Next</button>
-                    </li>
-                  </ul>
-                </div> -->
               </div>
 
             </div>
@@ -277,28 +269,28 @@
             <button type="button" class="close" data-dismiss="modal" #closeBtn aria-label="Close">
               <span class="modal-text" aria-hidden="true">X</span>
             </button>
-            <h4 class="modal-title modal-text"> Add Gov. Notifications</h4>
+            <h4 class="modal-title modal-text"> Add GstOne channel Video</h4>
           </div>
           <div class="modal-body">
             <div class="service-section">
               <div class="row">
                 <div class="col-md-12 col-sm-12">
-                  <form [formGroup]="govNotiForm" novalidate (ngSubmit)="saveNotification(govNotiForm.valid)">
+                  <form [formGroup]="gstVideosForm" novalidate (ngSubmit)="saveGstVideos(gstVideosForm.valid)">
                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                       <input type="text" class="form-control" placeholder="Title" formControlName="title" name="title" id="title">
-                      <small [hidden]="govNotiForm.controls.title.valid || (govNotiForm.controls.title.pristine && !submitted)">
+                      <small [hidden]="gstVideosForm.controls.title.valid || (gstVideosForm.controls.title.pristine && !submitted)">
                         Question is required .
                       </small>
                     </div>
                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                       <input type="text" class="form-control" placeholder="List" formControlName="description" name="description">
-                      <small [hidden]="govNotiForm.controls.description.valid || (govNotiForm.controls.description.pristine && !submitted)">
+                      <small [hidden]="gstVideosForm.controls.description.valid || (gstVideosForm.controls.description.pristine && !submitted)">
                         Question is required .
                       </small>
                     </div>
                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                       <input type="text" class="form-control" placeholder="Link" formControlName="link" name="statecode" required>
-                      <small [hidden]="govNotiForm.controls.link.valid || (govNotiForm.controls.link.pristine && !submitted)">
+                      <small [hidden]="gstVideosForm.controls.link.valid || (gstVideosForm.controls.link.pristine && !submitted)">
                         Question is required .
                       </small>
                     </div>
@@ -306,7 +298,7 @@
 
                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                       <!-- <input type="button" class="btn btn-primary" value="Add Notifications"> -->
-                      <button type="submit" class="btn btn-primary">Add Notifications</button>
+                      <button type="submit" class="btn btn-primary">Add Videos</button>
                       <button type="button" class="btn btn-success pull-right" data-dismiss="modal">Cancel</button>
                     </div>
                   </form>
@@ -317,6 +309,7 @@
         </div>
       </div>
     </div>
+    <!-- User Form end -->
     <div class="modal fade bs-user-lg-edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
       <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
@@ -324,28 +317,28 @@
             <button type="button" class="close" data-dismiss="modal" #closeBtn2 aria-label="Close">
               <span class="modal-text" aria-hidden="true">X</span>
             </button>
-            <h4 class="modal-title modal-text"> Update Gov. Notifications</h4>
+            <h4 class="modal-title modal-text"> Update GstOne channel Video</h4>
           </div>
           <div class="modal-body">
             <div class="service-section">
               <div class="row">
                 <div class="col-md-12 col-sm-12">
-                  <form [formGroup]="editGovNotiForm" novalidate (ngSubmit)="updateNotification(editGovNotiForm.valid)">
+                  <form [formGroup]="editGstVideosForm" novalidate (ngSubmit)="updateVideos(editGstVideosForm.valid)">
                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                       <input type="text" class="form-control" placeholder="Title" formControlName="title" name="title" id="title">
-                      <small [hidden]="editGovNotiForm.controls.title.valid || (editGovNotiForm.controls.title.pristine && !submitted)">
+                      <small [hidden]="editGstVideosForm.controls.title.valid || (editGstVideosForm.controls.title.pristine && !submitted)">
                         Question is required .
                       </small>
                     </div>
                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                       <input type="text" class="form-control" placeholder="List" formControlName="description" name="description">
-                      <small [hidden]="editGovNotiForm.controls.description.valid || (editGovNotiForm.controls.description.pristine && !submitted)">
+                      <small [hidden]="editGstVideosForm.controls.description.valid || (editGstVideosForm.controls.description.pristine && !submitted)">
                         Question is required .
                       </small>
                     </div>
                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                       <input type="text" class="form-control" placeholder="Link" formControlName="link" name="statecode" required>
-                      <small [hidden]="editGovNotiForm.controls.link.valid || (editGovNotiForm.controls.link.pristine && !submitted)">
+                      <small [hidden]="editGstVideosForm.controls.link.valid || (editGstVideosForm.controls.link.pristine && !submitted)">
                         Question is required .
                       </small>
                     </div>
@@ -364,8 +357,6 @@
         </div>
       </div>
     </div>
-    <!-- User Form end -->
-
     <!-- delete Start -->
 
     <div class="modal fade bs-delete-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
@@ -388,7 +379,7 @@
                   </div>
 
                   <div class="form-group ">
-                    <input type="button" class="btn btn-success" (click)="deleteNotification()" value="Yes">
+                    <input type="button" class="btn btn-success" (click)="deleteVideos()" value="Yes">
                     <input type="button" class="btn btn-primary pull-right" data-dismiss="modal" value="No">
                   </div>
                 </div>

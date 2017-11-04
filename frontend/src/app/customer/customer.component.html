@@ -200,7 +200,7 @@
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="gstin" placeholder="GSTIN" name="gstin" id="gstin">
 									<small [hidden]="myForm.controls.gstin.valid || (myForm.controls.gstin.pristine && !submitted)">
-										GSTIN is required (minimum 5 characters).
+										<span style="color:red" [hidden]="myForm.controls.email.valid">GSTIN is required (minimum 5 characters) !</span>
 									</small>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
@@ -218,10 +218,10 @@
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
 									<select class="form-control" formControlName="selectedstateDropdown" required>
-										<option value="-1" selected="selected"> -- Select State -- </option>
-										<option value="">Jabalpur</option>
-										<option value="">Bhopal</option>
-										<option value="">Raipur</option>
+										<option value="-1" selected="selected">Select State</option>
+										<option value="Jabalpur">Jabalpur</option>
+										<option value="Bhopal">Bhopal</option>
+										<option value="Raipur">Raipur</option>
 									</select>
 									<small *ngIf="myForm.controls.selectedstateDropdown.value=='-1' && submittedEdit">
 										Please select state !

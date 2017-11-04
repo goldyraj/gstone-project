@@ -31,7 +31,7 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import {AdminLoginComponent} from './admin-login/admin-login.component';
 import { AdminFaqsComponent } from './admin-faqs/admin-faqs.component';
 import { AdminGovNotificationComponent } from './admin-gov-notification/admin-gov-notification.component';
-
+import {AdminGstoneVideosComponent} from './admin-gstone-videos/admin-gstone-videos.component';
 const routes: Routes = [
   { path: '', redirectTo: '/admin-hsn-code', pathMatch: 'full' },
   {path:'demo',component:AdminBranchComponent},
@@ -62,7 +62,8 @@ const routes: Routes = [
   {path: 'admin-dashboard',component: AdminDashboardComponent},
   {path:'admin-login',component:AdminLoginComponent},
   {path:'admin-faqs', component:AdminFaqsComponent},
-  { path: 'admin_gov_notification', component: AdminGovNotificationComponent },
+  { path: 'admin-gov-notification', component: AdminGovNotificationComponent },
+  {path:'admin-gstone-videos',component:AdminGstoneVideosComponent}
   //{ path: 'heroes',     component: HeroesComponent }
 ];
 

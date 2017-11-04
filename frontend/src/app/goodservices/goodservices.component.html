@@ -134,11 +134,11 @@
 							<td align="center">{{item.unit}}</td>
 							<td align="center">{{item.rate}}</td>
 							<td align="center">
-								<a data-toggle="modal" data-target=".bs-GSTIN-lg-edit">
+								<a data-toggle="modal" data-target=".bs-goods-lg-edit">
 									<button class="fa fa-edit btn btn-primary btn-sm" title="Edit" (click)="editGoodsServicesRecord(item)"></button>
 								</a>
 								<a href="" data-toggle="modal" data-target=".bs-delete-sm">
-									<i class="fa fa-trash btn btn-danger btn-sm" title="Delete"></i>
+									<button class="fa fa-trash btn btn-danger btn-sm" title="Delete" (click)="recordToDelete(item)"></button>
 								</a>
 							</td>
 						</tr>
@@ -190,13 +190,13 @@
 						<div class="col-md-10 col-sm-10">
 							<form [formGroup]="addNewGoodsForm" novalidate (ngSubmit)="saveGoodsAndServices(addNewGoodsForm.valid)">
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<input type="text" class="form-control" formControlName="description" placeholder="Name" required>
+									<input type="text" class="form-control" formControlName="description" placeholder="Description" required>
 									<small [hidden]="addNewGoodsForm.controls.description.valid || (addNewGoodsForm.controls.description.pristine && !submitted)">
 										Description is required !
 									</small>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<input type="text" class="form-control" formControlName="hsn_code" placeholder="Contact No.">
+									<input type="text" class="form-control" formControlName="hsn_code" placeholder="HSN Code">
 									<small [hidden]="addNewGoodsForm.controls.hsn_code.valid || (addNewGoodsForm.controls.hsn_code.pristine && !submitted)">
 										HSN Code is required !
 									</small>
@@ -204,34 +204,34 @@
 
 								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
 									<select class="form-control" formControlName="rate" required>
-										<option value="-1" selected="selected"> -- Rate of Tax -- </option>
-										<option value="">0.1%</option>
-										<option value="">0.5%</option>
-										<option value="">3%</option>
-										<option value="">5%</option>
-										<option value="">12%</option>
-										<option value="">18%</option>
-										<option value="">28%</option>
+										<option value="Select Rate" nam="Select Rate" selected="selected">Select Rate</option>
+										<option value="0.1%">0.1%</option>
+										<option value="0.5%">0.5%</option>
+										<option value="3%">3%</option>
+										<option value="5%">5%</option>
+										<option value="12%">12%</option>
+										<option value="18%">18%</option>
+										<option value="28%">28%</option>
 									</select>
-									<small *ngIf="addNewGoodsForm.controls.rate.value=='-1' && submitted">
+									<small *ngIf="addNewGoodsForm.controls.rate.value=='Select Rate' && submitted">
 										Please select rate !
 									</small>
 								</div>
 
-								<div class="col-md-12 col-sm-12 col-xs-12 form-group" formControlName="unit" required>
-									<select class="form-control">
-										<option value="-1" selected="selected"> -- Unit -- </option>
-										<option value="">Kilogram</option>
-										<option value="">Gram</option>
-										<option value="">Meter</option>
+								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
+									<select class="form-control" formControlName="unit" required>
+										<option value="Select Unit" name="Select Unit" selected="selected">Select Unit</option>
+										<option value="Kilogram">Kilogram</option>
+										<option value="Gram">Gram</option>
+										<option value="Meter">Meter</option>
 									</select>
-									<small *ngIf="addNewGoodsForm.controls.unit.value=='-1' && submitted">
+									<small *ngIf="addNewGoodsForm.controls.unit.value=='Select Unit' && submitted">
 										Please select unit !
 									</small>
 								</div>
 
 								<div class="col-md-12 col-sm-12 col-xs-12 form-group" align="center">
-									<button type="submit" class="btn btn-primary">Create</button>
+									<button type="submit" [disabled]="!addNewGoodsForm.valid" class="btn btn-primary">Create</button>
 									<button type="button" class="btn btn-primary" data-dismiss="modal" value="Cancel">
 										Cancel
 									</button>
@@ -249,7 +249,9 @@
 
 <!-- Modal -->
 
-<div class="modal fade bs-GSTIN-lg-edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+<!-- Edit Modal -->
+
+<div class="modal fade bs-goods-lg-edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content section-form">
 			<div class="modal-header">
@@ -257,7 +259,7 @@
 					<span class="modal-text" aria-hidden="true">X</span>
 				</button>
 				<h4 class="modal-title modal-text" align="center">
-					<b> Edit Goods/Services</b>
+					<b> Edit Goods and Services Records</b>
 				</h4>
 			</div>
 			<div class="modal-body">
@@ -265,50 +267,50 @@
 					<div class="row">
 						<div class="col-md-1 col-sm-1"></div>
 						<div class="col-md-10 col-sm-10">
-							<form [formGroup]="addNewGoodsFormEdit" novalidate (ngSubmit)="updateGoodsAndServicesRecord(addNewGoodsFormEdit.valid)">
+							<form [formGroup]="myFormEdit" novalidate (ngSubmit)="updateGoodsAndServicesRecord(myFormEdit.valid)">
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<input type="text" class="form-control" formControlName="descriptionEdit" placeholder="Name" required>
-									<small [hidden]="addNewGoodsFormEdit.controls.descriptionEdit.valid || (addNewGoodsFormEdit.controls.description.pristine && !submitted)">
+									<input type="text" class="form-control" formControlName="descriptionEdit" placeholder="Description" required>
+									<small [hidden]="myFormEdit.controls.descriptionEdit.valid || (myFormEdit.controls.descriptionEdit.pristine && !editSubmitted)">
 										Description is required !
 									</small>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<input type="text" class="form-control" formControlName="hsn_codeEdit" placeholder="Contact No." required>
-									<small [hidden]="addNewGoodsFormEdit.controls.hsn_codeEdit.valid || (addNewGoodsFormEdit.controls.hsn_code.pristine && !submitted)">
+									<input type="text" class="form-control" formControlName="hsn_code_edit" placeholder="HSN Code" required>
+									<small [hidden]="myFormEdit.controls.hsn_code_edit.valid || (myFormEdit.controls.hsn_code_edit.pristine && !editSubmitted)">
 										HSN Code is required !
 									</small>
 								</div>
 
 								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
-									<select class="form-control" formControlName="rateEdit" required>
-										<option value="-1" selected="selected"> -- Rate of Tax -- </option>
-										<option value="">0.1%</option>
-										<option value="">0.5%</option>
-										<option value="">3%</option>
-										<option value="">5%</option>
-										<option value="">12%</option>
-										<option value="">18%</option>
-										<option value="">28%</option>
+									<select class="form-control" formControlName="rateEdit" required [(ngModel)]="rateEdit">
+										<option value="-1" selected="selected" name="Select Rate">Select Rate</option>
+										<option value="0.1%">0.1%</option>
+										<option value="0.5%">0.5%</option>
+										<option value="3%">3%</option>
+										<option value="5%">5%</option>
+										<option value="12%">12%</option>
+										<option value="18%">18%</option>
+										<option value="28%">28%</option>
 									</select>
-									<small *ngIf="addNewGoodsFormEdit.controls.rateEdit.value=='-1' && submitted">
+									<small *ngIf="myFormEdit.controls.rateEdit.value=='-1' && editSubmitted">
 										Please select rate !
 									</small>
 								</div>
 
-								<div class="col-md-12 col-sm-12 col-xs-12 form-group" formControlName="unitEdit" required>
-									<select class="form-control">
-										<option value="-1" selected="selected"> -- Unit -- </option>
-										<option value="">Kilogram</option>
-										<option value="">Gram</option>
-										<option value="">Meter</option>
+								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
+									<select class="form-control" formControlName="unitEdit" required [(ngModel)]="unitEdit">
+										<option value="-1" selected="selected" name="Select Unit">Select Unit</option>
+										<option value="Kilogram">Kilogram</option>
+										<option value="Gram">Gram</option>
+										<option value="Meter">Meter</option>
 									</select>
-									<small *ngIf="addNewGoodsFormEdit.controls.unitEdit.value=='-1' && submitted">
+									<small *ngIf="myFormEdit.controls.unitEdit.value=='-1' && editSubmitted">
 										Please select unit !
 									</small>
 								</div>
 
 								<div class="col-md-12 col-sm-12 col-xs-12 form-group" align="center">
-									<button type="submit" class="btn btn-primary">Update</button>
+									<button [disabled]="!myFormEdit.valid" type="submit" class="btn btn-primary">Update</button>
 									<button type="button" class="btn btn-primary" data-dismiss="modal" value="Cancel">
 										Cancel
 									</button>
@@ -323,6 +325,42 @@
 </div>
 
 <!-- Edit Modal -->
+
+<!-- delete Start -->
+
+<div class="modal fade bs-delete-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" #closeBtn3 aria-label="Close">
+					<span class="modal-text" aria-hidden="true">X</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="service-section">
+					<div class="row">
+						<div class="col-md-12 col-sm-12 col-xs-12">
+							<div class="col-md-12 col-sm-12 col-xs-12 text-center">
+								<h4 class="text-blue">Sure, you want to delete ?
+									<br>
+									<br>
+								</h4>
+							</div>
+
+							<div class="form-group ">
+								<input type="button" class="btn btn-success" (click)="deleteRecord()" value="Yes">
+								<input type="button" class="btn btn-primary pull-right" data-dismiss="modal" value="No">
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- delete end  -->
 
 <!-- Footer Start -->
 <footer class="unicod-footer bg-style">

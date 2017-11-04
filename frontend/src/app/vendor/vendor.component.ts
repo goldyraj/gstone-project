@@ -11,13 +11,16 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 export class VendorComponent implements OnInit {
   // constructor() { }
   @ViewChild('closeBtn') closeBtn: ElementRef;
+
   modelHide = '';
   url = "";
   vender = {};
   venderList = [];
   public myForm: FormGroup; // our model driven form
+  public myFormEdit:FormGroup;
   public submitted: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
+  public vendorRowData;
   constructor(private _fb: FormBuilder, private http: Http) {
     this.getVenderList();
     console.log("custructor call");
@@ -27,12 +30,9 @@ export class VendorComponent implements OnInit {
     // we will initialize our form model here
     this.myForm = new FormGroup({
       name: new FormControl('', [<any>Validators.required]),
-      contact: new FormControl('', [<any>Validators.required, <any>Validators.minLength(10)]),
-      pan_no: new FormControl('', [<any>Validators.required, <any>Validators.minLength(10)]),
-      email: new FormControl('', [<any>Validators.required]),
       gstin: new FormControl('', [<any>Validators.required]),
       address: new FormControl('', [<any>Validators.required]),
-      city: new FormControl('', [<any>Validators.required]),
+      state:new FormControl('Select State')
     });
   }
 
@@ -53,13 +53,9 @@ export class VendorComponent implements OnInit {
       const requestOptions = new RequestOptions({ headers: headers });
       const body = {
         "name": this.myForm.value.name,
-        "pan_no": this.myForm.value.pan_no,
         "gstin": this.myForm.value.gstin,
-        "city": this.myForm.value.city,
-        "contact": this.myForm.value.contact,
-        "email": this.myForm.value.email,
         "address": this.myForm.value.address,
-        "state": "Madhya Pradesh"
+        "state": this.myForm.value.state
       };
       this.url = "http://localhost:3000/api/vendor/create";
       return this.http.post(this.url, body, requestOptions)
@@ -67,7 +63,10 @@ export class VendorComponent implements OnInit {
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeModal();
+          alert(response.json().message);
           this.getVenderList();
+          this.myForm.reset();
+          this.myForm.get("state").setValue("Select State");
           // this.venderList.push(body);
         },
         error => {
@@ -88,5 +87,41 @@ export class VendorComponent implements OnInit {
   private closeModal(): void {
     this.closeBtn.nativeElement.click();
   }
+
+  // closeDeleteModal()
+  // {
+  //   this.closeBtn3.nativeElement.click();
+  // }
+
+  recordToDelete(item)
+  {
+    this.vendorRowData=item;
+  }
+
+  // deleteRecord()
+  // {
+  //   var access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
+  //   const headers = new Headers();
+
+  //   headers.append('Content-Type', 'application/json');
+  //   headers.append('x-access-token', access_token);
+  //   const requestOptions = new RequestOptions({ headers: headers });
+    
+  //   this.url = "http://localhost:3000/api/vendor/delete/"+this.vendorRowData._id;
+  //   return this.http.delete(this.url, requestOptions)
+  //     .subscribe(
+  //     response => {
+  //       console.log("suceessfull data", response.json().message);
+  //       this.closeDeleteModal();
+  //       alert(response.json().message);
+  //       this.getVenderList();
+  //     },
+  //     error => {
+  //       alert(error.message);
+  //       console.log("error", error.message);
+  //       console.log(error.text());
+  //     }
+  //     );
+  // }
 
 }

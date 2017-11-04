@@ -130,66 +130,17 @@
 						<td align="center">{{item.gstin}}</td>
 						<td align="center">{{item.address}}</td>
 						<td align="center">{{item.state}}</td>
-						<!-- <td>
-							<a href="edit" class="pull-right">
-								<i class="fa fa-edit btn btn-primary btn-sm" title="Edit"> Edit</i>
+						<!-- <td align="center">
+							<a data-toggle="modal" data-target=".bs-goods-lg-edit">
+								<button class="fa fa-edit btn btn-primary btn-sm" title="Edit" (click)="editGoodsServicesRecord(item)"></button>
+							</a>
+							<a href="" data-toggle="modal" data-target=".bs-delete-sm">
+								<button class="fa fa-trash btn btn-danger btn-sm" title="Delete" (click)="recordToDelete(item)"></button>
 							</a>
 						</td> -->
 					</tr>
 
 				</tbody>
-				<!-- <tbody class="table_form">
-					<tr>
-						<td align="center"> 01.</td>
-						<td align="center">Mark</td>
-						<td align="center">APGTK456LZ24</td>
-						<td align="center"></td>
-						<td align="center"></td>
-						<td>
-							<a href="edit" class="pull-right">
-								<i class="fa fa-edit btn btn-primary btn-sm" title="Edit"> Edit</i>
-							</a>
-						</td>
-					</tr>
-					<tr>
-						<td align="center"> 02.</td>
-						<td align="center">Sachin</td>
-						<td align="center">ASTDK456LZ24</td>
-						<td align="center"></td>
-						<td align="center"></td>
-						<td>
-							<a href="edit" class="pull-right">
-								<i class="fa fa-edit btn btn-primary btn-sm" title="Edit"> Edit</i>
-							</a>
-						</td>
-					</tr>
-					<tr>
-						<td align="center"> 03.</td>
-						<td align="center">Rohit</td>
-						<td align="center">AGSTK456LZ26</td>
-						<td align="center"></td>
-						<td align="center"></td>
-						<td>
-							<a href="edit" class="pull-right">
-								<i class="fa fa-edit btn btn-primary btn-sm" title="Edit"> Edit</i>
-							</a>
-						</td>
-					</tr>
-					<tr>
-						<td align="center"> 04.</td>
-						<td align="center">Mohan</td>
-						<td align="center">RKSTK456LZ26</td>
-						<td align="center"></td>
-						<td align="center"></td>
-						<td>
-							<a href="edit" class="pull-right">
-								<i class="fa fa-edit btn btn-primary btn-sm" title="Edit"> Edit</i>
-							</a>
-						</td>
-					</tr>
-
-
-				</tbody> -->
 			</table>
 
 		</div>
@@ -220,27 +171,7 @@
 										Name is required (minimum 5 characters).
 									</small>
 								</div>
-								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<input type="text" class="form-control" formControlName="contact" placeholder="Contact No.">
-									<small [hidden]="myForm.controls.contact.valid || (myForm.controls.contact.pristine && !submitted)">
-										Contact is required (minimum 5 characters).
-									</small>
-								</div>
-								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<input type="text" class="form-control" formControlName="pan_no" placeholder="PAN No." pattern="[A-Za-z]{5}\d{4}[A-Za-z]{1}">
-									<small [hidden]="myForm.controls.pan_no.valid || (myForm.controls.pan_no.pristine && !submitted)">
-										<span style="color:red" [hidden]="myForm.controls.pan_no.valid">Pan No is required.</span>
-										<b [hidden]="myForm.controls.pan_no.pristine">YHSDS2345E</b>
-									</small>
-								</div>
-								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<input type="text" class="form-control" formControlName="email" placeholder="Email Id" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
-									<small [hidden]="myForm.controls.email.valid || (myForm.controls.email.pristine && !submitted)">
-										<span style="color:red" [hidden]="myForm.controls.email.valid">Email is required </span>
-										<b [hidden]="myForm.controls.email.pristine">joe@abc.com</b>
-									</small>
 
-								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="gstin" placeholder="GSTIN" name="gstin" id="gstin">
 									<small [hidden]="myForm.controls.gstin.valid || (myForm.controls.gstin.pristine && !submitted)">
@@ -255,18 +186,15 @@
 								</div>
 
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<input type="text" class="form-control" placeholder="City" formControlName="city" name="city" id="city">
-									<small [hidden]="myForm.controls.city.valid || (myForm.controls.city.pristine && !submitted)">
-										City is required (minimum 5 characters).
-									</small>
-								</div>
-								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<select class="form-control">
-										<option value="" selected="selected"> -- Select State -- </option>
-										<option value="">Jabalpur</option>
-										<option value="">Bhopal</option>
-										<option value="">Raipur</option>
+									<select class="form-control"  formControlName="state">
+										<option value="Select State" selected="selected">Select State</option>
+										<option value="Jabalpur">Jabalpur</option>
+										<option value="Bhopal">Bhopal</option>
+										<option value="Raipur">Raipur</option>
 									</select>
+									<small *ngIf="myForm.controls.state.value=='Select State' && submitted">
+										Please select state !
+									</small>
 								</div>
 
 								<div class="col-md-12 col-sm-12 col-xs-12 form-group" align="center">
@@ -286,6 +214,47 @@
 
 <!-- Modal -->
 
+<!-- Editing Of HSN Code -->
+
+
+
+<!-- End of Editing HSN Code -->
+
+<!-- delete Start -->
+
+<div class="modal fade bs-delete-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" #closeBtn3 aria-label="Close">
+					<span class="modal-text" aria-hidden="true">X</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="service-section">
+					<div class="row">
+						<div class="col-md-12 col-sm-12 col-xs-12">
+							<div class="col-md-12 col-sm-12 col-xs-12 text-center">
+								<h4 class="text-blue">Are You Sure Dealer Delete
+									<br>
+									<br>
+								</h4>
+							</div>
+
+							<div class="form-group ">
+								<input type="button" class="btn btn-success" (click)="deleteRecord()" value="Yes">
+								<input type="button" class="btn btn-primary pull-right" data-dismiss="modal" value="No">
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- delete end  -->
 
 <!-- Footer Start -->
 <footer class="unicod-footer bg-style">

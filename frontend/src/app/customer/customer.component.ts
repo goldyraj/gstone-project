@@ -83,8 +83,9 @@ export class CustomerComponent implements OnInit {
         "contact": this.myForm.value.contact,
         "email": this.myForm.value.email,
         "address": this.myForm.value.address,
-        "state": "Madhya Pradesh"
+        "state": this.myForm.value.selectedstateDropdown
       };
+
       this.url = "http://localhost:3000/api/customer/create";
       return this.http.post(this.url, body, requestOptions)
         .subscribe(
@@ -92,9 +93,12 @@ export class CustomerComponent implements OnInit {
           console.log("suceessfull data", response.json().message);
           this.closeModal();
           // this.custList.push(body);
-          this.custList.pop();
+          alert(response.json().message);
+          this.myForm.reset();
+          this.myForm.get("selectedstateDropdown").setValue("Select State");
           this.submitted=false;
           this.getCustomerList();
+          this.customerRowData=null;
         },
         error => {
           alert(error.message);

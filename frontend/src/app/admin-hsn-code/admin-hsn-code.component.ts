@@ -57,7 +57,7 @@ export class AdminHsnCodeComponent implements OnInit {
       rate_edit: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
       selectedStatusType_edit: new FormControl('Select Status'),
       description_edit: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)])
-    })
+    });
   }
 
   private closeModal(): void {

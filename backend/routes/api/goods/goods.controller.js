@@ -52,7 +52,7 @@ exports.list = (req, res) => {
         // return res.status(403).json({
             // message: 'you are not an admin'
         // })
-    // }
+    //}
  Goods.find({}).exec()
     .then(
         goods=> {
@@ -89,11 +89,11 @@ exports.update=(req,res)=>{
 exports.create = (req, res) => {
     const {  description, hsn_code,unit,rate } = req.body
     let newUser = null
- if(!req.decoded.admin) {
-        return res.status(403).json({
-            // message: 'you are not an admin'
-        })
-    }
+ // if(!req.decoded.admin) {
+        // return res.status(403).json({
+            // // message: 'you are not an admin'
+        // })
+    // }
     // create a new user if does not exist
     const create = (goods) => {
        

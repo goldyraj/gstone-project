@@ -86,6 +86,7 @@ const routes: Routes = [
       { path: 'other', component: OtherpageComponent },
       { path: 'about-us', component: AboutUsComponent },
       { path: 'privacy-policy', component: PrivacyPolicyComponent },
+      { path: 'user-hsn', component: UserHsnCodeComponent },
       { path: 'faqs', component: FaqsComponent },
       { path: 'contact', component: ContactComponent },
     ]
@@ -109,7 +110,6 @@ const routes: Routes = [
       { path: 'addbos', component: AddbosComponent },
       { path: 'exportinv', component: ExportinvoiceComponent },
       { path: 'amendment', component: NewamendmentComponent },
-      { path: 'user-hsn', component: UserHsnCodeComponent },
       { path: 'update', component: GstupdateComponent },
       { path: 'notification', component: UserGovNotificationComponent },
       { path: 'videos', component: VideoslinkComponent }

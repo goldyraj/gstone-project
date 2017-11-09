@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import * as _ from 'underscore';
+import {PagerService} from '../service/pager.service';
+import{ExcelServiceService} from '../excel-service.service';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
@@ -7,7 +9,8 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 @Component({
   selector: 'app-admin-gov-notification',
   templateUrl: './admin-gov-notification.component.html',
-  styleUrls: ['./admin-gov-notification.component.css']
+  styleUrls: ['./admin-gov-notification.component.css'],
+  providers:[ExcelServiceService,PagerService]
 })
 export class AdminGovNotificationComponent implements OnInit {
 
@@ -32,7 +35,7 @@ export class AdminGovNotificationComponent implements OnInit {
   public events: any[] = []; // use later to display form changes
   access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
 
-  constructor(private _fb: FormBuilder, private http: Http) {
+  constructor(private _fb: FormBuilder, private http: Http,public ExcelServiceService:ExcelServiceService,public PagerService:PagerService) {
     this.pager.currentPage=1;
     this.access_token = localStorage.getItem("admin_token");
     this.getNotificationList(this.pager.currentPage);
@@ -103,7 +106,8 @@ export class AdminGovNotificationComponent implements OnInit {
           console.log("suceessfull data", response.json().message);
           this.closeEditModal();
           this.submittedEdit = false;
-          alert(response.json().message);
+          this.getNotificationList(this.pager.currentPage);
+          // alert(response.json().message);
         },
         error => {
           console.log("error", error.message);
@@ -134,7 +138,7 @@ export class AdminGovNotificationComponent implements OnInit {
         console.log("suceessfull data", response.json().message);
         this.closeDeleteModal();
         this.submittedEdit = false;
-        alert(response.json().message);
+        // alert(response.json().message);
       },
       error => {
         console.log("error", error.message);
@@ -169,6 +173,7 @@ export class AdminGovNotificationComponent implements OnInit {
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeModal();
+          this.submitted = false;
         },
         error => {
           console.log("error", error.message);
@@ -193,54 +198,10 @@ export class AdminGovNotificationComponent implements OnInit {
       return;
     }
 
-    this.pager = this.getPager(this.pager.totalItems, this.pager.currentPage, this.pager.pageSize);
+    this.pager = this.PagerService.getPager(this.pager.totalItems, this.pager.currentPage, this.pager.pageSize);
     console.log("pager", this.pager);
     // this.getStateList();
     this.pagedItems = this.notificationList;
-  }
-
-  getPager(totalItems: number, currentPage: number = 1, pageSize: number) {
-    // calculate total pages
-    let totalPages = Math.ceil(totalItems / pageSize);
-
-    let startPage: number, endPage: number;
-    if (totalPages <= 10) {
-      // less than 10 total pages so show all
-      startPage = 1;
-      endPage = totalPages;
-    } else {
-      // more than 10 total pages so calculate start and end pages
-      if (currentPage <= 6) {
-        startPage = 1;
-        endPage = 10;
-      } else if (currentPage + 4 >= totalPages) {
-        startPage = totalPages - 9;
-        endPage = totalPages;
-      } else {
-        startPage = currentPage - 5;
-        endPage = currentPage + 4;
-      }
-    }
-
-    // calculate start and end item indexes
-    let startIndex = (currentPage - 1) * pageSize;
-    let endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
-
-    // create an array of pages to ng-repeat in the pager control
-    let pages = _.range(startPage, endPage + 1);
-
-    // return object with all pager properties required by the view
-    return {
-      totalItems: totalItems,
-      currentPage: currentPage,
-      pageSize: pageSize,
-      totalPages: totalPages,
-      startPage: startPage,
-      endPage: endPage,
-      startIndex: startIndex,
-      endIndex: endIndex,
-      pages: pages
-    };
   }
 
 }

@@ -1,0 +1,234 @@
+
+<!-- pricing Section -->
+
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="unicod-section-title-one">
+					<h2 class="comon-color">NOTIFICATION </h2>
+					<div class="collor-bottom-one"></div>
+					<p>We are a friendly local firm based in a quiet town in a lovely county. We offer a range of services for both businesses.</p>
+				</div>
+			</div>
+
+			<div class="col-md-8 col-sm-6">
+				<div class="pricing-tabile">
+
+					<ul class="tabile">
+
+						<li *ngFor="let item of notificationList ;let i = index;">
+							<i class="fa fa-check"></i> &nbsp;
+							<a href="{{item.link}}" (click)="fetchFile(item.link)"><B>{{item.title}}</B></a> &nbsp;
+							<BR>
+							<i>{{item.description}}</i>
+						</li>
+
+					</ul>
+				</div>
+			</div>
+
+			<div class="col-md-4 col-sm-6">
+				<div class="well">
+					<ul class="tabile">
+						<li>You are now using GST Software</li>
+						<li>No download required. Use it in your browser</li>
+						<li>Create all invoices and file GST Returns</li>
+						<li>Free training to help you with using GST Software</li>
+						<li>Work offline with Excel Utility Tool</li>
+						<li>You can attend our Free training conducted by GST Experts in English & Hindi to help you understand GST & GST software</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+<!-- REGISTRATION Start -->
+
+<div class="modal fade bs-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content section-salect">
+			<div class="modal-body">
+				<div class="service-section">
+					<div class="row">
+						<div class="col-md-1 col-sm-1"></div>
+						<div class="col-md-10 col-sm-10">
+							<div class="col-md-4 col-sm-6 text-center">
+								<div class="unicod-service-col">
+									<h4>&nbsp;
+										<br>Business User
+										<br> &nbsp;</h4>
+								</div>
+								<button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" data-toggle="modal" data-target=".bs-REGISTRATION2-lg">Select</button>
+							</div>
+							<div class="col-md-4 col-sm-6 text-center">
+								<div class="unicod-service-col">
+									<h4>Charted Accountant
+										<br> Associate
+										<br> Tax Practioner</h4>
+								</div>
+								<button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" data-toggle="modal" data-target=".bs-REGISTRATION2-lg">Select</button>
+							</div>
+							<div class="col-md-4 col-sm-6 text-center">
+								<div class="unicod-service-col">
+									<h4>&nbsp;
+										<br>Business User Other
+										<br>&nbsp;</h4>
+								</div>
+								<button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" data-toggle="modal" data-target=".bs-REGISTRATION2-lg">Select</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- REGISTRATION End -->
+
+<!-- After REGISTRATION Form Start -->
+
+<div class="modal fade bs-REGISTRATION2-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span class="modal-text" aria-hidden="true">X</span>
+				</button>
+				<h4 class="modal-title modal-text"> REGISTRATION</h4>
+			</div>
+			<div class="modal-body">
+				<div class="service-section">
+					<div class="row">
+						<div class="col-md-1 col-sm-1"></div>
+						<div class="col-md-10 col-sm-10">
+
+							<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+								<input type="text" class="form-control" placeholder="Name" name="name" id="name" required>
+							</div>
+							<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+								<input type="text" class="form-control" placeholder="Contact No." name="contact" id="contact" required>
+							</div>
+							<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+								<input type="text" class="form-control" placeholder="PAN No." name="pan_no" id="pan_no" required>
+							</div>
+							<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+								<input type="text" class="form-control" placeholder="Email Id" name="email" id="email" required>
+							</div>
+							<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+								<input type="text" class="form-control" placeholder="GSTIN" name="gstin" id="gstin" required>
+							</div>
+							<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+								<input type="text" class="form-control" placeholder="Address" name="address" id="address" required>
+							</div>
+							<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+								<select class="form-control">
+									<option value="" selected="selected"> -- Select State -- </option>
+									<option value="">Jabalpur</option>
+									<option value="">Bhopal</option>
+									<option value="">Raipur</option>
+								</select>
+							</div>
+							<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+								<input type="text" class="form-control" placeholder="City" name="city" id="city" required>
+							</div>
+							<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+								<input type="text" class="form-control" placeholder="Paasword" name="paasword" id="paasword" required>
+							</div>
+							<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+								<input type="text" class="form-control" placeholder="Confirm Paasword" name="confirm_paasword" id="confirm_paasword" required>
+							</div>
+							<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+								<input type="button" class="btn btn-primary" value="Create Account">
+							</div>
+							<button type="button" class="btn btn-link pull-right" data-dismiss="modal" data-toggle="modal" data-target=".bs-login-sm">Already have Account</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- After REGISTRATION Form end -->
+
+<!-- Login Start -->
+
+<div class="modal fade bs-login-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span class="modal-text" aria-hidden="true">X</span>
+				</button>
+				<h4 class="modal-title modal-text"> LOGIN</h4>
+			</div>
+			<div class="modal-body">
+				<div class="service-section">
+					<div class="row">
+						<form action="" enctype="multipart/form-data">
+							<div class="col-md-12 col-sm-12 col-xs-12">
+								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
+									<input type="text" class="form-control" placeholder="Email Id" name="email" id="email" required>
+								</div>
+
+								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
+									<input type="password" class="form-control" placeholder="Paasword" name="paasword" id="paasword" required>
+								</div>
+
+								<div class="col-md-12 col-sm-12 col-xs-12 form-group text-center">
+									<a href="branch_list.html">
+										<input type="button" class="btn btn-success btn-block" value="Log In">
+									</a>
+								</div>
+							</div>
+						</form>
+					</div>
+
+					<button type="button" class="btn btn-link pull-left" data-dismiss="modal" data-toggle="modal" data-target=".bs-REGISTRATION2-lg">Create Account</button>
+					<button type="button" class="btn btn-link" data-dismiss="modal" data-toggle="modal" data-target=".bs-ForgotPassword-sm">Forgot Password</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- login end Start -->
+<!-- Login Start -->
+
+<div class="modal fade bs-ForgotPassword-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span class="modal-text" aria-hidden="true">X</span>
+				</button>
+				<h4 class="modal-title modal-text"> Forgot Password</h4>
+			</div>
+			<div class="modal-body">
+				<div class="service-section">
+					<div class="row">
+						<form action="user.html" enctype="multipart/form-data">
+							<div class="col-md-12 col-sm-12 col-xs-12">
+								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
+									<input type="text" class="form-control" placeholder="Email Id" name="email" id="email" required>
+								</div>
+
+								<div class="form-group  text-center">
+									<input type="button" class="btn btn-primary" value="Forgot Password">
+								</div>
+							</div>
+						</form>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- login end Start -->
+
+
+<!-- Modal -->

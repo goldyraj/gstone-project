@@ -1,141 +1,5 @@
-<body class="hold-transition skin-blue sidebar-mini">
-  <div class="wrapper">
-
-    <header class="main-header">
-      <!-- Logo -->
-      <a href="index.html" class="logo">
-        <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini">
-          <b>GST</b>
-        </span>
-        <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg">
-          <b>GST</b>
-        </span>
-      </a>
-      <!-- Header Navbar: style can be found in header.less -->
-      <nav class="navbar navbar-static-top">
-        <!-- Sidebar toggle button-->
-        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
-          <span class="sr-only">navigation</span>
-        </a>
-
-        <div class="navbar-custom-menu">
-          <ul class="nav navbar-nav">
-            <li class="dropdown user user-menu">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <img src="../images/user-128.png" class="user-image" alt="User Image">
-                <span class="hidden-xs">Admin </span>
-              </a>
-              <ul class="dropdown-menu">
-                <li class="user-footer">
-                  <div class="pull-left">
-                    <a href="#" class="btn btn-primary btn-flat">Profile</a>
-                  </div>
-                  <div class="pull-right">
-                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
-                  </div>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </nav>
-    </header>
-    <!-- Left side column. contains the logo and sidebar -->
-    <aside class="main-sidebar">
-
-      <section class="sidebar">
-
-        <ul class="sidebar-menu" data-widget="tree">
-          <li>
-            <a routerLink="/admin-dashboard">
-              <i class="fa fa-dashboard"></i>
-              <span>Dashboard</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/admin-state">
-              <i class="fa fa-user"></i>
-              <span>State</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/admin-dealer-type">
-              <i class="fa fa-users"></i>
-              <span>Dealer types</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/admin-hsn-code">
-              <i class="fa fa-envelope"></i>
-              <span>HSN code</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/admin_gov_notification">
-              <i class="fa fa-files-o"></i>
-              <span>Gov. Notifications</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/admin-internal-updates">
-              <i class="fa fa-th"></i>
-              <span>Internal Updates</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/admin-gstone-videos">
-              <i class="fa fa-th"></i>
-              <span>GstOne channel Videos</span>
-            </a>
-          </li>
-
-          <li>
-            <a routerLink="/admin-goods-services">
-              <i class="fa fa-th"></i>
-              <span>Goods/Services</span>
-            </a>
-          </li>
-
-          <li>
-            <a routerLink="/admin-work-returns">
-              <i class="fa fa-envelope"></i>
-              <span>Work on Returns</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/admin-about-us">
-              <i class="fa fa-th"></i>
-              <span>About Us page </span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/admin-privacy-policy">
-              <i class="fa fa-th"></i>
-              <span>Privacy policy</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/admin-contact-us">
-              <i class="fa fa-th"></i>
-              <span>Contact us</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/admin-faq">
-              <i class="fa fa-th"></i>
-              <span>FAQ</span>
-            </a>
-          </li>
-
-        </ul>
-      </section>
-
-    </aside>
 
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
       <!-- Content Header (Page header) -->
       <section class="content-header">
         <h1>&nbsp; </h1>
@@ -171,7 +35,7 @@
 
 
             <div class="col-md-3 col-xs-12">
-              <div class="input-group">
+              <div class="input-group section-bottom-20">
                 <input type="text" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
                 <div class="input-group-addon">
                   <i class="fa fa-search"></i>
@@ -212,12 +76,15 @@
                         <span class="label label-warning">Pending</span>
                       </td> -->
                       <td align="center">
-                        <i class="fa fa-eye btn btn-primary btn-sm" title="View"></i>
-                        <a href="">
+                        <!-- <i class="fa fa-eye btn btn-primary btn-sm" title="View"></i> -->
+                        <!-- <a href="">
                           <i class="fa fa-edit btn btn-warning btn-sm" title="Edit"></i>
+                        </a> -->
+                        <a data-toggle="modal" data-target=".bs-user-lg-edit">
+                          <button class="fa fa-edit btn btn-primary btn-sm" title="Edit" (click)="editNotificationRecord(item)"></button>
                         </a>
                         <a href="" data-toggle="modal" data-target=".bs-delete-sm">
-                          <i class="fa fa-trash btn btn-danger btn-sm" title="Delete"></i>
+                          <i class="fa fa-trash btn btn-danger btn-sm" (click)="deleteNotiRecord(item)" title="Delete"></i>
                         </a>
                       </td>
                     </tr>
@@ -226,18 +93,17 @@
                   </tbody>
                 </table>
 
-
                 <ul class="pagination btn-sm">
-                  <li>
-                    <!-- <a href="#">Previous</a> -->
-                    <button (click)="previousPage()" class="btn btn-primary">Previous</button>
+                  <li [ngClass]="{disabled:pager.currentPage === 1}">
+                    <a (click)="getNotificationList(pager.currentPage - 1)">Previous</a>
                   </li>
-                  <!-- <li class="active">
-                      <a href="#">1</a>
-                    </li> -->
-                  <li>
-                    <button class="active" (click)="nextPage()" class="btn btn-primary">Next</button>
-                    <!-- <a href="#">Next</a> -->
+
+                  <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                    <a (click)="getNotificationList(page)">{{page}}</a>
+                  </li>
+
+                  <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                    <a (click)="getNotificationList(pager.currentPage + 1)">Next</a>
                   </li>
                 </ul>
               </div>
@@ -250,7 +116,6 @@
 
       </section>
       <!-- /.content -->
-    </div>
 
     <!-- User Form Start -->
 
@@ -258,7 +123,7 @@
       <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" class="close" data-dismiss="modal" #closeBtn aria-label="Close">
               <span class="modal-text" aria-hidden="true">X</span>
             </button>
             <h4 class="modal-title modal-text"> Add Gov. Notifications</h4>
@@ -269,27 +134,75 @@
                 <div class="col-md-12 col-sm-12">
                   <form [formGroup]="govNotiForm" novalidate (ngSubmit)="saveNotification(govNotiForm.valid)">
                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                      <input type="text" class="form-control" placeholder="Title" formControlName="title" name="title" id="title" >
+                      <input type="text" class="form-control" placeholder="Title" formControlName="title" name="title" id="title">
                       <small [hidden]="govNotiForm.controls.title.valid || (govNotiForm.controls.title.pristine && !submitted)">
-                          Title is required .
-                        </small>
+                        Question is required .
+                      </small>
                     </div>
                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                      <input type="text" class="form-control" placeholder="Description" formControlName="description" name="description" >
+                      <input type="text" class="form-control" placeholder="List" formControlName="description" name="description">
                       <small [hidden]="govNotiForm.controls.description.valid || (govNotiForm.controls.description.pristine && !submitted)">
-                        Description is required .
-                        </small>
+                        Question is required .
+                      </small>
                     </div>
                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                       <input type="text" class="form-control" placeholder="Link" formControlName="link" name="statecode" required>
                       <small [hidden]="govNotiForm.controls.link.valid || (govNotiForm.controls.link.pristine && !submitted)">
-                          Link is required .
-                        </small>
+                        Question is required .
+                      </small>
                     </div>
-                    
+
 
                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                      <!-- <input type="button" class="btn btn-primary" value="Add Notifications"> -->
                       <button type="submit" class="btn btn-primary">Add Notifications</button>
+                      <button type="button" class="btn btn-success pull-right" data-dismiss="modal">Cancel</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade bs-user-lg-edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" #closeBtn2 aria-label="Close">
+              <span class="modal-text" aria-hidden="true">X</span>
+            </button>
+            <h4 class="modal-title modal-text"> Update Gov. Notifications</h4>
+          </div>
+          <div class="modal-body">
+            <div class="service-section">
+              <div class="row">
+                <div class="col-md-12 col-sm-12">
+                  <form [formGroup]="editGovNotiForm" novalidate (ngSubmit)="updateNotification(editGovNotiForm.valid)">
+                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                      <input type="text" class="form-control" placeholder="Title" formControlName="title" name="title" id="title">
+                      <small [hidden]="editGovNotiForm.controls.title.valid || (editGovNotiForm.controls.title.pristine && !submitted)">
+                        Question is required .
+                      </small>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                      <input type="text" class="form-control" placeholder="List" formControlName="description" name="description">
+                      <small [hidden]="editGovNotiForm.controls.description.valid || (editGovNotiForm.controls.description.pristine && !submitted)">
+                        Question is required .
+                      </small>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                      <input type="text" class="form-control" placeholder="Link" formControlName="link" name="statecode" required>
+                      <small [hidden]="editGovNotiForm.controls.link.valid || (editGovNotiForm.controls.link.pristine && !submitted)">
+                        Question is required .
+                      </small>
+                    </div>
+
+
+                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                      <!-- <input type="button" class="btn btn-primary" value="Add Notifications"> -->
+                      <button type="submit" class="btn btn-primary">Update</button>
                       <button type="button" class="btn btn-success pull-right" data-dismiss="modal">Cancel</button>
                     </div>
                   </form>
@@ -308,7 +221,7 @@
       <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" class="close" data-dismiss="modal" #closeBtn3 aria-label="Close">
               <span class="modal-text" aria-hidden="true">X</span>
             </button>
           </div>
@@ -324,7 +237,7 @@
                   </div>
 
                   <div class="form-group ">
-                    <input type="button" class="btn btn-success" data-dismiss="modal" value="Yes">
+                    <input type="button" class="btn btn-success" (click)="deleteNotification()" value="Yes">
                     <input type="button" class="btn btn-primary pull-right" data-dismiss="modal" value="No">
                   </div>
                 </div>
@@ -336,16 +249,4 @@
       </div>
     </div>
 
-    <!-- delete end  -->
-
-    <!-- /.content-wrapper -->
-    <footer class="main-footer">
-      <strong>Copyright &copy; 2017
-        <a href="">GST</a>.</strong> All rights reserved.
-    </footer>
-  </div>
-  <!-- ./wrapper -->
-
-  <!-- jQuery 3 -->
-
-</body>
+   

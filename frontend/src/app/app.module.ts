@@ -10,7 +10,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { UserComponent } from './user/user.component';
 import { CustomerComponent } from './customer/customer.component';
 import { ClientComponent } from './client/client.component';
-import { NotificationComponent } from './notification/notification.component';
 import { VideoslinkComponent } from './videoslink/videoslink.component';
 import { GstupdateComponent } from './gstupdate/gstupdate.component';
 import { Gstr1Component } from './gstr-1/gstr-1.component';
@@ -20,7 +19,8 @@ import { GoodservicesComponent } from './goodservices/goodservices.component';
 import { AadNewInvoiceComponent } from './aad-new-invoice/aad-new-invoice.component';
 import { VendorComponent } from './vendor/vendor.component';
 import { EditinvoiceComponent } from './editinvoice/editinvoice.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { SummaryComponent } from './summary/summary.component';
 import { AddnewinvoiceComponent } from './addnewinvoice/addnewinvoice.component';
 import { AddbosComponent } from './addbos/addbos.component';
@@ -35,9 +35,27 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { AdminLoginComponent } from './admin-login/admin-login.component';
 import {ApiserviceService} from './apiservice.service';
 import { AdminFaqsComponent } from './admin-faqs/admin-faqs.component';
-import { AdminGovNotificationComponent } from './admin-gov-notification/admin-gov-notification.component'
+import { AdminGovNotificationComponent } from './admin-gov-notification/admin-gov-notification.component';
+import { AdminGoodsComponent } from './admin-goods/admin-goods.component';
+import { AdminGstoneVideosComponent } from './admin-gstone-videos/admin-gstone-videos.component'
+import {ExcelServiceService} from './excel-service.service';
+import { UserHsnCodeComponent } from './user-hsn-code/user-hsn-code.component';
+import { UserGovNotificationComponent } from './user-gov-notification/user-gov-notification.component';
 // import { DatepickerModule } from 'angular2-material-datepicker';
-
+import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
+import {PagerService} from './service/pager.service';
+import { AdminAboutUsComponent } from './admin-about-us/admin-about-us.component';
+import { AdminPrivacyPolicyComponent } from './admin-privacy-policy/admin-privacy-policy.component';
+import { AdminContactUsComponent } from './admin-contact-us/admin-contact-us.component';
+import { AdminInternalUpdatesComponent } from './admin-internal-updates/admin-internal-updates.component';
+import{AdminHomeComponent} from './admin-home/admin-home.component';
+import { UserAboutUsComponent } from './user-about-us/user-about-us.component';
+import { HomeDashboardComponent } from './home-dashboard/home-dashboard.component';
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
+import { FaqsComponent } from './faqs/faqs.component';
+import { AboutUsComponent } from './about-us/about-us.component';
+import { ContactComponent } from './contact/contact.component';
+import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +65,6 @@ import { AdminGovNotificationComponent } from './admin-gov-notification/admin-go
     UserComponent,
     CustomerComponent,
     ClientComponent,
-    NotificationComponent,
     VideoslinkComponent,
     GstupdateComponent,
     Gstr1Component,
@@ -70,7 +87,23 @@ import { AdminGovNotificationComponent } from './admin-gov-notification/admin-go
     AdminDashboardComponent,
     AdminLoginComponent,
     AdminFaqsComponent,
-    AdminGovNotificationComponent
+    AdminGovNotificationComponent,
+    AdminGoodsComponent,
+    AdminGstoneVideosComponent,
+    UserHsnCodeComponent,
+    UserGovNotificationComponent,
+    AdminAboutUsComponent,
+    AdminPrivacyPolicyComponent,
+    AdminContactUsComponent,
+    AdminInternalUpdatesComponent,
+    AdminHomeComponent,
+    UserAboutUsComponent,
+    HomeDashboardComponent,
+    PrivacyPolicyComponent,
+    FaqsComponent,
+    AboutUsComponent,
+    ContactComponent,
+    UserDashboardComponent
     //DatepickerModule
   ],
   imports: [
@@ -79,9 +112,10 @@ import { AdminGovNotificationComponent } from './admin-gov-notification/admin-go
     AppRoutingModule,
     FormsModule,
     HttpModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    NgxPaginationModule,
   ],
-  providers: [ApiserviceService],
+  providers: [ApiserviceService,ExcelServiceService,PagerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,145 +1,5 @@
-<body class="hold-transition skin-blue sidebar-mini">
-  <div class="wrapper">
-
-    <header class="main-header">
-      <!-- Logo -->
-      <a href="index.html" class="logo">
-        <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini">
-          <b>GST</b>
-        </span>
-        <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg">
-          <b>GST</b>
-        </span>
-      </a>
-      <!-- Header Navbar: style can be found in header.less -->
-      <nav class="navbar navbar-static-top">
-        <!-- Sidebar toggle button-->
-        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
-          <span class="sr-only">navigation</span>
-        </a>
-
-        <div class="navbar-custom-menu">
-          <ul class="nav navbar-nav">
-            <li class="dropdown user user-menu">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <!-- <img src="../images/user-128.png" class="user-image" alt="User Image"> -->
-                <span class="hidden-xs">Admin </span>
-              </a>
-              <ul class="dropdown-menu">
-                <li class="user-footer">
-                  <div class="pull-left">
-                    <a href="#" class="btn btn-primary btn-flat">Profile</a>
-                  </div>
-                  <div class="pull-right">
-                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
-                  </div>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </nav>
-    </header>
-    <!-- Left side column. contains the logo and sidebar -->
-    <!-- side bar -->
-
-    <aside class="main-sidebar">
-
-      <section class="sidebar">
-
-        <ul class="sidebar-menu" data-widget="tree">
-          <li>
-            <a routerLink="/admin-dashboard">
-              <i class="fa fa-dashboard"></i>
-              <span>Dashboard</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/admin-state">
-              <i class="fa fa-user"></i>
-              <span>State</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/admin-dealer-type">
-              <i class="fa fa-users"></i>
-              <span>Dealer types</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/admin-hsn-code">
-              <i class="fa fa-envelope"></i>
-              <span>HSN code</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/notification">
-              <i class="fa fa-files-o"></i>
-              <span>Gov. Notifications</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/admin-internal-updates">
-              <i class="fa fa-th"></i>
-              <span>Internal Updates</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/admin-gstone-videos">
-              <i class="fa fa-th"></i>
-              <span>GstOne channel Videos</span>
-            </a>
-          </li>
-
-          <li>
-            <a routerLink="/admin-goods-services">
-              <i class="fa fa-th"></i>
-              <span>Goods/Services</span>
-            </a>
-          </li>
-
-          <li>
-            <a routerLink="/admin-work-returns">
-              <i class="fa fa-envelope"></i>
-              <span>Work on Returns</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/admin-about-us">
-              <i class="fa fa-th"></i>
-              <span>About Us page </span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/admin-privacy-policy">
-              <i class="fa fa-th"></i>
-              <span>Privacy policy</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/admin-contact-us">
-              <i class="fa fa-th"></i>
-              <span>Contact us</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/admin-faq">
-              <i class="fa fa-th"></i>
-              <span>FAQ</span>
-            </a>
-          </li>
-
-        </ul>
-      </section>
-
-    </aside>
-
-    <!-- side bar -->
 
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
       <!-- Content Header (Page header) -->
       <section class="content-header">
         <h1>&nbsp; </h1>
@@ -163,11 +23,11 @@
               </div>
             </div>
 
-            <div class="col-md-2 col-xs-12">
+            <!-- <div class="col-md-2 col-xs-12">
               <div class="text-right">
                 <input type="file" class="upload" (change)="onCSVFilePicked($event.target.files)" value="Import CSV" accept=".csv">
               </div>
-            </div>
+            </div> -->
 
             <div class="col-md-2 col-xs-12">
               <div class="text-right">
@@ -176,22 +36,8 @@
             </div>
 
             <div class="clearfix"></div>
-
-            <!-- <div class="col-md-3 col-xs-12">
-              <div class="form-group">
-                <select class="form-control select2" style="width: 100%;">
-                  <option selected="selected">Alabama</option>
-                  <option>Alaska</option>
-                  <option>California</option>
-                  <option>Delaware</option>
-                  <option>Tennessee</option>
-                  <option>Texas</option>
-                  <option>Washington</option>
-                </select>
-              </div>
-            </div> -->
             <div class="col-md-3 col-xs-12">
-              <div class="input-group">
+              <div class="input-group section-bottom-20">
                 <input type="text" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
                 <div class="input-group-addon">
                   <i class="fa fa-search"></i>
@@ -199,13 +45,6 @@
               </div>
             </div>
             <div></div>
-
-            <!-- <div class="col-md-3 col-xs-12">
-              <input type="text" class="form-control">
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <input type="text" class="form-control">
-            </div> -->
 
             <div class="col-lg-12 col-xs-12">
 
@@ -245,12 +84,12 @@
 
 
                         <td align="center">
-                          <i class="fa fa-eye btn btn-primary btn-sm" title="View"></i>
+                          <!-- <i class="fa fa-eye btn btn-primary btn-sm" title="View"></i> -->
                           <a href="" data-toggle="modal" data-target=".bs-user-lg-edit">
                             <button class="fa fa-edit btn btn-warning btn-sm" title="Update" (click)="editHSNRecord(item,hsnCodeData.indexOf(item))"></button>
                           </a>
                           <a href="" data-toggle="modal" data-target=".bs-delete-sm">
-                            <button class="fa fa-trash btn btn-danger btn-sm" title="Delete" (click)="deleteHSNRecord(item)"></button>
+                            <button class="fa fa-trash btn btn-danger btn-sm" title="Delete" (click)="recordToBeDeleted(item)"></button>
                           </a>
                         </td>
                       </tr>
@@ -265,20 +104,16 @@
                 <!-- TABLE -->
 
                 <ul class="pagination btn-sm">
-                  <li class="active">
-                    <a href="#">1</a>
+                  <li [ngClass]="{disabled:pager.currentPage === 1}">
+                    <a (click)="getAllHSNCodeList(pager.currentPage - 1)">Previous</a>
                   </li>
-                  <li>
-                    <a href="#">2</a>
+
+                  <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                    <a (click)="getAllHSNCodeList(page)">{{page}}</a>
                   </li>
-                  <li>
-                    <a href="#">3</a>
-                  </li>
-                  <li>
-                    <a href="#">4</a>
-                  </li>
-                  <li>
-                    <a href="#">5</a>
+
+                  <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                    <a (click)="getAllHSNCodeList(pager.currentPage + 1)">Next</a>
                   </li>
                 </ul>
               </div>
@@ -291,7 +126,6 @@
 
       </section>
       <!-- /.content -->
-    </div>
 
     <!-- User Form Start -->
 
@@ -373,14 +207,14 @@
               <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
                   <div class="col-md-12 col-sm-12 col-xs-12 text-center">
-                    <h4 class="text-blue">Are You Sure HSN Code Delete
+                    <h4 class="text-blue">Sure, you want to delete ?
                       <br>
                       <br>
                     </h4>
                   </div>
 
                   <div class="form-group ">
-                    <input type="button" class="btn btn-success" data-dismiss="modal" value="Yes">
+                    <input type="button" class="btn btn-success" (click)="deleteHSNRecord()" data-dismiss="modal" value="Yes">
                     <input type="button" class="btn btn-primary pull-right" data-dismiss="modal" value="No">
                   </div>
                 </div>
@@ -448,7 +282,7 @@
                     </div>
 
                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                      <button type="submit" class="btn btn-primary">Save</button>
+                      <button type="submit" class="btn btn-primary">Update</button>
                       <button type="button" class="btn btn-success pull-right" data-dismiss="modal">Cancel</button>
                     </div>
                   </form>
@@ -459,19 +293,3 @@
         </div>
       </div>
     </div>
-
-    <!-- End of Editing HSN Code -->
-
-    <!-- /.content-wrapper -->
-    <footer class="main-footer">
-      <strong>Copyright &copy; 2017
-        <a href="">GST</a>.</strong> All rights reserved.
-    </footer>
-  </div>
-  <!-- ./wrapper -->
-
-  <!-- jQuery 3 -->
-  <!-- <script src="../js/jquery.js"></script>
-  <script src="../js/bootstrap.min.js"></script>
-  <script src="../js/gst-admin.min.js"></script> -->
-</body>

@@ -1,150 +1,5 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>GST || State List</title>
-</head>
-
-<body class="hold-transition skin-blue sidebar-mini">
-  <div class="wrapper">
-
-    <header class="main-header">
-      <!-- Logo -->
-      <a href="index.html" class="logo">
-        <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini">
-          <b>GST</b>
-        </span>
-        <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg">
-          <b>GST</b>
-        </span>
-      </a>
-      <!-- Header Navbar: style can be found in header.less -->
-      <nav class="navbar navbar-static-top">
-        <!-- Sidebar toggle button-->
-        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
-          <span class="sr-only">navigation</span>
-        </a>
-
-        <div class="navbar-custom-menu">
-          <ul class="nav navbar-nav">
-            <li class="dropdown user user-menu">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-
-                <span class="hidden-xs">Admin </span>
-              </a>
-              <ul class="dropdown-menu">
-                <li class="user-footer">
-                  <div class="pull-left">
-                    <a href="#" class="btn btn-primary btn-flat">Profile</a>
-                  </div>
-                  <div class="pull-right">
-                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
-                  </div>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </nav>
-    </header>
-    <!-- Left side column. contains the logo and sidebar -->
-    <aside class="main-sidebar">
-
-      <section class="sidebar">
-
-        <ul class="sidebar-menu" data-widget="tree">
-          <li>
-            <a routerLink="/admin-dashboard">
-              <i class="fa fa-dashboard"></i>
-              <span>Dashboard</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/admin-state">
-              <i class="fa fa-user"></i>
-              <span>State</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/admin-dealer-type">
-              <i class="fa fa-users"></i>
-              <span>Dealer types</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/admin-hsn-code">
-              <i class="fa fa-envelope"></i>
-              <span>HSN code</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/admin-govt-notification">
-              <i class="fa fa-files-o"></i>
-              <span>Gov. Notifications</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/admin-internal-updates">
-              <i class="fa fa-th"></i>
-              <span>Internal Updates</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/admin-gstone-videos">
-              <i class="fa fa-th"></i>
-              <span>GstOne channel Videos</span>
-            </a>
-          </li>
-
-          <li>
-            <a routerLink="/admin-goods-services">
-              <i class="fa fa-th"></i>
-              <span>Goods/Services</span>
-            </a>
-          </li>
-
-          <li>
-            <a routerLink="/admin-work-returns">
-              <i class="fa fa-envelope"></i>
-              <span>Work on Returns</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/admin-about-us">
-              <i class="fa fa-th"></i>
-              <span>About Us page </span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/admin-privacy-policy">
-              <i class="fa fa-th"></i>
-              <span>Privacy policy</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/admin-contact-us">
-              <i class="fa fa-th"></i>
-              <span>Contact us</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/admin-faq">
-              <i class="fa fa-th"></i>
-              <span>FAQ</span>
-            </a>
-          </li>
-
-        </ul>
-      </section>
-
-    </aside>
 
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
       <!-- Content Header (Page header) -->
       <section class="content-header">
         <h1>&nbsp; </h1>
@@ -178,33 +33,14 @@
 
             <div class="clearfix"></div>
 
-            <!-- <div class="col-md-3 col-xs-12">
-              <div class="form-group">
-                <select class="form-control select2" style="width: 100%;">
-                  <option selected="selected">Alabama</option>
-                  <option>Alaska</option>
-                  <option>California</option>
-                  <option>Delaware</option>
-                  <option>Tennessee</option>
-                  <option>Texas</option>
-                  <option>Washington</option>
-                </select>
-              </div>
-            </div> -->
             <div class="col-md-3 col-xs-12">
-              <div class="input-group">
+              <div class="input-group section-bottom-20">
                 <input type="text" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
                 <div class="input-group-addon">
                   <i class="fa fa-search"></i>
                 </div>
               </div>
             </div>
-            <!-- <div class="col-md-3 col-xs-12">
-              <input type="text" class="form-control">
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <input type="text" class="form-control">
-            </div> -->
 
             <div class="col-lg-12 col-xs-12">
 
@@ -215,8 +51,8 @@
                     <tr>
                       <th width="2%">#</th>
                       <th width="20%">State Name</th>
-                      <th width="9%">Code</th>
-                      <th width="12%">Status</th>
+                      <th width="20%">Code</th>
+                      <!-- <th width="12%">Status</th> -->
                       <th width="14%" class="text-center">Action</th>
                     </tr>
                   </thead>
@@ -225,16 +61,15 @@
                       <td align="center">{{i+1}}</td>
                       <td align="center">{{item.name}}</td>
                       <td align="center">{{item.code}}</td>
-                      <td align="center">
+                      <!-- <td align="center">
                         <span class="label label-warning">Pending</span>
-                      </td>
+                      </td> -->
                       <td align="center">
-                        <i class="fa fa-eye btn btn-primary btn-sm" title="View"></i>
-                        <a href="">
-                          <i class="fa fa-edit btn btn-warning btn-sm" title="Edit"></i>
+                        <a data-toggle="modal" data-target=".bs-goods-lg-edit">
+                          <button class="fa fa-edit btn btn-primary btn-sm" title="Edit" (click)="editStateRecords(item)"></button>
                         </a>
                         <a href="" data-toggle="modal" data-target=".bs-delete-sm">
-                          <i class="fa fa-trash btn btn-danger btn-sm" title="Delete"></i>
+                          <button class="fa fa-trash btn btn-danger btn-sm" title="Delete" (click)="recordToDelete(item)"></button>
                         </a>
                       </td>
                     </tr>
@@ -243,23 +78,34 @@
                 </table>
 
 
+                <!-- <ul class="pagination btn-sm">
+                  <li>
+                    <button (click)="previousPage()" class="btn btn-primary">Previous</button>
+                  </li>
+                  <li>
+                    <button class="active" (click)="nextPage()" class="btn btn-primary">Next</button>
+                  </li>
+                </ul> -->
+
+                <!-- <ul class="pagination btn-sm">
+                  <li *ngFor="let item of stateList | paginate: { itemsPerPage: 10, currentPage: currentPage }"> ... </li>
+                </ul> -->
+
                 <ul class="pagination btn-sm">
-                  <li>
-                    <a href="#">1</a>
+                  <li [ngClass]="{disabled:pager.currentPage === 1}">
+                    <a (click)="getStateList(pager.currentPage - 1)">Previous</a>
                   </li>
-                  <li class="active">
-                    <a href="#">2</a>
+
+                  <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                    <a (click)="getStateList(page)">{{page}}</a>
                   </li>
-                  <li>
-                    <a href="#">3</a>
-                  </li>
-                  <li>
-                    <a href="#">4</a>
-                  </li>
-                  <li>
-                    <a href="#">5</a>
+
+                  <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                    <a (click)="getStateList(pager.currentPage + 1)">Next</a>
                   </li>
                 </ul>
+                <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
+
               </div>
 
             </div>
@@ -268,7 +114,6 @@
         </div>
       </section>
       <!-- /.content -->
-    </div>
 
     <!-- User Form Start -->
 
@@ -300,14 +145,14 @@
                         Contact is required (minimum 5 characters).
                       </small>
                     </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                    <!-- <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                       <select class="form-control" id="country" formControlName="country" [(ngModel)]="person.country">
                         <option *ngFor="let c of countries" [ngValue]="c">{{c.name}}</option>
                       </select>
                       <small [hidden]="myForm.controls.country.valid || (myForm.controls.country.pristine && !submitted)">
                         Status is required .
                       </small>
-                    </div>
+                    </div> -->
                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                       <button type="submit" class="btn btn-primary">Add State</button>
                       <button type="button" class="btn btn-success pull-right" data-dismiss="modal">Cancel</button>
@@ -322,31 +167,50 @@
     </div>
     <!-- User Form end -->
 
-    <!-- delete Start -->
-
-    <div class="modal fade bs-delete-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-      <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
+    <div class="modal fade bs-goods-lg-edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content section-form">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" class="close" data-dismiss="modal" #closeBtn2 aria-label="Close">
               <span class="modal-text" aria-hidden="true">X</span>
             </button>
+            <h4 class="modal-title modal-text" align="center">
+              <b>Edit State</b>
+            </h4>
           </div>
           <div class="modal-body">
             <div class="service-section">
               <div class="row">
-                <div class="col-md-12 col-sm-12 col-xs-12">
-                  <div class="col-md-12 col-sm-12 col-xs-12 text-center">
-                    <h4 class="text-blue">Are You Sure State Delete
-                      <br>
-                      <br>
-                    </h4>
-                  </div>
+                <div class="col-md-1 col-sm-1"></div>
+                <div class="col-md-10 col-sm-10">
+                  <form [formGroup]="myFormEdit" novalidate (ngSubmit)="updateState(myFormEdit.valid)">
 
-                  <div class="form-group ">
-                    <input type="button" class="btn btn-success" data-dismiss="modal" value="Yes">
-                    <input type="button" class="btn btn-primary pull-right" data-dismiss="modal" value="No">
-                  </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                      <input type="text" class="form-control" formControlName="statename" placeholder="State Name" name="statename" id="statename"
+                        required>
+                      <small [hidden]="myFormEdit.controls.statename.valid || (myFormEdit.controls.statename.pristine && !submitted)">
+                        Name is required (minimum 5 characters).
+                      </small>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                      <input type="text" class="form-control" formControlName="statecode" placeholder="State Code" name="statecode" required>
+                      <small [hidden]="myFormEdit.controls.statecode.valid || (myFormEdit.controls.statecode.pristine && !submitted)">
+                        Contact is required (minimum 5 characters).
+                      </small>
+                    </div>
+                    <!-- <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                      <select class="form-control" id="country" formControlName="country" [(ngModel)]="country">
+                        <option *ngFor="let c of countries" [ngValue]="c.name">{{c.name}}</option>
+                      </select>
+                      <small [hidden]="myFormEdit.controls.country.valid || (myFormEdit.controls.country.pristine && !submitted)">
+                        Status is required !
+                      </small>
+                    </div> -->
+                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                      <button type="submit" class="btn btn-primary">Update</button>
+                      <button type="button" class="btn btn-success pull-right" data-dismiss="modal">Cancel</button>
+                    </div>
+                  </form>
                 </div>
               </div>
             </div>
@@ -355,17 +219,40 @@
       </div>
     </div>
 
-    <!-- delete end  -->
+    <!-- Edit Modal -->
 
-    <!-- /.content-wrapper -->
-    <footer class="main-footer">
-      <strong>Copyright &copy; 2017
-        <a href="">GST</a>.</strong> All rights reserved.
-    </footer>
-  </div>
-  <!-- ./wrapper -->
+    <!-- delete Start -->
 
-  <!-- jQuery 3 -->
-</body>
+    <div class="modal fade bs-delete-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" #closeBtn3 aria-label="Close">
+              <span class="modal-text" aria-hidden="true">X</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="service-section">
+              <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                  <div class="col-md-12 col-sm-12 col-xs-12 text-center">
+                    <h4 class="text-blue">Sure, you want to delete ?
+                      <br>
+                      <br>
+                    </h4>
+                  </div>
 
-</html>
+                  <div class="form-group ">
+                    <input type="button" class="btn btn-success" (click)="deleteRecord()" value="Yes">
+                    <input type="button" class="btn btn-primary pull-right" data-dismiss="modal" value="No">
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    

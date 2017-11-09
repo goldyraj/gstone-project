@@ -2,11 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
+import {ExcelServiceService} from '../excel-service.service';
+import * as _ from 'underscore';
+import{PagerService} from '../service/pager.service';
 
 @Component({
   selector: 'app-customer',
   templateUrl: './customer.component.html',
-  styleUrls: ['./customer.component.css']
+  styleUrls: ['./customer.component.css'],
+  providers:[PagerService,ExcelServiceService]
 })
 export class CustomerComponent implements OnInit {
   // constructor() { }
@@ -23,10 +27,22 @@ export class CustomerComponent implements OnInit {
   public myFormEdit: FormGroup;
   public submitted: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
+  public csvString;
   customerRowData;
   stateDropdown=Array();
-  constructor(private _fb: FormBuilder, private http: Http) {
-    this.getCustomerList();
+  
+  // pager object
+  pager: any = {};
+  
+    // paged items
+    pagedItems: any[];
+    access_token;
+
+  constructor(private _fb: FormBuilder, private http: Http,public excelServiceService:ExcelServiceService,public pagerService:PagerService) {
+    this.access_token = localStorage.getItem("user_token");
+    console.log("user_token", this.access_token);
+    this.pager.currentPage = 1;
+    this.getCustomerList(1);
     console.log("custructor call");
   }
 
@@ -44,7 +60,7 @@ export class CustomerComponent implements OnInit {
       gstin: new FormControl('', [<any>Validators.required]),
       address: new FormControl('', [<any>Validators.required]),
       city: new FormControl('', [<any>Validators.required]),
-      selectedstateDropdown:new FormControl('Select State')
+      selectedstateDropdown:new FormControl('-1')
     });
 
     this.myFormEdit=new FormGroup({
@@ -68,12 +84,10 @@ export class CustomerComponent implements OnInit {
     console.log("form valuse", this.cutomer);
 
     if (isValid == true) {
-
-      var access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
       const headers = new Headers();
 
       headers.append('Content-Type', 'application/json');
-      headers.append('x-access-token', access_token);
+      headers.append('x-access-token', this.access_token);
       const requestOptions = new RequestOptions({ headers: headers });
       const body = {
         "name": this.myForm.value.name,
@@ -83,18 +97,22 @@ export class CustomerComponent implements OnInit {
         "contact": this.myForm.value.contact,
         "email": this.myForm.value.email,
         "address": this.myForm.value.address,
-        "state": "Madhya Pradesh"
+        "state": this.myForm.value.selectedstateDropdown
       };
-      this.url = "http://localhost:3000/api/customer/create";
+
+      this.url = "http://localhost:3000/api/customer/create?token="+this.access_token;
       return this.http.post(this.url, body, requestOptions)
         .subscribe(
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeModal();
           // this.custList.push(body);
-          this.custList.pop();
+          alert(response.json().message);
+          this.myForm.reset();
+          this.myForm.get("selectedstateDropdown").setValue("Select State");
           this.submitted=false;
-          this.getCustomerList();
+          this.getCustomerList(this.pager.currentPage);
+          this.customerRowData=null;
         },
         error => {
           alert(error.message);
@@ -105,10 +123,14 @@ export class CustomerComponent implements OnInit {
     }
   }
 
-  getCustomerList() {
-    this.http.get('http://localhost:3000/api/customer/index?limit=10&page=1&sortBy=title&search=').subscribe(data => {
+  getCustomerList(page:number) {
+    this.pager.currentPage=page;
+    this.http.get('http://localhost:3000/api/customer/index?token='+this.access_token+'&limit=5&page='+this.pager.currentPage+'&sortBy=title&search=').subscribe(data => {
       console.log("customer list", data);
       this.custList = data.json().docs;
+      this.pager.pageSize = data.json().limit;
+      this.pager.totalItems = data.json().total;
+      this.setPage();
       console.log("verder  PArse", this.custList);
     });
   }
@@ -152,11 +174,10 @@ export class CustomerComponent implements OnInit {
     // if (isValid == true && this.myFormEdit.value.selectedstateDropdown!='Select State') {
       if (isValid == true ) {
      
-      var access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
       const headers = new Headers();
   
       headers.append('Content-Type', 'application/json');
-      headers.append('x-access-token', access_token);
+      headers.append('x-access-token', this.access_token);
       const requestOptions = new RequestOptions({ headers: headers });
       
       const body = {
@@ -171,7 +192,7 @@ export class CustomerComponent implements OnInit {
         "contact":this.myFormEdit.value.contact
       };
       
-      this.url = "http://localhost:3000/api/customer/update";
+      this.url = "http://localhost:3000/api/customer/update?token="+this.access_token;
       return this.http.put(this.url, body, requestOptions)
         .subscribe(
         response => {
@@ -191,105 +212,6 @@ export class CustomerComponent implements OnInit {
     }
   }
 
-  CSV2JSON(csv) {
-    var array = this.CSVToArray(csv, ",");
-
-    var objArray = [];
-    for (var i = 1; i < array.length; i++) {
-      objArray[i - 1] = {};
-      for (var k = 0; k < array[0].length && k < array[i].length; k++) {
-        var key = array[0][k];
-        objArray[i - 1][key] = array[i][k]
-      }
-    }
-
-    var json = JSON.stringify(objArray.splice(0,objArray.length-1));
-    var str = json.replace(/},/g, "},\r\n");
-    return str;
-  }
-
-  CSVToArray(strData, strDelimiter) {
-    // Check to see if the delimiter is defined. If not,
-    // then default to comma.
-    strDelimiter = (strDelimiter || ",");
-    // Create a regular expression to parse the CSV values.
-    var objPattern = new RegExp((
-      // Delimiters.
-      "(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
-      // Quoted fields.
-      "(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
-      // Standard fields.
-      "([^\"\\" + strDelimiter + "\\r\\n]*))"), "gi");
-    // Create an array to hold our data. Give the array
-    // a default empty first row.
-    var arrData = [[]];
-    // Create an array to hold our individual pattern
-    // matching groups.
-    var arrMatches = null;
-    // Keep looping over the regular expression matches
-    // until we can no longer find a match.
-    while (arrMatches = objPattern.exec(strData)) {
-      // Get the delimiter that was found.
-      var strMatchedDelimiter = arrMatches[1];
-      // Check to see if the given delimiter has a length
-      // (is not the start of string) and if it matches
-      // field delimiter. If id does not, then we know
-      // that this delimiter is a row delimiter.
-      if (strMatchedDelimiter.length && (strMatchedDelimiter != strDelimiter)) {
-        // Since we have reached a new row of data,
-        // add an empty row to our data array.
-        arrData.push([]);
-      }
-      // Now that we have our delimiter out of the way,
-      // let's check to see which kind of value we
-      // captured (quoted or unquoted).
-      if (arrMatches[2]) {
-        // We found a quoted value. When we capture
-        // this value, unescape any double quotes.
-        var strMatchedValue = arrMatches[2].replace(
-          new RegExp("\"\"", "g"), "\"");
-      } else {
-        // We found a non-quoted value.
-        var strMatchedValue = arrMatches[3];
-      }
-      // Now that we have our value string, let's add
-      // it to the data array.
-      arrData[arrData.length - 1].push(strMatchedValue);
-    }
-    // Return the parsed data.
-    return (arrData);
-  }
-
-  uploadCsvFileToServer(jsonString) {
-    var access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
-    const headers = new Headers();
-
-    headers.append('Content-Type', 'application/json');
-    headers.append('x-access-token', access_token);
-    const requestOptions = new RequestOptions({ headers: headers });
-    const body = {
-      "data": JSON.parse(jsonString)
-    };
-
-    
-
-    console.log(body);
-    this.url = "http://localhost:3000/api/customer/uploadFile";
-    return this.http.post(this.url, body, requestOptions)
-      .subscribe(
-      response => {
-        console.log("suceessfull data", response.json().message);
-        this.closeModal();
-        
-        alert(response.json().message);
-      },
-      error => {
-        console.log("error", error.message);
-        console.log(error.text());
-      }
-      );
-  }
-
   onCSVFilePicked(files: FileList) {
     console.log(files);
     if (files && files.length > 0) {
@@ -302,11 +224,65 @@ export class CustomerComponent implements OnInit {
       reader.onload = (e) => {
         let csv: string = reader.result;
         console.log(csv);
-        var csvString = this.CSV2JSON(csv);
+        this.csvString = this.excelServiceService.CSV2JSON(csv);
         // var csvString=this.CSV2JSON(csv);
-
-        this.uploadCsvFileToServer(csvString);
+        // this.uploadCsvFileToServer(csvString);
       }
     }
+  }
+
+  uploadCsvFileToServer() {
+    const headers = new Headers();
+
+    headers.append('Content-Type', 'application/json');
+    
+    const requestOptions = new RequestOptions({ headers: headers });
+    const body = {
+      "data": JSON.parse(this.csvString)
+    };
+
+    this.url = "http://localhost:3000/api/customer/uploadFile?token="+this.access_token;
+    return this.http.post(this.url, body, requestOptions)
+      .subscribe(
+      response => {
+        console.log("suceessfull data", response.json());
+        this.closeModal();
+        if(response.json().message!=null)
+        {
+          alert(response.json().message);
+          this.getCustomerList(this.pager.currentPage);
+        }
+        else if(response.json().error!=null){
+          alert("Your CSV/Excel file contains some repeated data !");
+        }
+      },
+      error => {
+        console.log("error", error.message);
+        console.log(error.text());
+        var errorString = error.text();
+        
+        if(errorString!=null)
+        {
+          alert("Your CSV/Excel file contains some repeated data !");
+        }
+      }
+      );
+  }
+
+  downloadJSONTOCSV()
+  {
+    this.getCustomerList(this.pager.currentPage);
+    this.excelServiceService.exportAsExcelFile(this.custList,"CustomerJSNTOCSV");
+  }
+
+  setPage() {
+    if (this.pager.currentPage < 1 || this.pager.currentPage > this.pager.TotalPages) {
+      return;
+    }
+
+    this.pager = this.pagerService.getPager(this.pager.totalItems, this.pager.currentPage, this.pager.pageSize);
+    console.log("pager", this.pager);
+    // this.getStateList();
+    this.pagedItems = this.custList;
   }
 }

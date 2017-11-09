@@ -825,6 +825,21 @@ span {
     margin-right:15px;
 }
 .headsummary{color:#333; padding-bottom:5px; font-weight:bold;}
+.unicod-copyright p {
+    color: #ffffff;
+    padding: 10px;
+}
+.unicod-copyright ul {
+    float:right;
+}
+.unicod-copyright ul li {
+    float:left;
+    padding: 10px;
+}
+.unicod-copyright ul li a {
+    color: #ffffff;
+}
+.fogtop{ margin-top: 10px;}
 @media(min-width:767px) {
     .navbar {
         padding: 1px 0;

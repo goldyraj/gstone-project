@@ -11,6 +11,7 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 export class AdminFaqsComponent implements OnInit {
   @ViewChild('closeBtn') closeBtn: ElementRef;
   @ViewChild('closeBtn2') closeBtn2: ElementRef;
+  @ViewChild('closeBtn3') closeBtn3: ElementRef;
   faqsList = [];
   StateVal = {};
   url = "";
@@ -22,17 +23,24 @@ export class AdminFaqsComponent implements OnInit {
   };
   TotalPages: number;
   pageSize: number;
+  access_token;
   currentPage: number;
   public FaqForm: FormGroup; // our model driven form
+  public FaqFormEdit: FormGroup; // our model driven form
   public submitted: boolean; // keep track on whether form is submitted
   public submittedEdit: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
   constructor(private _fb: FormBuilder, private http: Http) {
+    this.access_token = localStorage.getItem("admin_token");
     this.getFaqsList();
   }
 
   ngOnInit() {
     this.FaqForm = new FormGroup({
+      question: new FormControl('', [<any>Validators.required]),
+      answer: new FormControl('', [<any>Validators.required])
+    });
+    this.FaqFormEdit = new FormGroup({
       question: new FormControl('', [<any>Validators.required]),
       answer: new FormControl('', [<any>Validators.required])
     });
@@ -47,22 +55,22 @@ export class AdminFaqsComponent implements OnInit {
 
     if (isValid == true) {
 
-      var access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
       const headers = new Headers();
 
       headers.append('Content-Type', 'application/json');
-      headers.append('x-access-token', access_token);
+      // headers.append('x-access-token', access_token);
       const requestOptions = new RequestOptions({ headers: headers });
       const body = {
         "question": this.FaqForm.value.question,
         "answer": this.FaqForm.value.answer
       };
-      this.url = "http://localhost:3000/api/faq/create";
+      this.url = "http://localhost:3000/api/faq/create?token="+this.access_token;
       return this.http.post(this.url, body, requestOptions)
         .subscribe(
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeModal();
+          this.getFaqsList();
         },
         error => {
           console.log("error", error.message);
@@ -74,7 +82,7 @@ export class AdminFaqsComponent implements OnInit {
 
   getFaqsList() {
     console.log('list called');
-    this.http.get('http://localhost:3000/api/faq/index?limit=' + this.Paging.limit + '&page=' + this.Paging.page + '&sortBy=title&search=').subscribe(data => {
+    this.http.get('http://localhost:3000/api/faq/index?token='+this.access_token+'&limit=' + this.Paging.limit + '&page=' + this.Paging.page + '&sortBy=title&search=').subscribe(data => {
       this.faqsList = data.json().docs;
       this.TotalPages = data.json().total;
       this.pageSize = this.Paging.limit;
@@ -90,16 +98,18 @@ export class AdminFaqsComponent implements OnInit {
     var temp;
     if (data) {
       console.log("DATA", data);
-      this.FaqForm.get("question").setValue(data.question);
-      this.FaqForm.get("answer").setValue(data.answer);
-
+      this.FaqFormEdit.get("question").setValue(data.question);
+      this.FaqFormEdit.get("answer").setValue(data.answer);
     }
-
     this.faqsRowData = data;
-
   }
 
-  updateCustomerRecord(isValid: boolean) {
+  deleteFaqsRecord(data) {
+    this.rowDataIndex = data._id;
+    this.faqsRowData = data;
+  }
+
+  updateFaqs(isValid: boolean) {
     this.submittedEdit = true; // set form submit to true
     console.log(isValid);
     console.log("hi form module is called from page");
@@ -107,28 +117,29 @@ export class AdminFaqsComponent implements OnInit {
     // if (isValid == true && this.FaqForm.value.selectedstateDropdown!='Select State') {
     if (isValid == true) {
 
-      var access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
+      // var access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
       const headers = new Headers();
 
       headers.append('Content-Type', 'application/json');
-      headers.append('x-access-token', access_token);
+      // headers.append('x-access-token', access_token);
       const requestOptions = new RequestOptions({ headers: headers });
 
       const body = {
         "_id": this.faqsRowData._id,
-        "question": this.FaqForm.value.question,
-        "answer": this.FaqForm.value.answer,
+        "question": this.FaqFormEdit.value.question,
+        "answer": this.FaqFormEdit.value.answer,
       };
 
-      this.url = "http://localhost:3000/api/faq/update";
+      this.url = "http://localhost:3000/api/faq/update?token="+this.access_token;
       return this.http.put(this.url, body, requestOptions)
         .subscribe(
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeEditModal();
           this.submittedEdit = false;
-          this.faqsList[this.rowDataIndex] = body;
+          // this.faqsList[this.rowDataIndex] = body;
           alert(response.json().message);
+          this.getFaqsList();
         },
         error => {
           console.log("error", error.message);
@@ -136,6 +147,30 @@ export class AdminFaqsComponent implements OnInit {
         }
         );
     }
+  }
+  deleteFaqs() {
+    console.log("delete api", this.faqsRowData._id);
+    const headers = new Headers();
+
+    headers.append('Content-Type', 'application/json');
+    // headers.append('x-access-token', access_token);
+    const requestOptions = new RequestOptions({ headers: headers });
+
+    this.url = "http://localhost:3000/api/faq/delete/" + this.faqsRowData._id;
+    return this.http.delete(this.url,  requestOptions)
+      .subscribe(
+      response => {
+        console.log("suceessfull data", response.json().message);
+        this.closeDeleteModal();
+        this.submittedEdit = false;
+        alert(response.json().message);
+        this.getFaqsList();
+      },
+      error => {
+        console.log("error", error.message);
+        console.log(error.text());
+      }
+      );
   }
 
   nextPage() {
@@ -159,5 +194,8 @@ export class AdminFaqsComponent implements OnInit {
   }
   private closeEditModal(): void {
     this.closeBtn2.nativeElement.click();
+  }
+  private closeDeleteModal(): void {
+    this.closeBtn3.nativeElement.click();
   }
 }

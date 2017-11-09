@@ -1,325 +1,218 @@
-<body class="hold-transition skin-blue sidebar-mini">
-  <div class="wrapper">
+<section class="content-header">
+  <h1>&nbsp; </h1>
+  <ol class="breadcrumb">
+    <li>
+      <a href="index.html">
+        <i class="fa fa-dashboard"></i> Home</a>
+    </li>
+    <li class="active">HSN Code List</li>
+  </ol>
+</section>
 
-    <header class="main-header">
-      <!-- Logo -->
-      <a href="index.html" class="logo">
-        <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini">
-          <b>GST</b>
-        </span>
-        <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg">
-          <b>GST</b>
-        </span>
-      </a>
-      <!-- Header Navbar: style can be found in header.less -->
-      <nav class="navbar navbar-static-top">
-        <!-- Sidebar toggle button-->
-        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
-          <span class="sr-only">navigation</span>
-        </a>
+<!-- Main content -->
+<section class="content">
+  <div class="box box-info">
+    <div class="row">
 
-        <div class="navbar-custom-menu">
-          <ul class="nav navbar-nav">
-            <li class="dropdown user user-menu">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <img src="../images/user-128.png" class="user-image" alt="User Image">
-                <span class="hidden-xs">Admin </span>
-              </a>
-              <ul class="dropdown-menu">
-                <li class="user-footer">
-                  <div class="pull-left">
-                    <a href="#" class="btn btn-primary btn-flat">Profile</a>
-                  </div>
-                  <div class="pull-right">
-                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
-                  </div>
-                </li>
-              </ul>
-            </li>
-          </ul>
+      <div class="col-md-8 col-xs-12">
+        <div class="box-header">
+          <h3 class="text-blue">FAQ List</h3>
         </div>
-      </nav>
-    </header>
-    <!-- Left side column. contains the logo and sidebar -->
-    <aside class="main-sidebar">
-      <!-- sidebar: style can be found in sidebar.less -->
-      <section class="sidebar">
-        <!-- sidebar menu: : style can be found in sidebar.less -->
-        <ul class="sidebar-menu" data-widget="tree">
-          <li>
-            <a href="index.html">
-              <i class="fa fa-dashboard"></i>
-              <span>Dashboard</span>
-            </a>
-          </li>
-          <li>
-            <a href="state.html">
-              <i class="fa fa-user"></i>
-              <span>State</span>
-            </a>
-          </li>
-          <li>
-            <a href="dealer_types.html">
-              <i class="fa fa-users"></i>
-              <span>Dealer types</span>
-            </a>
-          </li>
-          <li>
-            <a href="HSN_code.html">
-              <i class="fa fa-envelope"></i>
-              <span>HSN code</span>
-            </a>
-          </li>
-          <li>
-            <a href="gov_notifications.html">
-              <i class="fa fa-files-o"></i>
-              <span>Gov. Notifications</span>
-            </a>
-          </li>
-          <li>
-            <a href="internal_updates.html">
-              <i class="fa fa-th"></i>
-              <span>Internal Updates</span>
-            </a>
-          </li>
-          <li>
-            <a href="gstone_channel_videos.html">
-              <i class="fa fa-th"></i>
-              <span>GstOne channel Videos</span>
-            </a>
-          </li>
+      </div>
 
-          <!--  <li>
-          <a href="">
-            <i class="fa fa-th"></i> <span>Goods/Services</span>
-          </a>
-        </li>
-        
-      <li>
-          <a href="">
-            <i class="fa fa-envelope"></i> <span>Work on Returns</span>
-          </a>
-        </li>-->
-          <li>
-            <a href="about_us.html">
-              <i class="fa fa-th"></i>
-              <span>About Us </span>
-            </a>
-          </li>
-          <li>
-            <a href="privacy_policy.html">
-              <i class="fa fa-th"></i>
-              <span>Privacy policy</span>
-            </a>
-          </li>
-          <li>
-            <a href="contact_us.html">
-              <i class="fa fa-th"></i>
-              <span>Contact us</span>
-            </a>
-          </li>
-          <li>
-            <a href="faq.html">
-              <i class="fa fa-th"></i>
-              <span>FAQ</span>
-            </a>
-          </li>
+      <div class="col-md-4 col-xs-12">
+        <div class="text-right">
+          <input type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-user-lg" value="Add FAQ">
+        </div>
+      </div>
 
+      <div class="clearfix"></div>
+
+      <div class="col-lg-12 col-xs-12">
+
+        <!-- /.box-header -->
+        <div class="row">
+          <div class="box">
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="box-group" id="accordion">
+                <!-- we are adding the .panel class so bootstrap.js collapse plugin detects it -->
+                <div class="panel box box-primary" *ngFor="let item of faqsList ;let i = index;">
+                  <div class="box-header with-border">
+                    <h4 class="box-title">
+                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne{{pageSize * (currentPage-1)+i+1}}">
+                        {{item.question}}
+                      </a>
+                    </h4>
+
+                    <a class="pull-right" data-toggle="modal" data-target=".bs-user-lg-edit">
+                      <button class="fa fa-edit btn btn-primary btn-sm" title="Edit" (click)="editFaqsRecord(item)"></button>
+                    </a>
+                    <a href="" class="pull-right" data-toggle="modal" data-target=".bs-delete-sm" (click)="deleteFaqsRecord(item)">
+                      <i class="fa fa-trash btn btn-danger btn-sm" title="Delete"></i>
+                    </a>
+                  </div>
+                  <div id="collapseOne{{pageSize * (currentPage-1)+i+1}}" class="panel-collapse collapse in">
+                    <div class="box-body">
+                      {{item.answer}}
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+
+        <!-- TABLE -->
+
+        <ul class="pagination btn-sm">
+          <li>
+            <!-- <a href="#">Previous</a> -->
+            <button (click)="previousPage()" class="btn btn-primary">Previous</button>
+          </li>
+          <!-- <li class="active">
+                        <a href="#">1</a>
+                      </li> -->
+          <li>
+            <button class="active" (click)="nextPage()" class="btn btn-primary">Next</button>
+            <!-- <a href="#">Next</a> -->
+          </li>
         </ul>
-      </section>
-      <!-- /.sidebar -->
-    </aside>
+      </div>
 
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-      <!-- Content Header (Page header) -->
-      <section class="content-header">
-        <h1>&nbsp; </h1>
-        <ol class="breadcrumb">
-          <li>
-            <a href="index.html">
-              <i class="fa fa-dashboard"></i> Home</a>
-          </li>
-          <li class="active">FAQ List</li>
-        </ol>
-      </section>
+    </div>
 
-      <!-- Main content -->
-      <section class="content">
-        <div class="box box-info">
+  </div>
+
+
+</section>
+<!-- /.content -->
+
+<!-- User Form Start -->
+
+
+
+<div class="modal fade bs-user-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" #closeBtn aria-label="Close">
+          <span class="modal-text" aria-hidden="true">X</span>
+        </button>
+        <h4 class="modal-title modal-text"> Add Dealer</h4>
+      </div>
+      <div class="modal-body">
+        <div class="service-section">
           <div class="row">
-  
-            <div class="col-md-8 col-xs-12">
-              <div class="box-header">
-                <h3 class="text-blue">FAQ List</h3>
-              </div>
-            </div>
-  
-            <div class="col-md-4 col-xs-12">
-              <div class="text-right">
-                <input type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-user-lg" value="Add FAQ">
-              </div>
-            </div>
-  
-            <div class="clearfix"></div>
-  
-  
-            <div class="col-lg-12 col-xs-12">
-  
-  
-              <div class="row">
-                <div class="box">
-                  <!-- /.box-header -->
-                  <div class="box-body">
-                    <div class="box-group" id="accordion">
-                      <!-- we are adding the .panel class so bootstrap.js collapse plugin detects it -->
-                      <div class="panel box box-primary" *ngFor="let item of faqsList ;let i = index;">
-                        <div class="box-header with-border">
-                          <h4 class="box-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne{{pageSize * (currentPage-1)+i+1}}">
-                              {{item.question}}
-                            </a>
-                          </h4>
-                          
-                          <a class="pull-right" data-toggle="modal" data-target=".bs-user-lg-edit">
-                              <button class="fa fa-edit btn btn-primary btn-sm" title="Edit" (click)="editFaqsRecord(item)"></button>
-                             </a>
-                          <a href=""  class="pull-right" data-toggle="modal" data-target=".bs-delete-sm">
-                              <i class="fa fa-trash btn btn-danger btn-sm" title="Delete"></i>
-                             </a>
-                        </div>
-                        <div id="collapseOne{{pageSize * (currentPage-1)+i+1}}" class="panel-collapse collapse in">
-                          <div class="box-body">
-                            {{item.answer}}
-                          </div>
-                        </div>
-                      </div>
-  
-                    </div>
-                  </div>
-                  <!-- /.box-body -->
-                </div>
-                <!-- /.box -->
-              </div>
-  
-              <ul class="pagination btn-sm">
-                <li>
-                  <!-- <a href="#">Previous</a> -->
-                  <button (click)="previousPage()" class="btn btn-primary">Previous</button>
-                </li>
-                <!-- <li class="active">
-                  <a href="#">1</a>
-                </li> -->
-                <li>
-                  <button class="active" (click)="nextPage()" class="btn btn-primary">Next</button>
-                  <!-- <a href="#">Next</a> -->
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-  
-  
-      </section>
-      <!-- /.content -->
-    </div>
+            <div class="col-md-12 col-sm-12">
+              <form [formGroup]="FaqForm" novalidate (ngSubmit)="saveFaqs(FaqForm.valid)">
 
-    <!-- User Form Start -->
-
-    <div class="modal fade bs-user-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content section-form">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" #closeBtn2 aria-label="Close">
-              <span class="modal-text" aria-hidden="true">X</span>
-            </button>
-            <h4 class="modal-title modal-text" align="center">
-              <b> Edit Customer Records</b>
-            </h4>
-          </div>
-          <div class="modal-body">
-            <div class="service-section">
-              <div class="row">
-                <div class="col-md-1 col-sm-1"></div>
-                <div class="col-md-10 col-sm-10">
-                  <form [formGroup]="FaqForm" novalidate (ngSubmit)="updateCustomerRecord(FaqForm.valid)">
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                      <input type="text" class="form-control" formControlName="question" placeholder="Question" name="question" id="question">
-                      <small [hidden]="FaqForm.controls.question.valid || (FaqForm.controls.question.pristine && !submitted)">
-                        Question is required .
-                      </small>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                      <textarea type="text" class="form-control" formControlName="answer" placeholder="Answer" name="answer" id="answer"></textarea>
-                      <small [hidden]="FaqForm.controls.answer.valid || (FaqForm.controls.answer.pristine && !submitted)">
-                        Answer is required .
-                      </small>
-                    </div>
-  
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group" align="center">
-                      <button type="submit" class="btn btn-primary">Update</button>
-                      <button type="button" class="btn btn-primary" data-dismiss="modal" value="Cancel">
-                        Cancel
-                      </button>
-                    </div>
-                  </form>
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <input type="text" class="form-control" formControlName="question" placeholder="Question" name="question" id="question">
+                  <small [hidden]="FaqForm.controls.question.valid || (FaqForm.controls.question.pristine && !submitted)">
+                    Question is required .
+                  </small>
                 </div>
-              </div>
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <textarea type="text" class="form-control" formControlName="answer" placeholder="Answer" name="answer" id="answer"></textarea>
+                  <small [hidden]="FaqForm.controls.answer.valid || (FaqForm.controls.answer.pristine && !submitted)">
+                    Answer is required .
+                  </small>
+                </div>
+
+
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <button type="submit" class="btn btn-primary">Add FAQ</button>
+                  <button type="button" class="btn btn-success pull-right" data-dismiss="modal">Cancel</button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- User Form end -->
+  </div>
+</div>
 
-    <!-- delete Start -->
-
-  <div class="modal fade bs-delete-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-    <div class="modal-dialog modal-sm" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span class="modal-text" aria-hidden="true">X</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="service-section">
-            <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="col-md-12 col-sm-12 col-xs-12 text-center">
-                  <h4 class="text-blue">Are You Sure Dealer Delete
-                    <br>
-                    <br>
-                  </h4>
+<div class="modal fade bs-user-lg-edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content section-form">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" #closeBtn2 aria-label="Close">
+          <span class="modal-text" aria-hidden="true">X</span>
+        </button>
+        <h4 class="modal-title modal-text" align="center">
+          <b>Edit Faqs</b>
+        </h4>
+      </div>
+      <div class="modal-body">
+        <div class="service-section">
+          <div class="row">
+            <div class="col-md-1 col-sm-1"></div>
+            <div class="col-md-10 col-sm-10">
+              <form [formGroup]="FaqFormEdit" novalidate (ngSubmit)="updateFaqs(FaqFormEdit.valid)">
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <input type="text" class="form-control" formControlName="question" placeholder="Question" name="question" id="question">
+                  <small [hidden]="FaqFormEdit.controls.question.valid || (FaqFormEdit.controls.question.pristine && !submitted)">
+                    Question is required .
+                  </small>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <textarea type="text" class="form-control" formControlName="answer" placeholder="Answer" name="answer" id="answer"></textarea>
+                  <small [hidden]="FaqFormEdit.controls.answer.valid || (FaqFormEdit.controls.answer.pristine && !submitted)">
+                    Answer is required .
+                  </small>
                 </div>
 
-                <div class="form-group ">
-                  <input type="button" class="btn btn-success" data-dismiss="modal" value="Yes">
-                  <input type="button" class="btn btn-primary pull-right" data-dismiss="modal" value="No">
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group" align="center">
+                  <button type="submit" class="btn btn-primary">Update</button>
+                  <button type="button" class="btn btn-primary" data-dismiss="modal" value="Cancel">
+                    Cancel
+                  </button>
                 </div>
-              </div>
+              </form>
             </div>
-
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
+<!-- User Form end -->
 
-  <!-- delete end  -->
+<!-- delete Start -->
 
-    <!-- /.content-wrapper -->
-    <footer class="main-footer">
-      <strong>Copyright &copy; 2017
-        <a href="">GST</a>.</strong> All rights reserved.
-    </footer>
+<div class="modal fade bs-delete-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" #closeBtn3 aria-label="Close">
+          <span class="modal-text" aria-hidden="true">X</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="service-section">
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="col-md-12 col-sm-12 col-xs-12 text-center">
+                <h4 class="text-blue">Sure, you want to delete ?
+                  <br>
+                  <br>
+                </h4>
+              </div>
+
+              <div class="form-group ">
+                <input type="button" class="btn btn-success" (click)="deleteFaqs()" value="Yes">
+                <input type="button" class="btn btn-primary pull-right" data-dismiss="modal" value="No">
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
   </div>
-  <!-- ./wrapper -->
-
-  <!-- jQuery 3 -->
-  <!-- <script src="../js/jquery.js"></script>
-<script src="../js/bootstrap.min.js"></script>
-<script src="../js/gst-admin.min.js"></script> -->
-</body>
+</div>

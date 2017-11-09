@@ -1,91 +1,3 @@
-<div class="container">
-	<div class="row">
-		<div class="col-md-3 navbar-header-gst">
-			<div class="navbar-brand">
-				<a href="index.html">
-					<h2 class="gst_logo">GST</h2>
-				</a>
-			</div>
-		</div>
-		<div class="col-md-6">
-		</div>
-		<div class="col-md-3">
-			<div class="user_profile">
-				<label>Contact Mail</label>
-				<div class="btn-group pull-right" role="group">
-					<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						User rate
-						<span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu">
-						<li>
-							<a href="#">
-								<i class="fa fa-user"></i> Profile</a>
-						</li>
-						<li>
-							<a href="#">
-								<i class="fa fa-cog"></i> Setting</a>
-						</li>
-						<li>
-							<a href="#">
-								<i class="fa fa-key"></i> Logout</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-
-<header>
-	<div class="container-fluid">
-		<div class="row">
-			<!-- Navigation  navbar-static-top -->
-			<nav class="navbar navbar-inverse">
-				<div class="container navbar-header-gst">
-					<div class="navbar-header page-scroll">
-						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-							<span class="sr-only">Toggle navigation</span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-						</button>
-					</div>
-
-					<!-- Collect the nav links, forms, and other content for toggling -->
-					<div class="collapse navbar-collapse navbar-ex1-collapse">
-						<ul class="nav navbar-nav">
-							<!-- Hidden li included to remove active class from about link when scrolled up past about section -->
-							<li>
-								<a class="page-scroll" href="#">User Name
-									<span> GSTIN No</span>
-								</a>
-							</li>
-							<li>
-								<a class="page-scroll" href="user">Dashboard</a>
-							</li>
-							<li>
-								<a class="page-scroll" href="workreturns">Returns</a>
-							</li>
-							<li>
-								<a class="page-scroll" href="notification">Notification </a>
-							</li>
-							<li>
-								<a class="page-scroll" href="update">Updates </a>
-							</li>
-							<li>
-								<a class="page-scroll" href="videos">Videos </a>
-							</li>
-						</ul>
-					</div>
-					<!-- /.navbar-collapse -->
-				</div>
-			</nav>
-		</div>
-	</div>
-</header>
-
 
 <div class="clearfix"></div>
 <div class="container">
@@ -96,13 +8,18 @@
 			</h3>
 		</div>
 
-		<div class="col-md-2 col-xs-12">
+		<!-- <div class="col-md-2 col-xs-12">
 			<div class="text-right">
 				<input type="file" class="upload" (change)="onCSVFilePicked($event.target.files)" value="Import CSV" accept=".csv">
 			</div>
-		</div>
+		</div> -->
 
 		<div class="col-xs-6 col-sm-3 placeholder">
+
+			<a href="" data-toggle="modal" data-target=".bs-upload-sm">
+				<input type="button" class="btn btn-primary" value="Import/Export">
+			</a>
+
 			<a href="#" data-toggle="modal" data-target=".bs-GSTIN-lg">
 				<input type="button" class="btn btn-success pull-right" value="Add New">
 			</a>
@@ -134,11 +51,11 @@
 							<td align="center">{{item.unit}}</td>
 							<td align="center">{{item.rate}}</td>
 							<td align="center">
-								<a data-toggle="modal" data-target=".bs-GSTIN-lg-edit">
+								<a data-toggle="modal" data-target=".bs-goods-lg-edit">
 									<button class="fa fa-edit btn btn-primary btn-sm" title="Edit" (click)="editGoodsServicesRecord(item)"></button>
 								</a>
 								<a href="" data-toggle="modal" data-target=".bs-delete-sm">
-									<i class="fa fa-trash btn btn-danger btn-sm" title="Delete"></i>
+									<button class="fa fa-trash btn btn-danger btn-sm" title="Delete" (click)="recordToDelete(item)"></button>
 								</a>
 							</td>
 						</tr>
@@ -148,20 +65,16 @@
 
 
 				<ul class="pagination btn-sm">
-					<li>
-						<a href="#">1</a>
+					<li [ngClass]="{disabled:pager.currentPage === 1}">
+						<a (click)="getStategetGoodsAndServicesListList(pager.currentPage - 1)">Previous</a>
 					</li>
-					<li class="active">
-						<a href="#">2</a>
+
+					<li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+						<a (click)="getGoodsAndServicesList(page)">{{page}}</a>
 					</li>
-					<li>
-						<a href="#">3</a>
-					</li>
-					<li>
-						<a href="#">4</a>
-					</li>
-					<li>
-						<a href="#">5</a>
+
+					<li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+						<a (click)="getGoodsAndServicesList(pager.currentPage + 1)">Next</a>
 					</li>
 				</ul>
 			</div>
@@ -190,13 +103,13 @@
 						<div class="col-md-10 col-sm-10">
 							<form [formGroup]="addNewGoodsForm" novalidate (ngSubmit)="saveGoodsAndServices(addNewGoodsForm.valid)">
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<input type="text" class="form-control" formControlName="description" placeholder="Name" required>
+									<input type="text" class="form-control" formControlName="description" placeholder="Description" required>
 									<small [hidden]="addNewGoodsForm.controls.description.valid || (addNewGoodsForm.controls.description.pristine && !submitted)">
 										Description is required !
 									</small>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<input type="text" class="form-control" formControlName="hsn_code" placeholder="Contact No.">
+									<input type="text" class="form-control" formControlName="hsn_code" placeholder="HSN Code">
 									<small [hidden]="addNewGoodsForm.controls.hsn_code.valid || (addNewGoodsForm.controls.hsn_code.pristine && !submitted)">
 										HSN Code is required !
 									</small>
@@ -204,34 +117,34 @@
 
 								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
 									<select class="form-control" formControlName="rate" required>
-										<option value="-1" selected="selected"> -- Rate of Tax -- </option>
-										<option value="">0.1%</option>
-										<option value="">0.5%</option>
-										<option value="">3%</option>
-										<option value="">5%</option>
-										<option value="">12%</option>
-										<option value="">18%</option>
-										<option value="">28%</option>
+										<option value="Select Rate" nam="Select Rate" selected="selected">Select Rate</option>
+										<option value="0.1%">0.1%</option>
+										<option value="0.5%">0.5%</option>
+										<option value="3%">3%</option>
+										<option value="5%">5%</option>
+										<option value="12%">12%</option>
+										<option value="18%">18%</option>
+										<option value="28%">28%</option>
 									</select>
-									<small *ngIf="addNewGoodsForm.controls.rate.value=='-1' && submitted">
+									<small *ngIf="addNewGoodsForm.controls.rate.value=='Select Rate' && submitted">
 										Please select rate !
 									</small>
 								</div>
 
-								<div class="col-md-12 col-sm-12 col-xs-12 form-group" formControlName="unit" required>
-									<select class="form-control">
-										<option value="-1" selected="selected"> -- Unit -- </option>
-										<option value="">Kilogram</option>
-										<option value="">Gram</option>
-										<option value="">Meter</option>
+								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
+									<select class="form-control" formControlName="unit" required>
+										<option value="Select Unit" name="Select Unit" selected="selected">Select Unit</option>
+										<option value="Kilogram">Kilogram</option>
+										<option value="Gram">Gram</option>
+										<option value="Meter">Meter</option>
 									</select>
-									<small *ngIf="addNewGoodsForm.controls.unit.value=='-1' && submitted">
+									<small *ngIf="addNewGoodsForm.controls.unit.value=='Select Unit' && submitted">
 										Please select unit !
 									</small>
 								</div>
 
 								<div class="col-md-12 col-sm-12 col-xs-12 form-group" align="center">
-									<button type="submit" class="btn btn-primary">Create</button>
+									<button type="submit" [disabled]="!addNewGoodsForm.valid" class="btn btn-primary">Create</button>
 									<button type="button" class="btn btn-primary" data-dismiss="modal" value="Cancel">
 										Cancel
 									</button>
@@ -249,7 +162,9 @@
 
 <!-- Modal -->
 
-<div class="modal fade bs-GSTIN-lg-edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+<!-- Edit Modal -->
+
+<div class="modal fade bs-goods-lg-edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content section-form">
 			<div class="modal-header">
@@ -257,7 +172,7 @@
 					<span class="modal-text" aria-hidden="true">X</span>
 				</button>
 				<h4 class="modal-title modal-text" align="center">
-					<b> Edit Goods/Services</b>
+					<b> Edit Goods and Services</b>
 				</h4>
 			</div>
 			<div class="modal-body">
@@ -265,50 +180,50 @@
 					<div class="row">
 						<div class="col-md-1 col-sm-1"></div>
 						<div class="col-md-10 col-sm-10">
-							<form [formGroup]="addNewGoodsFormEdit" novalidate (ngSubmit)="updateGoodsAndServicesRecord(addNewGoodsFormEdit.valid)">
+							<form [formGroup]="myFormEdit" novalidate (ngSubmit)="updateGoodsAndServicesRecord(myFormEdit.valid)">
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<input type="text" class="form-control" formControlName="descriptionEdit" placeholder="Name" required>
-									<small [hidden]="addNewGoodsFormEdit.controls.descriptionEdit.valid || (addNewGoodsFormEdit.controls.description.pristine && !submitted)">
+									<input type="text" class="form-control" formControlName="descriptionEdit" placeholder="Description" required>
+									<small [hidden]="myFormEdit.controls.descriptionEdit.valid || (myFormEdit.controls.descriptionEdit.pristine && !editSubmitted)">
 										Description is required !
 									</small>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<input type="text" class="form-control" formControlName="hsn_codeEdit" placeholder="Contact No." required>
-									<small [hidden]="addNewGoodsFormEdit.controls.hsn_codeEdit.valid || (addNewGoodsFormEdit.controls.hsn_code.pristine && !submitted)">
+									<input type="text" class="form-control" formControlName="hsn_code_edit" placeholder="HSN Code" required>
+									<small [hidden]="myFormEdit.controls.hsn_code_edit.valid || (myFormEdit.controls.hsn_code_edit.pristine && !editSubmitted)">
 										HSN Code is required !
 									</small>
 								</div>
 
 								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
-									<select class="form-control" formControlName="rateEdit" required>
-										<option value="-1" selected="selected"> -- Rate of Tax -- </option>
-										<option value="">0.1%</option>
-										<option value="">0.5%</option>
-										<option value="">3%</option>
-										<option value="">5%</option>
-										<option value="">12%</option>
-										<option value="">18%</option>
-										<option value="">28%</option>
+									<select class="form-control" formControlName="rateEdit" required [(ngModel)]="rateEdit">
+										<option value="-1" selected="selected" name="Select Rate">Select Rate</option>
+										<option value="0.1%">0.1%</option>
+										<option value="0.5%">0.5%</option>
+										<option value="3%">3%</option>
+										<option value="5%">5%</option>
+										<option value="12%">12%</option>
+										<option value="18%">18%</option>
+										<option value="28%">28%</option>
 									</select>
-									<small *ngIf="addNewGoodsFormEdit.controls.rateEdit.value=='-1' && submitted">
+									<small *ngIf="myFormEdit.controls.rateEdit.value=='-1' && editSubmitted">
 										Please select rate !
 									</small>
 								</div>
 
-								<div class="col-md-12 col-sm-12 col-xs-12 form-group" formControlName="unitEdit" required>
-									<select class="form-control">
-										<option value="-1" selected="selected"> -- Unit -- </option>
-										<option value="">Kilogram</option>
-										<option value="">Gram</option>
-										<option value="">Meter</option>
+								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
+									<select class="form-control" formControlName="unitEdit" required [(ngModel)]="unitEdit">
+										<option value="-1" selected="selected" name="Select Unit">Select Unit</option>
+										<option value="Kilogram">Kilogram</option>
+										<option value="Gram">Gram</option>
+										<option value="Meter">Meter</option>
 									</select>
-									<small *ngIf="addNewGoodsFormEdit.controls.unitEdit.value=='-1' && submitted">
+									<small *ngIf="myFormEdit.controls.unitEdit.value=='-1' && editSubmitted">
 										Please select unit !
 									</small>
 								</div>
 
 								<div class="col-md-12 col-sm-12 col-xs-12 form-group" align="center">
-									<button type="submit" class="btn btn-primary">Update</button>
+									<button [disabled]="!myFormEdit.valid" type="submit" class="btn btn-primary">Update</button>
 									<button type="button" class="btn btn-primary" data-dismiss="modal" value="Cancel">
 										Cancel
 									</button>
@@ -324,16 +239,139 @@
 
 <!-- Edit Modal -->
 
-<!-- Footer Start -->
-<footer class="unicod-footer bg-style">
+<!-- delete Start -->
 
-	<div class="container-fluid unicod-copyright">
-		<div class="row">
-			<div class="col-md-6 col-md-offset-3 text-center">
-				<div class="Copyright">
-					<p>Copyright 2017, GST. All Rights Reserved </p>
+<div class="modal fade bs-delete-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" #closeBtn3 aria-label="Close">
+					<span class="modal-text" aria-hidden="true">X</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="service-section">
+					<div class="row">
+						<div class="col-md-12 col-sm-12 col-xs-12">
+							<div class="col-md-12 col-sm-12 col-xs-12 text-center">
+								<h4 class="text-blue">Sure, you want to delete ?
+									<br>
+									<br>
+								</h4>
+							</div>
+
+							<div class="form-group ">
+								<input type="button" class="btn btn-success" (click)="deleteRecord()" value="Yes">
+								<input type="button" class="btn btn-primary pull-right" data-dismiss="modal" value="No">
+							</div>
+						</div>
+					</div>
+
 				</div>
 			</div>
 		</div>
 	</div>
-</footer>
+</div>
+
+<!-- delete end  -->
+
+<!-- Modal -->
+
+<div class="modal fade bs-upload-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog modal-md" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span class="modal-text" aria-hidden="true">X</span>
+				</button>
+				<h4 class="text-blue text-center">Choose Import/Export</h4>
+			</div>
+			<div class="modal-body">
+				<div class="service-section">
+					<div class="row">
+						<div class="col-md-12 col-sm-12 col-xs-12 text-center section-top-10 section-bottom-40">
+							<a href="" data-toggle="modal" data-target=".bs-Import-sm">
+								<input type="button" class="btn btn-success" data-dismiss="modal" value="Import Excel/CSV">
+							</a> &nbsp; &nbsp; &nbsp;
+							<a href="" data-toggle="modal" data-target=".bs-Export-sm">
+								<input type="button" class="btn btn-primary" data-dismiss="modal" value="Export Excel/CSV ">
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<div class="modal fade bs-Import-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog modal-md" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span class="modal-text" aria-hidden="true">X</span>
+				</button>
+				<h4 class="text-blue text-center">Import Customer data</h4>
+			</div>
+			<div class="modal-body">
+				<div class="service-section">
+					<div class="row" align="center">
+						<div class="col-md-12 col-sm-12 col-xs-12 section-top-10 section-bottom-20">
+							<p align="center">Please choose Excel/CSV file</p>
+							<br>
+
+							<div class="col-md-5 col-sm-5 col-xs-12 col-md-offset-1">
+								<!-- <input type="file" class="btn btn-success" value=""> -->
+								<input type="file" (change)="onCSVFilePicked($event.target.files)" accept=".csv,.xlsx">
+							</div>
+							<div class="col-md-4 col-sm-4 col-xs-12 col-md-offset-1">
+								<input type="button" class="btn btn-primary" value="Upload" (click)="uploadCsvFileToServer()">
+							</div>
+						</div>
+						<p class="text-info text-center">Successfully file uploaded</p>
+					</div>
+					<div align="center">
+						<input type="button" class="btn btn-success" data-dismiss="modal" value="Close">
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+
+<div class="modal fade bs-Export-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog modal-md" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span class="modal-text" aria-hidden="true">X</span>
+				</button>
+				<h4 class="text-blue text-center">Export Customer data</h4>
+			</div>
+			<div class="modal-body">
+				<div class="service-section">
+					<div class="row" align="center">
+						<div class="col-md-12 col-sm-12 col-xs-12 section-top-10 section-bottom-20">
+							<!-- <p align="center">Please choose Excel/CSV file</p> -->
+							<br>
+							<div align="center">
+								<input type="button" class="btn btn-primary" value="Download" (click)="downloadJSONTOCSV()">
+							</div>
+						</div>
+						<!-- <p class="text-info text-center">Successfully file uploaded</p> -->
+					</div>
+					<div align="center">
+						<input type="button" class="btn btn-success" data-dismiss="modal" value="Close">
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<!-- Modal End -->

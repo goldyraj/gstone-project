@@ -185,8 +185,8 @@ export class AdminStateComponent implements OnInit {
       console.log("ID",this.stateRowData._id);
       const body = {
         "_id": this.stateRowData._id,
-        "name": this.myFormEdit.value.descriptionEdit,
-        "code": this.myFormEdit.value.hsn_code_edit
+        "name": this.myFormEdit.value.statename,
+        "code": this.myFormEdit.value.statecode
       };
 
       this.url = "http://localhost:3000/api/state/update?token="+this.access_token;

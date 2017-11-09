@@ -178,10 +178,6 @@ export class AdminHsnCodeComponent implements OnInit {
     this.submitted = true; // set form submit to true
     console.log(isValid);
     console.log("hi form module is called from page");
-    var temp = this.statusDropDown.filter(x => x.desc === this.myForm.value.selectedStatusType);
-    console.log("CONSOLEEEEE", temp);
-
-    console.log("CONSOLE", temp[0].code);
     this.hsnCodeSubmitData = this.myForm.value;
 
     console.log("form valuse", this.hsnCodeSubmitData);
@@ -196,7 +192,6 @@ export class AdminHsnCodeComponent implements OnInit {
       const body = {
         "code": this.myForm.value.hsn_code,
         "rate": this.myForm.value.rate,
-        "status": temp[0].code,
         "description": this.myForm.value.description
       };
 
@@ -224,14 +219,12 @@ export class AdminHsnCodeComponent implements OnInit {
     this.submitted_edit = true; // set form submit to true
     console.log(isValid);
     console.log("hi form module is called from page");
-    var temp = this.statusDropDown.filter(x => x.desc === this.myForm_edit.value.selectedStatusType_edit);
-    console.log("CONSOLEEEEE", temp);
 
-    console.log("CONSOLE", temp[0].code);
+    
     this.hsnCodeSubmitData = this.myForm_edit.value;
     console.log("form valuse", this.hsnCodeSubmitData);
 
-    if (isValid == true && temp) {
+    if (isValid == true) {
       // if (isValid == true) {
       const headers = new Headers();
 
@@ -242,7 +235,7 @@ export class AdminHsnCodeComponent implements OnInit {
       const body = {
         "code": this.myForm_edit.value.hsn_code_edit,
         "rate": this.myForm_edit.value.rate_edit,
-        "status": temp[0].code,
+        
         "description": this.myForm_edit.value.description_edit,
         // "statusDesc":this.myForm_edit.value.selectedStatusType_edit,
         "_id": this.hsnRowData._id
@@ -269,32 +262,16 @@ export class AdminHsnCodeComponent implements OnInit {
     }
   }
 
-  editHSNRecord(data, indexVal) {
-    this.rowIndexToModify = indexVal;
-    console.log("indexVal", indexVal);
-    console.log("VALUEATINDEX", this.hsnCodeData.indexOf(indexVal));
-    console.log("data.selectedStatusType", data.selectedStatusType_edit);
+  editHSNRecord(data) {
+    
+    console.log("VALUEATINDEX", this.hsnCodeData.indexOf(data));
     var temp;
     
-    if (data.status) {
-      console.log("GET_STATUS", data.status);
-      temp = this.statusDropDown.filter(x => x.code == data.selectedStatusType_edit);
-      console.log("selectedStatusTypeDrop", temp[0].desc);
-      this.myForm_edit.get("rate_edit").setValue(data.rate);
-      this.myForm_edit.get("hsn_code_edit").setValue(data.code);
-      this.myForm_edit.get("description_edit").setValue(data.description);
-
-      this.myForm_edit.get("selectedStatusType_edit").setValue(temp[0].desc);
-    }
+    this.myForm_edit.get("rate_edit").setValue(data.rate);
+    this.myForm_edit.get("hsn_code_edit").setValue(data.code);
+    this.myForm_edit.get("description_edit").setValue(data.description);
 
     this.hsnRowData = data;
-    // this.selectedStatusTypeDrop=temp[0].desc;
-    if (temp[0].desc) {
-      this.selectedStatusTypeDrop = temp[0].desc;
-    }
-    else {
-      this.selectedStatusTypeDrop = "Select Status";
-    }
   }
 
   recordToBeDeleted(item) {

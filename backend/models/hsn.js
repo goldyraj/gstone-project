@@ -10,19 +10,21 @@ const Hsn = new Schema({
     description: String,
     code: { type: String, unique: true },
     rate:String,
-    status:String
+    status:String,
+     created_at:  { type: Date},
+  updated_at:  { type: Date}
   
 })
 
 // create new User document
 Hsn.statics.create = function(description, code,rate,status) {
- 
+ var created_at=  Date.now();
 
     const Hsn = new this({
         description,
         code,
         rate,
-        status        
+        status  ,created_at      
     })
 
     // return the Promise

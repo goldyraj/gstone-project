@@ -8,17 +8,19 @@ var mongoosePaginate = require('mongoose-paginate');
 const Dealer = new Schema({
     name: String,
     date:  String,   
-    status:String
+    status:String,
+     created_at:  { type: Date},
+  updated_at:  { type: Date}
   
 })
 
 // create new User document
 Dealer.statics.create = function(name, date,status) {
-
+   var created_at=  Date.now();
     const Dealer = new this({
         name,       
         date,
-        status        
+        status  ,created_at          
     })
 
     // return the Promise

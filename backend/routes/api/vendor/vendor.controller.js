@@ -1,10 +1,24 @@
 const Vendor = require('../../../models/vendor')
 
+  var usingItNow = function(req) {
+if(req.type=="agentuser"||req.type=="admin"){
+  return false;
+}else{
+   return true;
+}
+
+};
 /* 
     GET /api/vendor/index
 */
 exports.index=(req,res)=>{
 //console.log(req);
+ var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
 var query={};
 console.log(req.query.limit);
 req.query.limit=parseInt(req.query.limit);
@@ -43,7 +57,7 @@ Vendor.paginate(query,option).then( vendor=>res.json(vendor)
 }
 exports.list = (req, res) => {
     // refuse if not an admin
-    if(!req.decoded.admin) {
+      if(!req.decoded.admin) {
         return res.status(403).json({
             message: 'you are not an admin'
         })
@@ -58,41 +72,19 @@ exports.list = (req, res) => {
    }
 
 exports.create = (req, res) => {
-  
+  var rstatus=false;
     const {name,pan_no,gstin,city,contact,email,address,state} = req.body
     let newUser = null
- if(!req.decoded.admin) {
-        return res.status(403).json({
-            message: 'you are not an admin'
-        })
+    console.log(req.decoded)
+ var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
     }
-    // Update Vendor 
-    exports.update=(req,res)=>{
-        const {_id,name,pan_no,gstin,city,contact,email,address,state} = req.body
-     
-         Vedio.findOneAndUpdate({_id:_id}, {$set:{name:name,pan_no:pan_no,gstin:gstin,city:city,contact:contact,email:email}}, {new: true}, function(err, doc){
-    if(err){
-        console.log("Something wrong when updating data!");
-    }
-    console.log(doc);
-});
-          const respond = () => {
-        res.json({
-            message: 'vendor Successfully Update'
-        
- 
-        })
-    }
-    //    // run when there is an error (username exists)
-    const onError = (error) => {
-        res.status(409).json({
-            message: error.message
-        })
-    }
-      Vedio.findOneByUsername(title)          
-         .then(respond)
-         .catch(onError)
-}
+   // console.log("RETURN STATUS=",rstatus)
+
+
     // create a new user if does not exist
     const create = (vendor) => {
        
@@ -135,6 +127,13 @@ exports.create = (req, res) => {
     POST /api/Vendor/upadate
 */
 exports.update=(req,res)=>{
+   
+ var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
         const {_id,name,pan_no,gstin,city,contact,email,address,state} = req.body
      
          Vendor.findOneAndUpdate({_id:_id}, {$set:{name:name,pan_no:pan_no,gstin:gstin,contact:contact,email:email,address:address,state:state}}, {new: true}, function(err, doc){
@@ -161,8 +160,12 @@ exports.update=(req,res)=>{
          .catch(onError)
 }
 exports.uploadfile=(req,res)=>{
-
-
+ var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
 
 var myobj= req.body.data
 //let msg ='Success updating admin2!';

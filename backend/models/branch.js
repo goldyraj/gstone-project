@@ -16,13 +16,15 @@ const Branch = new Schema({
     address:String,
     city:String,
     state:String,
-  
+   created_at:  { type: Date},
+  updated_at:  { type: Date}
 })
 
 // create new User document
 Branch.statics.create = function(name,pan_no,gstin,dealer_type,branch_name,contact,email,address,city,state) {
+       var created_at=  Date.now();
     const Branch = new this({
-       name,pan_no,gstin,dealer_type,branch_name,contact,email,address,city,state       
+       name,pan_no,gstin,dealer_type,branch_name,contact,email,address,city,state ,created_at     
     })
 
     // return the Promise

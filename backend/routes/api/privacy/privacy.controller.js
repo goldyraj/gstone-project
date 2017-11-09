@@ -2,14 +2,23 @@ const Privacy = require('../../../models/privacy')
 //var csv=require('csv-parse');
 var fs=require('fs');
 
+  var usingItNow = function(req) {
+if(req.type=="agentuser"||req.type=="admin"){
+  return false;
+}else{
+   return true;
+}
 
+};
 exports.list = (req, res) => {
     // refuse if not an admin
-    // if(!req.decoded.admin) {
-    //     return res.status(403).json({
-    //         message: 'you are not an admin'
-    //     })
-    // }
+   //=========Authrise function
+ //   var myCallback=usingItNow(req.decoded)
+ // if(myCallback) {
+ //   return res.status(403).json({
+ //            message: 'you are not an authorise'
+ //        }) 
+ //    }
  Privacy.find({}).exec()
     .then(
         privacy=> {
@@ -21,25 +30,25 @@ exports.list = (req, res) => {
     GET /api/hsn/index
 */
 
-
-
-
 exports.create = (req, res) => {
     console.log(req.body)
-    const {description} = req.body
+    const {discription} = req.body
+    //=========Authrise function
+var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
     let newUser = null
-    console.log(description)
- // if(!req.decoded.admin) {
- //        return res.status(403).json({
- //            message: 'you are not an admin'
- //        })
- //    }
+   // console.log(discription)
+
     // create a new user if does not exist
     const create = (privacy) => {
         if(privacy) {
             throw new Error('Privay policy  exists')
         } else {
-            return Privacy.create(description)
+            return Privacy.create(discription)
         }
     }
     // count the number of the user
@@ -67,7 +76,7 @@ exports.create = (req, res) => {
     }
 
     // check username duplication
-    Privacy.findOneByUsername(description)
+    Privacy.findOneByUsername(discription)
     .then(create)
     .then(count)   
     .then(respond)
@@ -79,9 +88,17 @@ exports.create = (req, res) => {
     POST /api/HSN/update
 */
 exports.update=(req,res)=>{
-        const {_id,description} = req.body
+        const {_id,discription} = req.body
+        //=========Authrise function
+ var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
+          var updated_at=  Date.now();
      
-         Privacy.findOneAndUpdate({_id:_id}, {$set:{description:description
+         Privacy.findOneAndUpdate({_id:_id}, {$set:{discription:discription,updated_at:updated_at
           }}, {new: true}, function(err, doc){
     if(err){
         console.log("Something wrong when updating data!");
@@ -101,7 +118,7 @@ exports.update=(req,res)=>{
             message: error.message
         })
     }
-      Privacy.findOneByUsername(description)          
+      Privacy.findOneByUsername(discription)          
          .then(respond)
          .catch(onError)
 }

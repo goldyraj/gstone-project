@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const crypto = require('crypto')
 const config = require('../config')
-
+var mongoosePaginate = require('mongoose-paginate');
   
 const Client = new Schema({
     name: String,
@@ -16,14 +16,15 @@ const Client = new Schema({
     email: String,
     address: String,
     state: String,  
+       created_at:  { type: Date},
+  updated_at:  { type: Date}
 })
 
 // create new User document
 Client.statics.create = function(name,pan_no,gstin,city,dealer_type,display_name,contact,email,address,state) {
- 
-
+ var created_at=  Date.now();
     const Client = new this({
-     name,pan_no,gstin,city,dealer_type,display_name,contact,email,address,state       
+     name,pan_no,gstin,city,dealer_type,display_name,contact,email,address,state,created_at       
     })
 
     // return the Promise
@@ -35,4 +36,5 @@ Client.statics.findOneByUsername = function(name) {
         name        
     }).exec()
 }
+Client.plugin(mongoosePaginate);
 module.exports = mongoose.model('Client', Client)

@@ -14,6 +14,9 @@ const Invoice = new Schema({
     e_com_gstin:String,
     type:String,
     gtotal:String,
+
+     created_at:  { type: Date},
+  updated_at:  { type: Date},
     items:{}
 
           
@@ -22,9 +25,9 @@ const Invoice = new Schema({
 
 // create new User document
 Invoice.statics.create = function(name,invoice_no,date,gstin_no,pos,e_com_gstin,type,gtotal,items) {
-
+var created_at=  Date.now();
     const Invoice = new this({
-       name,invoice_no,date,gstin_no,pos,e_com_gstin,type,gtotal,items       
+       name,invoice_no,date,gstin_no,pos,e_com_gstin,type,gtotal,created_at,items       
     })
 
     // return the Promise

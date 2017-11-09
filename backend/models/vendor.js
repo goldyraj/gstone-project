@@ -12,14 +12,17 @@ const Vendor = new Schema({
     contact: String,
     email: String,
     address: String,
-    state: String
+    state: String,
+     created_at:  { type: Date},
+    updated_at:  { type: Date},
   
 })
 
 // create new User document
 Vendor.statics.create = function(name,pan_no,gstin,city,contact,email,address,state) {
+    var created_at=  Date.now();
      const Vendor = new this({
-        name,pan_no,gstin,city,contact,email,address,state       
+        name,pan_no,gstin,city,contact,email,address,state ,created_at      
     })
 
     // return the Promise

@@ -8,19 +8,19 @@ const config = require('../config')
 const Internal = new Schema({
     title: String,
     details: String,
+      link: String,
     date: String,
-    status:String
-  
+    status:String,
+   created_at:  { type: Date},
+  updated_at:  { type: Date}
 })
 
 // create new User document
-Internal.statics.create = function(title, details,date,status) {
- 
-
+Internal.statics.create = function(title, details,link,date,status) {
+var created_at=  Date.now();
     const Internal = new this({
-       title, details,date,status     
+       title, details,link,date,status ,created_at    
     })
-
     // return the Promise
     return Internal.save()
 }
@@ -31,8 +31,6 @@ Internal.statics.findOneByUsername = function(title) {
         title        
     }).exec()
 }
-
-
 
 Internal.plugin(mongoosePaginate);
 module.exports = mongoose.model('Internal', Internal)

@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const controller = require('./goods.controller')
+const controller = require('./services.controller')
 router.get('/list', controller.list)
 router.get('/index', controller.index)
 router.delete('/delete/:id', controller.delete)

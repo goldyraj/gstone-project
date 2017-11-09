@@ -6,11 +6,11 @@ const Invoice = require('../../../models/invoice')
 
 exports.list = (req, res) => {
     // refuse if not an admin
-    if(!req.decoded.admin) {
-        return res.status(403).json({
-            message: 'you are not an admin'
-        })
-    }
+      // if(!req.decoded.admin) {
+    //     return res.status(403).json({
+    //         message: 'you are not an admin'
+    //     })
+    // }
  Invoice.find({}).exec()
     .then(
         invoice=> {

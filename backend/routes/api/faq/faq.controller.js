@@ -1,10 +1,24 @@
 const Faq = require('../../../models/faq')
+
+  var usingItNow = function(req) {
+if(req.type=="agentuser"||req.type=="admin"){
+  return false;
+}else{
+   return true;
+}
+
+};
 /* 
     GET /api/State/list
 */
 exports.index=(req,res)=>{
 //console.log(req);
 var query={};
+// if(!req.decoded.admin||!req.decoded.type===req.app.get('usertype')) {
+//    return res.status(403).json({
+//             message: 'you are not an authorise'
+//         }) 
+//     }
 req.query.limit=parseInt(req.query.limit);
 if(req.query.search && req.query.search.length>0){    
     query={question:req.query.search}
@@ -43,11 +57,12 @@ Faq.paginate(query,option).then( faq=>res.json(faq)
 
 exports.list = (req, res) => {
     // refuse if not an admin
-    if(!req.decoded.admin) {
-        return res.status(403).json({
-            message: 'you are not an admin'
-        })
-    }
+    //=========Authrise function
+// if(!req.decoded.admin||!req.decoded.type===req.app.get('usertype')) {
+//    return res.status(403).json({
+//             message: 'you are not an authorise'
+//         }) 
+//     }
  Faq.find({}).exec()
     .then(
         faq=> {
@@ -59,11 +74,13 @@ exports.list = (req, res) => {
 exports.create = (req, res) => {
     const {question, answer} = req.body
     let newUser = null
- // if(!req.decoded.admin) {
- //        return res.status(403).json({
- //            message: 'you are not an admin'
- //        })
- //    }
+ //=========Authrise function
+var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
     // create a new user if does not exist
     const create = (faq) => {
        
@@ -112,8 +129,15 @@ exports.create = (req, res) => {
 */
 exports.update=(req,res)=>{
         const {_id, question, answer} = req.body
-     
-         Faq.findOneAndUpdate({_id:_id}, {$set:{question:question,answer:answer}}, {new: true}, function(err, doc){
+        //=========Authrise function
+var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
+     var updated_at=  Date.now();
+         Faq.findOneAndUpdate({_id:_id}, {$set:{question:question,answer:answer,updated_at:updated_at}}, {new: true}, function(err, doc){
     if(err){
         console.log("Something wrong when updating data!");
     }

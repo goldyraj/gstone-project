@@ -37,7 +37,7 @@ export class AdminAboutUsComponent implements OnInit {
   }
   getAboutUsList() {
     console.log('list called');
-    this.http.get('http://localhost:3000/api/about/list?token='+this.access_token).subscribe(data => {
+    this.http.get('http://localhost:3000/api/about/list').subscribe(data => {
       this.aboutUs = data.json().about[0];
       this.aboutUs_ID = data.json().about[0]._id;
 
@@ -75,14 +75,14 @@ export class AdminAboutUsComponent implements OnInit {
       };
       console.log("body",body);
 
-      this.url = "http://localhost:3000/api/about/update?token="+this.access_token;
+      this.url = "http://localhost:3000/api/about/update";
       return this.http.put(this.url, body, requestOptions)
         .subscribe(
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeEditModal();
           this.submittedEdit = false;
-          alert(response.json().message);
+          this.getAboutUsList();
         },
         error => {
           console.log("error", error.message);

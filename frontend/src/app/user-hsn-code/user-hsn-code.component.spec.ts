@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NotificationComponent } from './notification.component';
+import { UserHsnCodeComponent } from './user-hsn-code.component';
 
-describe('NotificationComponent', () => {
-  let component: NotificationComponent;
-  let fixture: ComponentFixture<NotificationComponent>;
+describe('UserHsnCodeComponent', () => {
+  let component: UserHsnCodeComponent;
+  let fixture: ComponentFixture<UserHsnCodeComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NotificationComponent ]
+      declarations: [ UserHsnCodeComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NotificationComponent);
+    fixture = TestBed.createComponent(UserHsnCodeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

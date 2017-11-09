@@ -2,16 +2,21 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
+import { PagerService } from '../service/pager.service';
+import * as _ from 'underscore'
 
 @Component({
   selector: 'app-admin-state',
   templateUrl: './admin-state.component.html',
-  styleUrls: ['./admin-state.component.css']
+  styleUrls: ['./admin-state.component.css'],
+  providers: [PagerService]
 })
 export class AdminStateComponent implements OnInit {
 
   @ViewChild('closeBtn') closeBtn: ElementRef;
   @ViewChild('closeBtn2') closeBtn2: ElementRef;
+  @ViewChild('closeBtn3') closeBtn3: ElementRef;
+  
   modelHide = '';
   url = "";
   StateVal = {};
@@ -21,6 +26,13 @@ export class AdminStateComponent implements OnInit {
     name: 'ox',
     country: { id: 0, name: 'Select Status' }
   }
+
+  // pager object
+  pager: any = {};
+
+  // paged items
+  pagedItems: any[];
+
   countries = [
     { id: 0, name: 'Select Status' },
     { id: 1, name: 'c1' },
@@ -29,20 +41,23 @@ export class AdminStateComponent implements OnInit {
     { id: 4, name: 'c4' }
   ]
 
-  Paging = {
-    page: 1,
-    limit: 5
-  };
-  TotalPages: number;
-  pageSize: number;
-  currentPage: number;
+  // TotalPages: number;
+  // pageSize: number;
+  // currentPage: number;
+
   public myForm: FormGroup; // our model driven form
   public myFormEdit: FormGroup;
   public submitted: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
   public stateRowData;
-  constructor(private _fb: FormBuilder, private http: Http) {
-    this.getStateList();
+  access_token = "";
+  constructor(private _fb: FormBuilder, private http: Http, private pagerService: PagerService) {
+    // this.currentPage=1;
+    this.access_token = localStorage.getItem("admin_token");
+    console.log("admin token", this.access_token);
+    this.pager.currentPage = 1;
+    // this.setPage(this.pager.currentPage);
+    this.getStateList(this.pager.currentPage);
     console.log("cusntor call");
     this.person.country = this.countries.filter(c => c.id === this.person.country.id)[0];
   }
@@ -74,11 +89,9 @@ export class AdminStateComponent implements OnInit {
 
     if (isValid == true) {
 
-      var access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
       const headers = new Headers();
 
       headers.append('Content-Type', 'application/json');
-      headers.append('x-access-token', access_token);
       const requestOptions = new RequestOptions({ headers: headers });
       const body = {
         "name": this.myForm.value.statename,
@@ -91,10 +104,11 @@ export class AdminStateComponent implements OnInit {
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeModal();
-          alert(response.json().message);
-          this.getStateList();
+          // alert(response.json().message);
+          this.getStateList(this.pager.currentPage);
           this.myForm.reset();
           this.myForm.get("country").setValue("Select Status");
+          this.submitted = false;
         },
         error => {
           console.log("error", error.message);
@@ -105,14 +119,27 @@ export class AdminStateComponent implements OnInit {
     }
   }
 
-  getStateList() {
-    this.http.get('http://localhost:3000/api/state/index?limit=' + this.Paging.limit + '&page=' + this.Paging.page).subscribe(data => {
+  getStateList(page: number) {
+    this.pager.currentPage = page;
+    this.http.get('http://localhost:3000/api/state/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + this.pager.currentPage).subscribe(data => {
       this.stateList = data.json().docs;
-      this.TotalPages = data.json().total;
-      this.pageSize = this.Paging.limit;
-      this.currentPage = this.Paging.page;
+      // this.pager.TotalPages = data.json().total;
+      this.pager.pageSize = data.json().limit;
+      this.pager.totalItems = data.json().total;
+      this.setPage();
       console.log("State  PArse", this.stateList);
     });
+  }
+
+  setPage() {
+    if (this.pager.currentPage < 1 || this.pager.currentPage > this.pager.TotalPages) {
+      return;
+    }
+
+    this.pager = this.getPager(this.pager.totalItems, this.pager.currentPage, this.pager.pageSize);
+    console.log("pager", this.pager);
+    // this.getStateList();
+    this.pagedItems = this.stateList;
   }
 
   private closeModal(): void {
@@ -123,24 +150,14 @@ export class AdminStateComponent implements OnInit {
     this.closeBtn2.nativeElement.click();
   }
 
-  nextPage() {
-    console.log("paging");
-    if (this.Paging.page < this.TotalPages) {
-      this.Paging.page++;
-      this.getStateList();
-    }
-  }
-
-  previousPage() {
-    console.log("paging");
-    if (this.Paging.page > 1) {
-      this.Paging.page--;
-      this.getStateList();
-    }
+  private closeDeleteModal()
+  {
+    this.closeBtn3.nativeElement.click();
   }
 
   editStateRecords(data) {
     var temp;
+    
     if (data) {
       console.log("DATA", data);
 
@@ -148,7 +165,7 @@ export class AdminStateComponent implements OnInit {
       this.myFormEdit.get("statecode").setValue(data.code);
       this.myFormEdit.get("country").setValue(data.country);
     }
-    this.country=data.country;
+    this.country = data.country;
     this.stateRowData = data;
   }
 
@@ -160,31 +177,29 @@ export class AdminStateComponent implements OnInit {
 
     // if (isValid == true && this.myFormEdit.value.selectedstateDropdown!='Select State') {
     if (isValid == true) {
-
-      var access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
       const headers = new Headers();
 
       headers.append('Content-Type', 'application/json');
-      headers.append('x-access-token', access_token);
+      // headers.append('x-access-token', access_token);
       const requestOptions = new RequestOptions({ headers: headers });
-
+      console.log("ID",this.stateRowData._id);
       const body = {
         "_id": this.stateRowData._id,
         "name": this.myFormEdit.value.descriptionEdit,
         "code": this.myFormEdit.value.hsn_code_edit
       };
 
-      this.url = "http://localhost:3000/api/state/update";
+      this.url = "http://localhost:3000/api/state/update?token="+this.access_token;
       return this.http.put(this.url, body, requestOptions)
         .subscribe(
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeEditModal();
-          this.submitted = false;
           // this.hsnCodeData.push(body);
-          alert(response.json().message);
+          // alert(response.json().message);
           // this.goodsAndServicesDataList[this.rowDataIndex]=body;
-          this.getStateList();
+          this.getStateList(this.pager.currentPage);
+          this.submitted = false;
         },
         error => {
           // this.closeEditModal();
@@ -196,4 +211,77 @@ export class AdminStateComponent implements OnInit {
     }
   }
 
+  getPager(totalItems: number, currentPage: number = 1, pageSize: number) {
+    // calculate total pages
+    let totalPages = Math.ceil(totalItems / pageSize);
+
+    let startPage: number, endPage: number;
+    if (totalPages <= 10) {
+      // less than 10 total pages so show all
+      startPage = 1;
+      endPage = totalPages;
+    } else {
+      // more than 10 total pages so calculate start and end pages
+      if (currentPage <= 6) {
+        startPage = 1;
+        endPage = 10;
+      } else if (currentPage + 4 >= totalPages) {
+        startPage = totalPages - 9;
+        endPage = totalPages;
+      } else {
+        startPage = currentPage - 5;
+        endPage = currentPage + 4;
+      }
+    }
+
+    // calculate start and end item indexes
+    let startIndex = (currentPage - 1) * pageSize;
+    let endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
+
+    // create an array of pages to ng-repeat in the pager control
+    let pages = _.range(startPage, endPage + 1);
+
+    // return object with all pager properties required by the view
+    return {
+      totalItems: totalItems,
+      currentPage: currentPage,
+      pageSize: pageSize,
+      totalPages: totalPages,
+      startPage: startPage,
+      endPage: endPage,
+      startIndex: startIndex,
+      endIndex: endIndex,
+      pages: pages
+    };
+  }
+
+  deleteRecord() {
+    const headers = new Headers();
+
+    headers.append('Content-Type', 'application/json');
+
+    const requestOptions = new RequestOptions({ headers: headers });
+    console.log("_ID___", this.stateRowData._id);
+
+    this.url = "http://localhost:3000/api/state/delete/" + this.stateRowData._id;
+    return this.http.delete(this.url, requestOptions)
+      .subscribe(
+      response => {
+        console.log("suceessfull data", response.json().message);
+        this.closeDeleteModal();
+
+        // this.hsnCodeData.push(body);
+        // alert(response.json().message);
+        this.getStateList(this.pager.currentPage);
+      },
+      error => {
+        console.log("error", error.message);
+        console.log(error.text());
+      }
+      );
+  }
+
+  recordToDelete(item) {
+    this.stateRowData = item;
+  }
 }

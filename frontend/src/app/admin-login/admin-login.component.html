@@ -1,51 +1,60 @@
-<div class="login-box">
-  <div class="login-logo">
-    <a href="index.html"><b>GST1</b></a>
-  </div>
-  <!-- /.login-logo -->
-  <div class="login-box-body">
-    <p class="login-box-msg">Sign in to start your session</p>
-
-    <form action="" method="post">
-      <div class="form-group has-feedback">
-        <input type="email" class="form-control" placeholder="Email">
-        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-      </div>
-      <div class="form-group has-feedback">
-        <input type="password" class="form-control" placeholder="Password">
-        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-      </div>
-      <div class="row">
-        <div class="col-xs-7 col-md-offset-1">
-          <div class="checkbox icheck">
-            <label>
-              <input type="checkbox"> Remember Me
-            </label>
-          </div>
-        </div>
-        <!-- /.col -->
-        <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
-        </div>
-        <!-- /.col -->
-      </div>
-    </form>
-
-    <div class="social-auth-links text-center">
-      <p>- OR -</p>
-      <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using
-        Facebook</a>
-      <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using
-        Google+</a>
+<body class="hold-transition login-page">
+  <div class="login-box">
+    <div class="login-logo">
+      <a href="index.html">
+        <b>GSTONE</b>
+      </a>
     </div>
-    <!-- /.social-auth-links -->
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+      <p class="login-box-msg">Sign in</p>
 
-    <a href="#">I forgot my password</a><br>
-    <a href="register.html" class="text-center">Register a new membership</a>
+      <form [formGroup]="adminLoginForm" novalidate (ngSubmit)="login(adminLoginForm.valid)">
+        <div class="form-group has-feedback">
+          <!-- <input type="email" class="form-control" formControlName="email" placeholder="Email">
+          <small [hidden]="adminLoginForm.controls.email.valid || (adminLoginForm.controls.email.pristine && !submitted)">
+            Email is required .
+          </small> -->
+          <input type="text" class="form-control" formControlName="email" placeholder="Email Id" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
+          <small [hidden]="adminLoginForm.controls.email.valid || (adminLoginForm.controls.email.pristine && !submitted)">
+            <span style="color:red" [hidden]="adminLoginForm.controls.email.valid">Email is required </span>
+            <b [hidden]="adminLoginForm.controls.email.pristine">joe@abc.com</b>
+          </small>
+        </div>
+        
+        <div class="form-group has-feedback">
+          <input type="password" class="form-control" formControlName="password" placeholder="Password">
+          <small [hidden]="adminLoginForm.controls.password.valid || (adminLoginForm.controls.password.pristine && !submitted)">
+            Password is required .
+          </small>
+          <!-- <span class="glyphicon glyphicon-lock form-control-feedback"></span> -->
+        </div>
+        <div class="row">
+         
+          <!-- /.col -->
+          <div class="col-xs-5">
+            <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+          </div>
+          <!-- /.col -->
+           <div class="col-xs-7 text-right">
+              <label>
+                 <a href="#">Forget password ?</a>
+              </label>
+          </div> 
+        </div>
+      </form>
 
+      <!-- /.social-auth-links -->
+
+     
+      <br>
+      <!-- <a href="register.html" class="text-center">Register a new membership</a> -->
+
+    </div>
+    <!-- /.login-box-body -->
   </div>
-  <!-- /.login-box-body -->
-</div>
-<!-- /.login-box -->
+  <!-- /.login-box -->
 
-<!-- jQuery 3 -->
+  <!-- jQuery 3 -->
+
+</body>

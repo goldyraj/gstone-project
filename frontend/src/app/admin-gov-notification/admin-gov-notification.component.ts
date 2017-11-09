@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import * as _ from 'underscore';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
@@ -18,20 +19,23 @@ export class AdminGovNotificationComponent implements OnInit {
   url = "";
   notiRowData;
   rowDataIndex = "";
-  Paging = {
-    page: 1,
-    limit: 2
-  };
-  TotalPages: number;
-  pageSize: number;
-  currentPage: number;
+  // pager object
+  pager: any = {};
+
+  // paged items
+  pagedItems: any[];
+  
   public govNotiForm: FormGroup; // our model driven form
   public editGovNotiForm: FormGroup; // our model driven form
   public submitted: boolean; // keep track on whether form is submitted
   public submittedEdit: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
+  access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
+
   constructor(private _fb: FormBuilder, private http: Http) {
-    this.getNotificationList();
+    this.pager.currentPage=1;
+    this.access_token = localStorage.getItem("admin_token");
+    this.getNotificationList(this.pager.currentPage);
   }
 
   ngOnInit() {
@@ -47,17 +51,14 @@ export class AdminGovNotificationComponent implements OnInit {
     });
   }
 
-
-  getNotificationList() {
+  getNotificationList(page: number) {
+    this.pager.currentPage=page;
     console.log('list called');
-    this.http.get('http://localhost:3000/api/notification/index?limit=' + this.Paging.limit + '&page=' + this.Paging.page + '&sortBy=title&search=').subscribe(data => {
+    this.http.get('http://localhost:3000/api/notification/index?token='+this.access_token+'&limit='+5 + '&page=' + this.pager.currentPage + '&sortBy=title&search=').subscribe(data => {
       this.notificationList = data.json().docs;
-      this.TotalPages = data.json().total;
-      this.pageSize = this.Paging.limit;
-      this.currentPage = this.Paging.page;
-      console.log("pagecount", )
-      console.log("State  PArse", this.notificationList);
-      console.log("TotalPages", this.TotalPages);
+      this.pager.pageSize = data.json().limit;
+      this.pager.totalItems=data.json().total;
+      this.setPage();
     });
   }
 
@@ -81,11 +82,11 @@ export class AdminGovNotificationComponent implements OnInit {
 
     if (isValid == true) {
 
-      var access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
+      // var access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
       const headers = new Headers();
 
       headers.append('Content-Type', 'application/json');
-      headers.append('x-access-token', access_token);
+      // headers.append('x-access-token', access_token);
       const requestOptions = new RequestOptions({ headers: headers });
 
       const body = {
@@ -95,7 +96,7 @@ export class AdminGovNotificationComponent implements OnInit {
         "link": this.editGovNotiForm.value.link
       };
 
-      this.url = "http://localhost:3000/api/notification/update";
+      this.url = "http://localhost:3000/api/notification/update?token="+this.access_token;
       return this.http.put(this.url, body, requestOptions)
         .subscribe(
         response => {
@@ -103,7 +104,6 @@ export class AdminGovNotificationComponent implements OnInit {
           this.closeEditModal();
           this.submittedEdit = false;
           alert(response.json().message);
-          this.getNotificationList();
         },
         error => {
           console.log("error", error.message);
@@ -120,24 +120,21 @@ export class AdminGovNotificationComponent implements OnInit {
 
   deleteNotification() {
     console.log("delete api", this.notiRowData._id);
-
-
-    var access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
+    // var access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
     const headers = new Headers();
 
     headers.append('Content-Type', 'application/json');
-    headers.append('x-access-token', access_token);
+    // headers.append('x-access-token', access_token);
     const requestOptions = new RequestOptions({ headers: headers });
 
     this.url = "http://localhost:3000/api/notification/delete/" + this.notiRowData._id;
-    return this.http.delete(this.url,  requestOptions)
+    return this.http.delete(this.url, requestOptions)
       .subscribe(
       response => {
         console.log("suceessfull data", response.json().message);
         this.closeDeleteModal();
         this.submittedEdit = false;
         alert(response.json().message);
-        this.getNotificationList();
       },
       error => {
         console.log("error", error.message);
@@ -155,46 +152,29 @@ export class AdminGovNotificationComponent implements OnInit {
 
     if (isValid == true) {
 
-      var access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
+      // var access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
       const headers = new Headers();
 
       headers.append('Content-Type', 'application/json');
-      headers.append('x-access-token', access_token);
+      // headers.append('x-access-token', access_token);
       const requestOptions = new RequestOptions({ headers: headers });
       const body = {
         "title": this.govNotiForm.value.title,
         "description": this.govNotiForm.value.description,
         "link": this.govNotiForm.value.link
       };
-      this.url = "http://localhost:3000/api/notification/create";
+      this.url = "http://localhost:3000/api/notification/create?token="+this.access_token;
       return this.http.post(this.url, body, requestOptions)
         .subscribe(
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeModal();
-          alert(response.json().message);
-          this.getNotificationList();
         },
         error => {
           console.log("error", error.message);
           console.log(error.text());
         }
         );
-    }
-  }
-  nextPage() {
-    console.log("paging");
-    if (this.Paging.page < this.TotalPages) {
-      this.Paging.page++;
-      this.getNotificationList();
-    }
-  }
-
-  previousPage() {
-    console.log("paging");
-    if (this.Paging.page > 1) {
-      this.Paging.page--;
-      this.getNotificationList();
     }
   }
 
@@ -206,6 +186,61 @@ export class AdminGovNotificationComponent implements OnInit {
   }
   private closeDeleteModal(): void {
     this.closeBtn3.nativeElement.click();
+  }
+
+  setPage() {
+    if (this.pager.currentPage < 1 || this.pager.currentPage > this.pager.TotalPages) {
+      return;
+    }
+
+    this.pager = this.getPager(this.pager.totalItems, this.pager.currentPage, this.pager.pageSize);
+    console.log("pager", this.pager);
+    // this.getStateList();
+    this.pagedItems = this.notificationList;
+  }
+
+  getPager(totalItems: number, currentPage: number = 1, pageSize: number) {
+    // calculate total pages
+    let totalPages = Math.ceil(totalItems / pageSize);
+
+    let startPage: number, endPage: number;
+    if (totalPages <= 10) {
+      // less than 10 total pages so show all
+      startPage = 1;
+      endPage = totalPages;
+    } else {
+      // more than 10 total pages so calculate start and end pages
+      if (currentPage <= 6) {
+        startPage = 1;
+        endPage = 10;
+      } else if (currentPage + 4 >= totalPages) {
+        startPage = totalPages - 9;
+        endPage = totalPages;
+      } else {
+        startPage = currentPage - 5;
+        endPage = currentPage + 4;
+      }
+    }
+
+    // calculate start and end item indexes
+    let startIndex = (currentPage - 1) * pageSize;
+    let endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
+
+    // create an array of pages to ng-repeat in the pager control
+    let pages = _.range(startPage, endPage + 1);
+
+    // return object with all pager properties required by the view
+    return {
+      totalItems: totalItems,
+      currentPage: currentPage,
+      pageSize: pageSize,
+      totalPages: totalPages,
+      startPage: startPage,
+      endPage: endPage,
+      startIndex: startIndex,
+      endIndex: endIndex,
+      pages: pages
+    };
   }
 
 }

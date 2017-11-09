@@ -1,0 +1,391 @@
+
+
+
+<!-- Start Slider -->
+
+<!-- Start Slider -->
+<section id="unicod-slider">
+	<div class="slide-main ">
+		<!-- Single Slider -->
+
+
+		<div id="myCarousel" class="carousel slide" data-ride="carousel">
+			<!-- Indicators -->
+			<ol class="carousel-indicators">
+				<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+				<li data-target="#myCarousel" data-slide-to="1"></li>
+				<li data-target="#myCarousel" data-slide-to="2"></li>
+			</ol>
+
+			<!-- Wrapper for slides -->
+			<div class="carousel-inner">
+
+				<div class="item active " style="height:400px;">
+					<div style="position: absolute;">
+						<img src=".././assets/images/slider/5.jpg" alt="Los Angeles" style="width:100%; ">
+					</div>
+					<div class="slide-text left" style="position: relative; top: 25px; left: 500px;">
+						<div class="slider-inner">
+							<span>
+								<strong>Real time data sharing between business</strong>
+							</span>
+							<h1 style="color: black;">Complete Solution For All GST Compliance</h1>
+							<p style="color: black;">Working on a cloud based GST software is great.</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="item" style="height:400px;">
+					<div style="position: absolute; left:250px;">
+						<img src=".././assets/images/slider/6.jpg" alt="Chicago" style="width:100%; ">
+					</div>
+					<div class="slide-text left" style="position: relative; top: 20px; left: 50px;">
+						<div class="slider-inner">
+							<span>
+								<strong>Real time data sharing between business</strong>
+							</span>
+							<h1 style="color: black;">Complete Solution For All GST Compliance</h1>
+							<p style="color: black;">Working on a cloud based GST software is great.</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="item" style="height:400px;">
+					<div style="position: absolute;left:250px;">
+						<img src=".././assets/images/slider/4.jpg" alt="New york" style="width:100%; ">
+					</div>
+					<div class="slide-text left" style="position: relative; top: 20px; left: 10px;">
+						<div class="slider-inner">
+							<span>
+								<strong>Real time data sharing between business</strong>
+							</span>
+							<h1 style="color: black;">Complete Solution For All GST Compliance</h1>
+							<p style="color: black;">Working on a cloud based GST software is great.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Left and right controls -->
+			<a class="left carousel-control" href="#myCarousel" data-slide="prev">
+				<span class="glyphicon glyphicon-chevron-left"></span>
+				<span class="sr-only">Previous</span>
+			</a>
+			<a class="right carousel-control" href="#myCarousel" data-slide="next">
+				<span class="glyphicon glyphicon-chevron-right"></span>
+				<span class="sr-only">Next</span>
+			</a>
+		</div>
+
+		<!-- End Single Slider -->
+
+
+	</div>
+</section>
+
+<!-- End Single Slider -->
+<!-- pricing Section -->
+<!-- NOTIFICATIONS  -->
+<section class="unicod-section unicod-pricing-fild" id="pricing">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4 col-sm-6">
+				<div class="pricing-tabile">
+					<div class="unicod-btn-black">
+						<h3> NOTIFICATION / CIRCULARS</h3>
+					</div>
+					<ul class="tabile">
+						<marquee behavior="scroll" direction="up" onMouseOver="this.stop();" height="230" scrollamount="2" onMouseOut="this.start();">
+							<li *ngFor="let item of notificationList ;let i = index;">
+								<i class="fa fa-check"></i> &nbsp;
+								<a href="{{item.link}}">{{item.title}}</a>
+							</li>
+						</marquee>
+					</ul>
+					<a class="btn-block btn btn-primary" routerLink="/notification">View More</a>
+				</div>
+			</div>
+			<div class="col-md-4 col-sm-6">
+				<div class="pricing-tabile">
+					<div class="unicod-btn-black">
+						<h3> GSTONE UPDATE</h3>
+					</div>
+
+					<ul class="tabile">
+						<marquee behavior="scroll" direction="up" onMouseOver="this.stop();" height="230" scrollamount="2" onMouseOut="this.start();">
+							<li *ngFor="let item of internalUpdateList ;let i = index;">
+								<i class="fa fa-check"></i> &nbsp;
+								<a href="{{item.link}}">{{item.title}}</a>
+							</li>
+						</marquee>
+					</ul>
+					<a class="btn-block btn btn-primary" routerLink="/update">View More</a>
+				</div>
+			</div>
+			<div class="col-md-4 col-sm-6">
+				<div class="pricing-tabile Business-idea">
+					<div class="unicod-btn-black" align="center">
+						<h3>VIDEOS</h3>
+					</div>
+					<ul class="tabile">
+						<marquee behavior="scroll" direction="up" onMouseOver="this.stop();" height="230" scrollamount="2" onMouseOut="this.start();">
+							<li *ngFor="let item of notificationList ;let i = index;">
+								<i class="fa fa-check"></i> &nbsp;
+								<a href="{{item.link}}">{{item.title}}</a>
+							</li>
+						</marquee>
+					</ul>
+					<a class="btn-block btn btn-primary" routerLink="/videos">View More</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+
+<!-- REGISTRATION Start -->
+
+<div class="modal fade bs-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close modal-text" data-dismiss="modal" aria-label="Close">
+					<span class="modal-text" aria-hidden="true">X</span>
+				</button>
+				<!--<h4 class="modal-title modal-text"> REGISTRATION</h4>-->
+			</div>
+			<div class="modal-body">
+				<div class="service-section">
+					<div class="row section-bottom-20">
+						<div class="col-md-1 col-sm-1"></div>
+						<div class="col-md-10 col-sm-10">
+							<div class="col-md-4 col-sm-6 text-center">
+								<div class="unicod-service-col">
+									<!-- <h4>&nbsp;<br>Business User<br> &nbsp;</h4> -->
+
+									<h4>&nbsp;
+										<br>Customer
+										<br> &nbsp;</h4>
+								</div>
+								<a  data-toggle="modal" data-target=".bs-user-lg-edit">
+									<button class="btn btn-primary btn-sm" data-target=".bs-REGISTRATION2-lg" data-dismiss="modal" data-toggle="modal"  (click)="selectType('agentuser')">Select</button>
+									<!-- <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" data-toggle="modal" value="Customer" data-target=".bs-REGISTRATION2-lg">Select</button> -->
+								  </a>
+							</div>
+							<div class="col-md-4 col-sm-6 text-center">
+								<div class="unicod-service-col">
+									<!-- <h4>Charted Accountant <br> Associate<br> Tax Practioner</h4> -->
+									<h4>&nbsp;
+										<br> Associates
+										<br> &nbsp;</h4>
+								</div>
+								<a  data-toggle="modal" data-target=".bs-user-lg-edit">
+										<button class="btn btn-primary btn-sm" data-target=".bs-REGISTRATION2-lg" data-dismiss="modal" data-toggle="modal"  (click)="selectType('associates')">Select</button>
+										<!-- <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" data-toggle="modal" value="Customer" data-target=".bs-REGISTRATION2-lg">Select</button> -->
+									  </a>
+								<!-- <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" data-toggle="modal" value="Associates" data-target=".bs-REGISTRATION2-lg">Select</button> -->
+							</div>
+							<div class="col-md-4 col-sm-6 text-center">
+								<div class="unicod-service-col">
+									<h4>&nbsp;
+										<br>Large Enterprise
+										<br>&nbsp;</h4>
+								</div>
+								<a  data-toggle="modal" data-target=".bs-user-lg-edit">
+										<button class="btn btn-primary btn-sm" data-target=".bs-REGISTRATION2-lg" data-dismiss="modal" data-toggle="modal"  (click)="selectType('enterprise')">Select</button>
+										<!-- <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" data-toggle="modal" value="Customer" data-target=".bs-REGISTRATION2-lg">Select</button> -->
+									  </a>
+								<!-- <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" data-toggle="modal" value="Large Enterprise" data-target=".bs-REGISTRATION2-lg">Select</button> -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- REGISTRATION End -->
+
+<!-- After REGISTRATION Form Start -->
+
+<div class="modal fade bs-REGISTRATION2-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" #closeBtn aria-label="Close">
+					<span class="modal-text" aria-hidden="true">X</span>
+				</button>
+				<h4 class="modal-title modal-text text-center">
+					<b>REGISTRATION</b>
+				</h4>
+			</div>
+			<div class="modal-body">
+				<div class="service-section">
+					<div class="row">
+						<div class="col-md-1 col-sm-1"></div>
+						<div class="col-md-10 col-sm-10">
+							<form [formGroup]="myForm" novalidate (ngSubmit)="saveReg(myForm.valid)">
+								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+									<input type="text" class="form-control" formControlName="name" placeholder="Name" >
+									<small [hidden]="myForm.controls.name.valid || (myForm.controls.name.pristine && !submitted)">
+										Name is required 
+									</small>
+								</div>
+								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+									<input type="text" class="form-control" formControlName="contact" placeholder="Contact No.">
+									<small [hidden]="myForm.controls.contact.valid || (myForm.controls.contact.pristine && !submitted)">
+										Contact is required (minimum 5 characters).
+									</small>
+								</div>
+								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+									<input type="text" class="form-control" formControlName="pan_no" placeholder="PAN No." pattern="[A-Za-z]{5}\d{4}[A-Za-z]{1}">
+									<small [hidden]="myForm.controls.pan_no.valid || (myForm.controls.pan_no.pristine && !submitted)">
+										<span style="color:red" [hidden]="myForm.controls.pan_no.valid">Pan No is required.</span>
+										<b [hidden]="myForm.controls.pan_no.pristine">YHSDS2345E</b>
+									</small>
+								</div>
+								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+									<input type="text" class="form-control" formControlName="email" placeholder="Email Id" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
+									<small [hidden]="myForm.controls.email.valid || (myForm.controls.email.pristine && !submitted)">
+										<span style="color:red" [hidden]="myForm.controls.email.valid">Email is required </span>
+										<b [hidden]="myForm.controls.email.pristine">joe@abc.com</b>
+									</small>
+
+								</div>
+								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+									<input type="text" class="form-control" formControlName="gstin" placeholder="GSTIN" name="gstin" id="gstin">
+									<small [hidden]="myForm.controls.gstin.valid || (myForm.controls.gstin.pristine && !submitted)">
+										GSTIN is required (minimum 5 characters).
+									</small>
+								</div>
+								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+									<input type="text" class="form-control" formControlName="address" placeholder="Address" name="address" id="address">
+									<small [hidden]="myForm.controls.address.valid || (myForm.controls.address.pristine && !submitted)">
+										Address is required (minimum 5 characters).
+									</small>
+								</div>
+
+								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+									<input type="text" class="form-control" placeholder="City" formControlName="city" name="city" id="city">
+									<small [hidden]="myForm.controls.city.valid || (myForm.controls.city.pristine && !submitted)">
+										City is required (minimum 5 characters).
+									</small>
+								</div>
+								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+									<select class="form-control">
+										<option value="" selected="selected"> -- Select State -- </option>
+										<option value="">Jabalpur</option>
+										<option value="">Bhopal</option>
+										<option value="">Raipur</option>
+									</select>
+								</div>
+								<div class="col-md-6 col-sm-6 col-xs-12 form-group">				
+										<input type="password" class="form-control" formControlName="password" placeholder="Paasword" name="paasword" id="paasword" required>
+										<small [hidden]="myForm.controls.password.valid || (myForm.controls.password.pristine && !submitted)">
+												Password is required (minimum 5 characters).
+											</small>
+									 </div>			 
+									 <div class="col-md-6 col-sm-6 col-xs-12 form-group">				
+										<input type="password" class="form-control" formControlName="confirm_paasword" placeholder="Confirm Paasword" name="confirm_paasword" id="confirm_paasword" required>
+										<small [hidden]="myForm.controls.confirm_paasword.valid || (myForm.controls.confirm_paasword.pristine && !submitted)">
+												Password is required (minimum 5 characters).
+											</small>
+									 </div>	
+
+								<div class="col-md-12 col-sm-12 col-xs-12 form-group" align="center">
+									<button type="submit" class="btn btn-primary">Create</button>
+									<button type="button" class="btn btn-primary" data-dismiss="modal" value="Cancel">
+										Cancel
+									</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade bs-login-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span class="modal-text" aria-hidden="true">X</span>
+				</button>
+				<h4 class="modal-title modal-text text-center">
+					<b>LOGIN</b>
+				</h4>
+			</div>
+			<div class="modal-body">
+				<div class="service-section">
+					<div class="row">
+						<form #form="ngForm" (ngSubmit)="submitForm(form.value)">
+							<div class="col-md-12 col-sm-12 col-xs-12">
+								<div class=" col-md-12 col-sm-12 col-xs-12 form-group">
+									<!-- <label>Username:</label> -->
+									<input type="text" class="form-control" placeholder="Username" name="username" ngModel required>
+								</div>
+
+								<div class=" col-md-12 col-sm-12 col-xs-12 form-group">
+									<!-- <label>Password</label> -->
+									<input type="Password" class="form-control" placeholder="Password" name="password" ngModel required>
+								</div>
+								<div class=" col-md-12 col-sm-12 col-xs-12 form-group">
+									<button type="submit" class="btn btn-success btn-block">Login</button>
+								</div>
+							</div>
+						</form>
+					</div>
+					<button type="button" class="btn btn-link pull-left" data-dismiss="modal" data-toggle="modal" data-target=".bs-modal-lg">Create Account</button>
+					<button type="button" class="btn btn-link" data-dismiss="modal" data-toggle="modal" data-target=".bs-ForgotPassword-sm">Forgot Password</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- login end Start -->
+<!-- Forgot password  -->
+
+<div class="modal fade bs-ForgotPassword-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span class="modal-text" aria-hidden="true">X</span>
+				</button>
+				<h4 class="modal-title modal-text">
+					<b> Forgot Password</b>
+				</h4>
+			</div>
+			<div class="modal-body">
+				<div class="service-section">
+					<div class="row">
+						<form action="user.html" enctype="multipart/form-data">
+							<div class="col-md-12 col-sm-12 col-xs-12">
+								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
+									<input type="text" class="form-control" placeholder="Email Id" name="email" id="email" required>
+								</div>
+
+								<div class="form-group  text-center">
+									<input type="button" class="btn btn-primary" data-dismiss="modal" value="Forgot Password">
+								</div>
+							</div>
+						</form>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- End Forgot password  -->
+
+
+<!-- Modal -->
+

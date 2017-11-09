@@ -2,8 +2,9 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
-import * as _ from 'underscore'
-// import {PagerService} from '../service/pager.service';
+import * as _ from 'underscore';
+import {PagerService} from '../service/pager.service';
+import{ExcelServiceService} from '../excel-service.service';
 
 @Component({
   selector: 'app-admin-hsn-code',
@@ -31,13 +32,14 @@ export class AdminHsnCodeComponent implements OnInit {
   rowIndexToModify;
   pager: any = {};
   pagedItems: any[];
+  jsonString;
   access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
 
   @ViewChild('closeBtn') closeBtn: ElementRef;
   @ViewChild('closeBtn2') closeBtn2: ElementRef;
 
-  // constructor(private http: Http,private pagerService:PagerService) {
-  constructor(private http: Http) {
+  constructor(private http: Http,private pagerService:PagerService,public ExcelServiceService:ExcelServiceService) {
+  // constructor(private http: Http) {
     this.statusDropDown.push({ "code": 0, "desc": "Approved" });
     this.statusDropDown.push({ "code": 1, "desc": "Pending" });
     this.statusDropDown.push({ "code": 2, "desc": "Declined" });
@@ -96,7 +98,7 @@ export class AdminHsnCodeComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/hsn/index?token=' + this.access_token + '&limit=' + 5 + '&page=' + this.pager.currentPage + '&sortBy=title&search=', options)
+    this.http.get('http://localhost:3000/api/hsn/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + this.pager.currentPage + '&sortBy=title&search=', options)
       .subscribe(
       response => {
         console.log("BRANCH_LIST_API_RESPONSE", response.json());
@@ -120,7 +122,7 @@ export class AdminHsnCodeComponent implements OnInit {
       return;
     }
 
-    this.pager = this.getPager(this.pager.totalItems, this.pager.currentPage, this.pager.pageSize);
+    this.pager = this.pagerService.getPager(this.pager.totalItems, this.pager.currentPage, this.pager.pageSize);
     console.log("pager", this.pager);
     // this.getStateList();
     this.pagedItems = this.hsnCodeData;
@@ -138,14 +140,15 @@ export class AdminHsnCodeComponent implements OnInit {
       reader.onload = (e) => {
         let csv: string = reader.result;
         console.log(csv);
-        var csvString = this.CSV2JSON(csv);
+        var csvString = this.ExcelServiceService.CSV2JSON(csv);
+        this.jsonString=csvString;
         // var csvString=this.CSV2JSON(csv);
         // this.uploadCsvFileToServer(csvString);
       }
     }
   }
 
-  uploadCsvFileToServer(jsonString) {
+  uploadCsvFileToServer() {
     
     const headers = new Headers();
 
@@ -153,7 +156,7 @@ export class AdminHsnCodeComponent implements OnInit {
     headers.append('x-access-token', this.access_token);
     const requestOptions = new RequestOptions({ headers: headers });
     const body = {
-      "data": JSON.parse(jsonString)
+      "data": JSON.parse(this.jsonString)
     };
 
     this.url = "http://localhost:3000/api/hsn/uploadFile?token="+this.access_token;
@@ -205,7 +208,7 @@ export class AdminHsnCodeComponent implements OnInit {
           this.closeModal();
 
           // this.hsnCodeData.push(body);
-          alert(response.json().message);
+          // alert(response.json().message);
           this.getAllHSNCodeList(this.pager.currentPage);
         },
         error => {
@@ -254,8 +257,8 @@ export class AdminHsnCodeComponent implements OnInit {
           this.submitted_edit = false;
           // this.hsnCodeData.push(body);
           // this.hsnCodeData.findIndex()
-          this.hsnCodeData[this.rowIndexToModify] = body;
-          alert(response);
+          this.getAllHSNCodeList(this.pager.currentPage);
+          // alert(response);
           // this.getAllHSNCodeList();
         },
         error => {
@@ -270,12 +273,12 @@ export class AdminHsnCodeComponent implements OnInit {
     this.rowIndexToModify = indexVal;
     console.log("indexVal", indexVal);
     console.log("VALUEATINDEX", this.hsnCodeData.indexOf(indexVal));
-    console.log("data.selectedStatusType", data.selectedStatusType);
+    console.log("data.selectedStatusType", data.selectedStatusType_edit);
     var temp;
-    console
+    
     if (data.status) {
       console.log("GET_STATUS", data.status);
-      temp = this.statusDropDown.filter(x => x.code == data.status);
+      temp = this.statusDropDown.filter(x => x.code == data.selectedStatusType_edit);
       console.log("selectedStatusTypeDrop", temp[0].desc);
       this.myForm_edit.get("rate_edit").setValue(data.rate);
       this.myForm_edit.get("hsn_code_edit").setValue(data.code);
@@ -292,24 +295,6 @@ export class AdminHsnCodeComponent implements OnInit {
     else {
       this.selectedStatusTypeDrop = "Select Status";
     }
-  }
-
-  ConvertToCSV(objArray) {
-    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
-    var str = '';
-
-    for (var i = 0; i < array.length; i++) {
-      var line = '';
-      for (var index in array[i]) {
-        if (line != '') line += ','
-
-        line += array[i][index];
-      }
-
-      str += line + '\r\n';
-    }
-
-    return str;
   }
 
   recordToBeDeleted(item) {
@@ -333,7 +318,7 @@ export class AdminHsnCodeComponent implements OnInit {
         this.closeModal();
 
         // this.hsnCodeData.push(body);
-        alert(response.json().message);
+        // alert(response.json().message);
         this.getAllHSNCodeList(this.pager.currentPage);
       },
       error => {
@@ -341,118 +326,5 @@ export class AdminHsnCodeComponent implements OnInit {
         console.log(error.text());
       }
       );
-  }
-
-  CSV2JSON(csv) {
-    var array = this.CSVToArray(csv, ",");
-    var objArray = [];
-    for (var i = 1; i < array.length; i++) {
-      objArray[i - 1] = {};
-      for (var k = 0; k < array[0].length && k < array[i].length; k++) {
-        var key = array[0][k];
-        objArray[i - 1][key] = array[i][k]
-      }
-    }
-
-    var json = JSON.stringify(objArray);
-    var str = json.replace(/},/g, "},\r\n");
-    return str;
-  }
-
-  CSVToArray(strData, strDelimiter) {
-    // Check to see if the delimiter is defined. If not,
-    // then default to comma.
-    strDelimiter = (strDelimiter || ",");
-    // Create a regular expression to parse the CSV values.
-    var objPattern = new RegExp((
-      // Delimiters.
-      "(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
-      // Quoted fields.
-      "(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
-      // Standard fields.
-      "([^\"\\" + strDelimiter + "\\r\\n]*))"), "gi");
-    // Create an array to hold our data. Give the array
-    // a default empty first row.
-    var arrData = [[]];
-    // Create an array to hold our individual pattern
-    // matching groups.
-    var arrMatches = null;
-    // Keep looping over the regular expression matches
-    // until we can no longer find a match.
-    while (arrMatches = objPattern.exec(strData)) {
-      // Get the delimiter that was found.
-      var strMatchedDelimiter = arrMatches[1];
-      // Check to see if the given delimiter has a length
-      // (is not the start of string) and if it matches
-      // field delimiter. If id does not, then we know
-      // that this delimiter is a row delimiter.
-      if (strMatchedDelimiter.length && (strMatchedDelimiter != strDelimiter)) {
-        // Since we have reached a new row of data,
-        // add an empty row to our data array.
-        arrData.push([]);
-      }
-      // Now that we have our delimiter out of the way,
-      // let's check to see which kind of value we
-      // captured (quoted or unquoted).
-      if (arrMatches[2]) {
-        // We found a quoted value. When we capture
-        // this value, unescape any double quotes.
-        var strMatchedValue = arrMatches[2].replace(
-          new RegExp("\"\"", "g"), "\"");
-      } else {
-        // We found a non-quoted value.
-        var strMatchedValue = arrMatches[3];
-      }
-      // Now that we have our value string, let's add
-      // it to the data array.
-      arrData[arrData.length - 1].push(strMatchedValue);
-    }
-
-    // Return the parsed data.
-    return (arrData);
-  }
-
-  getPager(totalItems: number, currentPage: number = 1, pageSize: number) {
-    // calculate total pages
-    let totalPages = Math.ceil(totalItems / pageSize);
-
-    let startPage: number, endPage: number;
-    if (totalPages <= 10) {
-      // less than 10 total pages so show all
-      startPage = 1;
-      endPage = totalPages;
-    } else {
-      // more than 10 total pages so calculate start and end pages
-      if (currentPage <= 6) {
-        startPage = 1;
-        endPage = 10;
-      } else if (currentPage + 4 >= totalPages) {
-        startPage = totalPages - 9;
-        endPage = totalPages;
-      } else {
-        startPage = currentPage - 5;
-        endPage = currentPage + 4;
-      }
-    }
-
-    // calculate start and end item indexes
-    let startIndex = (currentPage - 1) * pageSize;
-    let endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
-
-    // create an array of pages to ng-repeat in the pager control
-    let pages = _.range(startPage, endPage + 1);
-
-    // return object with all pager properties required by the view
-    return {
-      totalItems: totalItems,
-      currentPage: currentPage,
-      pageSize: pageSize,
-      totalPages: totalPages,
-      startPage: startPage,
-      endPage: endPage,
-      startIndex: startIndex,
-      endIndex: endIndex,
-      pages: pages
-    };
   }
 }

@@ -32,7 +32,7 @@
 
       <div class="col-md-3 col-xs-12">
         <div class="input-group section-bottom-20">
-          <input type="text" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
+          <input type="text" [(ngModel)]="searchString" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
           <div class="input-group-addon">
             <i class="fa fa-search"></i>
           </div>
@@ -58,8 +58,9 @@
             <tbody>
 
 
-              <tr *ngFor="let item of internalUpdateList ;let i = index;">
-                <td align="center">{{pageSize * (currentPage-1)+i+1}}</td>
+              <!-- <tr *ngFor="let item of internalUpdateList ;let i = index;"> -->
+              <tr *ngFor="let item of internalUpdateList | updateFilter:searchString  ;let i = index;">
+                <td align="center">{{pager.pageSize * (pager.currentPage-1)+i+1}}</td>
                 <td align="center">{{item.title}}</td>
                 <td align="center">
                   <a href="{{item.link}}" target="_blank">{{item.details}}</a>

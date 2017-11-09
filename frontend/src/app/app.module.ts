@@ -56,9 +56,14 @@ import { FaqsComponent } from './faqs/faqs.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { ContactComponent } from './contact/contact.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
-
+import {StatePipe} from './admin-state/state.pipe';
+import {NotifyPipe} from './admin-gov-notification/notification.pipe';
+import {InternalUpdatePipe} from './admin-internal-updates/internal.pipe';
 @NgModule({
   declarations: [
+    InternalUpdatePipe,
+    NotifyPipe,
+    StatePipe,
     AppComponent,
     HomeComponent,
     RegistrationComponent,
@@ -107,6 +112,7 @@ import { UserDashboardComponent } from './user-dashboard/user-dashboard.componen
     //DatepickerModule
   ],
   imports: [
+    
     ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,

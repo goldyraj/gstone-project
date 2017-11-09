@@ -1,76 +1,75 @@
+<!-- Content Wrapper. Contains page content -->
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>&nbsp; </h1>
+  <ol class="breadcrumb">
+    <li>
+      <a href="index.html">
+        <i class="fa fa-dashboard"></i> Home</a>
+    </li>
+    <li class="active">HSN Code List</li>
+  </ol>
+</section>
 
-    <!-- Content Wrapper. Contains page content -->
-      <!-- Content Header (Page header) -->
-      <section class="content-header">
-        <h1>&nbsp; </h1>
-        <ol class="breadcrumb">
-          <li>
-            <a href="index.html">
-              <i class="fa fa-dashboard"></i> Home</a>
-          </li>
-          <li class="active">HSN Code List</li>
-        </ol>
-      </section>
+<!-- Main content -->
+<section class="content">
+  <div class="box box-info">
+    <div class="row">
 
-      <!-- Main content -->
-      <section class="content">
-        <div class="box box-info">
-          <div class="row">
+      <div class="col-md-8 col-xs-12">
+        <div class="box-header">
+          <h3 class="text-blue">HSN Code List</h3>
+        </div>
+      </div>
 
-            <div class="col-md-8 col-xs-12">
-              <div class="box-header">
-                <h3 class="text-blue">HSN Code List</h3>
-              </div>
-            </div>
+      <div class="col-xs-6 col-sm-3 placeholder">
 
-            <!-- <div class="col-md-2 col-xs-12">
-              <div class="text-right">
-                <input type="file" class="upload" (change)="onCSVFilePicked($event.target.files)" value="Import CSV" accept=".csv">
-              </div>
-            </div> -->
+        <a href="" data-toggle="modal" data-target=".bs-upload-sm">
+          <input type="button" class="btn btn-primary" value="Import/Export">
+        </a>
 
-            <div class="col-md-2 col-xs-12">
-              <div class="text-right">
-                <input type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-user-lg" value="Add New">
-              </div>
-            </div>
+        <a href="#" data-toggle="modal" data-target=".bs-user-lg">
+          <input type="button" class="btn btn-success pull-right" value="Add New">
+        </a>
+      </div>
 
-            <div class="clearfix"></div>
-            <div class="col-md-3 col-xs-12">
-              <div class="input-group section-bottom-20">
-                <input type="text" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
-                <div class="input-group-addon">
-                  <i class="fa fa-search"></i>
-                </div>
-              </div>
-            </div>
-            <div></div>
+      <div class="clearfix"></div>
+      <div class="col-md-3 col-xs-12">
+        <div class="input-group section-bottom-20">
+          <input type="text" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
+          <div class="input-group-addon">
+            <i class="fa fa-search"></i>
+          </div>
+        </div>
+      </div>
+      <div></div>
 
-            <div class="col-lg-12 col-xs-12">
+      <div class="col-lg-12 col-xs-12">
 
-              <!-- /.box-header -->
-              <div class="table-responsive no-padding">
+        <!-- /.box-header -->
+        <div class="table-responsive no-padding">
 
-                <table class="table table-condensed  table-hover table-bordered">
-                  <thead>
-                    <tr>
-                      <th width="5%">#</th>
-                      <th width="20%">HSN Code</th>
-                      <th width="40%">Description</th>
-                      <th width="10%">Rate</th>
-                      <!-- <th width="12%">Status</th> -->
-                      <th width="25%" class="text-center">Action</th>
-                    </tr>
-                  </thead>
+          <table class="table table-condensed  table-hover table-bordered">
+            <thead>
+              <tr>
+                <th width="5%">#</th>
+                <th width="10%">HSN Code</th>
+                <th width="50%">Description</th>
+                <th width="10%">Rate</th>
+                <!-- <th width="12%">Status</th> -->
+                <th width="25%" class="text-center">Action</th>
+              </tr>
+            </thead>
 
-                  <ng-template ngFor let-item [ngForOf]="hsnCodeData">
-                    <tbody>
-                      <tr class="header" (ngModel)="item">
-                        <td align="center">{{ hsnCodeData.indexOf(item) }}</td>
-                        <td align="center">{{ item.code }}</td>
-                        <td align="center">{{item.description}}</td>
-                        <td align="center">{{item.rate}}</td>
-                        <!-- <td align="center">
+            <ng-template ngFor let-item [ngForOf]="hsnCodeData">
+              <tbody>
+                <tr class="header" (ngModel)="item">
+                  <!-- <td align="center">{{ hsnCodeData.indexOf(item) }}</td> -->
+                  <td align="center">{{pager.pageSize * (pager.currentPage-1)+hsnCodeData.indexOf(item)+1}}</td>
+                  <td align="center">{{ item.code }}</td>
+                  <td align="center">{{item.description}}</td>
+                  <td align="center">{{item.rate}}</td>
+                  <!-- <td align="center">
                           <div *ngIf="item.status==0">
                             <span class="label label-success">Approved</span>
                           </div>
@@ -83,213 +82,310 @@
                         </td> -->
 
 
-                        <td align="center">
-                          <!-- <i class="fa fa-eye btn btn-primary btn-sm" title="View"></i> -->
-                          <a href="" data-toggle="modal" data-target=".bs-user-lg-edit">
-                            <button class="fa fa-edit btn btn-warning btn-sm" title="Update" (click)="editHSNRecord(item,hsnCodeData.indexOf(item))"></button>
-                          </a>
-                          <a href="" data-toggle="modal" data-target=".bs-delete-sm">
-                            <button class="fa fa-trash btn btn-danger btn-sm" title="Delete" (click)="recordToBeDeleted(item)"></button>
-                          </a>
-                        </td>
-                      </tr>
-                      <!-- <tr *ngFor="let row of item.data">
+                  <td align="center">
+                    <!-- <i class="fa fa-eye btn btn-primary btn-sm" title="View"></i> -->
+                    <a href="" data-toggle="modal" data-target=".bs-user-lg-edit">
+                      <button class="fa fa-edit btn btn-warning btn-sm" title="Update" (click)="editHSNRecord(item)"></button>
+                    </a>
+                    <a href="" data-toggle="modal" data-target=".bs-delete-sm">
+                      <button class="fa fa-trash btn btn-danger btn-sm" title="Delete" (click)="recordToBeDeleted(item)"></button>
+                    </a>
+                  </td>
+                </tr>
+                <!-- <tr *ngFor="let row of item.data">
                           <td>{{ row.a }}</td>
                         </tr> -->
-                    </tbody>
-                  </ng-template>
+              </tbody>
+            </ng-template>
 
-                </table>
+          </table>
 
-                <!-- TABLE -->
+          <!-- TABLE -->
 
-                <ul class="pagination btn-sm">
-                  <li [ngClass]="{disabled:pager.currentPage === 1}">
-                    <a (click)="getAllHSNCodeList(pager.currentPage - 1)">Previous</a>
-                  </li>
+          <ul class="pagination btn-sm">
+            <li [ngClass]="{disabled:pager.currentPage === 1}">
+              <a (click)="getAllHSNCodeList(pager.currentPage - 1)">Previous</a>
+            </li>
 
-                  <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
-                    <a (click)="getAllHSNCodeList(page)">{{page}}</a>
-                  </li>
+            <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+              <a (click)="getAllHSNCodeList(page)">{{page}}</a>
+            </li>
 
-                  <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-                    <a (click)="getAllHSNCodeList(pager.currentPage + 1)">Next</a>
-                  </li>
-                </ul>
-              </div>
-
-            </div>
-
-          </div>
+            <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+              <a (click)="getAllHSNCodeList(pager.currentPage + 1)">Next</a>
+            </li>
+          </ul>
         </div>
 
+      </div>
 
-      </section>
-      <!-- /.content -->
+    </div>
+  </div>
 
-    <!-- User Form Start -->
 
-    <div class="modal fade bs-user-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-      <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" #closeBtn aria-label="Close">
-              <span class="modal-text" aria-hidden="true">X</span>
-            </button>
-            <h4 class="modal-title modal-text"> Add HSN Code</h4>
-          </div>
-          <div class="modal-body">
-            <div class="service-section">
-              <div class="row">
-                <div class="col-md-12 col-sm-12">
-                  <form [formGroup]="myForm" novalidate (ngSubmit)="save( myForm.valid)">
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                      <input type="text" class="form-control" placeholder="HSN Code" name="statename" id="statename" required formControlName="hsn_code">
-                      <small [hidden]="myForm.controls.hsn_code.valid || (myForm.controls.hsn_code.pristine && !submitted)">
-                        HSN Code is required (minimum 2 characters).
-                      </small>
-                    </div>
+</section>
+<!-- /.content -->
 
-                    <!-- Description -->
+<!-- User Form Start -->
 
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                      <input type="text" class="form-control" placeholder="Description" name="description" id="description" required formControlName="description">
-                      <small [hidden]="myForm.controls.description.valid || (myForm.controls.description.pristine && !submitted)">
-                        Description is required !
-                      </small>
-                    </div>
-
-                    <!-- Description -->
-
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                      <input type="text" class="form-control" placeholder="Rate" name="statecode" required formControlName="rate">
-                      <small [hidden]="myForm.controls.rate.valid || (myForm.controls.rate.pristine && !submitted)">
-                        Rate is required (minimum 2 characters).
-                      </small>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-
-                      <select class="form-control" formControlName="selectedStatusType" required>
-                        <option value="-1" name="Select Status" selected="selected">Select Status</option>
-                        <option *ngFor="let item of statusDropDown">{{item.desc}}</option>
-                      </select>
-                      <small *ngIf="myForm.controls.selectedStatusType.value=='-1' && submitted">
-                        Please select status !
-                      </small>
-                    </div>
-
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                      <button type="submit" class="btn btn-primary">Add State</button>
-                      <button type="button" class="btn btn-success pull-right" data-dismiss="modal">Cancel</button>
-                    </div>
-                  </form>
+<div class="modal fade bs-user-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" #closeBtn aria-label="Close">
+          <span class="modal-text" aria-hidden="true">X</span>
+        </button>
+        <h4 class="modal-title modal-text"> Add HSN Code</h4>
+      </div>
+      <div class="modal-body">
+        <div class="service-section">
+          <div class="row">
+            <div class="col-md-12 col-sm-12">
+              <form [formGroup]="myForm" novalidate (ngSubmit)="save( myForm.valid)">
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <input type="text" class="form-control" placeholder="HSN Code" name="statename" id="statename" required formControlName="hsn_code">
+                  <small [hidden]="myForm.controls.hsn_code.valid || (myForm.controls.hsn_code.pristine && !submitted)">
+                    HSN Code is required (minimum 2 characters).
+                  </small>
                 </div>
-              </div>
+
+                <!-- Description -->
+
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <input type="text" class="form-control" placeholder="Description" name="description" id="description" required formControlName="description">
+                  <small [hidden]="myForm.controls.description.valid || (myForm.controls.description.pristine && !submitted)">
+                    Description is required !
+                  </small>
+                </div>
+
+                <!-- Description -->
+
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <input type="text" class="form-control" placeholder="Rate" name="statecode" required formControlName="rate">
+                  <small [hidden]="myForm.controls.rate.valid || (myForm.controls.rate.pristine && !submitted)">
+                    Rate is required (minimum 2 characters).
+                  </small>
+                </div>
+                <!-- <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+
+                  <select class="form-control" formControlName="selectedStatusType" required>
+                    <option value="-1" name="Select Status" selected="selected">Select Status</option>
+                    <option *ngFor="let item of statusDropDown">{{item.desc}}</option>
+                  </select>
+                  <small *ngIf="myForm.controls.selectedStatusType.value=='-1' && submitted">
+                    Please select status !
+                  </small>
+                </div> -->
+
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <button type="submit" class="btn btn-primary">Add State</button>
+                  <button type="button" class="btn btn-success pull-right" data-dismiss="modal">Cancel</button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- User Form end -->
+  </div>
+</div>
+<!-- User Form end -->
 
-    <!-- delete Start -->
+<!-- delete Start -->
 
-    <div class="modal fade bs-delete-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-      <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span class="modal-text" aria-hidden="true">X</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="service-section">
-              <div class="row">
-                <div class="col-md-12 col-sm-12 col-xs-12">
-                  <div class="col-md-12 col-sm-12 col-xs-12 text-center">
-                    <h4 class="text-blue">Sure, you want to delete ?
-                      <br>
-                      <br>
-                    </h4>
-                  </div>
-
-                  <div class="form-group ">
-                    <input type="button" class="btn btn-success" (click)="deleteHSNRecord()" data-dismiss="modal" value="Yes">
-                    <input type="button" class="btn btn-primary pull-right" data-dismiss="modal" value="No">
-                  </div>
-                </div>
+<div class="modal fade bs-delete-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span class="modal-text" aria-hidden="true">X</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="service-section">
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="col-md-12 col-sm-12 col-xs-12 text-center">
+                <h4 class="text-blue">Sure, you want to delete ?
+                  <br>
+                  <br>
+                </h4>
               </div>
 
+              <div class="form-group ">
+                <input type="button" class="btn btn-success" (click)="deleteHSNRecord()" data-dismiss="modal" value="Yes">
+                <input type="button" class="btn btn-primary pull-right" data-dismiss="modal" value="No">
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- delete end  -->
+
+<!-- Editing Of HSN Code -->
+
+<div class="modal fade bs-user-lg-edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" #closeBtn2 aria-label="Close">
+          <span class="modal-text" aria-hidden="true">X</span>
+        </button>
+        <h4 class="modal-title modal-text"> Edit HSN Code</h4>
+      </div>
+      <div class="modal-body">
+        <div class="service-section">
+          <div class="row">
+            <div class="col-md-12 col-sm-12">
+              <form [formGroup]="myForm_edit" novalidate (ngSubmit)="update( myForm_edit.valid)">
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <input [value]="hsnRowData.code" type="text" class="form-control" placeholder="HSN Code" name="hsn_code_edit" id="hsn_code_edit"
+                    required formControlName="hsn_code_edit">
+                  <small [hidden]="myForm_edit.controls.hsn_code_edit.valid || (myForm_edit.controls.hsn_code_edit.pristine && !submitted_edit)">
+                    HSN Code is required (minimum 2 characters).
+                  </small>
+                </div>
+
+                <!-- Description -->
+
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <input [value]="hsnRowData.description" type="text" class="form-control" placeholder="Description" name="description_edit"
+                    id="description_edit" required formControlName="description_edit">
+                  <small [hidden]="myForm_edit.controls.description_edit.valid || (myForm_edit.controls.description_edit.pristine && !submitted_edit)">
+                    Description is required !
+                  </small>
+                </div>
+
+                <!-- Description -->
+
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <input [value]="hsnRowData.rate" type="text" class="form-control" placeholder="Rate" name="rate_edit" required formControlName="rate_edit">
+                  <small [hidden]="myForm_edit.controls.rate_edit.valid || (myForm_edit.controls.rate_edit.pristine && !submitted_edit)">
+                    Rate is required (minimum 2 characters).
+                  </small>
+                </div>
+
+                <!-- <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <select class="form-control" formControlName="selectedStatusType_edit" required [(ngModel)]="selectedStatusTypeDrop">
+                    <option [ngValue]="-1" name="Select Status">Select Status</option>
+                    <option *ngFor="let item of statusDropDown" [ngValue]="item.desc">{{item.desc}}</option>
+                  </select>
+                  <small *ngIf="myForm_edit.controls.selectedStatusType_edit.value=='-1' && submitted_edit">
+                    Please select status !
+                  </small>
+                </div> -->
+
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <button type="submit" class="btn btn-primary">Update</button>
+                  <button type="button" class="btn btn-success pull-right" data-dismiss="modal">Cancel</button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
+</div>
 
-    <!-- delete end  -->
-
-    <!-- Editing Of HSN Code -->
-
-    <div class="modal fade bs-user-lg-edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-      <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" #closeBtn2 aria-label="Close">
-              <span class="modal-text" aria-hidden="true">X</span>
-            </button>
-            <h4 class="modal-title modal-text"> Edit HSN Code</h4>
-          </div>
-          <div class="modal-body">
-            <div class="service-section">
-              <div class="row">
-                <div class="col-md-12 col-sm-12">
-                  <form [formGroup]="myForm_edit" novalidate (ngSubmit)="update( myForm_edit.valid)">
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                      <input [value]="hsnRowData.code" type="text" class="form-control" placeholder="HSN Code" name="hsn_code_edit" id="hsn_code_edit"
-                        required formControlName="hsn_code_edit">
-                      <small [hidden]="myForm_edit.controls.hsn_code_edit.valid || (myForm_edit.controls.hsn_code_edit.pristine && !submitted_edit)">
-                        HSN Code is required (minimum 2 characters).
-                      </small>
-                    </div>
-
-                    <!-- Description -->
-
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                      <input [value]="hsnRowData.description" type="text" class="form-control" placeholder="Description" name="description_edit"
-                        id="description_edit" required formControlName="description_edit">
-                      <small [hidden]="myForm_edit.controls.description_edit.valid || (myForm_edit.controls.description_edit.pristine && !submitted_edit)">
-                        Description is required !
-                      </small>
-                    </div>
-
-                    <!-- Description -->
-
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                      <input [value]="hsnRowData.rate" type="text" class="form-control" placeholder="Rate" name="rate_edit" required formControlName="rate_edit">
-                      <small [hidden]="myForm_edit.controls.rate_edit.valid || (myForm_edit.controls.rate_edit.pristine && !submitted_edit)">
-                        Rate is required (minimum 2 characters).
-                      </small>
-                    </div>
-
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                      <select class="form-control" formControlName="selectedStatusType_edit" required [(ngModel)]="selectedStatusTypeDrop">
-                        <option [ngValue]="-1" name="Select Status">Select Status</option>
-                        <option *ngFor="let item of statusDropDown" [ngValue]="item.desc">{{item.desc}}</option>
-                      </select>
-                      <small *ngIf="myForm_edit.controls.selectedStatusType_edit.value=='-1' && submitted_edit">
-                        Please select status !
-                      </small>
-                    </div>
-
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                      <button type="submit" class="btn btn-primary">Update</button>
-                      <button type="button" class="btn btn-success pull-right" data-dismiss="modal">Cancel</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
+<div class="modal fade bs-upload-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span class="modal-text" aria-hidden="true">X</span>
+        </button>
+        <h4 class="text-blue text-center">Choose Import/Export</h4>
+      </div>
+      <div class="modal-body">
+        <div class="service-section">
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 text-center section-top-10 section-bottom-40">
+              <a href="" data-toggle="modal" data-target=".bs-Import-sm">
+                <input type="button" class="btn btn-success" data-dismiss="modal" value="Import Excel/CSV">
+              </a> &nbsp; &nbsp; &nbsp;
+              <a href="" data-toggle="modal" data-target=".bs-Export-sm">
+                <input type="button" class="btn btn-primary" data-dismiss="modal" value="Export Excel/CSV ">
+              </a>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade bs-Import-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span class="modal-text" aria-hidden="true">X</span>
+        </button>
+        <h4 class="text-blue text-center">Import Customer data</h4>
+      </div>
+      <div class="modal-body">
+        <div class="service-section">
+          <div class="row" align="center">
+            <div class="col-md-12 col-sm-12 col-xs-12 section-top-10 section-bottom-20">
+              <p align="center">Please choose Excel/CSV file</p>
+              <br>
+
+              <div class="col-md-5 col-sm-5 col-xs-12 col-md-offset-1">
+                <!-- <input type="file" class="btn btn-success" value=""> -->
+                <input type="file" (change)="onCSVFilePicked($event.target.files)" accept=".csv,.xlsx">
+              </div>
+              <div class="col-md-4 col-sm-4 col-xs-12 col-md-offset-1">
+                <input type="button" class="btn btn-primary" value="Upload" (click)="uploadCsvFileToServer()">
+              </div>
+            </div>
+            <p class="text-info text-center">Successfully file uploaded</p>
+          </div>
+          <div align="center">
+            <input type="button" class="btn btn-success" data-dismiss="modal" value="Close">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade bs-Export-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span class="modal-text" aria-hidden="true">X</span>
+        </button>
+        <h4 class="text-blue text-center">Export Customer data</h4>
+      </div>
+      <div class="modal-body">
+        <div class="service-section">
+          <div class="row" align="center">
+            <div class="col-md-12 col-sm-12 col-xs-12 section-top-10 section-bottom-20">
+              <!-- <p align="center">Please choose Excel/CSV file</p> -->
+              <br>
+              <div align="center">
+                <input type="button" class="btn btn-primary" value="Download" (click)="downloadJSONTOCSV()">
+              </div>
+            </div>
+            <!-- <p class="text-info text-center">Successfully file uploaded</p> -->
+          </div>
+          <div align="center">
+            <input type="button" class="btn btn-success" data-dismiss="modal" value="Close">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

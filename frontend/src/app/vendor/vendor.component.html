@@ -1,3 +1,4 @@
+<!-- <div (window:beforeunload)="onUrlChanged()"></div> -->
 <div class="container">
 	<div class="row">
 		<div class="col-md-3 navbar-header-gst">
@@ -101,8 +102,13 @@
 		<div class="col-xs-6 col-sm-3 placeholder"> </div>
 
 		<div class="col-xs-6 col-sm-3 placeholder">
+
+			<a href="" data-toggle="modal" data-target=".bs-upload-sm">
+				<input type="button" class="btn btn-primary" value="Import/Export">
+			</a>
+
 			<a href="#" data-toggle="modal" data-target=".bs-GSTIN-lg">
-				<input type="button" class="btn btn-success pull-right" value="Add  New Vendor">
+				<input type="button" class="btn btn-success pull-right" value="Add New Vendor">
 			</a>
 		</div>
 
@@ -142,6 +148,20 @@
 
 				</tbody>
 			</table>
+
+			<ul class="pagination btn-sm">
+				<li [ngClass]="{disabled:pager.currentPage === 1}">
+					<a (click)="getVenderList(pager.currentPage - 1)">Previous</a>
+				</li>
+
+				<li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+					<a (click)="getVenderList(page)">{{page}}</a>
+				</li>
+
+				<li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+					<a (click)="getVenderList(pager.currentPage + 1)">Next</a>
+				</li>
+			</ul>
 
 		</div>
 	</div>
@@ -186,7 +206,7 @@
 								</div>
 
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<select class="form-control"  formControlName="state">
+									<select class="form-control" formControlName="state">
 										<option value="Select State" selected="selected">Select State</option>
 										<option value="Jabalpur">Jabalpur</option>
 										<option value="Bhopal">Bhopal</option>
@@ -235,7 +255,7 @@
 					<div class="row">
 						<div class="col-md-12 col-sm-12 col-xs-12">
 							<div class="col-md-12 col-sm-12 col-xs-12 text-center">
-								<h4 class="text-blue">Are You Sure Dealer Delete
+								<h4 class="text-blue">Sure, you want to delete ?
 									<br>
 									<br>
 								</h4>
@@ -253,6 +273,109 @@
 		</div>
 	</div>
 </div>
+
+<!-- Modal -->
+
+<div class="modal fade bs-upload-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog modal-md" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span class="modal-text" aria-hidden="true">X</span>
+				</button>
+				<h4 class="text-blue text-center">Choose Import/Export</h4>
+			</div>
+			<div class="modal-body">
+				<div class="service-section">
+					<div class="row">
+						<div class="col-md-12 col-sm-12 col-xs-12 text-center section-top-10 section-bottom-40">
+							<a href="" data-toggle="modal" data-target=".bs-Import-sm">
+								<input type="button" class="btn btn-success" data-dismiss="modal" value="Import Excel/CSV">
+							</a> &nbsp; &nbsp; &nbsp;
+							<a href="" data-toggle="modal" data-target=".bs-Export-sm">
+								<input type="button" class="btn btn-primary" data-dismiss="modal" value="Export Excel/CSV ">
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<div class="modal fade bs-Import-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog modal-md" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span class="modal-text" aria-hidden="true">X</span>
+				</button>
+				<h4 class="text-blue text-center">Import Customer data</h4>
+			</div>
+			<div class="modal-body">
+				<div class="service-section">
+					<div class="row" align="center">
+						<div class="col-md-12 col-sm-12 col-xs-12 section-top-10 section-bottom-20">
+							<p align="center">Please choose Excel/CSV file</p>
+							<br>
+
+							<div class="col-md-5 col-sm-5 col-xs-12 col-md-offset-1">
+								<!-- <input type="file" class="btn btn-success" value=""> -->
+								<input type="file" (change)="onCSVFilePicked($event.target.files)" accept=".csv,.xlsx">
+							</div>
+							<div class="col-md-4 col-sm-4 col-xs-12 col-md-offset-1">
+								<input type="button" class="btn btn-primary" value="Upload" (click)="uploadCsvFileToServer()">
+							</div>
+						</div>
+						<p class="text-info text-center">Successfully file uploaded</p>
+					</div>
+					<div align="center">
+						<input type="button" class="btn btn-success" data-dismiss="modal" value="Close">
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+
+<div class="modal fade bs-Export-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog modal-md" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span class="modal-text" aria-hidden="true">X</span>
+				</button>
+				<h4 class="text-blue text-center">Export Customer data</h4>
+			</div>
+			<div class="modal-body">
+				<div class="service-section">
+					<div class="row" align="center">
+						<div class="col-md-12 col-sm-12 col-xs-12 section-top-10 section-bottom-20">
+							<!-- <p align="center">Please choose Excel/CSV file</p> -->
+							<br>
+
+							<div class="col-md-4 col-sm-4 col-xs-12 col-md-offset-1">
+								<input type="button" class="btn btn-primary" value="Download" (click)="downloadJSONTOCSV()">
+							</div>
+
+						</div>
+						<!-- <p class="text-info text-center">Successfully file uploaded</p> -->
+					</div>
+					<div align="center">
+						<input type="button" class="btn btn-success" data-dismiss="modal" value="Close">
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<!-- Modal End -->
 
 <!-- delete end  -->
 

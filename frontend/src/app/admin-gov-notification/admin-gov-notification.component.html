@@ -1,141 +1,5 @@
-<body class="hold-transition skin-blue sidebar-mini">
-  <div class="wrapper">
-
-    <header class="main-header">
-      <!-- Logo -->
-      <a href="index.html" class="logo">
-        <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini">
-          <b>GST</b>
-        </span>
-        <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg">
-          <b>GST</b>
-        </span>
-      </a>
-      <!-- Header Navbar: style can be found in header.less -->
-      <nav class="navbar navbar-static-top">
-        <!-- Sidebar toggle button-->
-        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
-          <span class="sr-only">navigation</span>
-        </a>
-
-        <div class="navbar-custom-menu">
-          <ul class="nav navbar-nav">
-            <li class="dropdown user user-menu">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <img src="../images/user-128.png" class="user-image" alt="User Image">
-                <span class="hidden-xs">Admin </span>
-              </a>
-              <ul class="dropdown-menu">
-                <li class="user-footer">
-                  <div class="pull-left">
-                    <a href="#" class="btn btn-primary btn-flat">Profile</a>
-                  </div>
-                  <div class="pull-right">
-                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
-                  </div>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </nav>
-    </header>
-    <!-- Left side column. contains the logo and sidebar -->
-    <aside class="main-sidebar">
-        
-              <section class="sidebar">
-        
-                <ul class="sidebar-menu" data-widget="tree">
-                  <li>
-                    <a routerLink="/admin-dashboard">
-                      <i class="fa fa-dashboard"></i>
-                      <span>Dashboard</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a routerLink="/admin-state">
-                      <i class="fa fa-user"></i>
-                      <span>State</span>
-                    </a>
-                  </li>
-                  <!-- <li>
-                            <a routerLink="/admin-dealer-type">
-                              <i class="fa fa-users"></i>
-                              <span>Dealer types</span>
-                            </a>
-                          </li> -->
-                  <li>
-                    <a routerLink="/admin-hsn-code">
-                      <i class="fa fa-envelope"></i>
-                      <span>HSN code</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a routerLink="/admin-gov-notification">
-                      <i class="fa fa-files-o"></i>
-                      <span>Gov. Notifications</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a routerLink="/admin-internal-updates">
-                      <i class="fa fa-th"></i>
-                      <span>Internal Updates</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a routerLink="/admin-gstone-videos">
-                      <i class="fa fa-th"></i>
-                      <span>GstOne channel Videos</span>
-                    </a>
-                  </li>
-        
-                  <!-- <li>
-                            <a routerLink="/admin-goods-services">
-                              <i class="fa fa-th"></i>
-                              <span>Goods/Services</span>
-                            </a>
-                          </li> -->
-        
-                  <!-- <li>
-                    <a routerLink="/admin-work-returns">
-                      <i class="fa fa-envelope"></i>
-                      <span>Work on Returns</span>
-                    </a>
-                  </li> -->
-                  <li>
-                    <a routerLink="/admin-about-us">
-                      <i class="fa fa-th"></i>
-                      <span>About Us page </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a routerLink="/admin-privacy-policy">
-                      <i class="fa fa-th"></i>
-                      <span>Privacy policy</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a routerLink="/admin-contact-us">
-                      <i class="fa fa-th"></i>
-                      <span>Contact us</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a routerLink="/admin-faqs">
-                      <i class="fa fa-th"></i>
-                      <span>FAQ</span>
-                    </a>
-                  </li>
-        
-                </ul>
-              </section>
-        
-            </aside>
 
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
       <!-- Content Header (Page header) -->
       <section class="content-header">
         <h1>&nbsp; </h1>
@@ -171,7 +35,7 @@
 
 
             <div class="col-md-3 col-xs-12">
-              <div class="input-group">
+              <div class="input-group section-bottom-20">
                 <input type="text" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
                 <div class="input-group-addon">
                   <i class="fa fa-search"></i>
@@ -229,33 +93,19 @@
                   </tbody>
                 </table>
 
-
                 <ul class="pagination btn-sm">
-                  <li>
-                    <!-- <a href="#">Previous</a> -->
-                    <button (click)="previousPage()" class="btn btn-primary">Previous</button>
+                  <li [ngClass]="{disabled:pager.currentPage === 1}">
+                    <a (click)="getNotificationList(pager.currentPage - 1)">Previous</a>
                   </li>
-                  <!-- <li class="active">
-                      <a href="#">1</a>
-                    </li> -->
-                  <li>
-                    <button class="active" (click)="nextPage()" class="btn btn-primary">Next</button>
-                    <!-- <a href="#">Next</a> -->
+
+                  <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                    <a (click)="getNotificationList(page)">{{page}}</a>
+                  </li>
+
+                  <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                    <a (click)="getNotificationList(pager.currentPage + 1)">Next</a>
                   </li>
                 </ul>
-                <!-- <div class="btn-group pull-right">
-                  <ul class="pagination">
-                    <li [ngClass]="{'disabled': (currentIndex == 1 || pageNumber == 0)}">
-                      <button (click)="prevPage()" >Prev</button>
-                    </li>
-                    <li *ngFor="let page of pagesIndex" [ngClass]="{'active': (currentIndex == page)}">
-                      <button (click)="setPage(page)">{{page}}</button>
-                    </li>
-                    <li [ngClass]="{'disabled': (currentIndex == pageNumber || pageNumber == 0)}">
-                      <button (click)="nextPage()" >Next</button>
-                    </li>
-                  </ul>
-                </div> -->
               </div>
 
             </div>
@@ -266,7 +116,6 @@
 
       </section>
       <!-- /.content -->
-    </div>
 
     <!-- User Form Start -->
 
@@ -400,16 +249,4 @@
       </div>
     </div>
 
-    <!-- delete end  -->
-
-    <!-- /.content-wrapper -->
-    <footer class="main-footer">
-      <strong>Copyright &copy; 2017
-        <a href="">GST</a>.</strong> All rights reserved.
-    </footer>
-  </div>
-  <!-- ./wrapper -->
-
-  <!-- jQuery 3 -->
-
-</body>
+   

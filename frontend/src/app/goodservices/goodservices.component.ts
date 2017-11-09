@@ -3,11 +3,15 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { ApiserviceService } from '../apiservice.service';
+import { ExcelServiceService } from '../excel-service.service';
+import * as _ from 'underscore';
+import { PagerService } from '../service/pager.service';
 
 @Component({
   selector: 'app-goodservices',
   templateUrl: './goodservices.component.html',
-  styleUrls: ['./goodservices.component.css']
+  styleUrls: ['./goodservices.component.css'],
+  providers: [PagerService,ExcelServiceService]
 })
 export class GoodservicesComponent implements OnInit {
 
@@ -16,16 +20,25 @@ export class GoodservicesComponent implements OnInit {
   @ViewChild('closeBtn3') closeBtn3: ElementRef;
 
   url;
-  goodsAndServicesDataList=[];
+  goodsAndServicesDataList = [];
   rowDataIndex;
-  myFormEdit:FormGroup;
+  myFormEdit: FormGroup;
   goodsAndServicesRowData;
-  addNewGoodsForm:FormGroup;
+  addNewGoodsForm: FormGroup;
   goodsAndServicesFormData;
-  submitted:boolean=false;
-  editSubmitted:boolean=false;
-  constructor(public http:Http) { 
-    this.getGoodsAndServicesList();
+  submitted: boolean = false;
+  editSubmitted: boolean = false;
+  pager: any = {};
+
+  // paged items
+  pagedItems: any[];
+  access_token;
+
+  constructor(public http: Http, public excelServiceService: ExcelServiceService, public pagerService: PagerService) {
+    this.access_token = localStorage.getItem("user_token");
+    console.log("user_token", this.access_token);
+    this.pager.currentPage = 1;
+    this.getGoodsAndServicesList(1);
   }
 
   ngOnInit() {
@@ -36,21 +49,21 @@ export class GoodservicesComponent implements OnInit {
       rate: new FormControl('Select Rate')
     });
 
-    this.myFormEdit=new FormGroup({
-      descriptionEdit: new FormControl('', [<any>Validators.required,<any>Validators.minLength(2)]),
+    this.myFormEdit = new FormGroup({
+      descriptionEdit: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
       hsn_code_edit: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
       unitEdit: new FormControl('Select Unit'),
       rateEdit: new FormControl('Select Rate')
     });
   }
 
-  getGoodsAndServicesList() {
+  getGoodsAndServicesList(page: number) {
+    this.pager.currentPage = page;
     console.log("getALLHSNCODELIST");
-    var access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
 
     let response: any;
     let myHeaders = new Headers({ 'Content-Type': 'application/json' });
-    myHeaders.append('x-access-token', access_token);
+    // myHeaders.append('x-access-token', access_token);
     myHeaders.append('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization, x-access-token');
     myHeaders.append('Access-Control-Allow-Methods', 'GET, OPTIONS, POST');
     myHeaders.append('Access-Control-Allow-Origin', '*');
@@ -59,15 +72,14 @@ export class GoodservicesComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/goods/index', options)
+    this.http.get('http://localhost:3000/api/goods/index?token=' + this.access_token + '&limit=5' + '&page=' + this.pager.currentPage, options)
       .subscribe(
       response => {
         console.log("BRANCH_LIST_API_RESPONSE", response.json());
-        console.log("BRANCH_LIST_API_RESPONSE_2", response.json().docs);
-        // for (let data of response.json().goods) {
-        //   this.goodsAndServicesDataList.push(data);
-        // }
-        this.goodsAndServicesDataList=response.json().docs;
+        this.goodsAndServicesDataList = response.json().docs;
+        this.pager.pageSize = response.json().limit;
+        this.pager.totalItems = response.json().total;
+        this.setPage();
       },
       error => {
         alert(error.text());
@@ -76,58 +88,65 @@ export class GoodservicesComponent implements OnInit {
       );
   }
 
-  editGoodsServicesRecord(data)
-  {
-    this.rowDataIndex=data._id;
+  setPage() {
+    if (this.pager.currentPage < 1 || this.pager.currentPage > this.pager.TotalPages) {
+      return;
+    }
+
+    this.pager = this.pagerService.getPager(this.pager.totalItems, this.pager.currentPage, this.pager.pageSize);
+    console.log("pager", this.pager);
+    // this.getStateList();
+    this.pagedItems = this.goodsAndServicesDataList;
+  }
+
+  editGoodsServicesRecord(data) {
+    this.rowDataIndex = data._id;
     var temp;
-    if(data)
-    {
-      console.log("DATA",data);
-      
+    if (data) {
+      console.log("DATA", data);
+
       this.myFormEdit.get("descriptionEdit").setValue(data.description);
       this.myFormEdit.get("hsn_code_edit").setValue(data.hsn_code);
       this.myFormEdit.get("unitEdit").setValue(data.unit);
       this.myFormEdit.get("rateEdit").setValue(data.rate);
     }
-    this.goodsAndServicesRowData=data;
+    this.goodsAndServicesRowData = data;
   }
 
-  updateGoodsAndServicesRecord(isValid: boolean)
-  {
+  updateGoodsAndServicesRecord(isValid: boolean) {
 
     console.log("EDIITITITT");
     this.editSubmitted = true; // set form submit to true
     console.log(isValid);
-  
+
     // if (isValid == true && this.myFormEdit.value.selectedstateDropdown!='Select State') {
-      if (isValid == true ) {
-     
-      var access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
+    if (isValid == true) {
+
       const headers = new Headers();
-  
+
       headers.append('Content-Type', 'application/json');
-      headers.append('x-access-token', access_token);
+      // headers.append('x-access-token', access_token);
       const requestOptions = new RequestOptions({ headers: headers });
-      
+
       const body = {
-        "_id":this.goodsAndServicesRowData._id,
+        "_id": this.goodsAndServicesRowData._id,
         "description": this.myFormEdit.value.descriptionEdit,
         "hsn_code": this.myFormEdit.value.hsn_code_edit,
         "unit": this.myFormEdit.value.unitEdit,
         "rate": this.myFormEdit.value.rateEdit
       };
-      
-      this.url = "http://localhost:3000/api/goods/update";
+
+      this.url = "http://localhost:3000/api/goods/update?token=" + this.access_token;
       return this.http.put(this.url, body, requestOptions)
         .subscribe(
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeEditModal();
-          this.editSubmitted=false;
+          this.editSubmitted = false;
           // this.hsnCodeData.push(body);
           alert(response.json().message);
           // this.goodsAndServicesDataList[this.rowDataIndex]=body;
-          this.getGoodsAndServicesList();
+          this.getGoodsAndServicesList(this.pager.currentPage);
         },
         error => {
           // this.closeEditModal();
@@ -148,11 +167,10 @@ export class GoodservicesComponent implements OnInit {
 
     if (isValid == true) {
 
-      var access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
       const headers = new Headers();
 
       headers.append('Content-Type', 'application/json');
-      headers.append('x-access-token', access_token);
+      // headers.append('x-access-token', access_token);
       const requestOptions = new RequestOptions({ headers: headers });
       const body = {
         "description": this.addNewGoodsForm.value.description,
@@ -160,15 +178,15 @@ export class GoodservicesComponent implements OnInit {
         "unit": this.addNewGoodsForm.value.unit,
         "rate": this.addNewGoodsForm.value.rate
       };
-      this.url = "http://localhost:3000/api/goods/create";
+      this.url = "http://localhost:3000/api/goods/create?token=" + this.access_token;
       return this.http.post(this.url, body, requestOptions)
         .subscribe(
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeModal();
           alert(response.json().message);
-          this.getGoodsAndServicesList();
-          this.submitted=false;
+          this.getGoodsAndServicesList(this.pager.currentPage);
+          this.submitted = false;
           this.addNewGoodsForm.reset();
           this.addNewGoodsForm.get("unit").setValue("Select Unit");
           this.addNewGoodsForm.get("rate").setValue("Select Rate");
@@ -182,43 +200,37 @@ export class GoodservicesComponent implements OnInit {
     }
   }
 
-  closeModal()
-  {
+  closeModal() {
     this.closeBtn.nativeElement.click();
   }
 
-  closeEditModal()
-  {
+  closeEditModal() {
     this.closeBtn2.nativeElement.click();
   }
 
-  closeDeleteModal()
-  {
+  closeDeleteModal() {
     this.closeBtn3.nativeElement.click();
   }
 
-  recordToDelete(item)
-  {
-    this.goodsAndServicesRowData=item;
+  recordToDelete(item) {
+    this.goodsAndServicesRowData = item;
   }
 
-  deleteRecord()
-  {
-    var access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
+  deleteRecord() {
     const headers = new Headers();
 
     headers.append('Content-Type', 'application/json');
-    headers.append('x-access-token', access_token);
+    // headers.append('x-access-token', access_token);
     const requestOptions = new RequestOptions({ headers: headers });
-    
-    this.url = "http://localhost:3000/api/goods/delete/"+this.goodsAndServicesRowData._id;
+
+    this.url = "http://localhost:3000/api/goods/delete/" + this.goodsAndServicesRowData._id;
     return this.http.delete(this.url, requestOptions)
       .subscribe(
       response => {
         console.log("suceessfull data", response.json().message);
         this.closeDeleteModal();
         alert(response.json().message);
-        this.getGoodsAndServicesList();
+        this.getGoodsAndServicesList(this.pager.currentPage);
       },
       error => {
         alert(error.message);
@@ -243,13 +255,49 @@ export class GoodservicesComponent implements OnInit {
         var csvString = this.CSV2JSON(csv);
         // var csvString=this.CSV2JSON(csv);
 
-        this.uploadCsvFileToServer(csvString);
+        // this.uploadCsvFileToServer(csvString);
       }
     }
   }
 
+  uploadCsvFileToServer(jsonString) {
+
+    const headers = new Headers();
+
+    headers.append('Content-Type', 'application/json');
+    // headers.append('x-access-token', access_token);
+    const requestOptions = new RequestOptions({ headers: headers });
+    const body = {
+      "data": JSON.parse(jsonString)
+    };
+
+
+
+    console.log(body);
+    this.url = "http://localhost:3000/api/goods/uploadFile?token=" + this.access_token;
+    return this.http.post(this.url, body, requestOptions)
+      .subscribe(
+      response => {
+        console.log("suceessfull data", response.json().message);
+        // this.closeModal();
+
+        alert(response.json().message);
+      },
+      error => {
+        console.log("error", error.message);
+        console.log(error.text());
+      }
+      );
+  }
+
+  downloadJSONTOCSV() {
+    this.getGoodsAndServicesList(this.pager.currentPage);
+    this.excelServiceService.exportAsExcelFile(this.goodsAndServicesDataList, "BranchesJSNTOCSV");
+  }
+
   CSV2JSON(csv) {
     var array = this.CSVToArray(csv, ",");
+
     var objArray = [];
     for (var i = 1; i < array.length; i++) {
       objArray[i - 1] = {};
@@ -259,7 +307,7 @@ export class GoodservicesComponent implements OnInit {
       }
     }
 
-    var json = JSON.stringify(objArray);
+    var json = JSON.stringify(objArray.splice(0, objArray.length - 1));
     var str = json.replace(/},/g, "},\r\n");
     return str;
   }
@@ -315,35 +363,4 @@ export class GoodservicesComponent implements OnInit {
     // Return the parsed data.
     return (arrData);
   }
-
-  uploadCsvFileToServer(jsonString) {
-    var access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
-    const headers = new Headers();
-
-    headers.append('Content-Type', 'application/json');
-    headers.append('x-access-token', access_token);
-    const requestOptions = new RequestOptions({ headers: headers });
-    const body = {
-      "data": JSON.parse(jsonString)
-    };
-
-    
-
-    console.log(body);
-    this.url = "http://localhost:3000/api/customer/uploadFile";
-    return this.http.post(this.url, body, requestOptions)
-      .subscribe(
-      response => {
-        console.log("suceessfull data", response.json().message);
-        // this.closeModal();
-        
-        alert(response.json().message);
-      },
-      error => {
-        console.log("error", error.message);
-        console.log(error.text());
-      }
-      );
-  }
-
 }

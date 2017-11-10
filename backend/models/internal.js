@@ -18,10 +18,10 @@ const Internal = new Schema({
 })
 
 // create new User document
-Internal.statics.create = function(title, details,link,date,status,chapter,article) {
+Internal.statics.create = function(title, details,link,date,chapter,article) {
 var created_at=  Date.now();
     const Internal = new this({
-       title, details,link,date,status ,chapter,article,created_at    
+       title, details,link,date,chapter,article,created_at    
     })
     // return the Promise
     return Internal.save()

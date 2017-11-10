@@ -45,9 +45,15 @@ const onError = (error) => {
             message: error.message
         })
     }
+          var sortfiled={};
+    if(req.query.sortBy && req.query.sortBy.length>0){    
+    sortfiled=req.query.sortBy
+}else{
+   sortfiled={ date: -1 } 
+}
 var option={
     select:'hsn_code description cgst sgst igst condition',
-    sort:req.query.sortBy, 
+    sort:sortfiled, 
     offset:offset,
     limit:req.query.limit
 };

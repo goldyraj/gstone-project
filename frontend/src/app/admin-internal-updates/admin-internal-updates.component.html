@@ -65,8 +65,8 @@
                   <a target="_blank">{{item.details}}</a>
                 </td>
                 <td align="center">
-                    <a href="{{item.link}}" target="_blank">{{item.link}}</a>
-                  </td>
+                  <a href="{{item.link}}" target="_blank">{{item.link}}</a>
+                </td>
                 <td align="center">
                   <a data-toggle="modal" data-target=".bs-user-lg-edit">
                     <button class="fa fa-edit btn btn-primary btn-sm" title="Edit" (click)="editInternalRecord(item)"></button>
@@ -83,6 +83,27 @@
 
           <ul class="pagination btn-sm">
             <li [ngClass]="{disabled:pager.currentPage === 1}">
+              <a [class.hide]="pager.currentPage == 1" (click)="getNotificationList(pager.currentPage - 1)">Previous</a>
+            </li>
+
+            <li [ngClass]="{disabled:pager.currentPage === 1}">
+              <a [class.hide]="pager.currentPage>1">Previous</a>
+            </li>
+
+            <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+              <a  (click)="getNotificationList(page)">{{page}}</a>
+            </li>
+
+            <li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
+              <a [class.hide]="pager.currentPage === pager.endPage" (click)="getNotificationList(pager.currentPage + 1)">Next</a>
+            </li>
+            <li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
+              <a [class.hide]="pager.currentPage < pager.endPage">Next</a>
+            </li>
+          </ul>
+
+          <!-- <ul class="pagination btn-sm">
+            <li [ngClass]="{disabled:pager.currentPage === 1}">
               <a (click)="getInternalUpdateList(pager.currentPage - 1)">Previous</a>
             </li>
 
@@ -93,7 +114,7 @@
             <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
               <a (click)="getInternalUpdateList(pager.currentPage + 1)">Next</a>
             </li>
-          </ul>
+          </ul> -->
         </div>
 
       </div>
@@ -130,7 +151,7 @@
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <textarea rows="5"  type="text" class="form-control" placeholder="Details" formControlName="details" name="details"></textarea>
+                  <textarea rows="5" type="text" class="form-control" placeholder="Details" formControlName="details" name="details"></textarea>
                   <small [hidden]="internalUpdateForm.controls.details.valid || (internalUpdateForm.controls.details.pristine && !submitted)">
                     Details is required .
                   </small>
@@ -189,7 +210,7 @@
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <textarea  rows="10" cols="50" type="text" class="form-control" placeholder="Details" formControlName="details" name="details"></textarea>
+                  <textarea rows="10" cols="50" type="text" class="form-control" placeholder="Details" formControlName="details" name="details"></textarea>
                   <small [hidden]="editInternalUpdate.controls.details.valid || (editInternalUpdate.controls.details.pristine && !submitted)">
                     Details is required .
                   </small>

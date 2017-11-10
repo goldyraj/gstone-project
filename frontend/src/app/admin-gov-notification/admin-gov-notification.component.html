@@ -95,15 +95,22 @@
 
           <ul class="pagination btn-sm">
             <li [ngClass]="{disabled:pager.currentPage === 1}">
-              <a (click)="getNotificationList(pager.currentPage - 1)">Previous</a>
+              <a *ngIf="pager.currentPage > 1" (click)="getNotificationList(pager.currentPage - 1)">Previous</a>
+            </li>
+
+            <li [ngClass]="{disabled:pager.currentPage === 1}">
+              <a *ngIf="pager.currentPage ==1">Previous</a>
             </li>
 
             <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
               <a (click)="getNotificationList(page)">{{page}}</a>
             </li>
 
-            <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-              <a (click)="getNotificationList(pager.currentPage + 1)">Next</a>
+            <li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
+              <a *ngIf="pager.currentPage < pager.endPage" (click)="getNotificationList(pager.currentPage + 1)">Next</a>
+            </li>
+            <li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
+              <a *ngIf="pager.currentPage == pager.endPage">Next</a>
             </li>
           </ul>
         </div>
@@ -230,15 +237,15 @@
           <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
               <div class="col-md-12 col-sm-12 col-xs-12 text-center">
-                <h4 class="text-blue">Are You Sure State Delete
+                <h4 class="text-blue">Sure, you want to delete ?
                   <br>
                   <br>
                 </h4>
               </div>
 
-              <div class="form-group ">
-                <input type="button" class="btn btn-success" (click)="deleteNotification()" value="Yes">
-                <input type="button" class="btn btn-primary pull-right" data-dismiss="modal" value="No">
+              <div class="text-center">
+                <input type="button" class="btn btn-success" (click)="deleteNotification()" value="Yes"> &nbsp; &nbsp;
+                <input type="button" class="btn btn-primary" data-dismiss="modal" value="No">
               </div>
             </div>
           </div>

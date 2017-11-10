@@ -61,7 +61,7 @@
                 <td align="center">{{i+1}}</td>
                 <td align="center">{{item.name}}</td>
                 <td align="center">{{item.code}}</td>
-                
+
                 <!-- <td align="center">
                         <span class="label label-warning">Pending</span>
                       </td> -->
@@ -79,32 +79,27 @@
           </table>
 
 
-          <!-- <ul class="pagination btn-sm">
-                  <li>
-                    <button (click)="previousPage()" class="btn btn-primary">Previous</button>
-                  </li>
-                  <li>
-                    <button class="active" (click)="nextPage()" class="btn btn-primary">Next</button>
-                  </li>
-                </ul> -->
-
-          <!-- <ul class="pagination btn-sm">
-                  <li *ngFor="let item of stateList | paginate: { itemsPerPage: 10, currentPage: currentPage }"> ... </li>
-                </ul> -->
-
           <ul class="pagination btn-sm">
             <li [ngClass]="{disabled:pager.currentPage === 1}">
-              <a (click)="getStateList(pager.currentPage - 1)">Previous</a>
+              <a *ngIf="pager.currentPage > 1" (click)="getStateList(pager.currentPage - 1)">Previous</a>
+            </li>
+
+            <li [ngClass]="{disabled:pager.currentPage === 1}">
+              <a *ngIf="pager.currentPage ==1">Previous</a>
             </li>
 
             <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
               <a (click)="getStateList(page)">{{page}}</a>
             </li>
 
-            <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-              <a (click)="getStateList(pager.currentPage + 1)">Next</a>
+            <li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
+              <a *ngIf="pager.currentPage < pager.endPage" (click)="getStateList(pager.currentPage + 1)">Next</a>
+            </li>
+            <li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
+              <a *ngIf="pager.currentPage == pager.endPage">Next</a>
             </li>
           </ul>
+
           <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
 
         </div>

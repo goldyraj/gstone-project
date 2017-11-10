@@ -44,6 +44,7 @@ import { FaqsComponent } from './faqs/faqs.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { ContactComponent } from './contact/contact.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
+import {PreventLoggedInAccess} from './PreventLoggedInAccess';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -120,16 +121,16 @@ const routes: Routes = [
   {
     path: 'admin', component: AdminDashboardComponent,
     children: [
-      { path: 'dashboard', component: AdminHomeComponent },
-      { path: 'admin-state', component: AdminStateComponent },
-      { path: 'admin_hsn_code', component: AdminHsnCodeComponent },
-      { path: 'admin_gov_notification', component: AdminGovNotificationComponent },
-      { path: 'admin-internal-updates', component: AdminInternalUpdatesComponent },
-      { path: 'admin-gstone-videos', component: AdminGstoneVideosComponent },
-      { path: 'admin-about-us', component: AdminAboutUsComponent },
-      { path: 'admin-privacy-policy', component: AdminPrivacyPolicyComponent },
-      { path: 'admin-contact-us', component: AdminContactUsComponent },
-      { path: 'admin-faqs', component: AdminFaqsComponent },
+      { path: 'dashboard', component: AdminHomeComponent, canActivate: [PreventLoggedInAccess] },
+      { path: 'admin-state', component: AdminStateComponent, canActivate: [PreventLoggedInAccess] },
+      { path: 'admin_hsn_code', component: AdminHsnCodeComponent, canActivate: [PreventLoggedInAccess] },
+      { path: 'admin_gov_notification', component: AdminGovNotificationComponent, canActivate: [PreventLoggedInAccess] },
+      { path: 'admin-internal-updates', component: AdminInternalUpdatesComponent, canActivate: [PreventLoggedInAccess] },
+      { path: 'admin-gstone-videos', component: AdminGstoneVideosComponent , canActivate: [PreventLoggedInAccess]},
+      { path: 'admin-about-us', component: AdminAboutUsComponent , canActivate: [PreventLoggedInAccess]},
+      { path: 'admin-privacy-policy', component: AdminPrivacyPolicyComponent , canActivate: [PreventLoggedInAccess]},
+      { path: 'admin-contact-us', component: AdminContactUsComponent, canActivate: [PreventLoggedInAccess] },
+      { path: 'admin-faqs', component: AdminFaqsComponent , canActivate: [PreventLoggedInAccess]},
     ]
 
   }

@@ -14,12 +14,12 @@ if(req.type=="agentuser"||req.type=="admin"){
 exports.list = (req, res) => {
     // refuse if not an admin
   //=========Authrise function
- var myCallback=usingItNow(req.decoded)
- if(myCallback) {
-   return res.status(403).json({
-            message: 'you are not an authorise'
-        }) 
-    }
+ // var myCallback=usingItNow(req.decoded)
+ // if(myCallback) {
+ //   return res.status(403).json({
+ //            message: 'you are not an authorise'
+ //        }) 
+ //    }
  About.find({}).exec()
     .then(
         about=> {

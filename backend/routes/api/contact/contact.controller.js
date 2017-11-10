@@ -72,7 +72,7 @@ exports.list = (req, res) => {
    }
 
 exports.create = (req, res) => {
-    const { name, email,company,contact,remark } = req.body
+    const { name, email,company,contact_no,remark } = req.body
     let newUser = null
  // if(!req.decoded.admin) {
  //        return res.status(403).json({
@@ -86,7 +86,7 @@ exports.create = (req, res) => {
         if(contact) {
             throw new Error('Email Name exists')
         } else {
-            return Contact.create(  name, email,company,contact,remark )
+            return Contact.create(  name, email,company,contact_no,remark )
         }
     }
     // count the number of the user
@@ -124,32 +124,32 @@ exports.create = (req, res) => {
 /*
     POST /api/State/upadate
 */
-exports.update=(req,res)=>{
-        const {_id, question, answer} = req.body
-        var updated_at=  Date.now();
-         Contact.findOneAndUpdate({_id:_id}, {$set:{question:question,answer:answer,updated_at:updated_at}}, {new: true}, function(err, doc){
-    if(err){
-        console.log("Something wrong when updating data!");
-    }
-    console.log(doc);
-});
-          const respond = () => {
-        res.json({
-            message: 'FAQ Successfully Update'
+// exports.update=(req,res)=>{
+//         const {_id, question, answer} = req.body
+//         var updated_at=  Date.now();
+//          Contact.findOneAndUpdate({_id:_id}, {$set:{question:question,answer:answer,updated_at:updated_at}}, {new: true}, function(err, doc){
+//     if(err){
+//         console.log("Something wrong when updating data!");
+//     }
+//     console.log(doc);
+// });
+//           const respond = () => {
+//         res.json({
+//             message: 'FAQ Successfully Update'
         
  
-        })
-    }
-    //    // run when there is an error (username exists)
-    const onError = (error) => {
-        res.status(409).json({
-            message: error.message
-        })
-    }
-      Contact.findOneByUsername(question)          
-         .then(respond)
-         .catch(onError)
-}
+//         })
+//     }
+//     //    // run when there is an error (username exists)
+//     const onError = (error) => {
+//         res.status(409).json({
+//             message: error.message
+//         })
+//     }
+//       Contact.findOneByUsername(question)          
+//          .then(respond)
+//          .catch(onError)
+// }
 /*
     POST /api/client/delete/:id
 */

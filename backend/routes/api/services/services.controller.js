@@ -175,7 +175,7 @@ exports.uploadfile=(req,res)=>{
 var myobj= req.body.data
 //=========Authrise function
  var myCallback=usingItNow(req.decoded)
- if(req.decoded) {
+ if(myCallback) {
    return res.status(403).json({
             message: 'you are not an authorise'
         }) 

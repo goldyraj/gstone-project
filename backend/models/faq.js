@@ -7,16 +7,18 @@ const config = require('../config')
   
 const Faq = new Schema({
     question: String,
-    answer: String
+    answer: String,
+     created_at:  { type: Date},
+  updated_at:  { type: Date}
   
 })
 
 // create new User document
 Faq.statics.create = function(question, answer) {
- 
+  var created_at=  Date.now();
 
     const Faq = new this({
-       question, answer       
+       question, answer ,created_at      
     })
 
     // return the Promise

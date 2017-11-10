@@ -1,9 +1,24 @@
 const Contact = require('../../../models/contact')
+  var usingItNow = function(req) {
+if(req.type=="agentuser"||req.type=="admin"){
+  return false;
+}else{
+   return true;
+}
+
+};
 /* 
     GET /api/State/list
 */
 exports.index=(req,res)=>{
 //console.log(req);
+//=========Authrise function
+var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
 var query={};
 req.query.limit=parseInt(req.query.limit);
 if(req.query.search && req.query.search.length>0){    
@@ -43,11 +58,11 @@ Contact.paginate(query,option).then( contact=>res.json(contact)
 
 exports.list = (req, res) => {
     // refuse if not an admin
-    if(!req.decoded.admin) {
-        return res.status(403).json({
-            message: 'you are not an admin'
-        })
-    }
+ // if(!req.decoded.admin||!req.decoded.type===req.app.get('usertype')) {
+ //   return res.status(403).json({
+ //            message: 'you are not an authorise'
+ //        }) 
+ //    }
  Contact.find({}).exec()
     .then(
         contact=> {
@@ -111,8 +126,8 @@ exports.create = (req, res) => {
 */
 exports.update=(req,res)=>{
         const {_id, question, answer} = req.body
-     
-         Contact.findOneAndUpdate({_id:_id}, {$set:{question:question,answer:answer}}, {new: true}, function(err, doc){
+        var updated_at=  Date.now();
+         Contact.findOneAndUpdate({_id:_id}, {$set:{question:question,answer:answer,updated_at:updated_at}}, {new: true}, function(err, doc){
     if(err){
         console.log("Something wrong when updating data!");
     }

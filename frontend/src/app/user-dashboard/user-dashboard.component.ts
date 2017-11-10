@@ -99,7 +99,7 @@ export class UserDashboardComponent implements OnInit {
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeModal();
-          alert(response.json().message);
+          // alert(response.json().message);
         },
         error => {
           console.log("error", error.message);

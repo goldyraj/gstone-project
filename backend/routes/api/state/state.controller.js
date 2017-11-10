@@ -1,10 +1,26 @@
 const State = require('../../../models/state')
+  var usingItNow = function(req) {
+if(req.type=="agentuser"||req.type=="admin"){
+  return false;
+}else{
+   return true;
+}
+
+};
 /* 
     GET /api/State/list
 */
 exports.index=(req,res)=>{
-//console.log(req);
+
 var query={};
+
+//=========Authrise function
+  var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
 req.query.limit=parseInt(req.query.limit);
 if(req.query.search && req.query.search.length>0){    
     query={name:req.query.search}
@@ -43,10 +59,11 @@ State.paginate(query,option).then( state=>res.json(state)
 
 exports.list = (req, res) => {
     // refuse if not an admin
-    if(!req.decoded.admin) {
-        return res.status(403).json({
-            message: 'you are not an admin'
-        })
+    var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
     }
  State.find({}).exec()
     .then(
@@ -59,10 +76,12 @@ exports.list = (req, res) => {
 exports.create = (req, res) => {
     const {name,code} = req.body
     let newUser = null
- if(!req.decoded.admin) {
-        return res.status(403).json({
-            message: 'you are not an admin'
-        })
+  //=========Authrise function
+  var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
     }
     // create a new user if does not exist
     const create = (state) => {
@@ -112,8 +131,15 @@ exports.create = (req, res) => {
 */
 exports.update=(req,res)=>{
         const {_id,name,code} = req.body
-     
-         State.findOneAndUpdate({_id:_id}, {$set:{name:name,code:code}}, {new: true}, function(err, doc){
+        var updated_at=  Date.now();
+        //=========Authrise function
+  var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
+         State.findOneAndUpdate({_id:_id}, {$set:{name:name,code:code,updated_at:updated_at}}, {new: true}, function(err, doc){
     if(err){
         console.log("Something wrong when updating data!");
     }
@@ -151,4 +177,37 @@ exports.delete=(req,res)=>{
   // we have deleted the user
    
 });
+}
+/*
+    POST /api/user/uploadfile
+*/
+exports.uploadfile=(req,res)=>{
+var myobj= req.body.data
+
+//let msg ='Success updating admin2!';
+//=========Authrise function
+  var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
+ var multirecord = function () {
+      return new State.insertMany(myobj, function(err, res) {})
+  }
+
+  // function calling work 
+   var multi_record = multirecord();
+  multi_record.then(function () {
+            res.json({
+          message:"upload Successfully Save"
+        })
+  }).catch(function (e) {
+    var error=  e.message
+     res.json({
+          error
+        })
+     
+  });
+   
 }

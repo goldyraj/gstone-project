@@ -9,15 +9,17 @@ const Notification = new Schema({
     title: String,
     description: String, 
     link :String, 
-    date: { type: Date, default: Date.now }  
+    date: { type: Date, default: Date.now } , 
+         created_at:  { type: Date},
+  updated_at:  { type: Date}
 })
 
 // create new User document
 Notification.statics.create = function(title, description,link) {
  
-
+var created_at=  Date.now();
     const Notification = new this({
-      title, description,link      
+      title, description,link ,created_at    
     })
 
     // return the Promise

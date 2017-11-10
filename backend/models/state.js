@@ -7,17 +7,19 @@ const config = require('../config')
   
 const State = new Schema({
     name: String,
-    code: String
+    code: String,
   
+     created_at:  { type: Date},
+  updated_at:  { type: Date},
 })
 
 // create new User document
 State.statics.create = function(name, code) {
  
-
+var created_at=  Date.now();
     const State = new this({
         name,
-        code        
+        code , created_at     
     })
 
     // return the Promise

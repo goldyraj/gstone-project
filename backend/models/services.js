@@ -5,7 +5,7 @@ const crypto = require('crypto')
 const config = require('../config')
 
    var mongoosePaginate = require('mongoose-paginate');
-const Goods = new Schema({
+const Services = new Schema({
     description: String,
     hsn_code: String,
     //unit: String,
@@ -18,18 +18,18 @@ const Goods = new Schema({
 })
 
 // create new User document
-Goods.statics.create = function(description, hsn_code,cgst,sgst,igst,condition) {
+Services.statics.create = function(description, hsn_code,cgst,sgst,igst,condition) {
    var created_at=  Date.now();
-    const Goods = new this({
+    const Services = new this({
         description, hsn_code,cgst,sgst,igst,condition,created_at     
     })
 
     // return the Promise
-    return Goods.save()
+    return Services.save()
 }
 
 // find one user by using username
-Goods.statics.findOneByUsername = function(description) {
+Services.statics.findOneByUsername = function(description) {
     return this.findOne({
         description        
     }).exec()
@@ -38,5 +38,5 @@ Goods.statics.findOneByUsername = function(description) {
 
 
 
-Goods.plugin(mongoosePaginate);
-module.exports = mongoose.model('Goods', Goods)
+Services.plugin(mongoosePaginate);
+module.exports = mongoose.model('Services', Services)

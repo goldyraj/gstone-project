@@ -69,18 +69,19 @@ export class AdminPrivacyPolicyComponent implements OnInit {
 
       const body = {
         "_id": this.notiRowData._id,
-        "discription": this.editPolicy.value.discription,
+        "discription": this.editPolicy.value.discription
       };
       console.log("body", body);
 
-      this.url = "http://localhost:3000/api/privacy/update?token="+this.access_token;
+      this.url = "http://localhost:3000/api/privacy/update";
       return this.http.put(this.url, body, requestOptions)
         .subscribe(
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeEditModal();
           this.submittedEdit = false;
-          alert(response.json().message);
+          this.getPrivacyPolicy();
+          // alert(response.json().message);
         },
         error => {
           console.log("error", error.message);

@@ -275,6 +275,41 @@
     color: #ffffff;
 }
 
+.btn-default:hover {
+  background-color: #0fb4e0;
+ -webkit-transition-duration: 0.5s;
+ transition-duration: 0.5s;
+}
+.unicod-btn {
+ color: #ffffff;
+ padding: 8px 30px;
+ background: #F5F7F9;
+ font-weight: 500;
+ border: none;
+ text-transform: uppercase;
+ text-shadow: none;
+ -webkit-transition-duration: 0.5s;
+ transition-duration: 0.5s;
+}
+.unicod-btn:hover {
+ color: #ffffff;
+ background: #0FB4E0;
+ -webkit-transition-duration: 0.5s;
+ transition-duration: 0.5s;
+}
+
+.unicod-btn-black {
+background: #2E323C;
+color: #ffffff;
+font-size: 12px;
+font-weight: 500;
+line-height: 20px;
+text-align:center;
+padding: 10px 0px 4px;
+-webkit-transition-duration: 0.5s;
+transition-duration: 0.5s;
+}
+
 @media(min-width:767px) {
     .navbar {
         -webkit-transition: background .5s ease-in-out,padding .5s ease-in-out;

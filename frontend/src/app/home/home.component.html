@@ -28,8 +28,15 @@
 								<li>
 									<a class="page-scroll" routerLink="user-hsn">HSN/SAC SEARCH</a>
 								</li>
-								<li>
+								<li *ngIf="userIsLogged == false">
 									<a class="page-scroll" href="#" data-toggle="modal" data-target=".bs-modal-lg">REGISTRATION</a>
+								</li>
+
+								<li>
+									<a class="page-scroll" routerLink="about-us">ABOUT US</a>
+								</li>
+								<li>
+									<a class="page-scroll" routerLink="contact">CONTACT US</a>
 								</li>
 								<li *ngIf="userIsLogged == false">
 									<a class="page-scroll" href="#" data-toggle="modal" data-target=".bs-login-sm">LOGIN</a>
@@ -37,12 +44,6 @@
 								<!-- <li *ngIf="userIsLogged == true">
 									<a class="page-scroll" (click)="logout()">LOGOUT</a>
 								</li> -->
-								<li >
-									<a class="page-scroll" routerLink="about-us">ABOUT US</a>
-								</li>
-								<li >
-									<a class="page-scroll" routerLink="contact">CONTACT US</a>
-								</li>
 								<li *ngIf="userIsLogged == true">
 									<!-- <a class="page-scroll" href="#" data-toggle="modal" >{{userDetails.username}}</a>
 																		<ul class="dropdown-menu">
@@ -78,8 +79,9 @@
 													<i class="fa fa-cog"></i> Setting</a>
 											</li>
 											<li>
-												<a (click)="logout()" >
-													<i class="fa fa-key" ></i> Logout</a>
+												<a (click)="logout()">
+													<i class="fa fa-key"></i> Logout</a>
+
 
 											</li>
 										</ul>
@@ -104,12 +106,73 @@
 <div class="clearfix"></div>
 
 <!-- <div class="container section-bottom-100"> -->
-	<router-outlet></router-outlet>
+<router-outlet></router-outlet>
 <!-- </div> -->
 <!-- End Forgot password  -->
 
 
 <!-- Modal -->
+
+
+<div class="modal fade bs-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close modal-text" data-dismiss="modal" aria-label="Close">
+					<span class="modal-text" aria-hidden="true">X</span>
+				</button>
+				<!--<h4 class="modal-title modal-text"> REGISTRATION</h4>-->
+			</div>
+			<div class="modal-body">
+				<div class="service-section">
+					<div class="row section-bottom-20">
+						<div class="col-md-1 col-sm-1"></div>
+						<div class="col-md-10 col-sm-10">
+							<div class="col-md-4 col-sm-6 text-center">
+								<div class="unicod-service-col">
+									<!-- <h4>&nbsp;<br>Business User<br> &nbsp;</h4> -->
+
+									<h4>&nbsp;
+										<br>Customer
+										<br> &nbsp;</h4>
+								</div>
+								<a  data-toggle="modal" data-target=".bs-user-lg-edit">
+									<button class="btn btn-primary btn-sm" data-target=".bs-REGISTRATION2-lg" data-dismiss="modal" data-toggle="modal"  (click)="selectType('agentuser')">Select</button>
+									<!-- <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" data-toggle="modal" value="Customer" data-target=".bs-REGISTRATION2-lg">Select</button> -->
+								  </a>
+							</div>
+							<div class="col-md-4 col-sm-6 text-center">
+								<div class="unicod-service-col">
+									<!-- <h4>Charted Accountant <br> Associate<br> Tax Practioner</h4> -->
+									<h4>&nbsp;
+										<br> Associates
+										<br> &nbsp;</h4>
+								</div>
+								<a  data-toggle="modal" data-target=".bs-user-lg-edit">
+										<button class="btn btn-primary btn-sm" data-target=".bs-REGISTRATION2-lg" data-dismiss="modal" data-toggle="modal"  (click)="selectType('associates')">Select</button>
+										<!-- <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" data-toggle="modal" value="Customer" data-target=".bs-REGISTRATION2-lg">Select</button> -->
+									  </a>
+								<!-- <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" data-toggle="modal" value="Associates" data-target=".bs-REGISTRATION2-lg">Select</button> -->
+							</div>
+							<div class="col-md-4 col-sm-6 text-center">
+								<div class="unicod-service-col">
+									<h4>&nbsp;
+										<br>Large Enterprise
+										<br>&nbsp;</h4>
+								</div>
+								<a  data-toggle="modal" data-target=".bs-user-lg-edit">
+										<button class="btn btn-primary btn-sm" data-target=".bs-REGISTRATION2-lg" data-dismiss="modal" data-toggle="modal"  (click)="selectType('enterprise')">Select</button>
+										<!-- <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" data-toggle="modal" value="Customer" data-target=".bs-REGISTRATION2-lg">Select</button> -->
+									  </a>
+								<!-- <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" data-toggle="modal" value="Large Enterprise" data-target=".bs-REGISTRATION2-lg">Select</button> -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
 <div class="modal fade bs-REGISTRATION2-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
 	<div class="modal-dialog modal-lg" role="document">
@@ -122,7 +185,7 @@
 					<b>REGISTRATION</b>
 				</h4>
 			</div>
-			<!-- <div class="modal-body">
+			<div class="modal-body">
 				<div class="service-section">
 					<div class="row">
 						<div class="col-md-1 col-sm-1"></div>
@@ -135,9 +198,13 @@
 									</small>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<input type="text" class="form-control" formControlName="contact" placeholder="Contact No.">
-									<small [hidden]="myForm.controls.contact.valid || (myForm.controls.contact.pristine && !submitted)">
+									<input type="text" class="form-control" formControlName="contact" placeholder="Contact No." pattern="^(?:(?:\+|0{0,2})91(\s*[\ -]\s*)?|[0]?)?[789]\d{9}|(\d[ -]?){10}\d$">
+									<!-- <small [hidden]="myForm.controls.contact.valid || (myForm.controls.contact.pristine && !submitted)">
 										Contact is required (minimum 5 characters).
+									</small> -->
+									<small [hidden]="myForm.controls.contact.valid || (myForm.controls.contact.pristine && !submitted)">
+										<span style="color:red" [hidden]="myForm.controls.contact.valid">Contact no is required.</span>
+										<b [hidden]="myForm.controls.contact.pristine">characters not allowed.</b>
 									</small>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
@@ -205,7 +272,7 @@
 						</div>
 					</div>
 				</div>
-			</div> -->
+			</div>
 		</div>
 	</div>
 </div>

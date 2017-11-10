@@ -8,15 +8,16 @@ var mongoosePaginate = require('mongoose-paginate');
 const Privacy= new Schema({
    
   discription: { type: String, trim: true },
-   date:  { type: Date, default: Date.now }
+   created_at:  { type: Date},
+  updated_at:  { type: Date}
   
 })
 
 // create new User document
 Privacy.statics.create = function(discription) {
-
+   var created_at=  Date.now();
     const Privacy = new this({
-        discription
+        discription,created_at
     })
 
     // return the Promise

@@ -8,19 +8,38 @@ import { RouterModule, Routes, Router } from '@angular/router';
 })
 export class AdminDashboardComponent implements OnInit {
 
-  constructor(private router: Router,) { }
-
-  ngOnInit() {
+  constructor(private router: Router ) {
+    
   }
 
-  logout(){
+  onLoad()
+  {
+    
+  }
+
+  ngOnInit() {
+    var context=this;
+    window.onbeforeunload = function (e) {
+      if (localStorage.getItem('admin_token')) {
+        context.onLoad();
+      }
+      else {
+        context.router.navigate(['/admin-login']);
+      }
+    };
+  }
+
+  logout() {
     localStorage.clear();
     this.router.navigate(['/admin-login']);
   }
 
-  getUsersCount()
-  {
-    
+  getUsersCount() {
+
+  }
+
+  preventUrlNavigation() {
+
   }
 
 }

@@ -1,11 +1,26 @@
 const Vedio = require('../../../models/vedio')
   //  var debug = require('debug')('http') , http = require('http');
+  var usingItNow = function(req) {
+if(req.type=="agentuser"||req.type=="admin"){
+  return false;
+}else{
+   return true;
+}
+
+};
 /* 
     GET /api/user/list
 */
 exports.index=(req,res)=>{
-//console.log(req);
+
 var query={};
+//=========Authrise function
+  var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
 req.query.limit=parseInt(req.query.limit);
 if(req.query.search && req.query.search.length>0){
     console.log(query={title:req.query.search})
@@ -45,8 +60,15 @@ Vedio.paginate(query,option).then( vedio=> {
 
 exports.update=(req,res)=>{
         const {_id,title,description,link} = req.body
-     
-         Vedio.findOneAndUpdate({_id:_id}, {$set:{title:title,description:description,link:link}}, {new: true}, function(err, doc){
+        //=========Authrise function
+var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
+        var updated_at=  Date.now();
+         Vedio.findOneAndUpdate({_id:_id}, {$set:{title:title,description:description,link:link,updated_at:updated_at}}, {new: true}, function(err, doc){
     if(err){
         console.log("Something wrong when updating data!");
     }
@@ -72,10 +94,12 @@ exports.update=(req,res)=>{
 exports.create = (req, res) => {
     const {title, description,link} = req.body
     let newUser = null
- if(!req.decoded.admin) {
-        return res.status(403).json({
-            message: 'you are not an admin'
-        })
+   //=========Authrise function
+ var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
     }
     // create a new user if does not exist
     const create = (notification) => {

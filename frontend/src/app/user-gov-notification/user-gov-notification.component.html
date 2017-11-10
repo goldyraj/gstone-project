@@ -1,6 +1,6 @@
 
 <!-- pricing Section -->
-
+<section class="unicod-section unicod-pricing-fild  section-top-20">
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12">
@@ -11,39 +11,89 @@
 				</div>
 			</div>
 
-			<div class="col-md-8 col-sm-6">
+			<!-- <div class="col-md-8 col-sm-6">
 				<div class="pricing-tabile">
 
 					<ul class="tabile">
 
 						<li *ngFor="let item of notificationList ;let i = index;">
 							<i class="fa fa-check"></i> &nbsp;
-							<a href="{{item.link}}" (click)="fetchFile(item.link)"><B>{{item.title}}</B></a> &nbsp;
+							 &nbsp;
 							<BR>
-							<i>{{item.description}}</i>
+							<i></i>
 						</li>
 
 					</ul>
 				</div>
-			</div>
+			</div> -->
+			<div class="col-md-12 col-sm-12 section-bottom-100">
+					
+					   <table class="table table-condensed table-bordered">
+						   <thead>
+							   <tr>
+								   <th width="6%">S. No</th>
+								   <th width="28%">Title</th>
+								   <th width="49%">Description </th>
+								   <th width="10%">Download Link</th>
+							   </tr>
+						   </thead>
+						   <tbody>
+							   <tr *ngFor="let item of notificationList ;let i = index;">
+								   <td align="center"> 01.</td>
+								   <td><B>{{item.title}}</B></td>
+								   <td>{{item.description}}</td>
+								   <td><a href="{{item.link}}" target="_blank" (click)="fetchFile(item.link)" class="btn btn-primary">Download</a></td>
+							   </tr>
+							   <tr>
+								   <td align="center"> 02.</td>
+								   <td></td>
+								   <td></td>
+								   <td></td>
+							   </tr>
+							   <tr>
+								   <td align="center"> 03.</td>
+								   <td></td>
+								   <td></td>
+								   <td></td>
+							   </tr>
+							   <tr>
+								   <td align="center"> 04.</td>
+								   <td></td>
+								   <td></td>
+								   <td></td>
+							   </tr>
+							   <tr>
+								   <td align="center"> 05.</td>
+								   <td></td>
+								   <td></td>
+								   <td></td>
+							   </tr>
+							   <tr>
+								   <td align="center"> 06.</td>
+								   <td></td>
+								   <td></td>
+								   <td></td>
+							   </tr>
+							   <tr>
+								   <td align="center"> 07.</td>
+								   <td></td>
+								   <td></td>
+								   <td></td>
+							   </tr>
+							   
+							   
+							   
+						   </tbody>
+					   </table>				 
+				   
+			   </div>
 
-			<div class="col-md-4 col-sm-6">
-				<div class="well">
-					<ul class="tabile">
-						<li>You are now using GST Software</li>
-						<li>No download required. Use it in your browser</li>
-						<li>Create all invoices and file GST Returns</li>
-						<li>Free training to help you with using GST Software</li>
-						<li>Work offline with Excel Utility Tool</li>
-						<li>You can attend our Free training conducted by GST Experts in English & Hindi to help you understand GST & GST software</li>
-					</ul>
-				</div>
-			</div>
+			
 		</div>
 	</div>
 
 
-
+</section>
 
 <!-- REGISTRATION Start -->
 

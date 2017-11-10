@@ -11,6 +11,8 @@ import { RouterModule, Routes, Router } from '@angular/router';
 })
 export class HomeDashboardComponent implements OnInit {
   @ViewChild('closeBtn') closeBtn: ElementRef;
+  @ViewChild('button2') button2:ElementRef;
+  
   // model: any = {};
 
   notificationList = [];
@@ -128,11 +130,12 @@ export class HomeDashboardComponent implements OnInit {
       response => {
         localStorage.setItem('user_token', response.json().token);
         // localStorage.setItem('user_name', response.json().token);
-
+        
         //this.router.navigate(['home']);
         console.log(response.json().message);
-        alert("Log in Successfully!");
+        // alert("Log in Successfully!");
         // console.log(response);
+        this.button2.nativeElement.click();
         this.router.navigate(['/user']);
       },
       error => {

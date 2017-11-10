@@ -25,6 +25,7 @@ app.use(morgan('dev'))
 
 // set the secret key variable for jwt
 app.set('jwt-secret', config.secret)
+app.set('usertype', "agentuser")
 
 // index page, just for testing
 app.get('/', (req, res) => {

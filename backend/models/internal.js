@@ -13,15 +13,16 @@ const Internal = new Schema({
     chapter: String,
     article: String,
     status:String,
+      type:String,
     created_at:  { type: Date},
     updated_at:  { type: Date}
 })
 
 // create new User document
-Internal.statics.create = function(title, details,link,date,status,chapter,article) {
+Internal.statics.create = function(title, details,link,date,chapter,article,type) {
 var created_at=  Date.now();
     const Internal = new this({
-       title, details,link,date,status ,chapter,article,created_at    
+       title, details,link,date,chapter,article,type,created_at    
     })
     // return the Promise
     return Internal.save()

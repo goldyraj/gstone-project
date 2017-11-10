@@ -20,6 +20,7 @@ var myCallback=usingItNow(req.decoded)
         }) 
     }
 var query={};
+
 req.query.limit=parseInt(req.query.limit);
 if(req.query.search && req.query.search.length>0){    
     query={name:req.query.search}
@@ -42,9 +43,15 @@ const onError = (error) => {
             message: error.message
         })
     }
+    var sortfiled={};
+    if(req.query.sortBy && req.query.sortBy.length>0){    
+    sortfiled=req.query.sortBy
+}else{
+   sortfiled={ date: -1 } 
+}
 var option={
     select:'name email company contact_no remark ',
-    sort:req.query.sortBy,
+    sort:sortfiled,
     offset:offset,
     limit:req.query.limit
 };

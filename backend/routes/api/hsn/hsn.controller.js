@@ -17,12 +17,12 @@ if(req.type=="agentuser"||req.type=="admin"){
 
 exports.index=(req,res)=>{
 //=========Authrise function
-var myCallback=usingItNow(req.decoded)
- if(myCallback) {
-   return res.status(403).json({
-            message: 'you are not an authorise'
-        }) 
-    }
+// var myCallback=usingItNow(req.decoded)
+//  if(myCallback) {
+//    return res.status(403).json({
+//             message: 'you are not an authorise'
+//         }) 
+//     }
 var query={};
 req.query.limit=parseInt(req.query.limit);
 if(req.query.search && req.query.search.length>0){
@@ -47,9 +47,15 @@ const onError = (error) => {
             message: error.message
         })
     }
+             var sortfiled={};
+    if(req.query.sortBy && req.query.sortBy.length>0){    
+    sortfiled=req.query.sortBy
+}else{
+   sortfiled={ date: -1 } 
+}
 var option={
     select:'description code rate status',
-    sort:req.query.sortBy,
+    sort:sortfiled,
 
     offset:offset,
     limit:req.query.limit

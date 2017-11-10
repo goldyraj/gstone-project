@@ -5,6 +5,7 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import * as _ from 'underscore';
 import {PagerService} from '../service/pager.service';
 import{ExcelServiceService} from '../excel-service.service';
+import { RouterModule, Routes, Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-hsn-code',
@@ -38,25 +39,26 @@ export class AdminHsnCodeComponent implements OnInit {
   @ViewChild('closeBtn') closeBtn: ElementRef;
   @ViewChild('closeBtn2') closeBtn2: ElementRef;
 
-  constructor(private http: Http,private pagerService:PagerService,public ExcelServiceService:ExcelServiceService) {
+  constructor(private http: Http,private pagerService:PagerService,public ExcelServiceService:ExcelServiceService,private router: Router ) {
   // constructor(private http: Http) {
-    this.statusDropDown.push({ "code": 0, "desc": "Approved" });
-    this.statusDropDown.push({ "code": 1, "desc": "Pending" });
-    this.statusDropDown.push({ "code": 2, "desc": "Declined" });
-    this.selectedStatusType = "Select Status";
-    console.log("selectedStatusTypeCONSOLE", this.selectedStatusType);
-    this.pager.currentPage = 1;
-    this.access_token = localStorage.getItem("admin_token");
-    this.getAllHSNCodeList(this.pager.currentPage);
+    var context=this;
+    window.onbeforeunload = function (e) {
+      if (localStorage.getItem('admin_token')) {
+        context.onLoad();
+      }
+      else {
+        context.router.navigate(['/admin-login']);
+      }
+    };
   }
 
   ngOnInit() {
-    // we will initialize our form model here
     this.myForm = new FormGroup({
       hsn_code: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
       rate: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
       selectedStatusType: new FormControl('Select Status'),
-      description: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)])
+      description: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
+      selectCategory:new FormControl('Select Category')
       // address: new FormGroup({
       //   street: new FormControl('', <any>Validators.required),
       //   postcode: new FormControl('8000')
@@ -67,8 +69,21 @@ export class AdminHsnCodeComponent implements OnInit {
       hsn_code_edit: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
       rate_edit: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
       selectedStatusType_edit: new FormControl('Select Status'),
-      description_edit: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)])
+      description_edit: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
+      selectCategory:new FormControl('Select Category')
     });
+  }
+
+  onLoad()
+  {
+    this.statusDropDown.push({ "code": 0, "desc": "Approved" });
+    this.statusDropDown.push({ "code": 1, "desc": "Pending" });
+    this.statusDropDown.push({ "code": 2, "desc": "Declined" });
+    this.selectedStatusType = "Select Status";
+    console.log("selectedStatusTypeCONSOLE", this.selectedStatusType);
+    this.pager.currentPage = 1;
+    this.access_token = localStorage.getItem("admin_token");
+    this.getAllHSNCodeList(this.pager.currentPage);
   }
 
   private closeModal(): void {

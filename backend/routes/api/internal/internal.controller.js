@@ -80,7 +80,7 @@ var myCallback=usingItNow(req.decoded)
    }
 
 exports.create = (req, res) => {
-    const {title,details ,link,date,chapter,article ,status} = req.body
+    const {title,details ,link,date,chapter,article } = req.body
     let newUser = null
  //=========Authrise function
 var myCallback=usingItNow(req.decoded)
@@ -96,7 +96,7 @@ var myCallback=usingItNow(req.decoded)
         if(internal) {
             throw new Error('Intenal Name exists')
         } else {
-            return Internal.create(title,details ,link ,date,chapter,article ,status)
+            return Internal.create(title,details ,link ,date,chapter,article)
         }
     }
     // count the number of the user

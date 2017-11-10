@@ -1,4 +1,4 @@
-<section class="unicod-section unicod-pricing-fild  section-top-20 section-bottom-50">
+<section class="unicod-section unicod-pricing-fild  section-top-20">
   <div class="container">
     <div class="row">
       <div class="col-lg-12">
@@ -10,13 +10,18 @@
         </div>
       </div>
 
+
+
+
+      
       <div class="col-md-8 col-sm-6">
         <div class="panel-group" id="accordion">
           <div class="panel panel-default" *ngFor="let item of faqsList ;let i = index;">
             <div class="panel-heading">
               <h4 class="panel-title">
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne{{pageSize * (currentPage-1)+i+1}}">
-                  <!--<span class="glyphicon glyphicon-plus"></span>-->{{pageSize * (currentPage-1)+i+1}} {{item.question}}</a>
+                    <i class="more-less glyphicon glyphicon-plus"></i>
+                  {{pageSize * (currentPage-1)+i+1}} {{item.question}}</a>
               </h4>
             </div>
             <div id="collapseOne{{pageSize * (currentPage-1)+i+1}}" class="panel-collapse collapse">

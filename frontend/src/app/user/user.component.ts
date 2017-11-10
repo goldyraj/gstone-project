@@ -34,7 +34,10 @@ export class UserComponent implements OnInit {
    } // form builder simplify form initialization
 
   ngOnInit() {
-    
+    if (this.access_token == null) {
+      this.router.navigate(['/home']);
+      return;
+    }
   }
 
   checkAuth(){

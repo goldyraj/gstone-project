@@ -1,6 +1,6 @@
+<div class="clearfix">
 
-
-<div class="clearfix"></div>
+</div>
 
 <div class="container">
 	<div class="row">
@@ -16,14 +16,14 @@
 			</div>
 		</div> -->
 
-		<div class="col-xs-4 col-sm-1 placeholder">
+		<div class="col-xs-4 col-sm-5 text-right">
 
 			<a href="" data-toggle="modal" data-target=".bs-upload-sm">
 				<input type="button" class="btn btn-primary" value="Import/Export">
 			</a>
 
 			<a href="#" data-toggle="modal" data-target=".bs-GSTIN-lg">
-				<input type="button" class="btn btn-success pull-right" value="Add New Customer">
+				<input type="button" class="btn btn-success" value="Add New Customer">
 			</a>
 		</div>
 
@@ -60,6 +60,9 @@
 						<td align="center">
 							<a data-toggle="modal" data-target=".bs-user-lg-edit">
 								<button class="fa fa-edit btn btn-primary btn-sm" title="Edit" (click)="editCustomerRecord(item)">Edit</button>
+							</a>
+							<a href="" data-toggle="modal" data-target=".bs-delete-sm">
+								<i class="fa fa-trash btn btn-danger btn-sm" (click)="deleteCustomerRecord(item)" title="Delete"></i>
 							</a>
 						</td>
 					</tr>
@@ -109,9 +112,13 @@
 									</small>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<input type="text" class="form-control" formControlName="contact" placeholder="Contact No.">
-									<small [hidden]="myForm.controls.contact.valid || (myForm.controls.contact.pristine && !submitted)">
+									<input type="text" class="form-control" formControlName="contact" placeholder="Contact No." pattern="^(?:(?:\+|0{0,2})91(\s*[\ -]\s*)?|[0]?)?[789]\d{9}|(\d[ -]?){10}\d$">
+									<!-- <small [hidden]="myForm.controls.contact.valid || (myForm.controls.contact.pristine && !submitted)">
 										Contact is required (minimum 5 characters).
+									</small> -->
+									<small [hidden]="myForm.controls.contact.valid || (myForm.controls.contact.pristine && !submitted)">
+										<span style="color:red" [hidden]="myForm.controls.contact.valid">Contact no is required.</span>
+										<b [hidden]="myForm.controls.contact.pristine">characters not allowed.</b>
 									</small>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
@@ -138,14 +145,14 @@
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="address" placeholder="Address" name="address" id="address">
 									<small [hidden]="myForm.controls.address.valid || (myForm.controls.address.pristine && !submitted)">
-										Address is required (minimum 5 characters).
+										Address is required .
 									</small>
 								</div>
 
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
 									<input type="text" class="form-control" placeholder="City" formControlName="city" name="city" id="city">
 									<small [hidden]="myForm.controls.city.valid || (myForm.controls.city.pristine && !submitted)">
-										City is required (minimum 5 characters).
+										City is required.
 									</small>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
@@ -342,6 +349,37 @@
 	</div>
 </div>
 
+<div class="modal fade bs-delete-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span class="modal-text" aria-hidden="true">X</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="service-section">
+					<div class="row">
+						<div class="col-md-12 col-sm-12 col-xs-12">
+							<div class="col-md-12 col-sm-12 col-xs-12 text-center">
+								<h4 class="text-blue">Sure, you want to delete ?
+									<br>
+									<br>
+								</h4>
+							</div>
+
+							<div class="text-center">
+								<input type="button" class="btn btn-success" (click)="deleteHSNRecord()" data-dismiss="modal" value="Yes"> &nbsp; &nbsp;
+								<input type="button" class="btn btn-primary" data-dismiss="modal" value="No">
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
 <div class="modal fade bs-Export-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
 	<div class="modal-dialog modal-md" role="document">

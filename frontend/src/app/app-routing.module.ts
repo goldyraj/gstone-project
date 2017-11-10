@@ -48,7 +48,8 @@ import {PreventLoggedInAccess} from './PreventLoggedInAccess';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  
+  // { path: '/**', component: HomeComponent  },
+  // { path: '/**', redirectTo: ['MycmpnameCmp'] },
   // { path: 'home', component: HomeComponent },
   // { path: 'Register', component: RegistrationComponent },
   // { path: 'user', component: UserComponent },

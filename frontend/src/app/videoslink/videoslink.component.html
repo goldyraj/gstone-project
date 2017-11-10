@@ -11,8 +11,37 @@
 							by injected humour, or randomised words which don't look even slightly believable.</p>
 					</div>
 				</div>
+				<div class="col-md-12 col-sm-12 section-bottom-30">
+				
+							<table class="table table-condensed table-bordered">
+								<thead>
+									<tr>
+										<th width="6%">S. No</th>
+										<th width="15%">Title</th>
+										<th width="50%">Description </th>
+										<th width="15%">Category</th>
+										<th width="10%">Action</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr *ngFor="let item of videosList   ;let i = index;">
+										<td align="center"> {{pageSize * (currentPage-1)+i+1}}.</td>
+										<td>{{item.title}}</td>
+										<td>
+											<a href="{{item.link}}">{{item.description}}</a>
+										</td>
+										<td><iframe width="190" height="110" src="https://www.youtube.com/embed/uiwuoYxv-4I" frameborder="0" allowfullscreen></iframe></td>
+										<td>
+											<a class="btn btn-primary">Show</a>
+										</td>
+									</tr>
+				
+								</tbody>
+							</table>
+				
+						</div>
 
-				<div class="col-md-8 col-sm-6">
+				<!-- <div class="col-md-8 col-sm-6">
 					<div class="pricing-tabile">
 
 						<ul class="tabile">
@@ -31,61 +60,14 @@
 									</div>
 								</div>
 							</li>
-							<!-- <li>
-								<div class="media">
-									<div class="media-left">
-										<iframe width="190" height="110" src="https://www.youtube.com/embed/uiwuoYxv-4I" frameborder="0" allowfullscreen></iframe>
-									</div>
-									<div class="media-body">
-										<h4 class="media-heading">
-											<a href="" data-toggle="modal" data-target=".bs-REGISTRATION2-lg">
-												<b>Impact of GST on Products Price | </b> Only Example company</a>
-										</h4>
-										<p>File GSTR1 seamlessly before 10th SeptYou can attend our Free training conducted by GST Experts in English & Hindi
-											to help you understand GST & GST software</p>
-									</div>
-								</div>
-							</li>
-
-							<li>
-								<div class="media">
-									<div class="media-left">
-										<iframe width="190" height="110" src="https://www.youtube.com/embed/qrC8Lhl82Ms" frameborder="0" allowfullscreen></iframe>
-									</div>
-									<div class="media-body">
-										<h4 class="media-heading">
-											<a href="" data-toggle="modal" data-target=".bs-REGISTRATION2-lg">
-												<b>Why do we use it</b> Prepare GSTR1 in Excel company</a>
-										</h4>
-										<p>You are now using GST Software No download required. Use it in your browser Create all invoices and file GST Returns
-											Free training to help you with using GST Software</p>
-									</div>
-								</div>
-							</li>
-							<li>
-								<div class="media">
-									<div class="media-left">
-										<iframe width="190" height="110" src="https://www.youtube.com/embed/uiwuoYxv-4I" frameborder="0" allowfullscreen></iframe>
-									</div>
-									<div class="media-body">
-										<h4 class="media-heading">
-											<a href="" data-toggle="modal" data-target=".bs-REGISTRATION2-lg">
-												<b>Impact of GST on Products Price | </b> Only Example company</a>
-										</h4>
-										<p>File GSTR1 seamlessly before 10th SeptYou can attend our Free training conducted by GST Experts in English & Hindi
-											to help you understand GST & GST software</p>
-									</div>
-								</div>
-							</li> -->
-
-
+						
 
 
 						</ul>
 					</div>
-				</div>
+				</div> -->
 
-				<div class="col-md-4 col-sm-6">
+				<!-- <div class="col-md-4 col-sm-6">
 					<div class="well">
 						<ul class="tabile">
 							<li>You are now using GST Software</li>
@@ -96,7 +78,7 @@
 							<li>You can attend our Free training conducted by GST Experts in English & Hindi to help you understand GST & GST software</li>
 						</ul>
 					</div>
-				</div>
+				</div> -->
 			</div>
 		</div>
 	

@@ -51,6 +51,7 @@ export class GstupdateComponent implements OnInit {
       console.log("pagecount", )
       console.log("State  PArse", this.internalUpdateList);
       console.log("TotalPages", this.TotalPages);
+      console.log("TotalPages", this.pageSize);
     });
   }
 

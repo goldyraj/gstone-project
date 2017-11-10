@@ -17,6 +17,7 @@ export class AdminLoginComponent implements OnInit {
   public submitted: boolean; // keep track on whether form is submitted
   public submittedEdit: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
+  public loginSuccess=0;
   constructor(private _fb: FormBuilder,private router: Router, private http: Http) {
   }
 
@@ -46,13 +47,14 @@ export class AdminLoginComponent implements OnInit {
         response => {
           console.log("token", response.json().token);
           localStorage.setItem('admin_token', response.json().token);
-          alert("Log in Successfully!");
-          this.router.navigate(['/admin/dashboard']);
+          this.loginSuccess=1;
+          this.router.navigateByUrl('/admin/dashboard', { skipLocationChange: true });
+          this.submitted=false;
           // this.closeModal();
         },
         error => {
+          this.loginSuccess=-1;
           console.log(error.json().message);
-          alert(error.json().message)
         }
         );
     }

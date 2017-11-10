@@ -3,7 +3,8 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { PagerService } from '../service/pager.service';
-import * as _ from 'underscore'
+import * as _ from 'underscore';
+import { RouterModule, Routes, Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-state',
@@ -51,19 +52,33 @@ export class AdminStateComponent implements OnInit {
   public events: any[] = []; // use later to display form changes
   public stateRowData;
   access_token = "";
-  constructor(private _fb: FormBuilder, private http: Http, private pagerService: PagerService) {
+  constructor(private _fb: FormBuilder, private http: Http, private pagerService: PagerService,public router:Router) {
     // this.currentPage=1;
+    var context=this;
+    window.onbeforeunload = function (e) {
+      if (localStorage.getItem('admin_token')!=null) {
+        context.onLoad();
+      }
+      else {
+        context.router.navigate(['/admin-login']);
+      }
+    };
+  }
+
+  onLoad()
+  {
     this.access_token = localStorage.getItem("admin_token");
     console.log("admin token", this.access_token);
     this.pager.currentPage = 1;
     // this.setPage(this.pager.currentPage);
     this.getStateList(this.pager.currentPage);
     console.log("cusntor call");
-    this.person.country = this.countries.filter(c => c.id === this.person.country.id)[0];
+    
   }
 
   ngOnInit() {
     // we will initialize our form model here
+    this.person.country = this.countries.filter(c => c.id === this.person.country.id)[0];
     this.myForm = new FormGroup({
       statename: new FormControl('', [<any>Validators.required]),
       statecode: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
@@ -75,7 +90,6 @@ export class AdminStateComponent implements OnInit {
       statecode: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
       country: new FormControl('Select Status', [])
     });
-
   }
 
 

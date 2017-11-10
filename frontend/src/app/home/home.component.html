@@ -136,10 +136,10 @@
 										<br>Customer
 										<br> &nbsp;</h4>
 								</div>
-								<a  data-toggle="modal" data-target=".bs-user-lg-edit">
-									<button class="btn btn-primary btn-sm" data-target=".bs-REGISTRATION2-lg" data-dismiss="modal" data-toggle="modal"  (click)="selectType('agentuser')">Select</button>
+								<a data-toggle="modal" data-target=".bs-user-lg-edit">
+									<button class="btn btn-primary btn-sm" data-target=".bs-REGISTRATION2-lg" data-dismiss="modal" data-toggle="modal" (click)="selectType('agentuser')">Select</button>
 									<!-- <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" data-toggle="modal" value="Customer" data-target=".bs-REGISTRATION2-lg">Select</button> -->
-								  </a>
+								</a>
 							</div>
 							<div class="col-md-4 col-sm-6 text-center">
 								<div class="unicod-service-col">
@@ -148,10 +148,10 @@
 										<br> Associates
 										<br> &nbsp;</h4>
 								</div>
-								<a  data-toggle="modal" data-target=".bs-user-lg-edit">
-										<button class="btn btn-primary btn-sm" data-target=".bs-REGISTRATION2-lg" data-dismiss="modal" data-toggle="modal"  (click)="selectType('associates')">Select</button>
-										<!-- <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" data-toggle="modal" value="Customer" data-target=".bs-REGISTRATION2-lg">Select</button> -->
-									  </a>
+								<a data-toggle="modal" data-target=".bs-user-lg-edit">
+									<button class="btn btn-primary btn-sm" data-target=".bs-REGISTRATION2-lg" data-dismiss="modal" data-toggle="modal" (click)="selectType('associates')">Select</button>
+									<!-- <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" data-toggle="modal" value="Customer" data-target=".bs-REGISTRATION2-lg">Select</button> -->
+								</a>
 								<!-- <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" data-toggle="modal" value="Associates" data-target=".bs-REGISTRATION2-lg">Select</button> -->
 							</div>
 							<div class="col-md-4 col-sm-6 text-center">
@@ -160,10 +160,10 @@
 										<br>Large Enterprise
 										<br>&nbsp;</h4>
 								</div>
-								<a  data-toggle="modal" data-target=".bs-user-lg-edit">
-										<button class="btn btn-primary btn-sm" data-target=".bs-REGISTRATION2-lg" data-dismiss="modal" data-toggle="modal"  (click)="selectType('enterprise')">Select</button>
-										<!-- <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" data-toggle="modal" value="Customer" data-target=".bs-REGISTRATION2-lg">Select</button> -->
-									  </a>
+								<a data-toggle="modal" data-target=".bs-user-lg-edit">
+									<button class="btn btn-primary btn-sm" data-target=".bs-REGISTRATION2-lg" data-dismiss="modal" data-toggle="modal" (click)="selectType('enterprise')">Select</button>
+									<!-- <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" data-toggle="modal" value="Customer" data-target=".bs-REGISTRATION2-lg">Select</button> -->
+								</a>
 								<!-- <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" data-toggle="modal" value="Large Enterprise" data-target=".bs-REGISTRATION2-lg">Select</button> -->
 							</div>
 						</div>
@@ -192,16 +192,14 @@
 						<div class="col-md-10 col-sm-10">
 							<form [formGroup]="myForm" novalidate (ngSubmit)="saveReg(myForm.valid)">
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<input type="text" class="form-control" formControlName="name" placeholder="Name" >
+									<input type="text" class="form-control" formControlName="name" placeholder="Name">
 									<small [hidden]="myForm.controls.name.valid || (myForm.controls.name.pristine && !submitted)">
-										Name is required 
+										Name is required
 									</small>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="contact" placeholder="Contact No." pattern="^(?:(?:\+|0{0,2})91(\s*[\ -]\s*)?|[0]?)?[789]\d{9}|(\d[ -]?){10}\d$">
-									<!-- <small [hidden]="myForm.controls.contact.valid || (myForm.controls.contact.pristine && !submitted)">
-										Contact is required (minimum 5 characters).
-									</small> -->
+									
 									<small [hidden]="myForm.controls.contact.valid || (myForm.controls.contact.pristine && !submitted)">
 										<span style="color:red" [hidden]="myForm.controls.contact.valid">Contact no is required.</span>
 										<b [hidden]="myForm.controls.contact.pristine">characters not allowed.</b>
@@ -225,42 +223,44 @@
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="gstin" placeholder="GSTIN" name="gstin" id="gstin">
 									<small [hidden]="myForm.controls.gstin.valid || (myForm.controls.gstin.pristine && !submitted)">
-										GSTIN is required (minimum 5 characters).
+										GSTIN is required .
 									</small>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="address" placeholder="Address" name="address" id="address">
 									<small [hidden]="myForm.controls.address.valid || (myForm.controls.address.pristine && !submitted)">
-										Address is required (minimum 5 characters).
+										Address is required .
 									</small>
 								</div>
 
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<input type="text" class="form-control" placeholder="City" formControlName="city" name="city" id="city">
-									<small [hidden]="myForm.controls.city.valid || (myForm.controls.city.pristine && !submitted)">
-										City is required (minimum 5 characters).
+									<input type="password" class="form-control" formControlName="password" placeholder="Paasword" name="paasword" id="paasword"
+									 required>
+									<small [hidden]="myForm.controls.password.valid || (myForm.controls.password.pristine && !submitted)">
+										Password is required (minimum 5 characters).
 									</small>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<select class="form-control">
-										<option value="" selected="selected"> -- Select State -- </option>
-										<option value="">Jabalpur</option>
-										<option value="">Bhopal</option>
-										<option value="">Raipur</option>
-									</select>
+									<input type="password" class="form-control" formControlName="confirm_paasword" placeholder="Confirm Paasword" name="confirm_paasword"
+									 id="confirm_paasword" required>
+									<small [hidden]="myForm.controls.confirm_paasword.valid || (myForm.controls.confirm_paasword.pristine && !submitted)">
+										Password is required (minimum 5 characters).
+									</small>
 								</div>
-								<div class="col-md-6 col-sm-6 col-xs-12 form-group">				
-										<input type="password" class="form-control" formControlName="password" placeholder="Paasword" name="paasword" id="paasword" required>
-										<small [hidden]="myForm.controls.password.valid || (myForm.controls.password.pristine && !submitted)">
-												Password is required (minimum 5 characters).
-											</small>
-									 </div>			 
-									 <div class="col-md-6 col-sm-6 col-xs-12 form-group">				
-										<input type="password" class="form-control" formControlName="confirm_paasword" placeholder="Confirm Paasword" name="confirm_paasword" id="confirm_paasword" required>
-										<small [hidden]="myForm.controls.confirm_paasword.valid || (myForm.controls.confirm_paasword.pristine && !submitted)">
-												Password is required (minimum 5 characters).
-											</small>
-									 </div>	
+								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+									<input type="text" class="form-control" placeholder="City" formControlName="city" name="city" id="city">
+									<small [hidden]="myForm.controls.city.valid || (myForm.controls.city.pristine && !submitted)">
+										City is required.
+									</small>
+								</div>
+								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+									<select class="form-control" (input)="onInput($event)">
+										<option value="" selected="selected"> -- Select State -- </option>
+										<option *ngFor="let item of stateList" value=" {{item.name}}">{{item.name}}</option>
+									</select>
+									
+								</div>
+
 
 								<div class="col-md-12 col-sm-12 col-xs-12 form-group" align="center">
 									<button type="submit" class="btn btn-primary">Create</button>
@@ -281,7 +281,7 @@
 	<div class="modal-dialog modal-sm" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<button type="button" class="close" data-dismiss="modal" #button2 aria-label="Close">
 					<span class="modal-text" aria-hidden="true">X</span>
 				</button>
 				<h4 class="modal-title modal-text text-center">
@@ -291,22 +291,35 @@
 			<div class="modal-body">
 				<div class="service-section">
 					<div class="row">
-						<form #form="ngForm" (ngSubmit)="submitForm(form.value)">
+						<form [formGroup]="LoginForm" novalidate (ngSubmit)="submitForm(LoginForm.valid)">
 							<div class="col-md-12 col-sm-12 col-xs-12">
 								<div class=" col-md-12 col-sm-12 col-xs-12 form-group">
-									<!-- <label>Username:</label> -->
-									<input type="text" class="form-control" placeholder="Username" name="username" ngModel required>
+									<input type="text" class="form-control" formControlName="email" placeholder="Email Id" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
+									<small [hidden]="LoginForm.controls.email.valid || (LoginForm.controls.email.pristine && !submitted)">
+										<span style="color:red" [hidden]="LoginForm.controls.email.valid">Email is required </span>
+										<b [hidden]="LoginForm.controls.email.pristine">joe@abc.com</b>
+									</small>
 								</div>
 
 								<div class=" col-md-12 col-sm-12 col-xs-12 form-group">
-									<!-- <label>Password</label> -->
-									<input type="Password" class="form-control" placeholder="Password" name="password" ngModel required>
+
+									<input type="password" class="form-control" formControlName="password" placeholder="Password">
+									<small [hidden]="LoginForm.controls.password.valid || (LoginForm.controls.password.pristine && !submitted)">
+										Password is required .
+									</small>
 								</div>
 								<div class=" col-md-12 col-sm-12 col-xs-12 form-group">
 									<button type="submit" class="btn btn-success btn-block">Login</button>
 								</div>
+								<!-- <small *ngIf="errorType == true">
+									{{errorMsg}}
+								</small> -->
+								<small *ngIf="errorType == false">
+									{{errorMsg}}
+								</small>
 							</div>
 						</form>
+
 					</div>
 					<button type="button" class="btn btn-link pull-left" data-dismiss="modal" data-toggle="modal" data-target=".bs-modal-lg">Create Account</button>
 					<button type="button" class="btn btn-link" data-dismiss="modal" data-toggle="modal" data-target=".bs-ForgotPassword-sm">Forgot Password</button>

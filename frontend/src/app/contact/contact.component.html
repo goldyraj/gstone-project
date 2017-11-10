@@ -23,24 +23,51 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-6 form-group">
-                                <input type="text" class="form-control" placeholder="Name" name="name" id="name" required>
-                            </div>
-                            <div class="col-sm-6 form-group">
-                                <input type="email" class="form-control" placeholder="Email Address" name="email" id="email" required>
-                            </div>
-                            <div class="col-sm-6 form-group">
-                                <input type="tel" class="form-control" placeholder="Phone No" name="phone" id="phone">
-                            </div>
-                            <div class="col-sm-6 form-group">
-                                <input type="text" class="form-control" placeholder="Company Name" name="company" id="company">
-                            </div>
-                            <div class="col-sm-12 form-group">
-                                <textarea class="form-control" rows="5" placeholder="Remark" name="remarks" required></textarea>
-                            </div>
-                            <div class="col-sm-12 form-group">
-                                <button class="btn btn-primary unicod-btn-green" type="submit">Send</button>
-                            </div>
+                            <form [formGroup]="contactForm" novalidate (ngSubmit)="sendContact(contactForm.valid)">
+
+                                <small *ngIf="errorType == true">
+                                    Contact has been send successfully.
+                                </small>
+                                <small *ngIf="errorType == false">
+                                    Contact not send.
+                                </small>
+                                <div class="col-sm-6 form-group">
+                                    <input type="text" class="form-control" formControlName="name" placeholder="Name">
+                                    <small [hidden]="contactForm.controls.name.valid || (contactForm.controls.name.pristine && !submitted)">
+                                        Name is required (minimum 5 characters).
+                                    </small>
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <input type="text" class="form-control" formControlName="email" placeholder="Email Address">
+                                    <small [hidden]="contactForm.controls.email.valid || (contactForm.controls.email.pristine && !submitted)">
+                                        <span style="color:red" [hidden]="contactForm.controls.email.valid">Email is required </span>
+                                        <b [hidden]="contactForm.controls.email.pristine">joe@abc.com</b>
+                                    </small>
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <input type="text" class="form-control" formControlName="contact" placeholder="Phone No" pattern="^(?:(?:\+|0{0,2})91(\s*[\ -]\s*)?|[0]?)?[789]\d{9}|(\d[ -]?){10}\d$">
+                                    <small [hidden]="contactForm.controls.contact.valid || (contactForm.controls.contact.pristine && !submitted)">
+                                        <span style="color:red" [hidden]="contactForm.controls.contact.valid">Contact no is required.</span>
+                                        <b [hidden]="contactForm.controls.contact.pristine">Characters not allowed.</b>
+                                    </small>
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <input type="text" class="form-control" formControlName="company" placeholder="Company Name">
+                                    <small [hidden]="contactForm.controls.company.valid || (contactForm.controls.company.pristine && !submitted)">
+                                        Company Name is required .
+                                    </small>
+                                </div>
+                                <div class="col-sm-12 form-group">
+                                    <textarea class="form-control" rows="5" formControlName="remarks" placeholder="Remark"></textarea>
+                                    <small [hidden]="contactForm.controls.remarks.valid || (contactForm.controls.remarks.pristine && !submitted)">
+                                        Remarks is required.
+                                    </small>
+                                </div>
+                                <div class="col-sm-12 form-group">
+                                    <button class="btn btn-primary unicod-btn-green" type="submit">Send</button>
+                                </div>
+
+                            </form>
                         </div>
                     </form>
                 </div>

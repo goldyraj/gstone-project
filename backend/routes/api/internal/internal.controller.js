@@ -44,7 +44,7 @@ const onError = (error) => {
         })
     }
 var option={
-    select:'title details link date status',
+    select:'title details link chapter article date status',
     sort:req.query.sortBy,
     offset:offset,
     limit:req.query.limit
@@ -74,7 +74,7 @@ var myCallback=usingItNow(req.decoded)
    }
 
 exports.create = (req, res) => {
-    const {title,details ,link,date ,status} = req.body
+    const {title,details ,link,date,chapter,article ,status} = req.body
     let newUser = null
  //=========Authrise function
 var myCallback=usingItNow(req.decoded)
@@ -90,7 +90,7 @@ var myCallback=usingItNow(req.decoded)
         if(internal) {
             throw new Error('Intenal Name exists')
         } else {
-            return Internal.create(title,details ,link ,date ,status)
+            return Internal.create(title,details ,link ,date,chapter,article ,status)
         }
     }
     // count the number of the user
@@ -130,7 +130,7 @@ var myCallback=usingItNow(req.decoded)
     POST /api/State/upadate
 */
 exports.update=(req,res)=>{
-        const {_id, title , details ,link , date ,status} = req.body
+        const {_id, title , details ,link , date,chapter,article ,status} = req.body
      //=========Authrise function
 var myCallback=usingItNow(req.decoded)
  if(myCallback) {
@@ -139,7 +139,7 @@ var myCallback=usingItNow(req.decoded)
         }) 
     }
     var updated_at=  Date.now();
-         Internal.findOneAndUpdate({_id:_id}, {$set:{title:title,details:details,link:link,date:date,status:status,updated_at:updated_at}}, {new: true}, function(err, doc){
+         Internal.findOneAndUpdate({_id:_id}, {$set:{title:title,details:details,link:link,date:date,chapter:chapter,article:article,status:status,updated_at:updated_at}}, {new: true}, function(err, doc){
     if(err){
         console.log("Something wrong when updating data!");
     }

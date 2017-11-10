@@ -9,7 +9,7 @@ const Contact = new Schema({
     name: String,
     email: String,
     company: String,
-    contact:String,
+    contact_no:String,
     remark:String,
     view:String,
     date:  { type: Date, default: Date.now },
@@ -19,11 +19,11 @@ const Contact = new Schema({
 })
 
 // create new User document
-Contact.statics.create = function(name, email,company,contact,remark) {
+Contact.statics.create = function(name, email,company,contact_no,remark) {
  var created_at=  Date.now();
      this.view='not';
     const Contact = new this({
-    name, email,company,contact,remark ,created_at  
+    name, email,company,contact_no,remark ,created_at  
     })
     // return the Promise
     return Contact.save()

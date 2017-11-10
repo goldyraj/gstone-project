@@ -8,18 +8,20 @@ const config = require('../config')
 const Internal = new Schema({
     title: String,
     details: String,
-      link: String,
+    link: String,
     date: String,
+    chapter: String,
+    article: String,
     status:String,
-   created_at:  { type: Date},
-  updated_at:  { type: Date}
+    created_at:  { type: Date},
+    updated_at:  { type: Date}
 })
 
 // create new User document
-Internal.statics.create = function(title, details,link,date,status) {
+Internal.statics.create = function(title, details,link,date,status,chapter,article) {
 var created_at=  Date.now();
     const Internal = new this({
-       title, details,link,date,status ,created_at    
+       title, details,link,date,status ,chapter,article,created_at    
     })
     // return the Promise
     return Internal.save()

@@ -28,8 +28,15 @@
 								<li>
 									<a class="page-scroll" routerLink="user-hsn">HSN/SAC SEARCH</a>
 								</li>
-								<li>
+								<li  *ngIf="userIsLogged == false">
 									<a class="page-scroll" href="#" data-toggle="modal" data-target=".bs-modal-lg">REGISTRATION</a>
+								</li>
+
+								<li>
+									<a class="page-scroll" routerLink="about-us">ABOUT US</a>
+								</li>
+								<li>
+									<a class="page-scroll" routerLink="contact">CONTACT US</a>
 								</li>
 								<li *ngIf="userIsLogged == false">
 									<a class="page-scroll" href="#" data-toggle="modal" data-target=".bs-login-sm">LOGIN</a>
@@ -37,12 +44,6 @@
 								<!-- <li *ngIf="userIsLogged == true">
 									<a class="page-scroll" (click)="logout()">LOGOUT</a>
 								</li> -->
-								<li *ngIf="userIsLogged == true">
-									<a class="page-scroll" routerLink="about-us">ABOUT US</a>
-								</li>
-								<li *ngIf="userIsLogged == true">
-									<a class="page-scroll" routerLink="contact">CONTACT US</a>
-								</li>
 								<li *ngIf="userIsLogged == true">
 									<!-- <a class="page-scroll" href="#" data-toggle="modal" >{{userDetails.username}}</a>
 																		<ul class="dropdown-menu">
@@ -78,8 +79,8 @@
 													<i class="fa fa-cog"></i> Setting</a>
 											</li>
 											<li>
-												<a href="#">
-													<i class="fa fa-key" (click)="logout()"></i> Logout</a>
+												<a (click)="logout()">
+													<i class="fa fa-key"></i> Logout</a>
 
 											</li>
 										</ul>
@@ -104,7 +105,7 @@
 <div class="clearfix"></div>
 
 <!-- <div class="container section-bottom-100"> -->
-	<router-outlet></router-outlet>
+<router-outlet></router-outlet>
 <!-- </div> -->
 <!-- End Forgot password  -->
 

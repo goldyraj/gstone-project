@@ -29,6 +29,7 @@ export class UserComponent implements OnInit {
   constructor(private _fb: FormBuilder, private http: Http,private router: Router) {
     this.access_token = localStorage.getItem("user_token");
     console.log("user token",this.access_token);
+    // window.location.reload();
     this.checkAuth();
    } // form builder simplify form initialization
 

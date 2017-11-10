@@ -138,7 +138,7 @@ export class AdminFaqsComponent implements OnInit {
           this.closeEditModal();
           this.submittedEdit = false;
           // this.faqsList[this.rowDataIndex] = body;
-          alert(response.json().message);
+          // alert(response.json().message);
           this.getFaqsList();
         },
         error => {
@@ -163,7 +163,7 @@ export class AdminFaqsComponent implements OnInit {
         console.log("suceessfull data", response.json().message);
         this.closeDeleteModal();
         this.submittedEdit = false;
-        alert(response.json().message);
+        // alert(response.json().message);
         this.getFaqsList();
       },
       error => {

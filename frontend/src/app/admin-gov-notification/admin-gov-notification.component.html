@@ -126,7 +126,7 @@
         <button type="button" class="close" data-dismiss="modal" #closeBtn aria-label="Close">
           <span class="modal-text" aria-hidden="true">X</span>
         </button>
-        <h4 class="modal-title modal-text"> Add Gov. Notifications</h4>
+        <h4 class="modal-title modal-text">Add Gov. Notification</h4>
       </div>
       <div class="modal-body">
         <div class="service-section">
@@ -140,7 +140,7 @@
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="List" formControlName="description" name="description">
+                  <input type="text" class="form-control" placeholder="Description" formControlName="description" name="description">
                   <small [hidden]="govNotiForm.controls.description.valid || (govNotiForm.controls.description.pristine && !submitted)">
                     Question is required .
                   </small>
@@ -155,7 +155,7 @@
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <!-- <input type="button" class="btn btn-primary" value="Add Notifications"> -->
-                  <button type="submit" class="btn btn-primary">Add Notifications</button>
+                  <button type="submit" class="btn btn-primary">Add</button>
                   <button type="button" class="btn btn-success pull-right" data-dismiss="modal">Cancel</button>
                 </div>
               </form>

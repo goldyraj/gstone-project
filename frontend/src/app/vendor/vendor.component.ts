@@ -20,6 +20,7 @@ export class VendorComponent implements OnInit {
   url = "";
   vender = {};
   venderList = [];
+  rowDataIndex;
   public myForm: FormGroup; // our model driven form
   public myFormEdit: FormGroup;
   public submitted: boolean; // keep track on whether form is submitted
@@ -29,6 +30,7 @@ export class VendorComponent implements OnInit {
   access_token;
   pager: any = {};
   pagedItems: any[];
+  venderRowData;
 
   constructor(private _fb: FormBuilder, private http: Http, public excelServiceService: ExcelServiceService, public pagerService: PagerService) {
     this.pager.currentPage = 1;
@@ -49,6 +51,12 @@ export class VendorComponent implements OnInit {
   ngOnInit() {
     // we will initialize our form model here
     this.myForm = new FormGroup({
+      name: new FormControl('', [<any>Validators.required]),
+      gstin: new FormControl('', [<any>Validators.required]),
+      address: new FormControl('', [<any>Validators.required]),
+      state: new FormControl('Select State')
+    });
+    this.myFormEdit = new FormGroup({
       name: new FormControl('', [<any>Validators.required]),
       gstin: new FormControl('', [<any>Validators.required]),
       address: new FormControl('', [<any>Validators.required]),
@@ -129,6 +137,23 @@ export class VendorComponent implements OnInit {
 
   recordToDelete(item) {
     this.vendorRowData = item;
+  }
+
+  editGoodsServicesRecord(data){
+    this.rowDataIndex = data._id;
+    var temp;
+    if (data) {
+      console.log("DATA", data);
+
+      this.myFormEdit.get("name").setValue(data.name);
+      this.myFormEdit.get("gstn").setValue(data.gstn);
+      this.myFormEdit.get("address").setValue(data.address);
+      this.myFormEdit.get("state").setValue(data.state);
+      // this.myFormEdit.get("state").setValue(data.state);
+    }
+
+    this.venderRowData = data;
+
   }
 
   CSV2JSON(csv) {

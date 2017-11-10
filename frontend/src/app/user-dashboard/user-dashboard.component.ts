@@ -4,6 +4,7 @@ import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { ExcelServiceService } from '../excel-service.service';
 import {PagerService} from '../service/pager.service';
+import { RouterModule, Routes, Router } from '@angular/router';
 import * as _ from 'underscore'
 
 @Component({
@@ -37,7 +38,7 @@ export class UserDashboardComponent implements OnInit {
   pagedItems: any[];
   // private http: Http HttpClient,
   public userName:string;
-  constructor(private _fb: FormBuilder, private http: Http, public excelServiceService: ExcelServiceService,public PagerService:PagerService) {
+  constructor(private _fb: FormBuilder, private http: Http, public excelServiceService: ExcelServiceService,public PagerService:PagerService,private router: Router) {
     this.isEditingClicked = false;
     this.pager.currentPage = 1;
     this.access_token = localStorage.getItem("user_token");
@@ -47,6 +48,10 @@ export class UserDashboardComponent implements OnInit {
 
   ngOnInit() {
     // we will initialize our form model here
+    if (this.access_token == null) {
+      this.router.navigate(['/home']);
+      return;
+    }
     this.myForm = new FormGroup({
       name: new FormControl('', [<any>Validators.required]),
       contact: new FormControl('', [<any>Validators.required, <any>Validators.minLength(10)]),

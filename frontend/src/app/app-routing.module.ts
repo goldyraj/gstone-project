@@ -47,7 +47,7 @@ import { UserDashboardComponent } from './user-dashboard/user-dashboard.componen
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  
+  // { path: '**', redirectTo: '' },
   // { path: 'home', component: HomeComponent },
   // { path: 'Register', component: RegistrationComponent },
   // { path: 'user', component: UserComponent },

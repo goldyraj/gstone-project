@@ -113,10 +113,11 @@ exports.login = (req, res) => {
     }
 
     // respond the token 
-    const respond = (token) => {
+    const respond = (token,user) => {
         res.json({
             message: 'logged in successfully',
-            token
+            token,
+            user
 
         })
     }

@@ -43,9 +43,15 @@ const onError = (error) => {
             message: error.message
         })
     }
+          var sortfiled={};
+    if(req.query.sortBy && req.query.sortBy.length>0){    
+    sortfiled=req.query.sortBy
+}else{
+   sortfiled={ date: -1 } 
+}
 var option={
-    select:'name code',
-    sort:req.query.sortBy,
+    select:'name code created_at',
+    sort:sortfiled,
     offset:offset,
     limit:req.query.limit
 };

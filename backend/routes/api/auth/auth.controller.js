@@ -10,17 +10,17 @@ var debug = require('debug')('http') , http = require('http');
 */
 
 exports.register = (req, res) => {
-    const { name,username, password,email,contact,pan_no,gstin,address,city,type} = req.body
+    const { name,username, password,email,contact,pan_no,gstin,address,city,state,type} = req.body
     let newUser = null
 
     // create a new user if does not exist
     const create = (user) => {
-            debug('User %o', user);
-      console.log(contact)
+            //debug('User %o', user);
+     // console.log(contact)
         if(user) {
             throw new Error('username exists')
         } else {
-            return User.create(name,username, password,email,contact,pan_no,gstin,address,city,type)
+            return User.create(name,username, password,email,contact,pan_no,gstin,address,city,state,type)
         }
     }
     // count the number of the user
@@ -113,10 +113,12 @@ exports.login = (req, res) => {
     }
 
     // respond the token 
+    //console.log(user)
     const respond = (token) => {
         res.json({
             message: 'logged in successfully',
             token
+            
 
         })
     }

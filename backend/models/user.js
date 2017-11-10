@@ -16,6 +16,7 @@ const User = new Schema({
     gstin: String,
     address: String,
     city: String, 
+    state:String,
     created_at:  { type: Date},
     updated_at:  { type: Date},
     type:String,
@@ -30,7 +31,7 @@ const User = new Schema({
 
 
 // create new User document
-User.statics.create = function(name,username, password,email,contact,pan_no,gstin,address,city,type) {
+User.statics.create = function(name,username, password,email,contact,pan_no,gstin,address,city,state,type) {
     const encrypted = crypto.createHmac('sha1', config.secret)
                       .update(password)
                       .digest('base64')
@@ -46,7 +47,7 @@ User.statics.create = function(name,username, password,email,contact,pan_no,gsti
         pan_no,
         gstin,
         address,
-        city,
+        city,state,
         type,
         created_at
     })

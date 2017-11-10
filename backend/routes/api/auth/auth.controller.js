@@ -84,13 +84,11 @@ exports.login = (req, res) => {
             // user exists, check the password
             if(user.verify(password)) {
                 // create a promise that generates jwt asynchronously
-                //
-                //.console.log(delete user.password)
-                //delete user.password
+               
                 const p = new Promise((resolve, reject) => {
                     jwt.sign(
                         {
-                           // user
+                        
                             _id: user._id,
                             name: user.name,
                             username: user.username,
@@ -109,7 +107,7 @@ exports.login = (req, res) => {
                 })
                 return p
             } else {
-                throw new Error('login failed')
+                throw new Error('The username or password you have entered is invalid')
             }
         }
     }

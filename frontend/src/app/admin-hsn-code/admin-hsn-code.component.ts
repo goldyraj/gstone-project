@@ -15,14 +15,14 @@ import { RouterModule, Routes, Router } from '@angular/router';
 })
 export class AdminHsnCodeComponent implements OnInit {
 
-  @ViewChild('closeChoose') closeChoose:ElementRef;
-  @ViewChild('closeCsv') closeCsv:ElementRef;
+  @ViewChild('closeChoose') closeChoose: ElementRef;
+  @ViewChild('closeCsv') closeCsv: ElementRef;
 
   public addStateForm: FormGroup; // our model driven form
   public submitted: boolean = false; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
 
-  public ifSuccess:boolean=false;
+  public ifSuccess: boolean = false;
   goodsData = Array();
   servicesData = Array();
   hsnRowData;
@@ -39,15 +39,15 @@ export class AdminHsnCodeComponent implements OnInit {
   sortBy = "created_at";
   jsonString;
   access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
-  goodsPager:any={};
-  servicesPager:any={};
-  goodsPagedItems:any=[];
-  servicesPagedItems:any=[];
+  goodsPager: any = {};
+  servicesPager: any = {};
+  goodsPagedItems: any = [];
+  servicesPagedItems: any = [];
   @ViewChild('closeBtn') closeBtn: ElementRef;
   @ViewChild('closeEditModal') closeEditModal: ElementRef;
   isGoodsSelected = true;
 
-  constructor(private http: Http, private pagerService: PagerService, public ExcelServiceService: ExcelServiceService, private router: Router) {
+  constructor(private http: Http, private pagerService: PagerService, public excelServiceService: ExcelServiceService, private router: Router) {
 
   }
 
@@ -121,7 +121,7 @@ export class AdminHsnCodeComponent implements OnInit {
       reader.onload = (e) => {
         let csv: string = reader.result;
         console.log(csv);
-        var csvString = this.ExcelServiceService.CSV2JSON(csv);
+        var csvString = this.excelServiceService.CSV2JSON(csv);
         this.jsonString = csvString;
         // var csvString=this.CSV2JSON(csv);
         // this.uploadCsvFileToServer(csvString);
@@ -140,6 +140,8 @@ export class AdminHsnCodeComponent implements OnInit {
       "data": JSON.parse(this.jsonString)
     };
 
+    console.log("CSV_DATA", body);
+
     if (this.isGoodsSelected) {
       this.url = "http://localhost:3000/api/goods/uploadFile?token=" + this.access_token;
     }
@@ -154,8 +156,13 @@ export class AdminHsnCodeComponent implements OnInit {
         this.closeModal();
         this.closeCsv.nativeElement.click();
         this.closeChoose.nativeElement.click();
-        this.ifSuccess=true;
-        this.closeChoose
+        this.ifSuccess = true;
+        if (this.isGoodsSelected) {
+          this.getAllGoods(this.goodsPager.currentPage);
+        }
+        else {
+          this.getAllServices(this.servicesPager.currentPage);
+        }
         // alert(response.json().message);
       },
       error => {
@@ -300,10 +307,10 @@ export class AdminHsnCodeComponent implements OnInit {
     console.log("_ID___", this.hsnRowData._id);
 
     if (this.isGoodsSelected) {
-      this.url = "http://localhost:3000/api/goods/delete/" + this.hsnRowData._id+"?token="+this.access_token;
+      this.url = "http://localhost:3000/api/goods/delete/" + this.hsnRowData._id + "?token=" + this.access_token;
     }
     else {
-      this.url = "http://localhost:3000/api/services/delete/" + this.hsnRowData._id+"?token="+this.access_token;
+      this.url = "http://localhost:3000/api/services/delete/" + this.hsnRowData._id + "?token=" + this.access_token;
     }
 
     return this.http.delete(this.url, requestOptions)
@@ -421,4 +428,44 @@ export class AdminHsnCodeComponent implements OnInit {
     // this.getStateList();
     this.servicesPagedItems = this.servicesData;
   }
+
+  downloadJSONTOCSV() {
+    let response: any;
+    let myHeaders = new Headers({ 'Content-Type': 'application/json' });
+    var exportedList;
+    myHeaders.append('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization, x-access-token');
+    myHeaders.append('Access-Control-Allow-Methods', 'GET, OPTIONS, POST');
+    myHeaders.append('Access-Control-Allow-Origin', '*');
+
+    myHeaders.append('Access-Control-Allow-Credentials', 'true');
+
+    let options = new RequestOptions({ headers: myHeaders });
+
+    if (this.isGoodsSelected) {
+      this.url = 'http://localhost:3000/api/services/index?token=' + this.access_token;
+    }
+    else {
+      this.url = 'http://localhost:3000/api/goods/index?token=' + this.access_token;
+    }
+
+    this.http.get(this.url, options)
+      .subscribe(
+      response => {
+        exportedList = response.json().docs;
+        this.excelServiceService.exportAsExcelFile(exportedList, "JSONTOCSV1");
+      },
+      error => {
+        // alert(error.text());
+        console.log(error.text());
+      }
+      );
+
+    
+  }
+
+  exportCSV(url: string) {
+
+  }
+
+  download
 }

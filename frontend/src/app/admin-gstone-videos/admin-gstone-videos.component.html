@@ -83,7 +83,7 @@
           </table>
 
 
-          <ul class="pagination btn-sm">
+          <ul class="pagination btn-sm" *ngIf="videosList?.length > 10">
             <li [ngClass]="{disabled:pager.currentPage === 1}">
               <a *ngIf="pager.currentPage > 1" (click)="getVideosList(pager.currentPage - 1)">Previous</a>
             </li>

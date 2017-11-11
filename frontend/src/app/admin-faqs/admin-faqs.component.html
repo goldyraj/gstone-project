@@ -68,7 +68,7 @@
 
         <!-- TABLE -->
 
-        <ul class="pagination btn-sm">
+        <ul class="pagination btn-sm" *ngIf="faqsList?.length > 0">
           <li>
             <!-- <a href="#">Previous</a> -->
             <button (click)="previousPage()" class="btn btn-primary">Previous</button>

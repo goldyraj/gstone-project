@@ -46,6 +46,7 @@ export class CustomerComponent implements OnInit {
     console.log("user_token", this.access_token);
     this.pager.currentPage = 1;
     this.getCustomerList(1);
+    this.getStateList();
     console.log("custructor call");
   }
   onInput($event) {
@@ -114,7 +115,7 @@ export class CustomerComponent implements OnInit {
           console.log("suceessfull data", response.json().message);
           this.closeModal();
           // this.custList.push(body);
-          alert(response.json().message);
+          // alert(response.json().message);
           this.myForm.reset();
           this.myForm.get("selectedstateDropdown").setValue("Select State");
           this.submitted = false;
@@ -122,7 +123,7 @@ export class CustomerComponent implements OnInit {
           this.customerRowData = null;
         },
         error => {
-          alert(error.message);
+          // alert(error.message);
           console.log("error", error.message);
           console.log(error.text());
         }
@@ -135,7 +136,20 @@ export class CustomerComponent implements OnInit {
     this.custRowData = data;
   }
 
-  deleteNotification() {
+  getStateList() {
+    console.log('list called');
+    this.http.get('http://localhost:3000/api/state/list').subscribe(data => {
+      this.stateList = data.json().state;
+      // this.TotalPages = data.json().total;
+      // this.pageSize = this.Paging.limit;
+      // this.currentPage = this.Paging.page;
+      console.log("pagecount", )
+      console.log("getStateList", this.stateList);
+      // console.log("TotalPages", this.TotalPages);
+    });
+  }
+
+  deleteCustomer() {
     console.log("delete api", this.custRowData._id);
     const headers = new Headers();
 
@@ -143,7 +157,7 @@ export class CustomerComponent implements OnInit {
     // headers.append('x-access-token', access_token);
     const requestOptions = new RequestOptions({ headers: headers });
 
-    this.url = "http://localhost:3000/api/notification/delete/" + this.custRowData._id;
+    this.url = "http://localhost:3000/api/customer/delete/" + this.custRowData._id;
     return this.http.delete(this.url, requestOptions)
       .subscribe(
       response => {
@@ -162,18 +176,7 @@ export class CustomerComponent implements OnInit {
   private closeDeleteModal(): void {
     this.closeBtn3.nativeElement.click();
   }
-  getStateList() {
-    console.log('list called');
-    this.http.get('http://localhost:3000/api/state/list').subscribe(data => {
-      this.stateList = data.json().state;
-      // this.TotalPages = data.json().total;
-      // this.pageSize = this.Paging.limit;
-      // this.currentPage = this.Paging.page;
-      console.log("pagecount", )
-      console.log("getStateList", this.stateList);
-      // console.log("TotalPages", this.TotalPages);
-    });
-  }
+  
 
   getCustomerList(page: number) {
     this.pager.currentPage = page;
@@ -250,7 +253,7 @@ export class CustomerComponent implements OnInit {
           this.submittedEdit = false;
           // this.hsnCodeData.push(body);
           this.custList[this.rowDataIndex] = body;
-          alert(response.json().message);
+          // alert(response.json().message);
         },
         error => {
           // this.closeEditModal();

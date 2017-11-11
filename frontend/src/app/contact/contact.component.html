@@ -25,12 +25,7 @@
                         <div class="row">
                             <form [formGroup]="contactForm" novalidate (ngSubmit)="sendContact(contactForm.valid)">
 
-                                <small *ngIf="errorType == true">
-                                    Contact has been send successfully.
-                                </small>
-                                <small *ngIf="errorType == false">
-                                    Contact not send.
-                                </small>
+
                                 <div class="col-sm-6 form-group">
                                     <input type="text" class="form-control" formControlName="name" placeholder="Name">
                                     <small [hidden]="contactForm.controls.name.valid || (contactForm.controls.name.pristine && !submitted)">
@@ -38,7 +33,7 @@
                                     </small>
                                 </div>
                                 <div class="col-sm-6 form-group">
-                                    <input type="text" class="form-control" formControlName="email" placeholder="Email Address">
+                                    <input type="text" class="form-control" formControlName="email" placeholder="Email Address" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
                                     <small [hidden]="contactForm.controls.email.valid || (contactForm.controls.email.pristine && !submitted)">
                                         <span style="color:red" [hidden]="contactForm.controls.email.valid">Email is required </span>
                                         <b [hidden]="contactForm.controls.email.pristine">joe@abc.com</b>
@@ -66,7 +61,12 @@
                                 <div class="col-sm-12 form-group">
                                     <button class="btn btn-primary unicod-btn-green" type="submit">Send</button>
                                 </div>
-
+                                <small *ngIf="errorType == true && submitted">
+                                    Contact has been send successfully.
+                                </small>
+                                <small *ngIf="errorType == false && submitted">
+                                    Contact not send.
+                                </small>
                             </form>
                         </div>
                     </form>

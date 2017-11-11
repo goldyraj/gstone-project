@@ -45,9 +45,9 @@ export class HomeComponent implements OnInit {
   public submitted: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
   constructor(public http: Http, private router: Router, private _fb: FormBuilder) {
-    this.getNotificationList();
-    this.getVideosList();
-    this.getInternalUpdateList();
+    // this.getNotificationList();
+    // this.getVideosList();
+    // this.getInternalUpdateList();
     this.getStateList();
     this.access_token = localStorage.getItem("user_token");
     console.log("user token", this.access_token);
@@ -103,42 +103,42 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  getVideosList() {
-    console.log('list called');
-    this.http.get('http://localhost:3000/api/home/vedio').subscribe(data => {
-      this.videosList = data.json().docs;
-      this.TotalPages = data.json().total;
-      this.pageSize = this.Paging.limit;
-      this.currentPage = this.Paging.page;
-      console.log("pagecount", )
-      console.log("State  PArse", this.videosList);
-      console.log("TotalPages", this.TotalPages);
-    });
-  }
-  getNotificationList() {
-    console.log('list called');
-    this.http.get('http://localhost:3000/api/home/notification').subscribe(data => {
-      this.notificationList = data.json().docs;
-      this.TotalPages = data.json().total;
-      this.pageSize = this.Paging.limit;
-      this.currentPage = this.Paging.page;
-      console.log("pagecount", )
-      console.log("State  PArse", this.notificationList);
-      console.log("TotalPages", this.TotalPages);
-    });
-  }
-  getInternalUpdateList() {
-    console.log('list called');
-    this.http.get('http://localhost:3000/api/home/internal').subscribe(data => {
-      this.internalUpdateList = data.json().docs;
-      this.TotalPages = data.json().total;
-      this.pageSize = this.Paging.limit;
-      this.currentPage = this.Paging.page;
-      console.log("pagecount", )
-      console.log("State  PArse", this.internalUpdateList);
-      console.log("TotalPages", this.TotalPages);
-    });
-  }
+  // getVideosList() {
+  //   console.log('list called');
+  //   this.http.get('http://localhost:3000/api/home/vedio').subscribe(data => {
+  //     this.videosList = data.json().docs;
+  //     this.TotalPages = data.json().total;
+  //     this.pageSize = this.Paging.limit;
+  //     this.currentPage = this.Paging.page;
+  //     console.log("pagecount", )
+  //     console.log("State  PArse", this.videosList);
+  //     console.log("TotalPages", this.TotalPages);
+  //   });
+  // }
+  // getNotificationList() {
+  //   console.log('list called');
+  //   this.http.get('http://localhost:3000/api/home/notification').subscribe(data => {
+  //     this.notificationList = data.json().docs;
+  //     this.TotalPages = data.json().total;
+  //     this.pageSize = this.Paging.limit;
+  //     this.currentPage = this.Paging.page;
+  //     console.log("pagecount", )
+  //     console.log("State  PArse", this.notificationList);
+  //     console.log("TotalPages", this.TotalPages);
+  //   });
+  // }
+  // getInternalUpdateList() {
+  //   console.log('list called');
+  //   this.http.get('http://localhost:3000/api/home/internal').subscribe(data => {
+  //     this.internalUpdateList = data.json().docs;
+  //     this.TotalPages = data.json().total;
+  //     this.pageSize = this.Paging.limit;
+  //     this.currentPage = this.Paging.page;
+  //     console.log("pagecount", )
+  //     console.log("State  PArse", this.internalUpdateList);
+  //     console.log("TotalPages", this.TotalPages);
+  //   });
+  // }
 
   getStateList() {
     console.log('list called');

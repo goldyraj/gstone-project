@@ -156,15 +156,13 @@
 									</small>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<select class="form-control" formControlName="selectedstateDropdown" required>
-										<option value="-1" selected="selected">Select State</option>
-										<option value="Jabalpur">Jabalpur</option>
-										<option value="Bhopal">Bhopal</option>
-										<option value="Raipur">Raipur</option>
+									<select class="form-control" (input)="onInput($event)">
+										<option value="" selected="selected"> -- Select State -- </option>
+										<option *ngFor="let item of stateList" value=" {{item.name}}">{{item.name}}</option>
 									</select>
-									<small *ngIf="myForm.controls.selectedstateDropdown.value=='-1' && submittedEdit">
+									<!-- <small *ngIf="myForm.controls.selectedstateDropdown.value=='-1' && submittedEdit">
 										Please select state !
-									</small>
+									</small> -->
 								</div>
 
 								<div class="col-md-12 col-sm-12 col-xs-12 form-group" align="center">
@@ -248,14 +246,12 @@
 									</small>
 								</div>
 
-								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
-									<select class="form-control" formControlName="selectedstateDropdown" required [(ngModel)]="selectedstateDropdown">
-										<option [ngValue]="-1" name="Select State">Select State</option>
-										<option *ngFor="let item of stateDropdown" [ngValue]="item">{{item}}</option>
+								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+									<select class="form-control" (input)="onInput($event)">
+										<option value="" selected="selected"> -- Select State -- </option>
+										<option *ngFor="let item of stateList" value=" {{item.name}}">{{item.name}}</option>
 									</select>
-									<small *ngIf="myFormEdit.controls.selectedstateDropdown.value=='-1' && submittedEdit">
-										Please select state !
-									</small>
+
 								</div>
 
 								<!-- <div class="col-md-6 col-sm-6 col-xs-12 form-group">
@@ -369,7 +365,7 @@
 							</div>
 
 							<div class="text-center">
-								<input type="button" class="btn btn-success" (click)="deleteHSNRecord()" data-dismiss="modal" value="Yes"> &nbsp; &nbsp;
+								<input type="button" class="btn btn-success" (click)="deleteCustomer()" data-dismiss="modal" value="Yes"> &nbsp; &nbsp;
 								<input type="button" class="btn btn-primary" data-dismiss="modal" value="No">
 							</div>
 						</div>

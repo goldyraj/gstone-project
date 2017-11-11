@@ -43,7 +43,7 @@ export class GstupdateComponent implements OnInit {
 
   getInternalUpdateList() {
     console.log('list called');
-    this.http.get('http://localhost:3000/api/internal/index?token='+this.access_token+'&limit=' + this.Paging.limit + '&page=' + this.Paging.page + '&sortBy=title&search=').subscribe(data => {
+    this.http.get('http://localhost:3000/api/home/internal').subscribe(data => {
       this.internalUpdateList = data.json().docs;
       this.TotalPages = data.json().total;
       this.pageSize = this.Paging.limit;

@@ -30,19 +30,16 @@ export class VideoslinkComponent implements OnInit {
   public submittedEdit: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
   constructor(private _fb: FormBuilder, private http: Http, private router: Router) {
-    this.access_token = localStorage.getItem("user_token");
+    // this.access_token = localStorage.getItem("user_token");
     this.getVideosList();
   }
 
   ngOnInit() {
-    if (this.access_token == null) {
-      this.router.navigate(['/home']);
-      return;
-    }
+    
   }
   getVideosList() {
     console.log('list called');
-    this.http.get('http://localhost:3000/api/vedio/index?token=' + this.access_token + '&limit=' + this.Paging.limit + '&page=' + this.Paging.page + '&sortBy=title&search=').subscribe(data => {
+    this.http.get('http://localhost:3000/api/home/vedio').subscribe(data => {
       this.videosList = data.json().docs;
       this.TotalPages = data.json().total;
       this.pageSize = this.Paging.limit;

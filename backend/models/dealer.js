@@ -9,7 +9,7 @@ const Dealer = new Schema({
     name: String,
     date:  String,   
     status:String,
-     created_at:  { type: Date},
+     created_at:  { type: Date,default: Date.now},
   updated_at:  { type: Date}
   
 })

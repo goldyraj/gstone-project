@@ -14,6 +14,7 @@ export class ContactComponent implements OnInit {
   contact = [];
   url = "";
   errorMsg = "";
+  alertType ="";
   public errorType: boolean;
   public submitted: boolean; // keep track on whether form is submitted
   constructor(private _fb: FormBuilder, private http: Http) { }
@@ -24,7 +25,7 @@ export class ContactComponent implements OnInit {
       email: new FormControl('', [<any>Validators.required]),
       contact: new FormControl('', [<any>Validators.required, <any>Validators.minLength(10)]),
       company: new FormControl('', [<any>Validators.required]),
-      remarks: new FormControl('', [<any>Validators.required])
+      remarks: new FormControl('')
     });
     this.url = "";
     this.errorMsg = "";
@@ -68,7 +69,7 @@ export class ContactComponent implements OnInit {
           // alert(error.message);
           console.log("error", error.message);
           console.log(error.text());
-          this.errorType = true;
+          this.errorType = false;
           this.errorMsg = error.json().message;
         }
         );

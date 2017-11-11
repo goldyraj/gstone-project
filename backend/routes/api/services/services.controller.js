@@ -77,7 +77,7 @@ exports.list = (req, res) => {
  //    }
  services.find({}).exec()
     .then(
-        goods=> {
+        services=> {
             res.json({services})
         }
     )

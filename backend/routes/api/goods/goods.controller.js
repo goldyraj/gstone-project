@@ -69,12 +69,12 @@ Goods.paginate(query,option).then(goods=>
 
 exports.list = (req, res) => {
     // refuse if not an admin
-  var myCallback=usingItNow(req.decoded)
- if(myCallback) {
-   return res.status(403).json({
-            message: 'you are not an authorise'
-        }) 
-    }
+ //  var myCallback=usingItNow(req.decoded)
+ // if(myCallback) {
+ //   return res.status(403).json({
+ //            message: 'you are not an authorise'
+ //        }) 
+ //    }
  Goods.find({}).exec()
     .then(
         goods=> {

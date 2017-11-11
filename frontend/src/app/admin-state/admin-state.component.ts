@@ -276,7 +276,7 @@ export class AdminStateComponent implements OnInit {
     const requestOptions = new RequestOptions({ headers: headers });
     console.log("_ID___", this.stateRowData._id);
 
-    this.url = "http://localhost:3000/api/state/delete/" + this.stateRowData._id;
+    this.url = "http://localhost:3000/api/state/delete/" + this.stateRowData._id+"?token="+this.access_token;
     return this.http.delete(this.url, requestOptions)
       .subscribe(
       response => {

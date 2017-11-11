@@ -73,7 +73,7 @@ export class AdminPrivacyPolicyComponent implements OnInit {
       };
       console.log("body", body);
 
-      this.url = "http://localhost:3000/api/privacy/update";
+      this.url = "http://localhost:3000/api/privacy/update?token="+this.access_token;
       return this.http.put(this.url, body, requestOptions)
         .subscribe(
         response => {

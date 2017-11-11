@@ -300,10 +300,10 @@ export class AdminHsnCodeComponent implements OnInit {
     console.log("_ID___", this.hsnRowData._id);
 
     if (this.isGoodsSelected) {
-      this.url = "http://localhost:3000/api/goods/delete/" + this.hsnRowData._id;
+      this.url = "http://localhost:3000/api/goods/delete/" + this.hsnRowData._id+"?token="+this.access_token;
     }
     else {
-      this.url = "http://localhost:3000/api/services/delete/" + this.hsnRowData._id;
+      this.url = "http://localhost:3000/api/services/delete/" + this.hsnRowData._id+"?token="+this.access_token;
     }
 
     return this.http.delete(this.url, requestOptions)

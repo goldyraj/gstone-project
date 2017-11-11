@@ -11,13 +11,8 @@ import { RouterModule, Routes, Router } from '@angular/router';
 })
 export class FaqsComponent implements OnInit {
   faqsList = [];
-  Paging = {
-    page: 1,
-    limit: 2
-  };
-  TotalPages: number;
-  pageSize: number;
-  currentPage: number;
+  notiRowData;
+  
   constructor(public http: Http, private router: Router, private _fb: FormBuilder) {
     this.getFaqsList();
   }
@@ -29,12 +24,11 @@ export class FaqsComponent implements OnInit {
     console.log('list called');
     this.http.get('http://localhost:3000/api/faq/index').subscribe(data => {
       this.faqsList = data.json().docs;
-      this.TotalPages = data.json().total;
-      this.pageSize = this.Paging.limit;
-      this.currentPage = this.Paging.page;
       console.log("pagecount", )
       console.log("faqsList", this.faqsList);
     });
   }
+
+  
 
 }

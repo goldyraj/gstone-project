@@ -29,8 +29,10 @@
 
 
 		<div class="col-md-12 col-sm-12 section-top-20 section-bottom-90">
-
-			<table class="table table-condensed table-bordered">
+			<div class="alert alert-danger" *ngIf="vendorList == true">
+				<strong>Sorry!</strong> Your dont have vendor list.
+			  </div>
+			<table class="table table-condensed table-bordered" *ngIf="vendorList == false">
 				<thead>
 					<tr>
 						<th width="6%" align="center">S. No</th>
@@ -49,11 +51,11 @@
 						<td align="center">{{item.address}}</td>
 						<td align="center">{{item.state}}</td>
 						<td align="center">
-							<a data-toggle="modal" data-target=".bs-goods-lg-edit">
+							<a data-toggle="modal" data-target=".bs-user-lg-edit">
 								<button class="fa fa-edit btn btn-primary btn-sm" title="Edit" (click)="editGoodsServicesRecord(item)"></button>
 							</a>
 							<a href="" data-toggle="modal" data-target=".bs-delete-sm">
-								<button class="fa fa-trash btn btn-danger btn-sm" title="Delete" (click)="recordToDelete(item)"></button>
+								<button class="fa fa-trash btn btn-danger btn-sm" title="Delete" (click)="deleteVendorRecord(item)"></button>
 							</a>
 						</td>
 					</tr>
@@ -61,7 +63,7 @@
 				</tbody>
 			</table>
 
-			<ul class="pagination btn-sm">
+			<ul class="pagination btn-sm" *ngIf="vendorList == false">
 				<li [ngClass]="{disabled:pager.currentPage === 1}">
 					<a (click)="getVenderList(pager.currentPage - 1)">Previous</a>
 				</li>
@@ -81,7 +83,7 @@
 </div>
 
 <div class="modal fade bs-GSTIN-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-	<div class="modal-dialog modal-lg" role="document">
+	<div class="modal-dialog modal-md" role="document">
 		<div class="modal-content section-form">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" #closeBtn aria-label="Close">
@@ -94,39 +96,36 @@
 			<div class="modal-body">
 				<div class="service-section">
 					<div class="row">
-						<div class="col-md-1 col-sm-1"></div>
 						<div class="col-md-10 col-sm-10">
 							<form [formGroup]="myForm" novalidate (ngSubmit)="saveVender(myForm.valid)">
-								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="name" placeholder="Name" required>
 									<small [hidden]="myForm.controls.name.valid || (myForm.controls.name.pristine && !submitted)">
 										Name is required (minimum 5 characters).
 									</small>
 								</div>
 
-								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="gstin" placeholder="GSTIN" name="gstin" id="gstin">
 									<small [hidden]="myForm.controls.gstin.valid || (myForm.controls.gstin.pristine && !submitted)">
 										GSTIN is required (minimum 5 characters).
 									</small>
 								</div>
-								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="address" placeholder="Address" name="address" id="address">
 									<small [hidden]="myForm.controls.address.valid || (myForm.controls.address.pristine && !submitted)">
 										Address is required (minimum 5 characters).
 									</small>
 								</div>
 
-								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<select class="form-control" formControlName="state">
-										<option value="Select State" selected="selected">Select State</option>
-										<option value="Jabalpur">Jabalpur</option>
-										<option value="Bhopal">Bhopal</option>
-										<option value="Raipur">Raipur</option>
+								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
+									<select class="form-control" (input)="onInput($event)">
+										<option value="" selected="selected"> -- Select State -- </option>
+										<option *ngFor="let item of stateList" value=" {{item.name}}">{{item.name}}</option>
 									</select>
-									<small *ngIf="myForm.controls.state.value=='Select State' && submitted">
+									<!-- <small *ngIf="myForm.controls.state.value=='Select State' && submitted">
 										Please select state !
-									</small>
+									</small> -->
 								</div>
 
 								<div class="col-md-12 col-sm-12 col-xs-12 form-group" align="center">
@@ -174,7 +173,7 @@
 							</div>
 
 							<div class="form-group text-center">
-								<input type="button" class="btn btn-success" (click)="deleteRecord()" value="Yes"> &nbsp; &nbsp;
+								<input type="button" class="btn btn-success" (click)="deleteVendor()" value="Yes"> &nbsp; &nbsp;
 								<input type="button" class="btn btn-primary" data-dismiss="modal" value="No">
 							</div>
 						</div>
@@ -287,7 +286,7 @@
 	</div>
 </div>
 <div class="modal fade bs-user-lg-edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-	<div class="modal-dialog modal-lg" role="document">
+	<div class="modal-dialog modal-md" role="document">
 		<div class="modal-content section-form">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" #closeBtn2 aria-label="Close">
@@ -300,30 +299,29 @@
 			<div class="modal-body">
 				<div class="service-section">
 					<div class="row">
-						<div class="col-md-1 col-sm-1"></div>
-						<div class="col-md-10 col-sm-10">
+						<div class="col-md-12 col-sm-12">
 							<form [formGroup]="myFormEdit" novalidate (ngSubmit)="updateVendorRecord(myFormEdit.valid)">
-								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="name" placeholder="Name" required>
 									<small [hidden]="myFormEdit.controls.name.valid || (myFormEdit.controls.name.pristine && !submittedEdit)">
 										Name is required.
 									</small>
 								</div>
-								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<input type="text" class="form-control" formControlName="address" placeholder="GSTIN">
-									<small [hidden]="myFormEdit.controls.address.valid || (myFormEdit.controls.address.pristine && !submittedEdit)">
-										Address is required .
+								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
+									<input type="text" class="form-control" formControlName="gstin" placeholder="GSTIN">
+									<small [hidden]="myFormEdit.controls.gstin.valid || (myFormEdit.controls.gstin.pristine && !submittedEdit)">
+										GSTIN is required .
 									</small>
 								</div>
 
-								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="address" placeholder="Address" name="gstin" id="gstin">
 									<small [hidden]="myFormEdit.controls.address.valid || (myFormEdit.controls.address.pristine && !submittedEdit)">
-										GSTIN is required (minimum 5 characters).
+										Address is required (minimum 5 characters).
 									</small>
 								</div>
 
-								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
 									<select class="form-control" (input)="onInput($event)">
 										<option value="" selected="selected"> -- Select State -- </option>
 										<option *ngFor="let item of stateList" value=" {{item.name}}">{{item.name}}</option>

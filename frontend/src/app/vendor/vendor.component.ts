@@ -15,21 +15,27 @@ import { PagerService } from '../service/pager.service';
 export class VendorComponent implements OnInit {
   // constructor() { }
   @ViewChild('closeBtn') closeBtn: ElementRef;
+  @ViewChild('closeBtn2') closeBtn2: ElementRef;
+  @ViewChild('closeBtn3') closeBtn3: ElementRef;
 
   modelHide = '';
   url = "";
   vender = {};
   venderList = [];
+  stateList = [];
   rowDataIndex;
   public myForm: FormGroup; // our model driven form
   public myFormEdit: FormGroup;
   public submitted: boolean; // keep track on whether form is submitted
+  public vendorList: boolean; // keep track on whether form is submitted
+  public submittedEdit: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
   public vendorRowData;
   public csvString;
   access_token;
   pager: any = {};
   pagedItems: any[];
+  selectedState = "";
   venderRowData;
 
   constructor(private _fb: FormBuilder, private http: Http, public excelServiceService: ExcelServiceService, public pagerService: PagerService) {
@@ -37,6 +43,7 @@ export class VendorComponent implements OnInit {
     this.access_token = localStorage.getItem("user_token");
     this.getVenderList(1);
     console.log("custructor call");
+    this.getStateList();
 
   }
 
@@ -63,6 +70,12 @@ export class VendorComponent implements OnInit {
       state: new FormControl('Select State')
     });
   }
+  onInput($event) {
+    $event.preventDefault();
+    console.log('selected: ' + $event.target.value);
+    this.selectedState = $event.target.value;
+  }
+
 
   saveVender(isValid: boolean) {
     this.submitted = true; // set form submit to true
@@ -82,7 +95,7 @@ export class VendorComponent implements OnInit {
         "name": this.myForm.value.name,
         "gstin": this.myForm.value.gstin,
         "address": this.myForm.value.address,
-        "state": this.myForm.value.state
+        "state": this.selectedState
       };
       this.url = "http://localhost:3000/api/vendor/create?token=" + this.access_token;
       return this.http.post(this.url, body, requestOptions)
@@ -90,7 +103,7 @@ export class VendorComponent implements OnInit {
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeModal();
-          alert(response.json().message);
+          // alert(response.json().message);
           this.getVenderList(this.pager.currentPage);
           this.myForm.reset();
           this.myForm.get("state").setValue("Select State");
@@ -104,13 +117,88 @@ export class VendorComponent implements OnInit {
     }
   }
 
+  updateVendorRecord(isValid: boolean) {
+    this.submittedEdit = true; // set form submit to true
+    console.log(isValid);
+    console.log("hi form module is called from page");
+    console.log("edited form data", this.myFormEdit.value);
+
+    // if (isValid == true && this.myFormEdit.value.selectedstateDropdown!='Select State') {
+    if (isValid == true) {
+
+      const headers = new Headers();
+
+      headers.append('Content-Type', 'application/json');
+      // headers.append('x-access-token', this.access_token);
+      const requestOptions = new RequestOptions({ headers: headers });
+
+      const body = {
+        "_id": this.venderRowData._id,
+        "name": this.myFormEdit.value.name,
+        "gstin": this.myFormEdit.value.gstin,
+        "address": this.myFormEdit.value.address,
+        "state": this.selectedState
+      };
+      console.log("body", body);
+
+      this.url = "http://localhost:3000/api/vendor/update?token=" + this.access_token;
+      return this.http.put(this.url, body, requestOptions)
+        .subscribe(
+        response => {
+          console.log("suceessfull data", response.json().message);
+          this.closeEditModal();
+          this.submittedEdit = false;
+          this.getVenderList(this.pager.currentPage);
+          // this.hsnCodeData.push(body);
+
+          this.venderList[this.rowDataIndex] = body;
+          // alert(response.json().message);
+        },
+        error => {
+          // this.closeEditModal();
+          console.log("error", error.message);
+          console.log(error.text());
+        }
+        );
+    }
+  }
+
+
+  private closeEditModal(): void {
+    this.closeBtn2.nativeElement.click();
+  }
+  private closeDeleteModal(): void {
+    this.closeBtn3.nativeElement.click();
+  }
+
+  getStateList() {
+    console.log('list called');
+    this.http.get('http://localhost:3000/api/state/list').subscribe(data => {
+      this.stateList = data.json().state;
+      // this.TotalPages = data.json().total;
+      // this.pageSize = this.Paging.limit;
+      // this.currentPage = this.Paging.page;
+      console.log("pagecount", )
+      console.log("getStateList", this.stateList);
+      // console.log("TotalPages", this.TotalPages);
+    });
+  }
+
   getVenderList(page: number) {
     this.pager.currentPage = page;
     this.http.get('http://localhost:3000/api/vendor/index?token=' + this.access_token + '&page=' + this.pager.currentPage + '&limit=' + 5).subscribe(data => {
       this.venderList = data.json().docs;
+      let isList = this.venderList.length;
       console.log("verder  PArse", this.venderList);
+      console.log("isList", isList);
       this.pager.pageSize = data.json().limit;
       this.pager.totalItems = data.json().total;
+      if (isList === 0) {
+        this.vendorList = true;
+        // console.log("")
+      } else {
+        this.vendorList = false;
+      }
       this.setPage();
     });
   }
@@ -130,31 +218,59 @@ export class VendorComponent implements OnInit {
     this.closeBtn.nativeElement.click();
   }
 
-  // closeDeleteModal()
-  // {
-  //   this.closeBtn3.nativeElement.click();
-  // }
 
   recordToDelete(item) {
     this.vendorRowData = item;
   }
 
-  editGoodsServicesRecord(data){
+  editGoodsServicesRecord(data) {
     this.rowDataIndex = data._id;
     var temp;
     if (data) {
       console.log("DATA", data);
 
       this.myFormEdit.get("name").setValue(data.name);
-      this.myFormEdit.get("gstn").setValue(data.gstn);
+      this.myFormEdit.get("gstin").setValue(data.gstin);
       this.myFormEdit.get("address").setValue(data.address);
       this.myFormEdit.get("state").setValue(data.state);
-      // this.myFormEdit.get("state").setValue(data.state);
     }
 
     this.venderRowData = data;
 
   }
+
+  deleteVendorRecord(data) {
+    this.rowDataIndex = data._id;
+    this.venderRowData = data;
+  }
+
+  deleteVendor() {
+    console.log("delete api", this.venderRowData._id);
+    const headers = new Headers();
+
+    headers.append('Content-Type', 'application/json');
+    // headers.append('x-access-token', access_token);
+    const requestOptions = new RequestOptions({ headers: headers });
+
+    this.url = "http://localhost:3000/api/vendor/delete/" + this.venderRowData._id;
+    return this.http.delete(this.url, requestOptions)
+      .subscribe(
+      response => {
+        console.log("suceessfull data", response.json().message);
+        // this.custList.splice(this.custRowData._id,1);
+        this.closeDeleteModal();
+        this.getVenderList(this.pager.currentPage);
+        this.submittedEdit = false;
+
+        // alert(response.json().message);
+      },
+      error => {
+        console.log("error", error.message);
+        console.log(error.text());
+      }
+      );
+  }
+
 
   CSV2JSON(csv) {
     var array = this.CSVToArray(csv, ",");

@@ -29,6 +29,7 @@ export class UserDashboardComponent implements OnInit {
   stateList=[];
   public myForm: FormGroup; // our model driven form
   public submitted: boolean; // keep track on whether form is submitted
+  public isBranchList: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
   public csvString: string;
   access_token;
@@ -139,8 +140,16 @@ export class UserDashboardComponent implements OnInit {
         console.log("BRANCH_LIST_API_RESPONSE_2", response.json().docs);
         this.branchesList=response.json().docs;
         this.pager.pageSize = response.json().limit;
+        let isList = this.branchesList.length;
         this.pager.totalItems = response.json().total;
         this.setPage();
+        if (isList === 0) {
+          this.isBranchList = true;
+          // console.log("")
+        } else {
+          this.isBranchList = false;
+        }
+        
         // for (let data of response.json().docs) {
         //   this.branchesList.push({ name: data.name, contact: data.contact, panNo: data.pan_no, email: data.email, gstin: data.gstin, address: data.address, selectedDealer: data.state, city: data.city, branchName: data.branch_name, state: data.state });
         // }

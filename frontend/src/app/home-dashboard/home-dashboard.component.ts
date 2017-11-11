@@ -99,6 +99,7 @@ export class HomeDashboardComponent implements OnInit {
       console.log("TotalPages", this.TotalPages);
     });
   }
+
   getInternalUpdateList() {
     console.log('list called');
     this.http.get('http://localhost:3000/api/home/internal').subscribe(data => {

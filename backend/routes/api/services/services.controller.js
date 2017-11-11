@@ -75,7 +75,7 @@ exports.list = (req, res) => {
  //            message: 'you are not an authorise'
  //        }) 
  //    }
- services.find({}).exec()
+ Services.find({}).exec()
     .then(
         services=> {
             res.json({services})

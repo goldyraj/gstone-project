@@ -27,10 +27,13 @@
 
 		<div class="col-md-8 col-sm-12">
 
-			<div class="well">
+			<div class="alert alert-danger" *ngIf="isBranchList == true">
+				<strong>Sorry!</strong> Your dont have Branch list.
+			</div>
+			<div class="well" *ngIf="isBranchList == false">
 				<div class="row">
 
-					<div class="col-md-12 col-sm-12 col-xs-12">
+					<div class="col-md-12 col-sm-12 col-xs-12" >
 						<table class="col-md-12 col-sm-12 col-xs-12">
 							<!-- <thead>
 													<tr>
@@ -63,7 +66,7 @@
 					</div>
 				</div>
 			</div>
-			<ul class="pagination btn-sm">
+			<ul class="pagination btn-sm" *ngIf="isBranchList == false">
 				<li [ngClass]="{disabled:pager.currentPage === 1}">
 					<a (click)="getBranches(pager.currentPage - 1)">Previous</a>
 				</li>

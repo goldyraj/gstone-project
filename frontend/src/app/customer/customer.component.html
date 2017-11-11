@@ -32,8 +32,10 @@
 
 
 		<div class="col-md-12 col-sm-12 section-top-20 section-bottom-90">
-
-			<table class="table table-condensed table-bordered">
+			<div class="alert alert-danger" *ngIf="isCustList == true">
+				<strong>Sorry!</strong> Your dont have Customer list.
+			</div>
+			<table class="table table-condensed table-bordered" *ngIf="isCustList == false">
 				<thead>
 					<tr>
 						<th width="7%" align="center">S. No</th>
@@ -69,7 +71,7 @@
 				</tbody>
 			</table>
 
-			<ul class="pagination btn-sm">
+			<ul class="pagination btn-sm"  *ngIf="isCustList == false">
 				<li [ngClass]="{disabled:pager.currentPage === 1}">
 					<a (click)="getCustomerList(pager.currentPage - 1)">Previous</a>
 				</li>
@@ -349,7 +351,7 @@
 	<div class="modal-dialog modal-sm" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<button type="button" class="close" data-dismiss="modal" #closeBtn3 aria-label="Close">
 					<span class="modal-text" aria-hidden="true">X</span>
 				</button>
 			</div>

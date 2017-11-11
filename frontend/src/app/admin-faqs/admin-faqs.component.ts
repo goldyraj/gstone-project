@@ -82,7 +82,7 @@ export class AdminFaqsComponent implements OnInit {
 
   getFaqsList() {
     console.log('list called');
-    this.http.get('http://localhost:3000/api/faq/index?token='+this.access_token+'&limit=' + this.Paging.limit + '&page=' + this.Paging.page + '&sortBy=title&search=').subscribe(data => {
+    this.http.get('http://localhost:3000/api/faq/index?token='+this.access_token+'&limit=' + 10 + '&page=' + this.Paging.page).subscribe(data => {
       this.faqsList = data.json().docs;
       this.TotalPages = data.json().total;
       this.pageSize = this.Paging.limit;
@@ -197,5 +197,10 @@ export class AdminFaqsComponent implements OnInit {
   }
   private closeDeleteModal(): void {
     this.closeBtn3.nativeElement.click();
+  }
+
+  resetForm()
+  {
+    this.FaqForm.reset();
   }
 }

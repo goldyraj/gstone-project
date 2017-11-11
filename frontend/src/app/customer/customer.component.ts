@@ -17,6 +17,9 @@ export class CustomerComponent implements OnInit {
   @ViewChild('closeBtn') closeBtn: ElementRef;
   @ViewChild('closeBtn2') closeBtn2: ElementRef;
   @ViewChild('closeBtn3') closeBtn3: ElementRef;
+  @ViewChild('closeInnerExportModal') closeInnerExportModal:ElementRef;
+  @ViewChild('closeImportExport') closeImportExport:ElementRef;
+  @ViewChild('closeImportModal') closeImportModal:ElementRef;
   modelHide = '';
   url = "";
   cutomer = {};
@@ -283,7 +286,7 @@ export class CustomerComponent implements OnInit {
     }
   }
 
-  uploadCsvFileToServer() {
+  uploadCsvFileToServer () {
     const headers = new Headers();
 
     headers.append('Content-Type', 'application/json');
@@ -300,12 +303,17 @@ export class CustomerComponent implements OnInit {
         console.log("suceessfull data", response.json());
         this.closeModal();
         if (response.json().message != null) {
-          alert(response.json().message);
+          // alert(response.json().message);
           this.getCustomerList(this.pager.currentPage);
         }
         else if (response.json().error != null) {
-          alert("Your CSV/Excel file contains some repeated data !");
+          // alert("Your CSV/Excel file contains some repeated data !");
         }
+        this.closeImportExport.nativeElement.click();
+        this.closeImportModal.nativeElement.click();
+        this.closeInnerExportModal.nativeElement.click();
+
+        // this.getCustomerList(this.pager.currentPage);
       },
       error => {
         console.log("error", error.message);
@@ -313,7 +321,7 @@ export class CustomerComponent implements OnInit {
         var errorString = error.text();
 
         if (errorString != null) {
-          alert("Your CSV/Excel file contains some repeated data !");
+          // alert("Your CSV/Excel file contains some repeated data !");
         }
       }
       );

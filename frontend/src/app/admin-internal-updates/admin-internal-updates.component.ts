@@ -16,7 +16,9 @@ export class AdminInternalUpdatesComponent implements OnInit {
   @ViewChild('closeBtn2') closeBtn2: ElementRef;
   @ViewChild('closeBtn3') closeBtn3: ElementRef;
 
-
+  chapterArray=[];
+  articleArray=[];
+  secondDropDownArray=[];
   internalUpdateList = [];
   StateVal = {};
   url = "";
@@ -27,12 +29,15 @@ export class AdminInternalUpdatesComponent implements OnInit {
 
   // paged items
   pagedItems: any[];
-
+  selectUpdateType;
+  selectChapterArticle;
   public internalUpdateForm: FormGroup; // our model driven form
   public editInternalUpdate: FormGroup; // our model driven form
   public submitted: boolean; // keep track on whether form is submitted
   public submittedEdit: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
+  public chapter;
+
   access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
   constructor(private _fb: FormBuilder, private http: Http,public PagerService:PagerService) {
     this.pager.currentPage=1;
@@ -42,15 +47,23 @@ export class AdminInternalUpdatesComponent implements OnInit {
 
   ngOnInit() {
     this.internalUpdateForm = new FormGroup({
+      selectUpdateType:new FormControl("Select Update Type"),
+      selectChapterArticle:new FormControl("Select Chapter/Article"),
       title: new FormControl('', [<any>Validators.required]),
       details: new FormControl('', [<any>Validators.required]),
       link: new FormControl('', [<any>Validators.required])
     });
+
     this.editInternalUpdate = new FormGroup({
+      selectUpdateType:new FormControl("Select Update Type"),
+      selectChapterArticle:new FormControl("Select Chapter/Article"),
       title: new FormControl('', [<any>Validators.required]),
       details: new FormControl('', [<any>Validators.required]),
-      link: new FormControl('', [<any>Validators.required])
+      link: new FormControl('', [<any>Validators.required]),
     });
+
+    this.setupChapterArray();
+    this.setupArticleArray();
   }
 
   getInternalUpdateList(page:number) {
@@ -88,12 +101,26 @@ export class AdminInternalUpdatesComponent implements OnInit {
 
       headers.append('Content-Type', 'application/json');
       // headers.append('x-access-token', access_token);
+      var chapterParam;
+      var articleParam;
+      if(this.internalUpdateForm.value.selectedType==="chapter")
+      {
+        chapterParam=this.internalUpdateForm.value.selectChapterArticle;
+      }
+      else
+      {
+        articleParam=this.internalUpdateForm.value.selectChapterArticle;
+      }
+      
       const requestOptions = new RequestOptions({ headers: headers });
       const body = {
         "title": this.internalUpdateForm.value.title,
         "details": this.internalUpdateForm.value.details,
         "link": this.internalUpdateForm.value.link,
-        "date": "13/11/2017"
+        "date": "13/11/2017",
+        "type":this.internalUpdateForm.value.selectedType,
+        "chapter":chapterParam,
+        "article":articleParam
       };
       this.url = "http://localhost:3000/api/internal/create?token="+this.access_token;
       return this.http.post(this.url, body, requestOptions)
@@ -121,8 +148,18 @@ export class AdminInternalUpdatesComponent implements OnInit {
       this.editInternalUpdate.get("title").setValue(data.title);
       this.editInternalUpdate.get("details").setValue(data.details);
       this.editInternalUpdate.get("link").setValue(data.link);
-      // let sle: {} = this.editInternalUpdate.get("status");
-      // console.log("selected vale", sle["_value"]);
+      this.editInternalUpdate.get("selectChapterArticle").setValue(data.selectChapterArticle);
+      this.editInternalUpdate.get("selectUpdateType").setValue(data.selectUpdateType);
+      this.selectUpdateType=data.type;
+      if(data.article!=null)
+      {
+        this.selectChapterArticle=data.article;
+      }
+
+      if(data.chapter!=null)
+      {
+        this.selectChapterArticle=data.chapter;
+      }
     }
     this.notiRowData = data;
   }
@@ -139,6 +176,16 @@ export class AdminInternalUpdatesComponent implements OnInit {
       const headers = new Headers();
 
       headers.append('Content-Type', 'application/json');
+      var chapterParam;
+      var articleParam;
+      if(this.internalUpdateForm.value.selectedType==="chapter")
+      {
+        chapterParam=this.internalUpdateForm.value.selectChapterArticle;
+      }
+      else
+      {
+        articleParam=this.internalUpdateForm.value.selectChapterArticle;
+      }
       
       const requestOptions = new RequestOptions({ headers: headers });
 
@@ -146,7 +193,10 @@ export class AdminInternalUpdatesComponent implements OnInit {
         "_id": this.notiRowData._id,
         "title": this.editInternalUpdate.value.title,
         "details": this.editInternalUpdate.value.details,
-        "link": this.editInternalUpdate.value.link
+        "link": this.editInternalUpdate.value.link,
+        "type":this.internalUpdateForm.value.selectedType,
+        "chapter":chapterParam,
+        "article":articleParam
       };
 
       this.url = "http://localhost:3000/api/internal/update?token="+this.access_token;
@@ -195,9 +245,6 @@ export class AdminInternalUpdatesComponent implements OnInit {
       );
   }
 
-
-
-
   private closeModal(): void {
     this.closeBtn.nativeElement.click();
   }
@@ -208,4 +255,47 @@ export class AdminInternalUpdatesComponent implements OnInit {
     this.closeBtn3.nativeElement.click();
   }
 
+  resetForm()
+  {
+    this.internalUpdateForm.reset();
+    this.internalUpdateForm.get('selectUpdateType').setValue('0');
+    this.internalUpdateForm.get('selectChapterArticle').setValue('0');
+  }
+
+  setupChapterArray()
+  {
+    for(var i=0;i<=5;i++)
+    {
+      this.chapterArray.push("Chapter "+i);
+    }
+    // this.secondDropDownArray=this.chapterArray;
+  }
+
+  setupArticleArray()
+  {
+    for(var i=0;i<=5;i++)
+    {
+      this.articleArray.push("Article "+i);
+    }
+  }
+
+  onSelectType(selectedType)
+  {
+    console.log("OnModelChange",selectedType);
+    if(selectedType=='0')
+    {
+      return;
+    }
+    if(selectedType==="Chapter")
+    {
+      this.secondDropDownArray=this.chapterArray;
+      
+    }
+    else if(selectedType==="Article")
+    {
+      this.secondDropDownArray=this.articleArray;
+    }
+
+    console.log("SELECTED",this.secondDropDownArray);
+  }
 }

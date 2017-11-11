@@ -26,6 +26,7 @@ export class UserDashboardComponent implements OnInit {
   modelHide = '';
   url = "";
   cutomer = {};
+  stateList=[];
   public myForm: FormGroup; // our model driven form
   public submitted: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
@@ -44,6 +45,7 @@ export class UserDashboardComponent implements OnInit {
     this.access_token = localStorage.getItem("user_token");
     this.userName=localStorage.getItem("user_name");
     this.getBranches(1);
+    this.getStateList();
   } // form builder simplify form initialization
 
   ngOnInit() {
@@ -159,6 +161,19 @@ export class UserDashboardComponent implements OnInit {
     console.log("pager", this.pager);
     // this.getStateList();
     this.pagedItems = this.branchesList;
+  }
+
+  getStateList() {
+    console.log('list called');
+    this.http.get('http://localhost:3000/api/state/list').subscribe(data => {
+      this.stateList = data.json().state;
+      // this.TotalPages = data.json().total;
+      // this.pageSize = this.Paging.limit;
+      // this.currentPage = this.Paging.page;
+      console.log("pagecount", )
+      console.log("getStateList", this.stateList);
+      // console.log("TotalPages", this.TotalPages);
+    });
   }
 
   onCSVFilePicked(files: FileList) {

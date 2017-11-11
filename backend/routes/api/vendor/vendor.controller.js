@@ -142,7 +142,7 @@ exports.update=(req,res)=>{
     }
         const {_id,name,pan_no,gstin,city,contact,email,address,state} = req.body
      
-         Vendor.findOneAndUpdate({_id:_id}, {$set:{name:name,pan_no:pan_no,gstin:gstin,contact:contact,email:email,address:address,state:state}}, {new: true}, function(err, doc){
+         Vendor.findOneAndUpdate({_id:_id}, {$set:{name:name,pan_no:pan_no,gstin:gstin,contact:contact,city:city,email:email,address:address,state:state}}, {new: true}, function(err, doc){
     if(err){
         console.log("Something wrong when updating data!");
     }

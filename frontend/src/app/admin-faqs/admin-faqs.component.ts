@@ -156,7 +156,7 @@ export class AdminFaqsComponent implements OnInit {
     // headers.append('x-access-token', access_token);
     const requestOptions = new RequestOptions({ headers: headers });
 
-    this.url = "http://localhost:3000/api/faq/delete/" + this.faqsRowData._id;
+    this.url = "http://localhost:3000/api/faq/delete/" + this.faqsRowData._id+"?token="+this.access_token;
     return this.http.delete(this.url,  requestOptions)
       .subscribe(
       response => {

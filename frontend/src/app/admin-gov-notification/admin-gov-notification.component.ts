@@ -131,7 +131,7 @@ export class AdminGovNotificationComponent implements OnInit {
     // headers.append('x-access-token', access_token);
     const requestOptions = new RequestOptions({ headers: headers });
 
-    this.url = "http://localhost:3000/api/notification/delete/" + this.notiRowData._id;
+    this.url = "http://localhost:3000/api/notification/delete/" + this.notiRowData._id+"?token="+this.access_token;
     return this.http.delete(this.url, requestOptions)
       .subscribe(
       response => {

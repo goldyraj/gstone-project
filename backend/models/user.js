@@ -7,6 +7,7 @@ var debug = require('debug')('http') , http = require('http')
   , name = 'My App';
   
 const User = new Schema({
+     name: String,
     username: String,
     password: String,
     email: String,
@@ -15,7 +16,12 @@ const User = new Schema({
     gstin: String,
     address: String,
     city: String, 
+    state:String,
+    created_at:  { type: Date},
+    updated_at:  { type: Date},
+    type:String,
     admin: { type: Boolean, default: false }
+
 })
 
 
@@ -25,13 +31,15 @@ const User = new Schema({
 
 
 // create new User document
-User.statics.create = function(username, password,email,contact,pan_no,gstin,address,city) {
+User.statics.create = function(name,username, password,email,contact,pan_no,gstin,address,city,state,type) {
     const encrypted = crypto.createHmac('sha1', config.secret)
                       .update(password)
                       .digest('base64')
                       debug('booting %o', name);
+                      var created_at=  Date.now();
 
     const user = new this({
+        name,
         username,
         password: encrypted,
         email,
@@ -39,7 +47,9 @@ User.statics.create = function(username, password,email,contact,pan_no,gstin,add
         pan_no,
         gstin,
         address,
-        city
+        city,state,
+        type,
+        created_at
     })
 
     // return the Promise
@@ -65,6 +75,7 @@ User.methods.verify = function(password) {
 
 User.methods.assignAdmin = function() {
     this.admin = true
+    this.type = "admin"
     return this.save()
 }
 

@@ -30,9 +30,9 @@
 
       <div class="clearfix"></div>
 
-      <div class="col-md-3 col-xs-12">
+      <div class="col-md-4 col-xs-12">
         <div class="input-group section-bottom-20">
-          <input type="text" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
+          <input type="text" [(ngModel)]="searchString" placeholder="Title" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
           <div class="input-group-addon">
             <i class="fa fa-search"></i>
           </div>
@@ -50,24 +50,22 @@
                 <th width="2%">#</th>
                 <th width="20%">Title</th>
                 <th width="15%">Details</th>
-                <th width="6%">Date</th>
-                <th width="8%">Status</th>
+                <th width="10%">Link</th>
                 <th width="14%" class="text-center">Action</th>
               </tr>
             </thead>
             <tbody>
 
 
-              <tr *ngFor="let item of internalUpdateList ;let i = index;">
-                <td align="center">{{pageSize * (currentPage-1)+i+1}}</td>
+              <!-- <tr *ngFor="let item of internalUpdateList ;let i = index;"> -->
+              <tr *ngFor="let item of internalUpdateList | updateFilter:searchString  ;let i = index;">
+                <td align="center">{{pager.pageSize * (pager.currentPage-1)+i+1}}</td>
                 <td align="center">{{item.title}}</td>
                 <td align="center">
-                  <a href="{{item.link}}" target="_blank">{{item.details}}</a>
-                  <!-- <a href="{{item.link}}" target="_blank">{{item.description}}</a> -->
+                  <a target="_blank">{{item.details}}</a>
                 </td>
-                <td align="center">{{item.date}}</td>
                 <td align="center">
-                  <span class="label label-warning">{{item.status}}</span>
+                  <a href="{{item.link}}" target="_blank">{{item.link}}</a>
                 </td>
                 <td align="center">
                   <a data-toggle="modal" data-target=".bs-user-lg-edit">
@@ -85,6 +83,27 @@
 
           <ul class="pagination btn-sm">
             <li [ngClass]="{disabled:pager.currentPage === 1}">
+              <a [class.hide]="pager.currentPage == 1" (click)="getNotificationList(pager.currentPage - 1)">Previous</a>
+            </li>
+
+            <li [ngClass]="{disabled:pager.currentPage === 1}">
+              <a [class.hide]="pager.currentPage>1">Previous</a>
+            </li>
+
+            <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+              <a  (click)="getNotificationList(page)">{{page}}</a>
+            </li>
+
+            <li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
+              <a [class.hide]="pager.currentPage === pager.endPage" (click)="getNotificationList(pager.currentPage + 1)">Next</a>
+            </li>
+            <li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
+              <a [class.hide]="pager.currentPage < pager.endPage">Next</a>
+            </li>
+          </ul>
+
+          <!-- <ul class="pagination btn-sm">
+            <li [ngClass]="{disabled:pager.currentPage === 1}">
               <a (click)="getInternalUpdateList(pager.currentPage - 1)">Previous</a>
             </li>
 
@@ -95,7 +114,7 @@
             <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
               <a (click)="getInternalUpdateList(pager.currentPage + 1)">Next</a>
             </li>
-          </ul>
+          </ul> -->
         </div>
 
       </div>
@@ -111,13 +130,13 @@
 <!-- User Form Start -->
 
 <div class="modal fade bs-user-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-  <div class="modal-dialog modal-sm" role="document">
+  <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" #closeBtn aria-label="Close">
           <span class="modal-text" aria-hidden="true">X</span>
         </button>
-        <h4 class="modal-title modal-text"> Add Internal Updates</h4>
+        <h4 class="modal-title modal-text">Add</h4>
       </div>
       <div class="modal-body">
         <div class="service-section">
@@ -132,8 +151,8 @@
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="Details" formControlName="description" name="description">
-                  <small [hidden]="internalUpdateForm.controls.description.valid || (internalUpdateForm.controls.description.pristine && !submitted)">
+                  <textarea rows="5" type="text" class="form-control" placeholder="Details" formControlName="details" name="details"></textarea>
+                  <small [hidden]="internalUpdateForm.controls.details.valid || (internalUpdateForm.controls.details.pristine && !submitted)">
                     Details is required .
                   </small>
                 </div>
@@ -143,7 +162,7 @@
                     Link is required .
                   </small>
                 </div>
-                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                <!-- <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <select class="form-control" formControlName="status" required>
                     <option selected="selected" value=""> --- Salect Status Type ---</option>
                     <option value="Approved"> Approved </option>
@@ -153,7 +172,7 @@
                   <small [hidden]="internalUpdateForm.controls.status.valid || (internalUpdateForm.controls.status.pristine && !submitted)">
                     Status is required .
                   </small>
-                </div>
+                </div> -->
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <!-- <input type="button" class="btn btn-primary" value="Add Notifications"> -->
@@ -177,7 +196,7 @@
         <button type="button" class="close" data-dismiss="modal" #closeBtn2 aria-label="Close">
           <span class="modal-text" aria-hidden="true">X</span>
         </button>
-        <h4 class="modal-title modal-text"> Update Gov. Notifications</h4>
+        <h4 class="modal-title modal-text">Edit</h4>
       </div>
       <div class="modal-body">
         <div class="service-section">
@@ -191,8 +210,8 @@
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="Details" formControlName="description" name="description">
-                  <small [hidden]="editInternalUpdate.controls.description.valid || (editInternalUpdate.controls.description.pristine && !submitted)">
+                  <textarea rows="10" cols="50" type="text" class="form-control" placeholder="Details" formControlName="details" name="details"></textarea>
+                  <small [hidden]="editInternalUpdate.controls.details.valid || (editInternalUpdate.controls.details.pristine && !submitted)">
                     Details is required .
                   </small>
                 </div>
@@ -203,7 +222,7 @@
                   </small>
                 </div>
 
-                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                <!-- <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <select class="form-control" formControlName="status" required>
                     <option selected="selected" value=""> --- Salect Status Type ---</option>
                     <option value="Approved"> Approved </option>
@@ -213,7 +232,7 @@
                   <small [hidden]="editInternalUpdate.controls.status.valid || (editInternalUpdate.controls.status.pristine && !submitted)">
                     Status is required .
                   </small>
-                </div>
+                </div> -->
 
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
@@ -245,15 +264,15 @@
           <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
               <div class="col-md-12 col-sm-12 col-xs-12 text-center">
-                <h4 class="text-blue">Are You Sure Internal Update Delete
+                <h4 class="text-blue">sure, you want to delete ?
                   <br>
                   <br>
                 </h4>
               </div>
 
-              <div class="form-group ">
-                <input type="button" class="btn btn-success" (click)="deleteInternalUpdate()" value="Yes">
-                <input type="button" class="btn btn-primary pull-right" data-dismiss="modal" value="No">
+              <div class="text-center">
+                <input type="button" class="btn btn-success" (click)="deleteInternalUpdate()" value="Yes"> &nbsp; &nbsp;
+                <input type="button" class="btn btn-primary" data-dismiss="modal" value="No">
               </div>
             </div>
           </div>

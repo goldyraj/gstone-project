@@ -1,4 +1,12 @@
 const Client = require('../../../models/client')
+  var usingItNow = function(req) {
+if(req.type=="agentuser"||req.type=="admin"){
+  return false;
+}else{
+   return true;
+}
+
+};
 
 /* 
     GET /api/user/list
@@ -6,10 +14,12 @@ const Client = require('../../../models/client')
 
 exports.list = (req, res) => {
     // refuse if not an admin
-    if(!req.decoded.admin) {
-        return res.status(403).json({
-            message: 'you are not an admin'
-        })
+  //=========Authrise function
+var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
     }
  Client.find({}).exec()
     .then(
@@ -20,9 +30,14 @@ exports.list = (req, res) => {
    }
    exports.update=(req,res)=>{
         const {_id,name,pan_no,gstin,dealer_type,branch_name,contact,email,address,city,state} = req.body
-     
+        if(!req.decoded.admin||!req.decoded.type===req.app.get('usertype')) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
+     var updated_at=  Date.now();
          Client.findOneAndUpdate({_id:_id}, {$set:{name:name,pan_no:pan_no,dealer_type:dealer_type,
-            branch_name:branch_name,contact:contact,email:email,address:address,city:city,state:state}}, {new: true}, function(err, doc){
+            branch_name:branch_name,contact:contact,email:email,address:address,city:city,state:state,updated_at:updated_at}}, {new: true}, function(err, doc){
     if(err){
         console.log("Something wrong when updating data!");
     }
@@ -46,13 +61,19 @@ exports.list = (req, res) => {
          .catch(onError)
 }
 exports.create = (req, res) => {
+    //=========Authrise function
+// if(!req.decoded.admin||!req.decoded.type===req.app.get('usertype')) {
+//    return res.status(403).json({
+//             message: 'you are not an authorise'
+//         }) 
+//     }
     const {name,pan_no,gstin,city,dealer_type,display_name,contact,email,address,state} = req.body
     let newUser = null
- if(!req.decoded.admin) {
-        return res.status(403).json({
-            message: 'you are not an admin'
-        })
-    }
+   // if(!req.decoded.admin) {
+    //     return res.status(403).json({
+    //         message: 'you are not an admin'
+    //     })
+    // }
     // create a new user if does not exist
     const create = (client) => {
        

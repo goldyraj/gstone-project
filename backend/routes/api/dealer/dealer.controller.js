@@ -1,6 +1,14 @@
 const Dealer = require('../../../models/dealer')
 //var csv=require('csv-parse');
 var fs=require('fs');
+  var usingItNow = function(req) {
+if(req.type=="agentuser"||req.type=="admin"){
+  return false;
+}else{
+   return true;
+}
+
+};
 /* 
     GET /api/hsn/index
 */
@@ -8,6 +16,13 @@ var fs=require('fs');
 exports.index=(req,res)=>{
 //console.log(req);
 var query={};
+//=========Authrise function
+var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
 console.log(req.query.limit);
 if(req.query.search && req.query.search.length>0){
     console.log(query={name:req.query.search})
@@ -49,10 +64,11 @@ Dealer.paginate(query,option).then( dealer=>res.json(dealer)
 */
 exports.list = (req, res) => {
     // refuse if not an admin
-    if(!req.decoded.admin) {
-        return res.status(403).json({
-            message: 'you are not an admin'
-        })
+var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
     }
  Dealer.find({}).exec()
     .then(
@@ -66,11 +82,13 @@ exports.create = (req, res) => {
     console.log(req.body)
     const {name, date,status} = req.body
     let newUser = null
- // if(!req.decoded.admin) {
- //        return res.status(403).json({
- //            message: 'you are not an admin'
- //        })
- //    }
+ //=========Authrise function
+var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
     // create a new user if does not exist
     const create = (dealer) => {
         if(dealer) {
@@ -117,8 +135,15 @@ exports.create = (req, res) => {
 */
 exports.update=(req,res)=>{
         const {_id,name, date,status} = req.body
-     
-         Dealer.findOneAndUpdate({_id:_id}, {$set:{name:name,date:date,status:status
+        //=========Authrise function
+ var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
+     var updated_at=  Date.now();
+         Dealer.findOneAndUpdate({_id:_id}, {$set:{name:name,date:date,status:status,updated_at:updated_at
           }}, {new: true}, function(err, doc){
     if(err){
         console.log("Something wrong when updating data!");
@@ -147,6 +172,12 @@ exports.uploadfile=(req,res)=>{
 
 //console.log(req.body) // req.body should be populated by request body\
 //var e=req.body
+var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
 var myobj= req.body.data
 try {
 Dealer.insertMany(myobj, function(err, res) {

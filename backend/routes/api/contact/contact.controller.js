@@ -1,10 +1,26 @@
 const Contact = require('../../../models/contact')
+  var usingItNow = function(req) {
+if(req.type=="agentuser"||req.type=="admin"){
+  return false;
+}else{
+   return true;
+}
+
+};
 /* 
     GET /api/State/list
 */
 exports.index=(req,res)=>{
 //console.log(req);
+//=========Authrise function
+var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
 var query={};
+
 req.query.limit=parseInt(req.query.limit);
 if(req.query.search && req.query.search.length>0){    
     query={name:req.query.search}
@@ -27,9 +43,15 @@ const onError = (error) => {
             message: error.message
         })
     }
+    var sortfiled={};
+    if(req.query.sortBy && req.query.sortBy.length>0){    
+    sortfiled=req.query.sortBy
+}else{
+   sortfiled={ date: -1 } 
+}
 var option={
-    select:'name email company contact remark ',
-    sort:req.query.sortBy,
+    select:'name email company contact_no remark ',
+    sort:sortfiled,
     offset:offset,
     limit:req.query.limit
 };
@@ -43,11 +65,11 @@ Contact.paginate(query,option).then( contact=>res.json(contact)
 
 exports.list = (req, res) => {
     // refuse if not an admin
-    if(!req.decoded.admin) {
-        return res.status(403).json({
-            message: 'you are not an admin'
-        })
-    }
+ // if(!req.decoded.admin||!req.decoded.type===req.app.get('usertype')) {
+ //   return res.status(403).json({
+ //            message: 'you are not an authorise'
+ //        }) 
+ //    }
  Contact.find({}).exec()
     .then(
         contact=> {
@@ -57,7 +79,7 @@ exports.list = (req, res) => {
    }
 
 exports.create = (req, res) => {
-    const { name, email,company,contact,remark } = req.body
+    const { name, email,company,contact_no,remark } = req.body
     let newUser = null
  // if(!req.decoded.admin) {
  //        return res.status(403).json({
@@ -71,7 +93,7 @@ exports.create = (req, res) => {
         if(contact) {
             throw new Error('Email Name exists')
         } else {
-            return Contact.create(  name, email,company,contact,remark )
+            return Contact.create(  name, email,company,contact_no,remark )
         }
     }
     // count the number of the user
@@ -109,32 +131,32 @@ exports.create = (req, res) => {
 /*
     POST /api/State/upadate
 */
-exports.update=(req,res)=>{
-        const {_id, question, answer} = req.body
-     
-         Contact.findOneAndUpdate({_id:_id}, {$set:{question:question,answer:answer}}, {new: true}, function(err, doc){
-    if(err){
-        console.log("Something wrong when updating data!");
-    }
-    console.log(doc);
-});
-          const respond = () => {
-        res.json({
-            message: 'FAQ Successfully Update'
+// exports.update=(req,res)=>{
+//         const {_id, question, answer} = req.body
+//         var updated_at=  Date.now();
+//          Contact.findOneAndUpdate({_id:_id}, {$set:{question:question,answer:answer,updated_at:updated_at}}, {new: true}, function(err, doc){
+//     if(err){
+//         console.log("Something wrong when updating data!");
+//     }
+//     console.log(doc);
+// });
+//           const respond = () => {
+//         res.json({
+//             message: 'FAQ Successfully Update'
         
  
-        })
-    }
-    //    // run when there is an error (username exists)
-    const onError = (error) => {
-        res.status(409).json({
-            message: error.message
-        })
-    }
-      Contact.findOneByUsername(question)          
-         .then(respond)
-         .catch(onError)
-}
+//         })
+//     }
+//     //    // run when there is an error (username exists)
+//     const onError = (error) => {
+//         res.status(409).json({
+//             message: error.message
+//         })
+//     }
+//       Contact.findOneByUsername(question)          
+//          .then(respond)
+//          .catch(onError)
+// }
 /*
     POST /api/client/delete/:id
 */

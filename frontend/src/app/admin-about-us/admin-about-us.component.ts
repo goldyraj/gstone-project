@@ -82,7 +82,7 @@ export class AdminAboutUsComponent implements OnInit {
           console.log("suceessfull data", response.json().message);
           this.closeEditModal();
           this.submittedEdit = false;
-          alert(response.json().message);
+          this.getAboutUsList();
         },
         error => {
           console.log("error", error.message);

@@ -1,10 +1,24 @@
 const Customer = require('../../../models/customer')
 
+  var usingItNow = function(req) {
+if(req.type=="agentuser"||req.type=="admin"){
+  return false;
+}else{
+   return true;
+}
+
+};
 /* 
     GET /api/user/list
 */
 exports.index=(req,res)=>{
 //console.log(req);
+var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
 var query={};
 req.query.limit=parseInt(req.query.limit);
 if(req.query.search && req.query.search.length>0){
@@ -29,9 +43,15 @@ const onError = (error) => {
             message: error.message
         })
     }
+           var sortfiled={};
+    if(req.query.sortBy && req.query.sortBy.length>0){    
+    sortfiled=req.query.sortBy
+}else{
+   sortfiled={ date: -1 } 
+}
 var option={
-    select:'name pan_no gstin city contact email address state',
-    sort:req.query.sortBy, 
+    select:'name pan_no gstin city contact email address state created_at',
+    sort:sortfiled, 
     offset:offset,
     limit:req.query.limit
 };
@@ -42,10 +62,11 @@ Customer.paginate(query,option).then(customer=>
 }
 exports.list = (req, res) => {
     // refuse if not an admin
-    if(!req.decoded.admin) {
-        return res.status(403).json({
-            message: 'you are not an admin'
-        })
+var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
     }
     
  Customer.find({}).exec()
@@ -60,7 +81,13 @@ exports.create = (req, res) => {
 
     const {name,pan_no,gstin,city,contact,email,address,state} = req.body
     let newUser = null
-    console.log(JSON.stringify(req.headers));
+    //console.log(JSON.stringify(req.headers));
+var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
 
     // create a new Customer if does not exist
     const create = (custormer) => {
@@ -101,9 +128,15 @@ exports.create = (req, res) => {
     POST /api/Customer/update
 */
 exports.update=(req,res)=>{
+  var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
         const {_id,name,pan_no,gstin,city,contact,email,address,state} = req.body
-     
-         Customer.findOneAndUpdate({_id:_id}, {$set:{name:name,pan_no:pan_no,gstin:gstin,contact:contact,email:email,address:address,state:state}}, {new: true}, function(err, doc){
+        var updated_at=  Date.now();
+         Customer.findOneAndUpdate({_id:_id}, {$set:{name:name,pan_no:pan_no,gstin:gstin,contact:contact,email:email,address:address,state:state,updated_at:updated_at}}, {new: true}, function(err, doc){
     if(err){
         console.log("Something wrong when updating data!");
     }
@@ -129,6 +162,14 @@ exports.update=(req,res)=>{
 exports.uploadfile=(req,res)=>{
 var myobj= req.body.data
 //let msg ='Success updating admin2!';
+//=========Authrise function
+var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
+
  var multirecord = function () {
       return new Customer.insertMany(myobj, function(err, res) {})
   }

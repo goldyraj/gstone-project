@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {Observable,Subject} from "rxjs/Rx";
+import { Observable, Subject } from "rxjs/Rx";
 import { HttpModule } from '@angular/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
@@ -26,29 +26,29 @@ import { AddnewinvoiceComponent } from './addnewinvoice/addnewinvoice.component'
 import { AddbosComponent } from './addbos/addbos.component';
 import { ExportinvoiceComponent } from './exportinvoice/exportinvoice.component';
 import { NewamendmentComponent } from './newamendment/newamendment.component';
-import{AdminBranchComponent} from './admin-branch/admin-branch.component';
+import { AdminBranchComponent } from './admin-branch/admin-branch.component';
 import { OtherpageComponent } from './otherpage/otherpage.component';
 import { AdminHsnCodeComponent } from './admin-hsn-code/admin-hsn-code.component';
 import { AdminDealerTypeComponent } from './admin-dealer-type/admin-dealer-type.component';
 import { AdminStateComponent } from './admin-state/admin-state.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
-import {ApiserviceService} from './apiservice.service';
+import { ApiserviceService } from './apiservice.service';
 import { AdminFaqsComponent } from './admin-faqs/admin-faqs.component';
 import { AdminGovNotificationComponent } from './admin-gov-notification/admin-gov-notification.component';
 import { AdminGoodsComponent } from './admin-goods/admin-goods.component';
 import { AdminGstoneVideosComponent } from './admin-gstone-videos/admin-gstone-videos.component'
-import {ExcelServiceService} from './excel-service.service';
+import { ExcelServiceService } from './excel-service.service';
 import { UserHsnCodeComponent } from './user-hsn-code/user-hsn-code.component';
 import { UserGovNotificationComponent } from './user-gov-notification/user-gov-notification.component';
 // import { DatepickerModule } from 'angular2-material-datepicker';
-import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
-import {PagerService} from './service/pager.service';
+import { NgxPaginationModule } from 'ngx-pagination'; // <-- import the module
+import { PagerService } from './service/pager.service';
 import { AdminAboutUsComponent } from './admin-about-us/admin-about-us.component';
 import { AdminPrivacyPolicyComponent } from './admin-privacy-policy/admin-privacy-policy.component';
 import { AdminContactUsComponent } from './admin-contact-us/admin-contact-us.component';
 import { AdminInternalUpdatesComponent } from './admin-internal-updates/admin-internal-updates.component';
-import{AdminHomeComponent} from './admin-home/admin-home.component';
+import { AdminHomeComponent } from './admin-home/admin-home.component';
 import { UserAboutUsComponent } from './user-about-us/user-about-us.component';
 import { HomeDashboardComponent } from './home-dashboard/home-dashboard.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
@@ -56,9 +56,21 @@ import { FaqsComponent } from './faqs/faqs.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { ContactComponent } from './contact/contact.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
+import { StatePipe } from './admin-state/state.pipe';
+import { NotifyPipe } from './admin-gov-notification/notification.pipe';
+import { InternalUpdatePipe } from './admin-internal-updates/internal.pipe';
+import { hsnCodePipe } from './user-hsn-code/hsnCode.pipe';
+import {PreventLoggedInAccess} from './PreventLoggedInAccess';
+import {AuthService} from './auth.service';
+import{videosPipe} from './admin-gstone-videos/videos.pipe';
 
 @NgModule({
   declarations: [
+    videosPipe,
+    InternalUpdatePipe,
+    NotifyPipe,
+    StatePipe,
+    hsnCodePipe,
     AppComponent,
     HomeComponent,
     RegistrationComponent,
@@ -107,6 +119,7 @@ import { UserDashboardComponent } from './user-dashboard/user-dashboard.componen
     //DatepickerModule
   ],
   imports: [
+
     ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,
@@ -115,7 +128,7 @@ import { UserDashboardComponent } from './user-dashboard/user-dashboard.componen
     NgbModule.forRoot(),
     NgxPaginationModule,
   ],
-  providers: [ApiserviceService,ExcelServiceService,PagerService],
+  providers: [ApiserviceService, ExcelServiceService, PagerService,PreventLoggedInAccess,AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

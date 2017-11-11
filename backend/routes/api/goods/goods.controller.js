@@ -1,11 +1,26 @@
 const Goods = require('../../../models/goods')
 
+var usingItNow = function(req) {
+if(req.type=="agentuser"||req.type=="admin"){
+  return false;
+}else{
+   return true;
+}
+
+};
 
 /* 
     GET /api/branch/index
 */
 exports.index=(req,res)=>{
 //console.log(req);
+  var rstatus=false;
+ var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
 var query={};
 req.query.limit=parseInt(req.query.limit);
 if(req.query.search && req.query.search.length>0){
@@ -30,9 +45,15 @@ const onError = (error) => {
             message: error.message
         })
     }
+      var sortfiled={};
+    if(req.query.sortBy && req.query.sortBy.length>0){    
+    sortfiled=req.query.sortBy
+}else{
+   sortfiled={ date: -1 } 
+}
 var option={
-    select:'hsn_code description unit gstin dealer_type rate',
-    sort:req.query.sortBy, 
+    select:'hsn_code description cgst sgst igst condition',
+    sort:sortfiled, 
     offset:offset,
     limit:req.query.limit
 };
@@ -48,22 +69,29 @@ Goods.paginate(query,option).then(goods=>
 
 exports.list = (req, res) => {
     // refuse if not an admin
-    // if(!req.decoded.admin) {
-        // return res.status(403).json({
-            // message: 'you are not an admin'
-        // })
-    //}
+  var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
  Goods.find({}).exec()
     .then(
         goods=> {
-            res.json(goods)
+            res.json({goods})
         }
     )
    }
 exports.update=(req,res)=>{
-        const {_id, description, hsn_code,unit,rate } = req.body
-     
-         Goods.findOneAndUpdate({_id:_id}, {$set:{hsn_code:hsn_code,description:description,unit:unit,rate:rate}}, {new: true}, function(err, doc){
+        const {_id, description, hsn_code,cgst,sgst,igst,condition } = req.body
+  var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
+     var updated_at=  Date.now();
+         Goods.findOneAndUpdate({_id:_id}, {$set:{hsn_code:hsn_code,description:description,cgst:cgst,sgst:sgst,igst:igst,condition:condition,updated_at:updated_at}}, {new: true}, function(err, doc){
     if(err){
         console.log("Something wrong when updating data!");
     }
@@ -82,18 +110,20 @@ exports.update=(req,res)=>{
             message: error.message
         })
     }
-      Goods.findOneByUsername(title)          
+      Goods.findOneByUsername(description)          
          .then(respond)
          .catch(onError)
 }
 exports.create = (req, res) => {
-    const {  description, hsn_code,unit,rate } = req.body
+    const {description, hsn_code,cgst,sgst,igst,condition} = req.body
     let newUser = null
- // if(!req.decoded.admin) {
-        // return res.status(403).json({
-            // // message: 'you are not an admin'
-        // })
-    // }
+    console.log(req.decoded)
+ var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
     // create a new user if does not exist
     const create = (goods) => {
        
@@ -101,7 +131,7 @@ exports.create = (req, res) => {
         if(goods) {
             throw new Error('Goods Name exists')
         } else {
-            return Goods.create(  description, hsn_code,unit,rate )
+            return Goods.create(  description, hsn_code,cgst,sgst,igst,condition )
         }
     }
     // count the number of the user
@@ -143,7 +173,14 @@ exports.uploadfile=(req,res)=>{
 
 
 var myobj= req.body.data
-//let msg ='Success updating admin2!';
+//=========Authrise function
+ var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
+    
  var multirecord = function () {
       return new Goods.insertMany(myobj, function(err, res) {})
   }

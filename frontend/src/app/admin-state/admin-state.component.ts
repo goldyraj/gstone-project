@@ -3,13 +3,15 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { PagerService } from '../service/pager.service';
-import * as _ from 'underscore'
+import * as _ from 'underscore';
+import { RouterModule, Routes, Router } from '@angular/router';
+import {PreventLoggedInAccess} from '../PreventLoggedInAccess';
 
 @Component({
   selector: 'app-admin-state',
   templateUrl: './admin-state.component.html',
   styleUrls: ['./admin-state.component.css'],
-  providers: [PagerService]
+  providers: [PagerService,PreventLoggedInAccess]
 })
 export class AdminStateComponent implements OnInit {
 
@@ -29,6 +31,7 @@ export class AdminStateComponent implements OnInit {
 
   // pager object
   pager: any = {};
+  sortBy="created_at";
 
   // paged items
   pagedItems: any[];
@@ -51,19 +54,25 @@ export class AdminStateComponent implements OnInit {
   public events: any[] = []; // use later to display form changes
   public stateRowData;
   access_token = "";
-  constructor(private _fb: FormBuilder, private http: Http, private pagerService: PagerService) {
+  constructor(private _fb: FormBuilder, private http: Http, private pagerService: PagerService,public router:Router) {
     // this.currentPage=1;
+  }
+
+  onLoad()
+  {
+
     this.access_token = localStorage.getItem("admin_token");
     console.log("admin token", this.access_token);
     this.pager.currentPage = 1;
     // this.setPage(this.pager.currentPage);
     this.getStateList(this.pager.currentPage);
     console.log("cusntor call");
-    this.person.country = this.countries.filter(c => c.id === this.person.country.id)[0];
+    
   }
 
   ngOnInit() {
     // we will initialize our form model here
+    this.person.country = this.countries.filter(c => c.id === this.person.country.id)[0];
     this.myForm = new FormGroup({
       statename: new FormControl('', [<any>Validators.required]),
       statecode: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
@@ -76,6 +85,13 @@ export class AdminStateComponent implements OnInit {
       country: new FormControl('Select Status', [])
     });
 
+    var context=this;
+    if (localStorage.getItem('admin_token')!=null) {
+      context.onLoad();
+    }
+    else {
+      context.router.navigate(['/admin-login']);
+    }
   }
 
 
@@ -98,7 +114,7 @@ export class AdminStateComponent implements OnInit {
         "code": this.myForm.value.statecode
       };
       this.stateList.push(body);
-      this.url = "http://localhost:3000/api/state/create";
+      this.url = "http://localhost:3000/api/state/create?token="+this.access_token;
       return this.http.post(this.url, body, requestOptions)
         .subscribe(
         response => {
@@ -121,7 +137,7 @@ export class AdminStateComponent implements OnInit {
 
   getStateList(page: number) {
     this.pager.currentPage = page;
-    this.http.get('http://localhost:3000/api/state/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + this.pager.currentPage).subscribe(data => {
+    this.http.get('http://localhost:3000/api/state/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + this.pager.currentPage+"&sortBy="+this.sortBy).subscribe(data => {
       this.stateList = data.json().docs;
       // this.pager.TotalPages = data.json().total;
       this.pager.pageSize = data.json().limit;
@@ -185,8 +201,8 @@ export class AdminStateComponent implements OnInit {
       console.log("ID",this.stateRowData._id);
       const body = {
         "_id": this.stateRowData._id,
-        "name": this.myFormEdit.value.descriptionEdit,
-        "code": this.myFormEdit.value.hsn_code_edit
+        "name": this.myFormEdit.value.statename,
+        "code": this.myFormEdit.value.statecode
       };
 
       this.url = "http://localhost:3000/api/state/update?token="+this.access_token;
@@ -195,9 +211,6 @@ export class AdminStateComponent implements OnInit {
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeEditModal();
-          // this.hsnCodeData.push(body);
-          // alert(response.json().message);
-          // this.goodsAndServicesDataList[this.rowDataIndex]=body;
           this.getStateList(this.pager.currentPage);
           this.submitted = false;
         },

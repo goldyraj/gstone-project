@@ -10,17 +10,17 @@ var debug = require('debug')('http') , http = require('http');
 */
 
 exports.register = (req, res) => {
-    const { username, password,email,contact,pan_no,gstin,address,city} = req.body
+    const { name,username, password,email,contact,pan_no,gstin,address,city,state,type} = req.body
     let newUser = null
 
     // create a new user if does not exist
     const create = (user) => {
-            debug('User %o', user);
-      console.log(contact)
+            //debug('User %o', user);
+     // console.log(contact)
         if(user) {
             throw new Error('username exists')
         } else {
-            return User.create(username, password,email,contact,pan_no,gstin,address,city)
+            return User.create(name,username, password,email,contact,pan_no,gstin,address,city,state,type)
         }
     }
     // count the number of the user
@@ -75,7 +75,6 @@ exports.register = (req, res) => {
 exports.login = (req, res) => {
     const {username, password} = req.body
     const secret = req.app.get('jwt-secret')
-
     // check the user info & generate the jwt
     const check = (user) => {
         if(!user) {
@@ -85,12 +84,16 @@ exports.login = (req, res) => {
             // user exists, check the password
             if(user.verify(password)) {
                 // create a promise that generates jwt asynchronously
+               
                 const p = new Promise((resolve, reject) => {
                     jwt.sign(
                         {
+                        
                             _id: user._id,
+                            name: user.name,
                             username: user.username,
-                            admin: user.admin
+                            admin: user.admin,
+                             type: user.type
                         }, 
                         secret, 
                         {
@@ -104,16 +107,19 @@ exports.login = (req, res) => {
                 })
                 return p
             } else {
-                throw new Error('login failed')
+                throw new Error('The username or password you have entered is invalid')
             }
         }
     }
 
     // respond the token 
+    //console.log(user)
     const respond = (token) => {
         res.json({
             message: 'logged in successfully',
             token
+            
+
         })
     }
 

@@ -1,93 +1,6 @@
-<div class="container">
-	<div class="row">
-		<div class="col-md-3 navbar-header-gst">
-			<div class="navbar-brand">
-				<a href="index.html">
-					<h2 class="gst_logo">GST</h2>
-				</a>
-			</div>
-		</div>
-		<div class="col-md-6">
-		</div>
-		<div class="col-md-3">
-			<div class="user_profile">
-				<label>Contact Mail</label>
-				<div class="btn-group pull-right" role="group">
-					<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						User email
-						<span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu">
-						<li>
-							<a href="#">
-								<i class="fa fa-user"></i> Profile</a>
-						</li>
-						<li>
-							<a href="#">
-								<i class="fa fa-cog"></i> Setting</a>
-						</li>
-						<li>
-							<a href="#">
-								<i class="fa fa-key"></i> Logout</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
+<div class="clearfix">
+
 </div>
-
-
-<header>
-	<div class="container-fluid">
-		<div class="row">
-			<!-- Navigation  navbar-static-top -->
-			<nav class="navbar navbar-inverse">
-				<div class="container navbar-header-gst">
-					<div class="navbar-header page-scroll">
-						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-							<span class="sr-only">Toggle navigation</span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-						</button>
-					</div>
-
-					<!-- Collect the nav links, forms, and other content for toggling -->
-					<div class="collapse navbar-collapse navbar-ex1-collapse">
-						<ul class="nav navbar-nav">
-							<!-- Hidden li included to remove active class from about link when scrolled up past about section -->
-							<li>
-								<a class="page-scroll" href="#">User Name
-									<span> GSTIN No</span>
-								</a>
-							</li>
-							<li>
-								<a class="page-scroll" href="user">Dashboard</a>
-							</li>
-							<li>
-								<a class="page-scroll" href="workreturns">Returns</a>
-							</li>
-							<li>
-								<a class="page-scroll" href="notification">Notification </a>
-							</li>
-							<li>
-								<a class="page-scroll" href="update">Updates </a>
-							</li>
-							<li>
-								<a class="page-scroll" href="videos">Videos </a>
-							</li>
-						</ul>
-					</div>
-					<!-- /.navbar-collapse -->
-				</div>
-			</nav>
-		</div>
-	</div>
-</header>
-
-
-<div class="clearfix"></div>
 
 <div class="container">
 	<div class="row">
@@ -103,14 +16,14 @@
 			</div>
 		</div> -->
 
-		<div class="col-xs-4 col-sm-1 placeholder">
+		<div class="col-xs-4 col-sm-5 text-right">
 
 			<a href="" data-toggle="modal" data-target=".bs-upload-sm">
 				<input type="button" class="btn btn-primary" value="Import/Export">
 			</a>
 
 			<a href="#" data-toggle="modal" data-target=".bs-GSTIN-lg">
-				<input type="button" class="btn btn-success pull-right" value="Add New Customer">
+				<input type="button" class="btn btn-success" value="Add New Customer">
 			</a>
 		</div>
 
@@ -123,15 +36,15 @@
 			<table class="table table-condensed table-bordered">
 				<thead>
 					<tr>
-						<th width="5%" align="center">S. No</th>
-						<th width="20%" align="center">Customer Name</th>
+						<th width="7%" align="center">S. No</th>
+						<th width="16%" align="center">Customer Name</th>
 						<th width="10" align="center">Pan No.</th>
 						<th width="10%" align="center">GSTIN</th>
-						<th width="10%" align="center">City</th>
+						<th width="8%" align="center">City</th>
 						<th width="10%" align="center">Contact</th>
 						<th width="15%" align="center">Address </th>
 						<th width="12%" align="center">State</th>
-						<th width="8%" align="center">Action</th>
+						<th width="12%" align="center">Action</th>
 					</tr>
 				</thead>
 				<tbody class="table_form">
@@ -146,7 +59,10 @@
 						<td align="center">{{item.state}}</td>
 						<td align="center">
 							<a data-toggle="modal" data-target=".bs-user-lg-edit">
-								<button class="fa fa-edit btn btn-primary btn-sm" title="Edit" (click)="editCustomerRecord(item)">Edit</button>
+								<button class="fa fa-edit btn btn-primary btn-sm" title="Edit" (click)="editCustomerRecord(item)"></button>
+							</a>
+							<a href="" data-toggle="modal" data-target=".bs-delete-sm">
+								<i class="fa fa-trash btn btn-danger btn-sm" (click)="deleteCustomerRecord(item)" title="Delete"></i>
 							</a>
 						</td>
 					</tr>
@@ -196,9 +112,13 @@
 									</small>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<input type="text" class="form-control" formControlName="contact" placeholder="Contact No.">
-									<small [hidden]="myForm.controls.contact.valid || (myForm.controls.contact.pristine && !submitted)">
+									<input type="text" class="form-control" formControlName="contact" placeholder="Contact No." pattern="^(?:(?:\+|0{0,2})91(\s*[\ -]\s*)?|[0]?)?[789]\d{9}|(\d[ -]?){10}\d$">
+									<!-- <small [hidden]="myForm.controls.contact.valid || (myForm.controls.contact.pristine && !submitted)">
 										Contact is required (minimum 5 characters).
+									</small> -->
+									<small [hidden]="myForm.controls.contact.valid || (myForm.controls.contact.pristine && !submitted)">
+										<span style="color:red" [hidden]="myForm.controls.contact.valid">Contact no is required.</span>
+										<b [hidden]="myForm.controls.contact.pristine">characters not allowed.</b>
 									</small>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
@@ -225,26 +145,24 @@
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="address" placeholder="Address" name="address" id="address">
 									<small [hidden]="myForm.controls.address.valid || (myForm.controls.address.pristine && !submitted)">
-										Address is required (minimum 5 characters).
+										Address is required .
 									</small>
 								</div>
 
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
 									<input type="text" class="form-control" placeholder="City" formControlName="city" name="city" id="city">
 									<small [hidden]="myForm.controls.city.valid || (myForm.controls.city.pristine && !submitted)">
-										City is required (minimum 5 characters).
+										City is required.
 									</small>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<select class="form-control" formControlName="selectedstateDropdown" required>
-										<option value="-1" selected="selected">Select State</option>
-										<option value="Jabalpur">Jabalpur</option>
-										<option value="Bhopal">Bhopal</option>
-										<option value="Raipur">Raipur</option>
+									<select class="form-control" (input)="onInput($event)">
+										<option value="" selected="selected"> -- Select State -- </option>
+										<option *ngFor="let item of stateList" value=" {{item.name}}">{{item.name}}</option>
 									</select>
-									<small *ngIf="myForm.controls.selectedstateDropdown.value=='-1' && submittedEdit">
+									<!-- <small *ngIf="myForm.controls.selectedstateDropdown.value=='-1' && submittedEdit">
 										Please select state !
-									</small>
+									</small> -->
 								</div>
 
 								<div class="col-md-12 col-sm-12 col-xs-12 form-group" align="center">
@@ -328,14 +246,12 @@
 									</small>
 								</div>
 
-								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
-									<select class="form-control" formControlName="selectedstateDropdown" required [(ngModel)]="selectedstateDropdown">
-										<option [ngValue]="-1" name="Select State">Select State</option>
-										<option *ngFor="let item of stateDropdown" [ngValue]="item">{{item}}</option>
+								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+									<select class="form-control" (input)="onInput($event)">
+										<option value="" selected="selected"> -- Select State -- </option>
+										<option *ngFor="let item of stateList" value=" {{item.name}}">{{item.name}}</option>
 									</select>
-									<small *ngIf="myFormEdit.controls.selectedstateDropdown.value=='-1' && submittedEdit">
-										Please select state !
-									</small>
+
 								</div>
 
 								<!-- <div class="col-md-6 col-sm-6 col-xs-12 form-group">
@@ -410,8 +326,8 @@
 							<br>
 
 							<div class="col-md-5 col-sm-5 col-xs-12 col-md-offset-1">
-								<!-- <input type="file" class="btn btn-success" value=""> -->
-								<input type="file" (change)="onCSVFilePicked($event.target.files)" accept=".csv,.xlsx">
+								<!-- <input type="file" value=""> -->
+								<input type="file" class="btn btn-success" (change)="onCSVFilePicked($event.target.files)" accept=".csv,.xlsx">
 							</div>
 							<div class="col-md-4 col-sm-4 col-xs-12 col-md-offset-1">
 								<input type="button" class="btn btn-primary" value="Upload" (click)="uploadCsvFileToServer()">
@@ -429,6 +345,37 @@
 	</div>
 </div>
 
+<div class="modal fade bs-delete-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span class="modal-text" aria-hidden="true">X</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="service-section">
+					<div class="row">
+						<div class="col-md-12 col-sm-12 col-xs-12">
+							<div class="col-md-12 col-sm-12 col-xs-12 text-center">
+								<h4 class="text-blue">Sure, you want to delete ?
+									<br>
+									<br>
+								</h4>
+							</div>
+
+							<div class="text-center">
+								<input type="button" class="btn btn-success" (click)="deleteCustomer()" data-dismiss="modal" value="Yes"> &nbsp; &nbsp;
+								<input type="button" class="btn btn-primary" data-dismiss="modal" value="No">
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
 <div class="modal fade bs-Export-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
 	<div class="modal-dialog modal-md" role="document">
@@ -462,17 +409,3 @@
 		</div>
 	</div>
 </div>
-
-<!-- Footer Start -->
-<footer class="unicod-footer bg-style">
-
-	<div class="container-fluid unicod-copyright">
-		<div class="row">
-			<div class="col-md-6 col-md-offset-3 text-center">
-				<div class="Copyright">
-					<p>Copyright 2017, GST. All Rights Reserved </p>
-				</div>
-			</div>
-		</div>
-	</div>
-</footer>

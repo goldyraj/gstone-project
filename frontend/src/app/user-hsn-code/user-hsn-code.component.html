@@ -1,94 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Favicon -->
-  <link href="images/favicon.png" rel="shortcut icon" type="image/png">
-
-  <!-- Title -->
-  <title>GST || HSN/SAC</title>
-
-  <!-- css file -->
-  <!-- <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/front-gst.css">
-    <link rel="stylesheet" href="admin/css/gst-admin.min.css">  
-    <link rel="stylesheet" href="admin/css/gst-main.css"> -->
-</head>
-
-<body id="page-top">
-  <!--preloader-->
-  <!-- Main Header start -->
-
-  <div class="container-fluid">
+<!-- pricing Section -->
+<section class="unicod-section unicod-pricing-fild  section-top-20">
+  <div class="container">
     <div class="row">
-      <div class="col-md-12">
-        <!-- Navigation -->
-        <nav class="navbar navbar-default navbar-fixed-top main-nav">
-          <div class="container">
-            <div class="navbar-header page-scroll">
-              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <div class="navbar-brand">
-                <a href="index.html">
-                  <!--<img src="images/logo.png" alt="GST">-->
-                  <h2>
-                    <strong>GST</strong>
-                  </h2>
-                </a>
-              </div>
-            </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse navbar-ex1-collapse">
-              <ul class="nav navbar-nav navbar-right">
-                <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
-                <li>
-                  <a class="page-scroll" href="hsn.html">HSN/SAC SEARCH</a>
-                </li>
-                <li>
-                  <a class="page-scroll" href="#" data-toggle="modal" data-target=".bs-modal-lg">REGISTRATION</a>
-                </li>
-                <li>
-                  <a class="page-scroll" href="#" data-toggle="modal" data-target=".bs-login-sm">LOGIN</a>
-                </li>
-              </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-          </div>
-          <!-- /.container -->
-        </nav>
-      </div>
-    </div>
-  </div>
-
-  <!-- pricing Section -->
-  <section class="unicod-section unicod-pricing-fild  section-top-20">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="hsn-section-title-one">
-            <h2 class="comon-color">HSN/SAC </h2>
-            <div class="collor-bottom-one"></div>
-            <p>( For Inter-state supply, IGST Rate is applicable | For intra-state supply, CGST rate and SGST/UTGST rate is
-              applicable )</p>
-            <p>Goods which are not specified in table below have IGST tax rate of 18%. </p>
-            <div class="row section-top-30">
-              <div class="col-md-4 col-xs-12">
-                <div class="input-group">
-                  <input type="text" class="form-control" placeholder="">
-                  <div class="input-group-addon">
-                    <i class="fa fa-search"></i>
-                  </div>
+      <div class="col-lg-12">
+        <div class="hsn-section-title-one">
+          <h2 class="comon-color">HSN/SAC </h2>
+          <div class="collor-bottom-one"></div>
+          <p>( For Inter-state supply, IGST Rate is applicable | For intra-state supply, CGST rate and SGST/UTGST rate is applicable
+            )
+          </p>
+          <p>Goods which are not specified in table below have IGST tax rate of 18%. </p>
+          <div class="row section-top-30">
+            <div class="col-md-4 col-xs-12">
+              <div class="input-group">
+                <input type="text" class="form-control" [(ngModel)]="codeValue" placeholder="HNS Code">
+                <div class="input-group-addon">
+                  <i class="fa fa-search"></i>
                 </div>
               </div>
-              <!-- <div class="col-md-4 col-xs-12">
+            </div>
+            <div class="col-md-4 col-xs-12">
+              <div class="input-group">
+                <input type="text" class="form-control" [(ngModel)]="searchString" placeholder="Description">
+                <div class="input-group-addon">
+                  <i class="fa fa-search"></i>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="col-md-4 col-xs-12">
                 <div class="input-group">
                   <input type="text" class="form-control" placeholder="">
                   <div class="input-group-addon">
@@ -96,39 +35,42 @@
                   </div>
                 </div>
               </div> -->
-              <div class="col-md-4 col-xs-12">
-                <div class="input-group">
-                  <input type="button" class="btn btn-primary" value="clear">
-                </div>
+            <div class="col-md-4 col-xs-12">
+              <div class="input-group">
+                <input type="button" class="btn btn-primary" value="clear">
               </div>
             </div>
           </div>
-
         </div>
-        <div class="table-responsive no-padding">
 
-          <table class="table table-condensed  table-hover table-bordered">
-            <thead>
-              <tr>
-                <th width="5%">#</th>
-                <th width="25%">HSN Code</th>
-                <th width="50%">Description</th>
-                <th width="20%">Rate</th>
-                <!-- <th width="12%">Status</th> -->
-                <!-- <th width="25%" class="text-center">Action</th> -->
-              </tr>
-            </thead>
+      </div>
 
-            <ng-template ngFor let-item [ngForOf]="hsnCodeData">
-              <tbody>
-                <tr class="header" (ngModel)="item">
-                  <td align="center">{{ hsnCodeData.indexOf(item) }}</td>
-                  <td align="center">{{ item.code }}</td>
-                  <td align="center">{{item.description}}</td>
-                  <td align="center">{{item.rate}}</td>
+      <div class="col-md-12 col-sm-12">
+      <div class="table-responsive no-padding">
+
+        <table class="table table-condensed  table-hover table-bordered">
+          <thead>
+            <tr>
+              <th width="5%">#</th>
+              <th width="25%">HSN Code</th>
+              <th width="50%">Description</th>
+              <th width="20%">Rate</th>
+              <!-- <th width="12%">Status</th> -->
+              <!-- <th width="25%" class="text-center">Action</th> -->
+            </tr>
+          </thead>
+
+          <!-- <ng-template ngFor let-item [ngForOf]="hsnCodeData"> -->
+          <tr *ngFor="let item of hsnCodeData | hsnCodeFilter:searchString |hsnCodeFilter:codeValue   ; let i = index;">
+            <!-- <tbody>
+              <tr class="header" (ngModel)="item"> -->
+                <td align="center">{{ hsnCodeData.indexOf(item) }}</td>
+                <td align="center">{{ item.code }}</td>
+                <td align="center">{{item.description}}</td>
+                <td align="center">{{item.rate}}</td>
 
 
-                  <!-- <td align="center">
+                <!-- <td align="center">
                     <i class="fa fa-eye btn btn-primary btn-sm" title="View"></i>
                     <a href="" data-toggle="modal" data-target=".bs-user-lg-edit">
                       <button class="fa fa-edit btn btn-warning btn-sm" title="Update" (click)="editHSNRecord(item,hsnCodeData.indexOf(item))"></button>
@@ -137,15 +79,13 @@
                       <button class="fa fa-trash btn btn-danger btn-sm" title="Delete" (click)="recordToBeDeleted(item)"></button>
                     </a>
                   </td> -->
-                </tr>
-              </tbody>
-            </ng-template>
+          </tr>
 
-          </table>
+        </table>
+        </div>
+        <!-- TABLE -->
 
-          <!-- TABLE -->
-
-          <!-- <ul class="pagination btn-sm">
+        <!-- <ul class="pagination btn-sm">
               <li [ngClass]="{disabled:pager.currentPage === 1}">
                 <a (click)="setPage(pager.currentPage - 1)">Previous</a>
               </li>
@@ -158,232 +98,20 @@
                 <a (click)="setPage(pager.currentPage + 1)">Next</a>
               </li>
             </ul> -->
-            
-        </div>
-      </div>
-    </div>
-  </section>
 
-
-
- <!-- User Form Start -->
-
- <div class="modal fade bs-user-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-  <div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" #closeBtn aria-label="Close">
-          <span class="modal-text" aria-hidden="true">X</span>
-        </button>
-        <h4 class="modal-title modal-text"> Add HSN Code</h4>
-      </div>
-      <div class="modal-body">
-        <div class="service-section">
-          <div class="row">
-            <div class="col-md-12 col-sm-12">
-              <form [formGroup]="myForm" novalidate (ngSubmit)="save( myForm.valid)">
-                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="HSN Code" name="statename" id="statename" required formControlName="hsn_code">
-                  <small [hidden]="myForm.controls.hsn_code.valid || (myForm.controls.hsn_code.pristine && !submitted)">
-                    HSN Code is required (minimum 2 characters).
-                  </small>
-                </div>
-
-                <!-- Description -->
-
-                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="Description" name="description" id="description" required formControlName="description">
-                  <small [hidden]="myForm.controls.description.valid || (myForm.controls.description.pristine && !submitted)">
-                    Description is required !
-                  </small>
-                </div>
-
-                <!-- Description -->
-
-                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="Rate" name="statecode" required formControlName="rate">
-                  <small [hidden]="myForm.controls.rate.valid || (myForm.controls.rate.pristine && !submitted)">
-                    Rate is required (minimum 2 characters).
-                  </small>
-                </div>
-                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-
-                  <select class="form-control" formControlName="selectedStatusType" required>
-                    <option value="-1" name="Select Status" selected="selected">Select Status</option>
-                    <option *ngFor="let item of statusDropDown">{{item.desc}}</option>
-                  </select>
-                  <small *ngIf="myForm.controls.selectedStatusType.value=='-1' && submitted">
-                    Please select status !
-                  </small>
-                </div>
-
-                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <button type="submit" class="btn btn-primary">Add State</button>
-                  <button type="button" class="btn btn-success pull-right" data-dismiss="modal">Cancel</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
-</div>
+</section>
+
+
+
 <!-- User Form end -->
 
 <!-- delete Start -->
 
-<div class="modal fade bs-delete-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-  <div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" #closeBtn3 aria-label="Close">
-          <span class="modal-text" aria-hidden="true">X</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="service-section">
-          <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-              <div class="col-md-12 col-sm-12 col-xs-12 text-center">
-                <h4 class="text-blue">Sure, you want to delete ?
-                  <br>
-                  <br>
-                </h4>
-              </div>
-
-              <div class="form-group ">
-                <input type="button" class="btn btn-success" (click)="deleteHSNRecord()" data-dismiss="modal" value="Yes">
-                <input type="button" class="btn btn-primary pull-right" data-dismiss="modal" value="No">
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- delete end  -->
 
 <!-- Editing Of HSN Code -->
 
-<div class="modal fade bs-user-lg-edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-  <div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" #closeBtn2 aria-label="Close">
-          <span class="modal-text" aria-hidden="true">X</span>
-        </button>
-        <h4 class="modal-title modal-text"> Edit HSN Code</h4>
-      </div>
-      <div class="modal-body">
-        <div class="service-section">
-          <div class="row">
-            <div class="col-md-12 col-sm-12">
-              <form [formGroup]="myForm_edit" novalidate (ngSubmit)="update( myForm_edit.valid)">
-                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input [value]="hsnRowData.code" type="text" class="form-control" placeholder="HSN Code" name="hsn_code_edit" id="hsn_code_edit"
-                    required formControlName="hsn_code_edit">
-                  <small [hidden]="myForm_edit.controls.hsn_code_edit.valid || (myForm_edit.controls.hsn_code_edit.pristine && !submitted_edit)">
-                    HSN Code is required (minimum 2 characters).
-                  </small>
-                </div>
-
-                <!-- Description -->
-
-                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input [value]="hsnRowData.description" type="text" class="form-control" placeholder="Description" name="description_edit"
-                    id="description_edit" required formControlName="description_edit">
-                  <small [hidden]="myForm_edit.controls.description_edit.valid || (myForm_edit.controls.description_edit.pristine && !submitted_edit)">
-                    Description is required !
-                  </small>
-                </div>
-
-                <!-- Description -->
-
-                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input [value]="hsnRowData.rate" type="text" class="form-control" placeholder="Rate" name="rate_edit" required formControlName="rate_edit">
-                  <small [hidden]="myForm_edit.controls.rate_edit.valid || (myForm_edit.controls.rate_edit.pristine && !submitted_edit)">
-                    Rate is required (minimum 2 characters).
-                  </small>
-                </div>
-
-                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <select class="form-control" formControlName="selectedStatusType_edit" required [(ngModel)]="selectedStatusTypeDrop">
-                    <option [ngValue]="-1" name="Select Status">Select Status</option>
-                    <option *ngFor="let item of statusDropDown" [ngValue]="item.desc">{{item.desc}}</option>
-                  </select>
-                  <small *ngIf="myForm_edit.controls.selectedStatusType_edit.value=='-1' && submitted_edit">
-                    Please select status !
-                  </small>
-                </div>
-
-                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <button type="submit" class="btn btn-primary">Update</button>
-                  <button type="button" class="btn btn-success pull-right" data-dismiss="modal">Cancel</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- End of Editing HSN Code -->
-
-
-  <!-- Modal -->
-
-
-  <!-- Footer Start -->
-  <footer class="unicod-footer bg-style">
-
-    <div class="container unicod-copyright">
-
-      <div class="col-md-6">
-        <div class="Copyright">
-          <p>Copyright 2017, GST. All Rights Reserved </p>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="Copyright">
-          <ul>
-            <li>
-              <a routerLink="">Privacy Policy</a>
-            </li>
-            <li>
-              <a routerLink="">FAQ</a>
-            </li>
-            <li>
-              <a routerLink="">About us</a>
-            </li>
-            <li>
-              <a routerLink="">Contact us</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <!-- script start from here -->
-  <!-- <script type="text/javascript" src="js/jquery.js"></script>
-    <script type="text/javascript" src="js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/jquery-scrolltofixed-min.js"></script>
-    <script type="text/javascript" src="js/isotope.js"></script>
-    <script type="text/javascript" src="js/stellar.js"></script>
-    <script type="text/javascript" src="js/owl.carousel.min.js"></script>
-    <script type="text/javascript" src="js/jquery.magnific-popup.min.js"></script>
-    <script type="text/javascript" src="js/jquery.masonry.min.js"></script>
-    <script type="text/javascript" src="js/jquery.scrollUp.js"></script>
-
-    <script src="js/scrolling-nav.js"></script> -->
-  <!-- Custom script for all pages -->
-  <!-- <script type="text/javascript" src="js/script.js"></script> -->
-</body>
-
-</html>

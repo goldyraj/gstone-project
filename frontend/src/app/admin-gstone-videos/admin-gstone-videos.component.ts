@@ -50,7 +50,7 @@ export class AdminGstoneVideosComponent implements OnInit {
   getVideosList(page:number) {
     this.pager.currentPage = page;
     console.log('list called');
-    this.http.get('http://localhost:3000/api/vedio/index?token='+this.access_token+'&limit=' + 5 + '&page=' + this.pager.currentPage + '&sortBy=title&search=').subscribe(data => {
+    this.http.get('http://localhost:3000/api/vedio/index?token='+this.access_token+'&limit=' + 5 + '&page=' + this.pager.currentPage + '&sortBy=created_at&search=').subscribe(data => {
       this.videosList = data.json().docs;
       this.pager.pageSize = data.json().limit;
       this.pager.totalItems = data.json().total;
@@ -153,9 +153,10 @@ export class AdminGstoneVideosComponent implements OnInit {
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeModal();
-          alert(response.json().message);
+          // alert(response.json().message);
           // this.TotalPages=this.TotalPages+1;
           this.getVideosList(this.pager.currentPage);
+          this.submitted=false;
           this.gstVideosForm.reset();
         },
         error => {
@@ -205,9 +206,9 @@ export class AdminGstoneVideosComponent implements OnInit {
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeEditModal();
-          this.submittedEdit = false;
-          alert(response.json().message);
+          // alert(response.json().message);
           this.getVideosList(this.pager.currentPage);
+          this.submittedEdit = false;
         },
         error => {
           console.log("error", error.message);
@@ -242,7 +243,8 @@ export class AdminGstoneVideosComponent implements OnInit {
         console.log("suceessfull data", response.json().message);
         this.closeDeleteModal();
         this.submittedEdit = false;
-        alert(response.json().message);
+        this.getVideosList(this.pager.currentPage);
+        // alert(response.json().message);
       },
       error => {
         console.log("error", error.message);

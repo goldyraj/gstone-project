@@ -24,7 +24,7 @@
 
       <div class="col-md-4 col-xs-12">
         <div class="text-right">
-          <input type="button" class="btn btn-primary" value="Import CSV">
+          <!-- <input type="button" class="btn btn-primary" value="Import CSV"> -->
 
           <input type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-user-lg" value="Add New">
         </div>
@@ -34,7 +34,7 @@
 
       <div class="col-md-3 col-xs-12">
         <div class="input-group section-bottom-20">
-          <input type="text" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
+          <input type="text" placeholder="Title" [(ngModel)]="searchString" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
           <div class="input-group-addon">
             <i class="fa fa-search"></i>
           </div>
@@ -50,20 +50,24 @@
               <tr>
                 <th width="2%">#</th>
                 <th width="12%">Title</th>
-                <th width="6%">Link</th>
-                <th width="6%">Date</th>
-                <th width="12%" class="text-center">Action</th>
+                <th width="40%">Description</th>
+                <th width="10%">Link</th>
+                <th width="6%" class="text-center">Action</th>
               </tr>
             </thead>
             <tbody>
 
-              <tr *ngFor="let item of videosList ;let i = index;">
-                <td align="center">{{pageSize * (currentPage-1)+i+1}}</td>
+              <!-- <tr *ngFor="let item of videosList ;let i = index;"> -->
+              <tr *ngFor="let item of videosList | videosFilter:searchString   ;let i = index;">
+                <td align="center">{{pager.pageSize * (pager.currentPage-1)+i+1}}</td>
                 <td align="center">{{item.title}}</td>
                 <td align="center">
-                  <a href="{{item.link}}" target="_blank">{{item.description}}</a>
+                  <a target="_blank">{{item.description}}</a>
                 </td>
-                <td align="center">11-7-2017</td>
+                <td align="center">
+                  <a href="{{item.link}}" target="_blank">{{item.link}}</a>
+                </td>
+                <!-- <td align="center">11-7-2017</td> -->
                 <td align="center">
                   <a data-toggle="modal" data-target=".bs-user-lg-edit">
                     <button class="fa fa-edit btn btn-primary btn-sm" title="Edit" (click)="editVideosRecord(item)"></button>
@@ -81,15 +85,22 @@
 
           <ul class="pagination btn-sm">
             <li [ngClass]="{disabled:pager.currentPage === 1}">
-              <a (click)="getAllHSNCodeList(pager.currentPage - 1)">Previous</a>
+              <a *ngIf="pager.currentPage > 1" (click)="getVideosList(pager.currentPage - 1)">Previous</a>
+            </li>
+
+            <li [ngClass]="{disabled:pager.currentPage === 1}">
+              <a *ngIf="pager.currentPage ==1">Previous</a>
             </li>
 
             <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
-              <a (click)="getAllHSNCodeList(page)">{{page}}</a>
+              <a (click)="getVideosList(page)">{{page}}</a>
             </li>
 
-            <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-              <a (click)="getAllHSNCodeList(pager.currentPage + 1)">Next</a>
+            <li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
+              <a *ngIf="pager.currentPage < pager.endPage" (click)="getVideosList(pager.currentPage + 1)">Next</a>
+            </li>
+            <li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
+              <a *ngIf="pager.currentPage == pager.endPage">Next</a>
             </li>
           </ul>
 
@@ -128,7 +139,7 @@
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="List" formControlName="description" name="description">
+                  <input type="text" class="form-control" placeholder="Description" formControlName="description" name="description">
                   <small [hidden]="gstVideosForm.controls.description.valid || (gstVideosForm.controls.description.pristine && !submitted)">
                     Question is required .
                   </small>
@@ -176,7 +187,7 @@
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="List" formControlName="description" name="description">
+                  <input type="text" class="form-control" placeholder="Description" formControlName="description" name="description">
                   <small [hidden]="editGstVideosForm.controls.description.valid || (editGstVideosForm.controls.description.pristine && !submitted)">
                     Question is required .
                   </small>
@@ -223,9 +234,9 @@
                 </h4>
               </div>
 
-              <div class="form-group ">
-                <input type="button" class="btn btn-success" (click)="deleteVideos()" value="Yes">
-                <input type="button" class="btn btn-primary pull-right" data-dismiss="modal" value="No">
+              <div class="text-center">
+                <input type="button" class="btn btn-success" (click)="deleteVideos()" value="Yes"> &nbsp; &nbsp;
+                <input type="button" class="btn btn-primary" data-dismiss="modal" value="No">
               </div>
             </div>
           </div>

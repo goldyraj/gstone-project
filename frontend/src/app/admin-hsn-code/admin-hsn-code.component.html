@@ -1,295 +1,625 @@
+<!-- Content Wrapper. Contains page content -->
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>&nbsp; </h1>
+  <ol class="breadcrumb">
+    <li>
+      <a href="index.html">
+        <i class="fa fa-dashboard"></i> Home</a>
+    </li>
+    <li class="active">HSN Code List</li>
+  </ol>
+</section>
 
-    <!-- Content Wrapper. Contains page content -->
-      <!-- Content Header (Page header) -->
-      <section class="content-header">
-        <h1>&nbsp; </h1>
-        <ol class="breadcrumb">
-          <li>
-            <a href="index.html">
-              <i class="fa fa-dashboard"></i> Home</a>
-          </li>
-          <li class="active">HSN Code List</li>
-        </ol>
-      </section>
+<!-- Main content -->
+<section class="content">
+  <div class="box box-info">
+    <div class="row">
 
-      <!-- Main content -->
-      <section class="content">
-        <div class="box box-info">
-          <div class="row">
+      <div class="col-md-8 col-xs-6">
+        <div class="box-header">
+          <h3 class="text-blue">
+            <b>HSN Code List</b>
+          </h3>
+        </div>
+      </div>
 
-            <div class="col-md-8 col-xs-12">
-              <div class="box-header">
-                <h3 class="text-blue">HSN Code List</h3>
-              </div>
-            </div>
+      <div class="col-xs-6 col-sm-4 text-right">
 
-            <!-- <div class="col-md-2 col-xs-12">
-              <div class="text-right">
-                <input type="file" class="upload" (change)="onCSVFilePicked($event.target.files)" value="Import CSV" accept=".csv">
-              </div>
-            </div> -->
+        <a data-toggle="modal" data-target=".bs-upload-sm">
+          <input type="button" class="btn btn-primary" value="Import/Export">
+        </a>
 
-            <div class="col-md-2 col-xs-12">
-              <div class="text-right">
-                <input type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-user-lg" value="Add New">
-              </div>
-            </div>
+        <a href="#" data-toggle="modal" data-target=".bs-goodsForm-lg">
+          <input type="button" class="btn btn-success" value="Add New">
+        </a>
+      </div>
 
-            <div class="clearfix"></div>
-            <div class="col-md-3 col-xs-12">
-              <div class="input-group section-bottom-20">
-                <input type="text" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
-                <div class="input-group-addon">
-                  <i class="fa fa-search"></i>
+      <div class="clearfix"></div>
+
+      <!--- -->
+
+      <div class="col-lg-12 col-xs-12">
+        <div class="nav-tabs-custom">
+          <ul class="nav nav-tabs">
+            <li class="active">
+              <a href="#Goods" data-toggle="tab" (click)="getList(true)">Goods</a>
+            </li>
+            <li>
+              <a href="#Services" data-toggle="tab" (click)="getList(false)">Services</a>
+            </li>
+          </ul>
+          <div class="tab-content">
+            <div class="active tab-pane section-top-20" id="Goods">
+              <!-- Post -->
+
+              <div class="col-md-4 col-xs-12">
+                <div class="input-group section-bottom-20">
+                  <input type="text" [(ngModel)]="codeValue" placeholder="HSN Code" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
+                  <div class="input-group-addon">
+                    <i class="fa fa-search"></i>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div></div>
+              <div class="col-md-4 col-xs-12">
+                <div class="input-group section-bottom-20">
+                  <input type="text" [(ngModel)]="searchString" placeholder="Description" class="form-control" data-inputmask="'alias': 'ip'"
+                    data-mask>
+                  <div class="input-group-addon">
+                    <i class="fa fa-search"></i>
+                  </div>
+                </div>
+              </div>
 
-            <div class="col-lg-12 col-xs-12">
+              <div class="clearfix"></div>
 
-              <!-- /.box-header -->
-              <div class="table-responsive no-padding">
+              <div class="col-lg-12 col-xs-12">
 
-                <table class="table table-condensed  table-hover table-bordered">
-                  <thead>
-                    <tr>
-                      <th width="5%">#</th>
-                      <th width="20%">HSN Code</th>
-                      <th width="40%">Description</th>
-                      <th width="10%">Rate</th>
-                      <!-- <th width="12%">Status</th> -->
-                      <th width="25%" class="text-center">Action</th>
-                    </tr>
-                  </thead>
+                <!-- /.box-header -->
+                <div class="table-responsive no-padding scroll">
+                  <!-- Goods -->
+                  <table class="table table-condensed  table-hover table-bordered">
+                    <thead>
+                      <tr>
+                        <th width="5%">#</th>
+                        <th width="15%">HSN Code</th>
+                        <th width="48%">Description</th>
+                        <th width="8%">CGST</th>
+                        <th width="8%">SGST</th>
+                        <th width="8%">IGST</th>
+                        <!-- <th width="12%">Status</th> -->
+                        <th width="8%" class="text-center">Action</th>
+                      </tr>
+                    </thead>
 
-                  <ng-template ngFor let-item [ngForOf]="hsnCodeData">
+                    <!-- <ng-template ngFor let-item [ngForOf]="hsnCodeData"> -->
+
                     <tbody>
-                      <tr class="header" (ngModel)="item">
-                        <td align="center">{{ hsnCodeData.indexOf(item) }}</td>
-                        <td align="center">{{ item.code }}</td>
+                      <!-- <tr class="header" (ngModel)="item"> -->
+                      <!-- <tr *ngFor="let item of hsnCodeData | updateFilter:searchString  ;let i = index;"> -->
+                      <tr *ngFor="let item of goodsData | hsnCodeFilter:searchString |hsnCodeFilter:codeValue   ; let i = index;">
+                        <!-- <td align="center">{{ hsnCodeData.indexOf(item) }}</td> -->
+                        <td align="center">{{goodsPager.pageSize * (goodsPager.currentPage-1)+goodsData.indexOf(item)+1}}</td>
+                        <td align="center">{{ item.hsn_code }}</td>
                         <td align="center">{{item.description}}</td>
-                        <td align="center">{{item.rate}}</td>
-                        <!-- <td align="center">
-                          <div *ngIf="item.status==0">
-                            <span class="label label-success">Approved</span>
-                          </div>
-                          <div *ngIf="item.status==1">
-                            <span class="label label-warning">Pending</span>
-                          </div>
-                          <div *ngIf="item.status==2">
-                            <span class="label label-warning">Declined</span>
-                          </div>
-                        </td> -->
-
+                        <td align="center">{{item.cgst}}</td>
+                        <td align="center">{{item.sgst}}</td>
+                        <td align="center">{{item.igst}}</td>
 
                         <td align="center">
                           <!-- <i class="fa fa-eye btn btn-primary btn-sm" title="View"></i> -->
-                          <a href="" data-toggle="modal" data-target=".bs-user-lg-edit">
-                            <button class="fa fa-edit btn btn-warning btn-sm" title="Update" (click)="editHSNRecord(item,hsnCodeData.indexOf(item))"></button>
+                          <a data-toggle="modal" data-target=".bs-goodsFormEdit-lg">
+                            <button class="fa fa-edit btn btn-warning btn-sm" title="Update" (click)="editHSNRecord(item)"></button>
                           </a>
-                          <a href="" data-toggle="modal" data-target=".bs-delete-sm">
+                          <a data-toggle="modal" data-target=".bs-delete-sm">
                             <button class="fa fa-trash btn btn-danger btn-sm" title="Delete" (click)="recordToBeDeleted(item)"></button>
                           </a>
                         </td>
                       </tr>
                       <!-- <tr *ngFor="let row of item.data">
-                          <td>{{ row.a }}</td>
-                        </tr> -->
+                                                    <td>{{ row.a }}</td>
+                                                  </tr> -->
                     </tbody>
-                  </ng-template>
+                    <!-- </ng-template> -->
 
-                </table>
+                  </table>
 
-                <!-- TABLE -->
+                  <!-- TABLE -->
 
-                <ul class="pagination btn-sm">
-                  <li [ngClass]="{disabled:pager.currentPage === 1}">
-                    <a (click)="getAllHSNCodeList(pager.currentPage - 1)">Previous</a>
-                  </li>
+                  <ul class="pagination btn-sm" *ngIf="isGoodsSelected==true">
+                    <li [ngClass]="{disabled:goodsPager.currentPage === 1}">
+                      <a *ngIf="goodsPager.currentPage > 1" (click)="getAllGoods(goodsPager.currentPage - 1)">Previous</a>
+                    </li>
 
-                  <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
-                    <a (click)="getAllHSNCodeList(page)">{{page}}</a>
-                  </li>
+                    <li [ngClass]="{disabled:goodsPager.currentPage === 1}">
+                      <a *ngIf="goodsPager.currentPage ==1">Previous</a>
+                    </li>
 
-                  <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-                    <a (click)="getAllHSNCodeList(pager.currentPage + 1)">Next</a>
-                  </li>
-                </ul>
+                    <li *ngFor="let page of goodsPager.pages" [ngClass]="{active:goodsPager.currentPage === page}">
+                      <a (click)="getAllGoods(page)">{{page}}</a>
+                    </li>
+
+                    <li [ngClass]="{disabled:goodsPager.currentPage === goodsPager.endPage}">
+                      <a *ngIf="goodsPager.currentPage < goodsPager.endPage" (click)="getAllGoods(goodsPager.currentPage + 1)">Next</a>
+                    </li>
+                    <li [ngClass]="{disabled:goodsPager.currentPage === goodsPager.endPage}">
+                      <a *ngIf="goodsPager.currentPage == goodsPager.endPage">Next</a>
+                    </li>
+                  </ul>
+
+                  <ul class="pagination btn-sm" *ngIf="isGoodsSelected==false">
+                    <li [ngClass]="{disabled:servicesPager.currentPage === 1}">
+                      <a *ngIf="servicesPager.currentPage > 1" (click)="getAllServices(servicesPager.currentPage - 1)">Previous</a>
+                    </li>
+
+                    <li [ngClass]="{disabled:servicesPager.currentPage === 1}">
+                      <a *ngIf="goodsPager.currentPage ==1">Previous</a>
+                    </li>
+
+                    <li *ngFor="let page of servicesPager.pages" [ngClass]="{active:servicesPager.currentPage === page}">
+                      <a (click)="getAllServices(page)">{{page}}</a>
+                    </li>
+
+                    <li [ngClass]="{disabled:servicesPager.currentPage === servicesPager.endPage}">
+                      <a *ngIf="servicesPager.currentPage < servicesPager.endPage" (click)="getAllServices(servicesPager.currentPage + 1)">Next</a>
+                    </li>
+                    <li [ngClass]="{disabled:servicesPager.currentPage === servicesPager.endPage}">
+                      <a *ngIf="servicesPager.currentPage == servicesPager.endPage">Next</a>
+                    </li>
+                  </ul>
+                </div>
+
               </div>
 
+              <!-- /.post -->
             </div>
+            <!-- /.tab-pane -->
 
-          </div>
-        </div>
+            <div class="tab-pane section-top-20" id="Services">
 
-
-      </section>
-      <!-- /.content -->
-
-    <!-- User Form Start -->
-
-    <div class="modal fade bs-user-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-      <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" #closeBtn aria-label="Close">
-              <span class="modal-text" aria-hidden="true">X</span>
-            </button>
-            <h4 class="modal-title modal-text"> Add HSN Code</h4>
-          </div>
-          <div class="modal-body">
-            <div class="service-section">
-              <div class="row">
-                <div class="col-md-12 col-sm-12">
-                  <form [formGroup]="myForm" novalidate (ngSubmit)="save( myForm.valid)">
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                      <input type="text" class="form-control" placeholder="HSN Code" name="statename" id="statename" required formControlName="hsn_code">
-                      <small [hidden]="myForm.controls.hsn_code.valid || (myForm.controls.hsn_code.pristine && !submitted)">
-                        HSN Code is required (minimum 2 characters).
-                      </small>
-                    </div>
-
-                    <!-- Description -->
-
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                      <input type="text" class="form-control" placeholder="Description" name="description" id="description" required formControlName="description">
-                      <small [hidden]="myForm.controls.description.valid || (myForm.controls.description.pristine && !submitted)">
-                        Description is required !
-                      </small>
-                    </div>
-
-                    <!-- Description -->
-
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                      <input type="text" class="form-control" placeholder="Rate" name="statecode" required formControlName="rate">
-                      <small [hidden]="myForm.controls.rate.valid || (myForm.controls.rate.pristine && !submitted)">
-                        Rate is required (minimum 2 characters).
-                      </small>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-
-                      <select class="form-control" formControlName="selectedStatusType" required>
-                        <option value="-1" name="Select Status" selected="selected">Select Status</option>
-                        <option *ngFor="let item of statusDropDown">{{item.desc}}</option>
-                      </select>
-                      <small *ngIf="myForm.controls.selectedStatusType.value=='-1' && submitted">
-                        Please select status !
-                      </small>
-                    </div>
-
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                      <button type="submit" class="btn btn-primary">Add State</button>
-                      <button type="button" class="btn btn-success pull-right" data-dismiss="modal">Cancel</button>
-                    </div>
-                  </form>
+              <div class="col-md-4 col-xs-12">
+                <div class="input-group section-bottom-20">
+                  <input type="text"  placeholder="HSN Code" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
+                  <div class="input-group-addon">
+                    <i class="fa fa-search"></i>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- User Form end -->
-
-    <!-- delete Start -->
-
-    <div class="modal fade bs-delete-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-      <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span class="modal-text" aria-hidden="true">X</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="service-section">
-              <div class="row">
-                <div class="col-md-12 col-sm-12 col-xs-12">
-                  <div class="col-md-12 col-sm-12 col-xs-12 text-center">
-                    <h4 class="text-blue">Sure, you want to delete ?
-                      <br>
-                      <br>
-                    </h4>
-                  </div>
-
-                  <div class="form-group ">
-                    <input type="button" class="btn btn-success" (click)="deleteHSNRecord()" data-dismiss="modal" value="Yes">
-                    <input type="button" class="btn btn-primary pull-right" data-dismiss="modal" value="No">
+              <div class="col-md-4 col-xs-12">
+                <div class="input-group section-bottom-20">
+                  <input type="text"  placeholder="Description" class="form-control" data-inputmask="'alias': 'ip'"
+                    data-mask>
+                  <div class="input-group-addon">
+                    <i class="fa fa-search"></i>
                   </div>
                 </div>
               </div>
 
+
+              <div class="col-lg-12 col-xs-12">
+
+                <!-- /.box-header -->
+                <div class="table-responsive no-padding scroll">
+
+                  <table class="table table-condensed  table-hover table-bordered">
+                    <thead>
+                      <tr>
+                        <th width="5%">#</th>
+                        <th width="15%">HSN Code</th>
+                        <th width="48%">Description</th>
+                        <th width="8%">CGST</th>
+                        <th width="8%">SGST</th>
+                        <th width="8%">IGST</th>
+                        <!-- <th width="12%">Status</th> -->
+                        <th width="8%" class="text-center">Action</th>
+                      </tr>
+                    </thead>
+
+                    <!-- <ng-template ngFor let-item [ngForOf]="hsnCodeData"> -->
+
+                    <tbody>
+                      <!-- <tr class="header" (ngModel)="item"> -->
+                      <!-- <tr *ngFor="let item of hsnCodeData | updateFilter:searchString  ;let i = index;"> -->
+                      <tr *ngFor="let item of servicesData ; let i = index;">
+                        <!-- <td align="center">{{ hsnCodeData.indexOf(item) }}</td> -->
+                        <td align="center">{{servicesPager.pageSize * (servicesPager.currentPage-1)+servicesData.indexOf(item)+1}}</td>
+                        <td align="center">{{ item.hsn_code }}</td>
+                        <td align="center">{{item.description}}</td>
+                        <td align="center">{{item.cgst}}</td>
+                        <td align="center">{{item.sgst}}</td>
+                        <td align="center">{{item.igst}}</td>
+
+
+                        <td align="center">
+                          <!-- <i class="fa fa-eye btn btn-primary btn-sm" title="View"></i> -->
+                          <a data-toggle="modal" data-target=".bs-goodsFormEdit-lg">
+                            <button class="fa fa-edit btn btn-warning btn-sm" title="Update" (click)="editHSNRecord(item)"></button>
+                          </a>
+                          <a data-toggle="modal" data-target=".bs-delete-sm">
+                            <button class="fa fa-trash btn btn-danger btn-sm" title="Delete" (click)="recordToBeDeleted(item)"></button>
+                          </a>
+                        </td>
+                      </tr>
+                      <!-- <tr *ngFor="let row of item.data">
+                                <td>{{ row.a }}</td>
+                              </tr> -->
+                    </tbody>
+                    <!-- </ng-template> -->
+
+                  </table>
+
+                  <!-- TABLE -->
+
+                  <ul class="pagination btn-sm">
+                    <li [ngClass]="{disabled:goodsPager.currentPage === 1}">
+                      <a *ngIf="goodsPager.currentPage > 1" (click)="getAllHSNCodeList(goodsPager.currentPage - 1)">Previous</a>
+                    </li>
+
+                    <li [ngClass]="{disabled:goodsPager.currentPage === 1}">
+                      <a *ngIf="goodsPager.currentPage ==1">Previous</a>
+                    </li>
+
+                    <li *ngFor="let page of goodsPager.pages" [ngClass]="{active:goodsPager.currentPage === page}">
+                      <a (click)="getAllHSNCodeList(page)">{{page}}</a>
+                    </li>
+
+                    <li [ngClass]="{disabled:goodsPager.currentPage === goodsPager.endPage}">
+                      <a *ngIf="goodsPager.currentPage < goodsPager.endPage" (click)="getAllHSNCodeList(goodsPager.currentPage + 1)">Next</a>
+                    </li>
+                    <li [ngClass]="{disabled:goodsPager.currentPage === goodsPager.endPage}">
+                      <a *ngIf="goodsPager.currentPage == goodsPager.endPage">Next</a>
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
+
+            </div>
+            <!-- /.tab-pane -->
+          </div>
+          <!-- /.tab-content -->
+        </div>
+      </div>
+
+
+
+
+      <!-- -->
+
+
+
+    </div>
+  </div>
+
+
+</section>
+<!-- /.content -->
+
+<!-- User Form Start -->
+
+<div class="modal fade bs-goodsForm-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" #closeBtn aria-label="Close">
+          <span class="modal-text" aria-hidden="true">X</span>
+        </button>
+        <!-- <h4 ><span *ngIf="isGoodsSelected==true" class="modal-title modal-text">Add Goods</span></h4> -->
+        <h4 class="modal-title modal-text">Add Goods/Services</h4>
+      </div>
+      <div class="modal-body">
+        <div class="service-section">
+          <div class="row">
+            <div class="col-md-12 col-sm-12">
+              <form [formGroup]="goodsForm" novalidate (ngSubmit)="save( goodsForm.valid)">
+
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <select formControlName="selectCategory" class="form-control" required>
+                    <option value="Select Category">Select Category</option>
+                    <option value="Goods">Goods</option>
+                    <option value="Services">Services</option>
+                  </select>
+                  <small *ngIf="goodsForm.controls.selectCategory=='Select Category' && submitted">
+                    Select Category !
+                  </small>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <input type="text" class="form-control" placeholder="HSN Code" name="hsn_code" id="hsn_code" required formControlName="hsn_code">
+                  <small [hidden]="goodsForm.controls.hsn_code.valid || (goodsForm.controls.hsn_code.pristine && !submitted)">
+                    HSN Code is required (minimum 2 characters).
+                  </small>
+                </div>
+
+                <!-- Description -->
+
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <textarea rows="4" type="text" class="form-control" placeholder="Description" name="description" id="description" required
+                    formControlName="description"></textarea>
+                  <small [hidden]="goodsForm.controls.description.valid || (goodsForm.controls.description.pristine && !submitted)">
+                    Description is required !
+                  </small>
+                </div>
+
+                <!-- Description -->
+
+
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <input type="text" maxlength="2" class="form-control" placeholder="CGST" name="cgst" required formControlName="cgst">
+                  <small [hidden]="goodsForm.controls.cgst.valid || (goodsForm.controls.cgst.pristine && !submitted)">
+                    Rate is required (minimum 2 characters).
+                  </small>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <input type="text" maxlength="2" class="form-control" placeholder="SGST" name="sgst" required formControlName="sgst">
+                  <small [hidden]="goodsForm.controls.sgst.valid || (goodsForm.controls.sgst.pristine && !submitted)">
+                    Rate is required (minimum 2 characters).
+                  </small>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <input type="text" maxlength="2" class="form-control" placeholder="IGST" name="statecode" required formControlName="igst">
+                  <small [hidden]="goodsForm.controls.igst.valid || (goodsForm.controls.igst.pristine && !submitted)">
+                    IGST is required (minimum 2 characters).
+                  </small>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <textarea rows="3" type="text" class="form-control" placeholder="Condition" name="comment" required formControlName="comment"></textarea>
+                  <!-- <small [hidden]="goodsForm.controls.comment.valid || (goodsForm.controls.comment.pristine && !submitted)">
+                    Condition is required !
+                  </small> -->
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <button type="submit" class="btn btn-primary">Add</button>
+                  <button type="button" class="btn btn-success pull-right" data-dismiss="modal">Cancel</button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
+</div>
+<!-- User Form end -->
 
-    <!-- delete end  -->
+<!-- Good Edit Form -->
 
-    <!-- Editing Of HSN Code -->
+<div class="modal fade bs-goodsFormEdit-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" #closeBtn aria-label="Close">
+          <span class="modal-text" aria-hidden="true">X</span>
+        </button>
+        <h4 class="modal-title modal-text">Edit</h4>
+      </div>
+      <div class="modal-body">
+        <div class="service-section">
+          <div class="row">
+            <div class="col-md-12 col-sm-12">
+              <form [formGroup]="goodsFormEdit" novalidate (ngSubmit)="update( goodsFormEdit.valid)">
 
-    <div class="modal fade bs-user-lg-edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-      <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" #closeBtn2 aria-label="Close">
-              <span class="modal-text" aria-hidden="true">X</span>
-            </button>
-            <h4 class="modal-title modal-text"> Edit HSN Code</h4>
-          </div>
-          <div class="modal-body">
-            <div class="service-section">
-              <div class="row">
-                <div class="col-md-12 col-sm-12">
-                  <form [formGroup]="myForm_edit" novalidate (ngSubmit)="update( myForm_edit.valid)">
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                      <input [value]="hsnRowData.code" type="text" class="form-control" placeholder="HSN Code" name="hsn_code_edit" id="hsn_code_edit"
-                        required formControlName="hsn_code_edit">
-                      <small [hidden]="myForm_edit.controls.hsn_code_edit.valid || (myForm_edit.controls.hsn_code_edit.pristine && !submitted_edit)">
-                        HSN Code is required (minimum 2 characters).
-                      </small>
-                    </div>
-
-                    <!-- Description -->
-
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                      <input [value]="hsnRowData.description" type="text" class="form-control" placeholder="Description" name="description_edit"
-                        id="description_edit" required formControlName="description_edit">
-                      <small [hidden]="myForm_edit.controls.description_edit.valid || (myForm_edit.controls.description_edit.pristine && !submitted_edit)">
-                        Description is required !
-                      </small>
-                    </div>
-
-                    <!-- Description -->
-
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                      <input [value]="hsnRowData.rate" type="text" class="form-control" placeholder="Rate" name="rate_edit" required formControlName="rate_edit">
-                      <small [hidden]="myForm_edit.controls.rate_edit.valid || (myForm_edit.controls.rate_edit.pristine && !submitted_edit)">
-                        Rate is required (minimum 2 characters).
-                      </small>
-                    </div>
-
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                      <select class="form-control" formControlName="selectedStatusType_edit" required [(ngModel)]="selectedStatusTypeDrop">
-                        <option [ngValue]="-1" name="Select Status">Select Status</option>
-                        <option *ngFor="let item of statusDropDown" [ngValue]="item.desc">{{item.desc}}</option>
-                      </select>
-                      <small *ngIf="myForm_edit.controls.selectedStatusType_edit.value=='-1' && submitted_edit">
-                        Please select status !
-                      </small>
-                    </div>
-
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                      <button type="submit" class="btn btn-primary">Update</button>
-                      <button type="button" class="btn btn-success pull-right" data-dismiss="modal">Cancel</button>
-                    </div>
-                  </form>
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <select formControlName="selectCategory" class="form-control" required>
+                    <option value="Select Category">Select Category</option>
+                    <option value="Goods">Goods</option>
+                    <option value="Services">Services</option>
+                  </select>
+                  <small *ngIf="goodsFormEdit.controls.selectCategory=='Select Category' && submitted">
+                    Select Category !
+                  </small>
                 </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <input type="text" class="form-control" placeholder="HSN Code" name="statename" id="statename" required formControlName="hsn_code">
+                  <small [hidden]="goodsFormEdit.controls.hsn_code.valid || (goodsFormEdit.controls.hsn_code.pristine && !submitted)">
+                    HSN Code is required (minimum 2 characters).
+                  </small>
+                </div>
+
+                <!-- Description -->
+
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <textarea rows="4" type="text" class="form-control" placeholder="Description" name="description" id="description" required
+                    formControlName="description"></textarea>
+                  <small [hidden]="goodsFormEdit.controls.description.valid || (goodsFormEdit.controls.description.pristine && !submitted)">
+                    Description is required !
+                  </small>
+                </div>
+
+                <!-- Description -->
+
+
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <input type="text" maxlength="2" class="form-control" placeholder="CGST" name="cgst" required formControlName="cgst">
+                  <small [hidden]="goodsFormEdit.controls.cgst.valid || (goodsFormEdit.controls.cgst.pristine && !submitted)">
+                    Rate is required (minimum 2 characters).
+                  </small>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <input type="text" maxlength="2" class="form-control" placeholder="SGST" name="sgst" required formControlName="sgst">
+                  <small [hidden]="goodsFormEdit.controls.sgst.valid || (goodsFormEdit.controls.sgst.pristine && !submitted)">
+                    Rate is required (minimum 2 characters).
+                  </small>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <input type="text" maxlength="2" class="form-control" placeholder="IGST" name="statecode" required formControlName="igst">
+                  <small [hidden]="goodsFormEdit.controls.igst.valid || (goodsFormEdit.controls.igst.pristine && !submitted)">
+                    IGST is required (minimum 2 characters).
+                  </small>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <textarea rows="3" type="text" class="form-control" placeholder="Condition" name="comment" required formControlName="comment"></textarea>
+                  <!-- <small [hidden]="goodsFormEdit.controls.comment.valid || (goodsFormEdit.controls.comment.pristine && !submitted)">
+                      Condition is required !
+                    </small> -->
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <button type="submit" class="btn btn-primary">Update</button>
+                  <button type="button" class="btn btn-success pull-right" data-dismiss="modal">Cancel</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Goods Edit Form End -->
+
+
+<!-- Services Add Form -->
+
+
+<!-- Services End Add Form -->
+
+
+<!-- Services Edit Form Start -->
+
+
+<!-- sErvices Edit Form End -->
+
+<!-- delete Start -->
+
+<div class="modal fade bs-delete-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span class="modal-text" aria-hidden="true">X</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="service-section">
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="col-md-12 col-sm-12 col-xs-12 text-center">
+                <h4 class="text-blue">Sure, you want to delete ?
+                  <br>
+                  <br>
+                </h4>
+              </div>
+
+              <div class="text-center">
+                <input type="button" class="btn btn-success" (click)="deleteHSNRecord()" data-dismiss="modal" value="Yes"> &nbsp; &nbsp;
+                <input type="button" class="btn btn-primary" data-dismiss="modal" value="No">
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- delete end  -->
+
+<!-- Editing Of HSN Code -->
+
+<div class="modal fade bs-upload-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" #closeChoose aria-label="Close">
+          <span class="modal-text" aria-hidden="true">X</span>
+        </button>
+        <h4 class="text-blue text-center">Choose Import/Export</h4>
+      </div>
+      <div class="modal-body">
+        <div class="service-section">
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 text-center section-top-10 section-bottom-40">
+              <a data-toggle="modal" data-target=".bs-Import-sm">
+                <input type="button" class="btn btn-success" data-dismiss="modal" value="Import Excel/CSV">
+              </a> &nbsp; &nbsp; &nbsp;
+              <a data-toggle="modal" data-target=".bs-Export-sm">
+                <input type="button" class="btn btn-primary" data-dismiss="modal" value="Export Excel/CSV ">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade bs-Import-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" #closeCsv aria-label="Close">
+          <span class="modal-text" aria-hidden="true">X</span>
+        </button>
+        <h4 class="text-blue text-center">Import Customer data</h4>
+      </div>
+      <div class="modal-body">
+        <div class="service-section">
+          <div class="row" align="center">
+            <div class="col-md-12 col-sm-12 col-xs-12 section-top-10 section-bottom-20">
+              <p align="center">Please choose Excel/CSV file</p>
+              <br>
+
+              <div class="col-md-5 col-sm-5 col-xs-12 col-md-offset-1">
+                <!-- <input type="file" value=""> -->
+                <input class="btn btn-success" type="file" (change)="onCSVFilePicked($event.target.files)" accept=".csv,.xlsx">
+              </div>
+              <div class="col-md-4 col-sm-4 col-xs-12 col-md-offset-1">
+                <input type="button" class="btn btn-primary" value="Upload" (click)="uploadCsvFileToServer()">
+              </div>
+            </div>
+            <p *ngIf="ifSuccess==true" class="text-info text-center">Successfully file uploaded</p>
+          </div>
+          <div align="center">
+            <input type="button" class="btn btn-success" data-dismiss="modal" value="Close">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade bs-Export-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span class="modal-text" aria-hidden="true">X</span>
+        </button>
+        <h4 class="text-blue text-center">Export Customer data</h4>
+      </div>
+      <div class="modal-body">
+        <div class="service-section">
+          <div class="row" align="center">
+            <div class="col-md-12 col-sm-12 col-xs-12 section-top-10 section-bottom-20">
+              <!-- <p align="center">Please choose Excel/CSV file</p> -->
+              <br>
+              <div align="center">
+                <input type="button" class="btn btn-primary" value="Download" (click)="downloadJSONTOCSV()">
+              </div>
+            </div>
+            <!-- <p class="text-info text-center">Successfully file uploaded</p> -->
+          </div>
+          <div align="center">
+            <input type="button" class="btn btn-success" data-dismiss="modal" value="Close">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

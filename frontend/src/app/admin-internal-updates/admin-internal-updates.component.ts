@@ -3,11 +3,13 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import * as _ from 'underscore';
+import {PagerService} from '../service/pager.service';
 
 @Component({
   selector: 'app-admin-internal-updates',
   templateUrl: './admin-internal-updates.component.html',
-  styleUrls: ['./admin-internal-updates.component.css']
+  styleUrls: ['./admin-internal-updates.component.css'],
+  providers:[PagerService]
 })
 export class AdminInternalUpdatesComponent implements OnInit {
   @ViewChild('closeBtn') closeBtn: ElementRef;
@@ -32,7 +34,7 @@ export class AdminInternalUpdatesComponent implements OnInit {
   public submittedEdit: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
   access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
-  constructor(private _fb: FormBuilder, private http: Http) {
+  constructor(private _fb: FormBuilder, private http: Http,public PagerService:PagerService) {
     this.pager.currentPage=1;
     this.access_token = localStorage.getItem("admin_token");
     this.getInternalUpdateList(this.pager.currentPage);
@@ -41,22 +43,20 @@ export class AdminInternalUpdatesComponent implements OnInit {
   ngOnInit() {
     this.internalUpdateForm = new FormGroup({
       title: new FormControl('', [<any>Validators.required]),
-      description: new FormControl('', [<any>Validators.required]),
-      link: new FormControl('', [<any>Validators.required]),
-      status: new FormControl('', [<any>Validators.required])
+      details: new FormControl('', [<any>Validators.required]),
+      link: new FormControl('', [<any>Validators.required])
     });
     this.editInternalUpdate = new FormGroup({
       title: new FormControl('', [<any>Validators.required]),
-      description: new FormControl('', [<any>Validators.required]),
-      link: new FormControl('', [<any>Validators.required]),
-      status: new FormControl([])
+      details: new FormControl('', [<any>Validators.required]),
+      link: new FormControl('', [<any>Validators.required])
     });
   }
 
   getInternalUpdateList(page:number) {
     this.pager.currentPage=page;
     console.log('list called');
-    this.http.get('http://localhost:3000/api/internal/index?token='+this.access_token+'&limit=' + 5 + '&page=' + this.pager.currentPage + '&sortBy=title&search=').subscribe(data => {
+    this.http.get('http://localhost:3000/api/internal/index?token='+this.access_token+'&limit=' + 5 + '&page=' + this.pager.currentPage + '&sortBy=created_at&search=').subscribe(data => {
       this.internalUpdateList = data.json().docs;
       this.pager.pageSize = data.json().limit;
       this.pager.totalItems=data.json().total;
@@ -70,71 +70,11 @@ export class AdminInternalUpdatesComponent implements OnInit {
       return;
     }
 
-    this.pager = this.getPager(this.pager.totalItems, this.pager.currentPage, this.pager.pageSize);
+    this.pager = this.PagerService.getPager(this.pager.totalItems, this.pager.currentPage, this.pager.pageSize);
     console.log("pager", this.pager);
     // this.getStateList();
     this.pagedItems = this.internalUpdateList;
   }
-
-  getPager(totalItems: number, currentPage: number = 1, pageSize: number) {
-    // calculate total pages
-    let totalPages = Math.ceil(totalItems / pageSize);
-
-    let startPage: number, endPage: number;
-    if (totalPages <= 10) {
-      // less than 10 total pages so show all
-      startPage = 1;
-      endPage = totalPages;
-    } else {
-      // more than 10 total pages so calculate start and end pages
-      if (currentPage <= 6) {
-        startPage = 1;
-        endPage = 10;
-      } else if (currentPage + 4 >= totalPages) {
-        startPage = totalPages - 9;
-        endPage = totalPages;
-      } else {
-        startPage = currentPage - 5;
-        endPage = currentPage + 4;
-      }
-    }
-
-    // calculate start and end item indexes
-    let startIndex = (currentPage - 1) * pageSize;
-    let endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
-
-    // create an array of pages to ng-repeat in the pager control
-    let pages = _.range(startPage, endPage + 1);
-
-    // return object with all pager properties required by the view
-    return {
-      totalItems: totalItems,
-      currentPage: currentPage,
-      pageSize: pageSize,
-      totalPages: totalPages,
-      startPage: startPage,
-      endPage: endPage,
-      startIndex: startIndex,
-      endIndex: endIndex,
-      pages: pages
-    };
-  }
-
-  // nextPage() {
-  //   console.log("paging");
-  //   if (this.Paging.page < this.TotalPages) {
-  //     this.Paging.page++;
-  //     this.getInternalUpdateList();
-  //   }
-  // }
-
-  // previousPage() {
-  //   console.log("paging");
-  //   if (this.Paging.page > 1) {
-  //     this.Paging.page--;
-  //     this.getInternalUpdateList();
-  //   }
-  // }
 
   addInternalUpdate(isValid: boolean) {
     this.submitted = true; // set form submit to true
@@ -151,10 +91,9 @@ export class AdminInternalUpdatesComponent implements OnInit {
       const requestOptions = new RequestOptions({ headers: headers });
       const body = {
         "title": this.internalUpdateForm.value.title,
-        "details": this.internalUpdateForm.value.description,
+        "details": this.internalUpdateForm.value.details,
         "link": this.internalUpdateForm.value.link,
-        "date": "13/11/2017",
-        "status": this.internalUpdateForm.value.status
+        "date": "13/11/2017"
       };
       this.url = "http://localhost:3000/api/internal/create?token="+this.access_token;
       return this.http.post(this.url, body, requestOptions)
@@ -162,6 +101,9 @@ export class AdminInternalUpdatesComponent implements OnInit {
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeModal();
+          this.internalUpdateForm.reset();
+          this.submitted=false;
+          this.getInternalUpdateList(this.pager.currentPage);
         },
         error => {
           console.log("error", error.message);
@@ -177,9 +119,8 @@ export class AdminInternalUpdatesComponent implements OnInit {
     if (data) {
       console.log("DATA", data);
       this.editInternalUpdate.get("title").setValue(data.title);
-      this.editInternalUpdate.get("description").setValue(data.details);
+      this.editInternalUpdate.get("details").setValue(data.details);
       this.editInternalUpdate.get("link").setValue(data.link);
-      this.editInternalUpdate.get(status["value"]).setValue(data.status);
       // let sle: {} = this.editInternalUpdate.get("status");
       // console.log("selected vale", sle["_value"]);
     }
@@ -193,37 +134,36 @@ export class AdminInternalUpdatesComponent implements OnInit {
     this.StateVal = this.editInternalUpdate.value;
     console.log("form valuse", this.StateVal);
 
-    // if (isValid == true) {
+    if (isValid == true) {
 
-    //   var access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
-    //   const headers = new Headers();
+      const headers = new Headers();
 
-    //   headers.append('Content-Type', 'application/json');
-    //   headers.append('x-access-token', access_token);
-    //   const requestOptions = new RequestOptions({ headers: headers });
+      headers.append('Content-Type', 'application/json');
+      
+      const requestOptions = new RequestOptions({ headers: headers });
 
-    //   const body = {
-    //     "_id": this.notiRowData._id,
-    //     "title": this.editGovNotiForm.value.title,
-    //     "description": this.editGovNotiForm.value.description,
-    //     "link": this.editGovNotiForm.value.link
-    //   };
+      const body = {
+        "_id": this.notiRowData._id,
+        "title": this.editInternalUpdate.value.title,
+        "details": this.editInternalUpdate.value.details,
+        "link": this.editInternalUpdate.value.link
+      };
 
-    //   this.url = "http://localhost:3000/api/notification/update";
-    //   return this.http.put(this.url, body, requestOptions)
-    //     .subscribe(
-    //     response => {
-    //       console.log("suceessfull data", response.json().message);
-    //       this.closeEditModal();
-    //       this.submittedEdit = false;
-    //       alert(response.json().message);
-    //     },
-    //     error => {
-    //       console.log("error", error.message);
-    //       console.log(error.text());
-    //     }
-    //     );
-    // }
+      this.url = "http://localhost:3000/api/internal/update?token="+this.access_token;
+      return this.http.put(this.url, body, requestOptions)
+        .subscribe(
+        response => {
+          console.log("suceessfull data", response.json().message);
+          this.closeEditModal();
+          this.submittedEdit = false;
+          this.getInternalUpdateList(this.pager.currentPage);
+        },
+        error => {
+          console.log("error", error.message);
+          console.log(error.text());
+        }
+        );
+    }
   }
 
   deleteInternalRecord(data) {
@@ -246,7 +186,7 @@ export class AdminInternalUpdatesComponent implements OnInit {
         console.log("suceessfull data", response.json().message);
         this.closeDeleteModal();
         this.submittedEdit = false;
-        alert(response.json().message);
+        this.getInternalUpdateList(this.pager.currentPage);
       },
       error => {
         console.log("error", error.message);

@@ -2,10 +2,10 @@
   <h1>&nbsp; </h1>
   <ol class="breadcrumb">
     <li>
-      <a href="index.html">
+      <a href="home">
         <i class="fa fa-dashboard"></i> Home</a>
     </li>
-    <li class="active">HSN Code List</li>
+    <li class="active">FAQ</li>
   </ol>
 </section>
 
@@ -52,7 +52,7 @@
                       <i class="fa fa-trash btn btn-danger btn-sm" title="Delete"></i>
                     </a>
                   </div>
-                  <div id="collapseOne{{pageSize * (currentPage-1)+i+1}}" class="panel-collapse collapse in">
+                  <div id="collapseOne{{pageSize * (currentPage-1)+i+1}}" class="panel-collapse collapse">
                     <div class="box-body">
                       {{item.answer}}
                     </div>
@@ -102,7 +102,7 @@
         <button type="button" class="close" data-dismiss="modal" #closeBtn aria-label="Close">
           <span class="modal-text" aria-hidden="true">X</span>
         </button>
-        <h4 class="modal-title modal-text"> Add Dealer</h4>
+        <h4 class="modal-title modal-text">Add</h4>
       </div>
       <div class="modal-body">
         <div class="service-section">
@@ -145,7 +145,7 @@
           <span class="modal-text" aria-hidden="true">X</span>
         </button>
         <h4 class="modal-title modal-text" align="center">
-          <b>Edit Faqs</b>
+          <b>Edit</b>
         </h4>
       </div>
       <div class="modal-body">
@@ -204,9 +204,9 @@
                 </h4>
               </div>
 
-              <div class="form-group ">
-                <input type="button" class="btn btn-success" (click)="deleteFaqs()" value="Yes">
-                <input type="button" class="btn btn-primary pull-right" data-dismiss="modal" value="No">
+              <div class="text-center">
+                <input type="button" class="btn btn-success" (click)="deleteFaqs()" value="Yes"> &nbsp; &nbsp;
+                <input type="button" class="btn btn-primary" data-dismiss="modal" value="No">
               </div>
             </div>
           </div>

@@ -1,13 +1,35 @@
 const Internal = require('../../../models/internal')
+
+  var usingItNow = function(req) {
+if(req.type=="agentuser"||req.type=="admin"){
+  return false;
+}else{
+   return true;
+}
+
+};
 /* 
     GET /api/State/list
 */
 exports.index=(req,res)=>{
 
 var query={};
+//=========Authrise function
+var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
 req.query.limit=parseInt(req.query.limit);
 if(req.query.search && req.query.search.length>0){    
-    query={title:req.query.search}
+    if(req.query.type && req.query.type.length>0){  
+   if(req.query.type=="chapter"){
+     query={chapter:req.query.search}
+ }else{
+    query={article:req.query.search}
+ }
+}
 }
 if(!req.query.limit ||isNaN(req.query.limit) ){
     req.query.limit=5;
@@ -27,9 +49,15 @@ const onError = (error) => {
             message: error.message
         })
     }
+          var sortfiled={};
+    if(req.query.sortBy && req.query.sortBy.length>0){    
+    sortfiled=req.query.sortBy
+}else{
+   sortfiled={ date: -1 } 
+}
 var option={
-    select:'title details date status',
-    sort:req.query.sortBy,
+    select:'title details link chapter article date status type',
+    sort:sortfiled,
     offset:offset,
     limit:req.query.limit
 };
@@ -43,10 +71,11 @@ Internal.paginate(query,option).then( intenal=>res.json(intenal)
 
 exports.list = (req, res) => {
     // refuse if not an admin
-    if(!req.decoded.admin) {
-        return res.status(403).json({
-            message: 'you are not an admin'
-        })
+var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
     }
  Internal.find({}).exec()
     .then(
@@ -57,13 +86,15 @@ exports.list = (req, res) => {
    }
 
 exports.create = (req, res) => {
-    const {title,details ,date ,status} = req.body
+    const {title,details ,link,date,chapter,article,type } = req.body
     let newUser = null
- // if(!req.decoded.admin) {
- //        return res.status(403).json({
- //            message: 'you are not an admin'
- //        })
- //    }
+ //=========Authrise function
+var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
     // create a new user if does not exist
     const create = (internal) => {
        
@@ -71,7 +102,7 @@ exports.create = (req, res) => {
         if(internal) {
             throw new Error('Intenal Name exists')
         } else {
-            return Internal.create(title,details ,date ,status)
+            return Internal.create(title,details ,link ,date,chapter,article,type)
         }
     }
     // count the number of the user
@@ -111,9 +142,16 @@ exports.create = (req, res) => {
     POST /api/State/upadate
 */
 exports.update=(req,res)=>{
-        const {_id, title,details ,date ,status} = req.body
-     
-         Internal.findOneAndUpdate({_id:_id}, {$set:{title:title,details:details,date:date,status:status}}, {new: true}, function(err, doc){
+        const {_id, title , details ,link , date,chapter,article } = req.body
+     //=========Authrise function
+var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
+    var updated_at=  Date.now();
+         Internal.findOneAndUpdate({_id:_id}, {$set:{title:title,details:details,link:link,date:date,chapter:chapter,article:article,type:type,updated_at:updated_at}}, {new: true}, function(err, doc){
     if(err){
         console.log("Something wrong when updating data!");
     }
@@ -121,7 +159,7 @@ exports.update=(req,res)=>{
 });
           const respond = () => {
         res.json({
-            message: 'Intenal Successfully Update'
+            message: 'Internal Successfully Update'
         
  
         })

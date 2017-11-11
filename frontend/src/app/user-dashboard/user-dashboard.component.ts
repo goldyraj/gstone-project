@@ -4,6 +4,7 @@ import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { ExcelServiceService } from '../excel-service.service';
 import {PagerService} from '../service/pager.service';
+import { RouterModule, Routes, Router } from '@angular/router';
 import * as _ from 'underscore'
 
 @Component({
@@ -25,6 +26,7 @@ export class UserDashboardComponent implements OnInit {
   modelHide = '';
   url = "";
   cutomer = {};
+  stateList=[];
   public myForm: FormGroup; // our model driven form
   public submitted: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
@@ -37,16 +39,21 @@ export class UserDashboardComponent implements OnInit {
   pagedItems: any[];
   // private http: Http HttpClient,
   public userName:string;
-  constructor(private _fb: FormBuilder, private http: Http, public excelServiceService: ExcelServiceService,public PagerService:PagerService) {
+  constructor(private _fb: FormBuilder, private http: Http, public excelServiceService: ExcelServiceService,public PagerService:PagerService,private router: Router) {
     this.isEditingClicked = false;
     this.pager.currentPage = 1;
     this.access_token = localStorage.getItem("user_token");
     this.userName=localStorage.getItem("user_name");
     this.getBranches(1);
+    this.getStateList();
   } // form builder simplify form initialization
 
   ngOnInit() {
     // we will initialize our form model here
+    if (this.access_token == null) {
+      this.router.navigate(['/home']);
+      return;
+    }
     this.myForm = new FormGroup({
       name: new FormControl('', [<any>Validators.required]),
       contact: new FormControl('', [<any>Validators.required, <any>Validators.minLength(10)]),
@@ -99,7 +106,7 @@ export class UserDashboardComponent implements OnInit {
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeModal();
-          alert(response.json().message);
+          // alert(response.json().message);
         },
         error => {
           console.log("error", error.message);
@@ -154,6 +161,19 @@ export class UserDashboardComponent implements OnInit {
     console.log("pager", this.pager);
     // this.getStateList();
     this.pagedItems = this.branchesList;
+  }
+
+  getStateList() {
+    console.log('list called');
+    this.http.get('http://localhost:3000/api/state/list').subscribe(data => {
+      this.stateList = data.json().state;
+      // this.TotalPages = data.json().total;
+      // this.pageSize = this.Paging.limit;
+      // this.currentPage = this.Paging.page;
+      console.log("pagecount", )
+      console.log("getStateList", this.stateList);
+      // console.log("TotalPages", this.TotalPages);
+    });
   }
 
   onCSVFilePicked(files: FileList) {

@@ -1,4 +1,4 @@
-<section class="unicod-section unicod-pricing-fild  section-top-20 section-bottom-50">
+<section class="unicod-section unicod-pricing-fild  section-top-20">
   <div class="container">
     <div class="row">
       <div class="col-lg-12">
@@ -10,13 +10,18 @@
         </div>
       </div>
 
+
+
+
+      
       <div class="col-md-8 col-sm-6">
         <div class="panel-group" id="accordion">
           <div class="panel panel-default" *ngFor="let item of faqsList ;let i = index;">
             <div class="panel-heading">
               <h4 class="panel-title">
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne{{pageSize * (currentPage-1)+i+1}}">
-                  <!--<span class="glyphicon glyphicon-plus"></span>-->{{pageSize * (currentPage-1)+i+1}} {{item.question}}</a>
+                    <i class="more-less glyphicon glyphicon-plus"></i>
+                  {{pageSize * (currentPage-1)+i+1}} {{item.question}}</a>
               </h4>
             </div>
             <div id="collapseOne{{pageSize * (currentPage-1)+i+1}}" class="panel-collapse collapse">
@@ -104,189 +109,3 @@
   </div>
 </section>
 
-
-
-<!-- REGISTRATION Start -->
-
-<div class="modal fade bs-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content section-salect">
-      <div class="modal-body">
-        <div class="service-section">
-          <div class="row">
-            <div class="col-md-1 col-sm-1"></div>
-            <div class="col-md-10 col-sm-10">
-              <div class="col-md-4 col-sm-6 text-center">
-                <div class="unicod-service-col">
-                  <h4>&nbsp;
-                    <br>Business User
-                    <br> &nbsp;</h4>
-                </div>
-                <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" data-toggle="modal" data-target=".bs-REGISTRATION2-lg">Select</button>
-              </div>
-              <div class="col-md-4 col-sm-6 text-center">
-                <div class="unicod-service-col">
-                  <h4>Charted Accountant
-                    <br> Associate
-                    <br> Tax Practioner</h4>
-                </div>
-                <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" data-toggle="modal" data-target=".bs-REGISTRATION2-lg">Select</button>
-              </div>
-              <div class="col-md-4 col-sm-6 text-center">
-                <div class="unicod-service-col">
-                  <h4>&nbsp;
-                    <br>Business User Other
-                    <br>&nbsp;</h4>
-                </div>
-                <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" data-toggle="modal" data-target=".bs-REGISTRATION2-lg">Select</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- REGISTRATION End -->
-
-<!-- After REGISTRATION Form Start -->
-
-<div class="modal fade bs-REGISTRATION2-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span class="modal-text" aria-hidden="true">X</span>
-        </button>
-        <h4 class="modal-title modal-text"> REGISTRATION</h4>
-      </div>
-      <div class="modal-body">
-        <div class="service-section">
-          <div class="row">
-            <div class="col-md-1 col-sm-1"></div>
-            <div class="col-md-10 col-sm-10">
-
-              <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-                <input type="text" class="form-control" placeholder="Name" name="name" id="name" required>
-              </div>
-              <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-                <input type="text" class="form-control" placeholder="Contact No." name="contact" id="contact" required>
-              </div>
-              <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-                <input type="text" class="form-control" placeholder="PAN No." name="pan_no" id="pan_no" required>
-              </div>
-              <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-                <input type="text" class="form-control" placeholder="Email Id" name="email" id="email" required>
-              </div>
-              <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-                <input type="text" class="form-control" placeholder="GSTIN" name="gstin" id="gstin" required>
-              </div>
-              <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-                <input type="text" class="form-control" placeholder="Address" name="address" id="address" required>
-              </div>
-              <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-                <select class="form-control">
-                  <option value="" selected="selected"> -- Select State -- </option>
-                  <option value="">Jabalpur</option>
-                  <option value="">Bhopal</option>
-                  <option value="">Raipur</option>
-                </select>
-              </div>
-              <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-                <input type="text" class="form-control" placeholder="City" name="city" id="city" required>
-              </div>
-              <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-                <input type="text" class="form-control" placeholder="Paasword" name="paasword" id="paasword" required>
-              </div>
-              <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-                <input type="text" class="form-control" placeholder="Confirm Paasword" name="confirm_paasword" id="confirm_paasword" required>
-              </div>
-              <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-                <input type="button" class="btn btn-primary" value="Create Account">
-              </div>
-              <button type="button" class="btn btn-link pull-right" data-dismiss="modal" data-toggle="modal" data-target=".bs-login-sm">Already have Account</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- After REGISTRATION Form end -->
-
-<!-- Login Start -->
-
-<div class="modal fade bs-login-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-  <div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span class="modal-text" aria-hidden="true">X</span>
-        </button>
-        <h4 class="modal-title modal-text"> LOGIN</h4>
-      </div>
-      <div class="modal-body">
-        <div class="service-section">
-          <div class="row">
-            <form action="" enctype="multipart/form-data">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="Email Id" name="email" id="email" required>
-                </div>
-
-                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="password" class="form-control" placeholder="Paasword" name="paasword" id="paasword" required>
-                </div>
-
-                <div class="col-md-12 col-sm-12 col-xs-12 form-group text-center">
-                  <a href="branch_list.html">
-                    <input type="button" class="btn btn-success btn-block" value="Log In">
-                  </a>
-                </div>
-              </div>
-            </form>
-          </div>
-
-          <button type="button" class="btn btn-link pull-left" data-dismiss="modal" data-toggle="modal" data-target=".bs-REGISTRATION2-lg">Create Account</button>
-          <button type="button" class="btn btn-link" data-dismiss="modal" data-toggle="modal" data-target=".bs-ForgotPassword-sm">Forgot Password</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- login end Start -->
-<!-- Login Start -->
-
-<div class="modal fade bs-ForgotPassword-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-  <div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span class="modal-text" aria-hidden="true">X</span>
-        </button>
-        <h4 class="modal-title modal-text"> Forgot Password</h4>
-      </div>
-      <div class="modal-body">
-        <div class="service-section">
-          <div class="row">
-            <form action="user.html" enctype="multipart/form-data">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="Email Id" name="email" id="email" required>
-                </div>
-
-                <div class="form-group  text-center">
-                  <input type="button" class="btn btn-primary" value="Forgot Password">
-                </div>
-              </div>
-            </form>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- login end Start -->

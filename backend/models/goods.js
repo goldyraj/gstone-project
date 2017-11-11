@@ -3,27 +3,31 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const crypto = require('crypto')
 const config = require('../config')
-var mongoosePaginate = require('mongoose-paginate');
-  
+
+   var mongoosePaginate = require('mongoose-paginate');
 const Goods = new Schema({
     description: String,
     hsn_code: String,
-    unit: String,
-    rate: String
+    //unit: String,
+    cgst: String,
+    sgst: String,
+    igst: String,
+    condition: String,
+      created_at:  { type: Date},
+  updated_at:  { type: Date}
 })
 
 // create new User document
-Goods.statics.create = function(description, hsn_code,unit,rate) {
- 
-
+Goods.statics.create = function(description, hsn_code,cgst,sgst,igst,condition) {
+   var created_at=  Date.now();
     const Goods = new this({
-        description, hsn_code,unit,rate       
+        description, hsn_code,cgst,sgst,igst,condition,created_at     
     })
 
     // return the Promise
     return Goods.save()
 }
-Goods.plugin(mongoosePaginate);
+
 // find one user by using username
 Goods.statics.findOneByUsername = function(description) {
     return this.findOne({
@@ -34,4 +38,5 @@ Goods.statics.findOneByUsername = function(description) {
 
 
 
+Goods.plugin(mongoosePaginate);
 module.exports = mongoose.model('Goods', Goods)

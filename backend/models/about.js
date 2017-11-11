@@ -19,8 +19,7 @@ About.statics.create = function(discription) {
     const About = new this({
         discription,created_at
     })
-    // return the Promise
-   
+    // return the Promise   
     return About.save()
 }
 
@@ -31,10 +30,10 @@ About.statics.findOneByUsername = function(discription) {
     }).exec()
 }
 
-About.plugin(require('mongoose-lifecycle'));
-About.plugin(mongoosePaginate);
-About.on('beforeInsert', function(about) {
-  console.log('A new book was inserted' );
-});
+// About.plugin(require('mongoose-lifecycle'));
+// About.plugin(mongoosePaginate);
+// About.on('beforeInsert', function(about) {
+//   console.log('A new book was inserted' );
+// });
 
 module.exports = mongoose.model('About', About)

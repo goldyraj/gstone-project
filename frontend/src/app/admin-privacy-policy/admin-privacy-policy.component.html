@@ -63,12 +63,12 @@
             </button>
             <h4 class="modal-title modal-text"> Update Privacy Policy</h4>
           </div>
-          <div class="box well">
+          <div class="box">
             <div class="box-body">
               <form [formGroup]="editPolicy" novalidate (ngSubmit)="updatePrivacyPolicy(editPolicy.valid)">
                 <div class="box-body">
                   <div class="form-group">
-                    <textarea rows="40" type="text" formControlName="discription" class="form-control" id="exampleInputEmail1" value=""></textarea>
+                    <textarea rows="15" type="text" formControlName="discription" class="form-control" id="exampleInputEmail1" value=""></textarea>
                     <small [hidden]="editPolicy.controls.discription.valid || (editPolicy.controls.discription.pristine && !submitted)">
                       Title is required .
                     </small>
@@ -77,7 +77,7 @@
                 </div>
                 <!-- /.box-body -->
 
-                <div class="box-footer">
+                <div class="box-footer text-center">
                   <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
               </form>

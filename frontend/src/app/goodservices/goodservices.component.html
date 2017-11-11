@@ -14,14 +14,14 @@
 			</div>
 		</div> -->
 
-		<div class="col-xs-6 col-sm-3 placeholder">
+		<div class="col-xs-6 col-sm-9 text-right">
 
 			<a href="" data-toggle="modal" data-target=".bs-upload-sm">
 				<input type="button" class="btn btn-primary" value="Import/Export">
 			</a>
 
 			<a href="#" data-toggle="modal" data-target=".bs-GSTIN-lg">
-				<input type="button" class="btn btn-success pull-right" value="Add New">
+				<input type="button" class="btn btn-success" value="Add New">
 			</a>
 		</div>
 
@@ -86,7 +86,7 @@
 
 
 <div class="modal fade bs-GSTIN-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-	<div class="modal-dialog modal-lg" role="document">
+	<div class="modal-dialog modal-md" role="document">
 		<div class="modal-content section-form">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" #closeBtn aria-label="Close">
@@ -99,16 +99,15 @@
 			<div class="modal-body">
 				<div class="service-section">
 					<div class="row">
-						<div class="col-md-1 col-sm-1"></div>
-						<div class="col-md-10 col-sm-10">
+						<div class="col-md-12 col-sm-12">
 							<form [formGroup]="addNewGoodsForm" novalidate (ngSubmit)="saveGoodsAndServices(addNewGoodsForm.valid)">
-								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<input type="text" class="form-control" formControlName="description" placeholder="Description" required>
+								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
+									<textarea type="text" class="form-control" formControlName="description" placeholder="Description" required></textarea>
 									<small [hidden]="addNewGoodsForm.controls.description.valid || (addNewGoodsForm.controls.description.pristine && !submitted)">
 										Description is required !
 									</small>
 								</div>
-								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="hsn_code" placeholder="HSN Code">
 									<small [hidden]="addNewGoodsForm.controls.hsn_code.valid || (addNewGoodsForm.controls.hsn_code.pristine && !submitted)">
 										HSN Code is required !
@@ -165,7 +164,7 @@
 <!-- Edit Modal -->
 
 <div class="modal fade bs-goods-lg-edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-	<div class="modal-dialog modal-lg" role="document">
+	<div class="modal-dialog modal-md" role="document">
 		<div class="modal-content section-form">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" #closeBtn2 aria-label="Close">
@@ -178,16 +177,15 @@
 			<div class="modal-body">
 				<div class="service-section">
 					<div class="row">
-						<div class="col-md-1 col-sm-1"></div>
-						<div class="col-md-10 col-sm-10">
+						<div class="col-md-12 col-sm-12">
 							<form [formGroup]="myFormEdit" novalidate (ngSubmit)="updateGoodsAndServicesRecord(myFormEdit.valid)">
-								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<input type="text" class="form-control" formControlName="descriptionEdit" placeholder="Description" required>
+								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
+									<textarea type="text" class="form-control" formControlName="descriptionEdit" placeholder="Description" required></textarea>
 									<small [hidden]="myFormEdit.controls.descriptionEdit.valid || (myFormEdit.controls.descriptionEdit.pristine && !editSubmitted)">
 										Description is required !
 									</small>
 								</div>
-								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="hsn_code_edit" placeholder="HSN Code" required>
 									<small [hidden]="myFormEdit.controls.hsn_code_edit.valid || (myFormEdit.controls.hsn_code_edit.pristine && !editSubmitted)">
 										HSN Code is required !
@@ -260,9 +258,9 @@
 								</h4>
 							</div>
 
-							<div class="form-group ">
-								<input type="button" class="btn btn-success" (click)="deleteRecord()" value="Yes">
-								<input type="button" class="btn btn-primary pull-right" data-dismiss="modal" value="No">
+							<div class="text-center">
+								<input type="button" class="btn btn-success" (click)="deleteRecord()" value="Yes"> &nbsp; &nbsp;
+								<input type="button" class="btn btn-primary" data-dismiss="modal" value="No">
 							</div>
 						</div>
 					</div>
@@ -323,8 +321,8 @@
 							<br>
 
 							<div class="col-md-5 col-sm-5 col-xs-12 col-md-offset-1">
-								<!-- <input type="file" class="btn btn-success" value=""> -->
-								<input type="file" (change)="onCSVFilePicked($event.target.files)" accept=".csv,.xlsx">
+								<!-- <input type="file" value=""> -->
+								<input type="file" class="btn btn-success" (change)="onCSVFilePicked($event.target.files)" accept=".csv,.xlsx">
 							</div>
 							<div class="col-md-4 col-sm-4 col-xs-12 col-md-offset-1">
 								<input type="button" class="btn btn-primary" value="Upload" (click)="uploadCsvFileToServer()">

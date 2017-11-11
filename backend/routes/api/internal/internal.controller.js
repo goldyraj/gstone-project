@@ -23,7 +23,13 @@ var myCallback=usingItNow(req.decoded)
     }
 req.query.limit=parseInt(req.query.limit);
 if(req.query.search && req.query.search.length>0){    
-    query={title:req.query.search}
+    if(req.query.type && req.query.type.length>0){  
+   if(req.query.type=="chapter"){
+     query={chapter:req.query.search}
+ }else{
+    query={article:req.query.search}
+ }
+}
 }
 if(!req.query.limit ||isNaN(req.query.limit) ){
     req.query.limit=5;
@@ -50,7 +56,7 @@ const onError = (error) => {
    sortfiled={ date: -1 } 
 }
 var option={
-    select:'title details link chapter article date status',
+    select:'title details link chapter article date status type',
     sort:sortfiled,
     offset:offset,
     limit:req.query.limit
@@ -80,7 +86,7 @@ var myCallback=usingItNow(req.decoded)
    }
 
 exports.create = (req, res) => {
-    const {title,details ,link,date,chapter,article } = req.body
+    const {title,details ,link,date,chapter,article,type } = req.body
     let newUser = null
  //=========Authrise function
 var myCallback=usingItNow(req.decoded)
@@ -96,7 +102,7 @@ var myCallback=usingItNow(req.decoded)
         if(internal) {
             throw new Error('Intenal Name exists')
         } else {
-            return Internal.create(title,details ,link ,date,chapter,article)
+            return Internal.create(title,details ,link ,date,chapter,article,type)
         }
     }
     // count the number of the user
@@ -136,7 +142,7 @@ var myCallback=usingItNow(req.decoded)
     POST /api/State/upadate
 */
 exports.update=(req,res)=>{
-        const {_id, title , details ,link , date,chapter,article ,status} = req.body
+        const {_id, title , details ,link , date,chapter,article } = req.body
      //=========Authrise function
 var myCallback=usingItNow(req.decoded)
  if(myCallback) {
@@ -145,7 +151,7 @@ var myCallback=usingItNow(req.decoded)
         }) 
     }
     var updated_at=  Date.now();
-         Internal.findOneAndUpdate({_id:_id}, {$set:{title:title,details:details,link:link,date:date,chapter:chapter,article:article,status:status,updated_at:updated_at}}, {new: true}, function(err, doc){
+         Internal.findOneAndUpdate({_id:_id}, {$set:{title:title,details:details,link:link,date:date,chapter:chapter,article:article,type:type,updated_at:updated_at}}, {new: true}, function(err, doc){
     if(err){
         console.log("Something wrong when updating data!");
     }

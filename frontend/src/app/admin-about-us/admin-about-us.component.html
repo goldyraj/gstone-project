@@ -61,12 +61,12 @@
         </button>
         <h4 class="modal-title modal-text">Edit</h4>
       </div>
-      <div class="box well">
+      <div class="box">
         <div class="box-body">
           <form [formGroup]="editAbout" novalidate (ngSubmit)="updateAbout(editAbout.valid)">
             <div class="box-body">
               <div class="form-group">
-                <textarea rows="40" type="text" placeholder="Description" formControlName="discription" class="form-control" id="exampleInputEmail1" value=""></textarea>
+                <textarea rows="15" type="text" placeholder="Description" formControlName="discription" class="form-control" id="exampleInputEmail1" value=""></textarea>
                 <small [hidden]="editAbout.controls.discription.valid || (editAbout.controls.discription.pristine && !submitted)">
                   Title is required .
                 </small>
@@ -75,7 +75,7 @@
             </div>
             <!-- /.box-body -->
 
-            <div class="box-footer">
+            <div class="box-footer text-center">
               <button type="submit" class="btn btn-primary">Submit</button>
             </div>
           </form>

@@ -1,5 +1,4 @@
-<!-- Content Wrapper. Contains page content -->
-<!-- Content Header (Page header) -->
+
 <section class="content-header">
   <h1>&nbsp; </h1>
   <ol class="breadcrumb">
@@ -34,7 +33,7 @@
 
       <div class="col-md-3 col-xs-12">
         <div class="input-group section-bottom-20">
-          <input type="text" [(ngModel)]="searchString" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
+          <input type="text" placeholder="Name" [(ngModel)]="searchString" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
           <div class="input-group-addon">
             <i class="fa fa-search"></i>
           </div>
@@ -61,7 +60,7 @@
                 <td align="center">{{i+1}}</td>
                 <td align="center">{{item.name}}</td>
                 <td align="center">{{item.code}}</td>
-                
+
                 <!-- <td align="center">
                         <span class="label label-warning">Pending</span>
                       </td> -->
@@ -79,32 +78,27 @@
           </table>
 
 
-          <!-- <ul class="pagination btn-sm">
-                  <li>
-                    <button (click)="previousPage()" class="btn btn-primary">Previous</button>
-                  </li>
-                  <li>
-                    <button class="active" (click)="nextPage()" class="btn btn-primary">Next</button>
-                  </li>
-                </ul> -->
-
-          <!-- <ul class="pagination btn-sm">
-                  <li *ngFor="let item of stateList | paginate: { itemsPerPage: 10, currentPage: currentPage }"> ... </li>
-                </ul> -->
-
           <ul class="pagination btn-sm">
             <li [ngClass]="{disabled:pager.currentPage === 1}">
-              <a (click)="getStateList(pager.currentPage - 1)">Previous</a>
+              <a *ngIf="pager.currentPage > 1" (click)="getStateList(pager.currentPage - 1)">Previous</a>
+            </li>
+
+            <li [ngClass]="{disabled:pager.currentPage === 1}">
+              <a *ngIf="pager.currentPage ==1">Previous</a>
             </li>
 
             <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
               <a (click)="getStateList(page)">{{page}}</a>
             </li>
 
-            <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-              <a (click)="getStateList(pager.currentPage + 1)">Next</a>
+            <li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
+              <a *ngIf="pager.currentPage < pager.endPage" (click)="getStateList(pager.currentPage + 1)">Next</a>
+            </li>
+            <li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
+              <a *ngIf="pager.currentPage == pager.endPage">Next</a>
             </li>
           </ul>
+
           <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
 
         </div>

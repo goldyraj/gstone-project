@@ -43,11 +43,15 @@
           </div>
         </div>
         <small *ngIf="loginSuccess===-1 && submitted">
-          <span style="color:red"><b>Email or Password is incorrect !</b></span>
+          <span class="text-center" style="color:red">
+            <b>Email or Password is incorrect !</b>
+          </span>
         </small>
         <small *ngIf="loginSuccess===1 && submitted">
-            <span><b>Success !</b></span>
-          </small>
+          <span class="text-center">
+            <b>Success !</b>
+          </span>
+        </small>
       </form>
 
       <!-- /.social-auth-links -->

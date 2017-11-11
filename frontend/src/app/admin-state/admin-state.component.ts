@@ -5,12 +5,13 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { PagerService } from '../service/pager.service';
 import * as _ from 'underscore';
 import { RouterModule, Routes, Router } from '@angular/router';
+import {PreventLoggedInAccess} from '../PreventLoggedInAccess';
 
 @Component({
   selector: 'app-admin-state',
   templateUrl: './admin-state.component.html',
   styleUrls: ['./admin-state.component.css'],
-  providers: [PagerService]
+  providers: [PagerService,PreventLoggedInAccess]
 })
 export class AdminStateComponent implements OnInit {
 
@@ -30,6 +31,7 @@ export class AdminStateComponent implements OnInit {
 
   // pager object
   pager: any = {};
+  sortBy="created_at";
 
   // paged items
   pagedItems: any[];
@@ -54,19 +56,11 @@ export class AdminStateComponent implements OnInit {
   access_token = "";
   constructor(private _fb: FormBuilder, private http: Http, private pagerService: PagerService,public router:Router) {
     // this.currentPage=1;
-    var context=this;
-    window.onbeforeunload = function (e) {
-      if (localStorage.getItem('admin_token')!=null) {
-        context.onLoad();
-      }
-      else {
-        context.router.navigate(['/admin-login']);
-      }
-    };
   }
 
   onLoad()
   {
+
     this.access_token = localStorage.getItem("admin_token");
     console.log("admin token", this.access_token);
     this.pager.currentPage = 1;
@@ -90,6 +84,14 @@ export class AdminStateComponent implements OnInit {
       statecode: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
       country: new FormControl('Select Status', [])
     });
+
+    var context=this;
+    if (localStorage.getItem('admin_token')!=null) {
+      context.onLoad();
+    }
+    else {
+      context.router.navigate(['/admin-login']);
+    }
   }
 
 
@@ -112,7 +114,7 @@ export class AdminStateComponent implements OnInit {
         "code": this.myForm.value.statecode
       };
       this.stateList.push(body);
-      this.url = "http://localhost:3000/api/state/create";
+      this.url = "http://localhost:3000/api/state/create?token="+this.access_token;
       return this.http.post(this.url, body, requestOptions)
         .subscribe(
         response => {
@@ -135,7 +137,7 @@ export class AdminStateComponent implements OnInit {
 
   getStateList(page: number) {
     this.pager.currentPage = page;
-    this.http.get('http://localhost:3000/api/state/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + this.pager.currentPage).subscribe(data => {
+    this.http.get('http://localhost:3000/api/state/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + this.pager.currentPage+"&sortBy="+this.sortBy).subscribe(data => {
       this.stateList = data.json().docs;
       // this.pager.TotalPages = data.json().total;
       this.pager.pageSize = data.json().limit;
@@ -209,9 +211,6 @@ export class AdminStateComponent implements OnInit {
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeEditModal();
-          // this.hsnCodeData.push(body);
-          // alert(response.json().message);
-          // this.goodsAndServicesDataList[this.rowDataIndex]=body;
           this.getStateList(this.pager.currentPage);
           this.submitted = false;
         },

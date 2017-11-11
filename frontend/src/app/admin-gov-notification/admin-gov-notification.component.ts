@@ -57,7 +57,7 @@ export class AdminGovNotificationComponent implements OnInit {
   getNotificationList(page: number) {
     this.pager.currentPage=page;
     console.log('list called');
-    this.http.get('http://localhost:3000/api/notification/index?token='+this.access_token+'&limit='+5 + '&page=' + this.pager.currentPage + '&sortBy=title&search=').subscribe(data => {
+    this.http.get('http://localhost:3000/api/notification/index?token='+this.access_token+'&limit='+5 + '&page=' + this.pager.currentPage + '&sortBy=created_at&search=').subscribe(data => {
       this.notificationList = data.json().docs;
       this.pager.pageSize = data.json().limit;
       this.pager.totalItems=data.json().total;

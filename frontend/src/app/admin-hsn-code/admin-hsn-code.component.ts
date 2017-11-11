@@ -3,144 +3,110 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import * as _ from 'underscore';
-import {PagerService} from '../service/pager.service';
-import{ExcelServiceService} from '../excel-service.service';
+import { PagerService } from '../service/pager.service';
+import { ExcelServiceService } from '../excel-service.service';
 import { RouterModule, Routes, Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-hsn-code',
   templateUrl: './admin-hsn-code.component.html',
   styleUrls: ['./admin-hsn-code.component.css'],
-  // providers:[PagerService]
+  providers: [PagerService, ExcelServiceService]
 })
 export class AdminHsnCodeComponent implements OnInit {
 
+  @ViewChild('closeChoose') closeChoose:ElementRef;
+  @ViewChild('closeCsv') closeCsv:ElementRef;
+
   public addStateForm: FormGroup; // our model driven form
-  public submitted: boolean; // keep track on whether form is submitted
-  public submitted_edit: boolean;
+  public submitted: boolean = false; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
-  hsnCodeData = Array();
+
+  public ifSuccess:boolean=false;
+  goodsData = Array();
+  servicesData = Array();
   hsnRowData;
   hsnCodeSubmitData = {};
   modelHide = '';
-  myForm;
   public selectedStatusType;
   url = "";
   selectedStatusTypeDrop;
-  myForm_edit;
   public hsn_code_status = "0";
   public statusDropDown = Array();
   rowIndexToModify;
-  pager: any = {};
-  pagedItems: any[];
+  goodsForm: FormGroup;
+  goodsFormEdit: FormGroup;
+  sortBy = "created_at";
   jsonString;
   access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
-
+  goodsPager:any={};
+  servicesPager:any={};
+  goodsPagedItems:any=[];
+  servicesPagedItems:any=[];
   @ViewChild('closeBtn') closeBtn: ElementRef;
-  @ViewChild('closeBtn2') closeBtn2: ElementRef;
+  @ViewChild('closeEditModal') closeEditModal: ElementRef;
+  isGoodsSelected = true;
 
-  constructor(private http: Http,private pagerService:PagerService,public ExcelServiceService:ExcelServiceService,private router: Router ) {
-  // constructor(private http: Http) {
-    var context=this;
-    window.onbeforeunload = function (e) {
-      if (localStorage.getItem('admin_token')) {
-        context.onLoad();
-      }
-      else {
-        context.router.navigate(['/admin-login']);
-      }
-    };
+  constructor(private http: Http, private pagerService: PagerService, public ExcelServiceService: ExcelServiceService, private router: Router) {
+
   }
 
   ngOnInit() {
-    this.myForm = new FormGroup({
+
+    this.goodsForm = new FormGroup({
       hsn_code: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      rate: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      selectedStatusType: new FormControl('Select Status'),
+      cgst: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
+      sgst: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
+      igst: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
       description: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      selectCategory:new FormControl('Select Category')
-      // address: new FormGroup({
-      //   street: new FormControl('', <any>Validators.required),
-      //   postcode: new FormControl('8000')
-      // })
+      selectCategory: new FormControl('Select Category'),
+      comment: new FormControl()
     });
 
-    this.myForm_edit = new FormGroup({
-      hsn_code_edit: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      rate_edit: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      selectedStatusType_edit: new FormControl('Select Status'),
-      description_edit: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      selectCategory:new FormControl('Select Category')
+    this.goodsFormEdit = new FormGroup({
+      hsn_code: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
+      cgst: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
+      sgst: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
+      igst: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
+      description: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
+      selectCategory: new FormControl('Select Category'),
+      comment: new FormControl()
     });
+
+    var context = this;
+    if (localStorage.getItem('admin_token')) {
+      context.onLoad();
+    }
+    else {
+      context.router.navigate(['/admin-login']);
+    }
   }
 
-  onLoad()
-  {
+  onLoad() {
     this.statusDropDown.push({ "code": 0, "desc": "Approved" });
     this.statusDropDown.push({ "code": 1, "desc": "Pending" });
     this.statusDropDown.push({ "code": 2, "desc": "Declined" });
     this.selectedStatusType = "Select Status";
     console.log("selectedStatusTypeCONSOLE", this.selectedStatusType);
-    this.pager.currentPage = 1;
+    this.goodsPager.currentPage = 1;
+    this.servicesPager.currentPage = 1;
     this.access_token = localStorage.getItem("admin_token");
-    this.getAllHSNCodeList(this.pager.currentPage);
+
+    this.getAllGoods(this.goodsPager.currentPage);
+    this.getAllServices(this.servicesPager.currentPage);
+
   }
 
   private closeModal(): void {
     this.closeBtn.nativeElement.click();
   }
 
-  private closeEditModal() {
-    this.closeBtn2.nativeElement.click();
+  private closeEditModl() {
+    this.closeEditModal.nativeElement.click();
   }
 
   onStatusSelect(data) {
     console.log("LOG_ON_STATUS_SELECT", data);
-  }
-
-  getAllHSNCodeList(page: number) {
-    this.pager.currentPage = page;
-    console.log("getALLHSNCODELIST");
-
-    let response: any;
-    let myHeaders = new Headers({ 'Content-Type': 'application/json' });
-    // myHeaders.append('x-access-token', this.access_token);
-    myHeaders.append('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization, x-access-token');
-    myHeaders.append('Access-Control-Allow-Methods', 'GET, OPTIONS, POST');
-    myHeaders.append('Access-Control-Allow-Origin', '*');
-    // headers.append('Accept','charset=utf-8');
-    myHeaders.append('Access-Control-Allow-Credentials', 'true');
-
-    let options = new RequestOptions({ headers: myHeaders });
-
-    this.http.get('http://localhost:3000/api/hsn/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + this.pager.currentPage + '&sortBy=title&search=', options)
-      .subscribe(
-      response => {
-        console.log("BRANCH_LIST_API_RESPONSE", response.json());
-        console.log("BRANCH_LIST_API_RESPONSE_2", response.json().docs);
-
-        this.hsnCodeData = response.json().docs;
-        this.pager.pageSize = response.json().limit;
-        this.pager.totalItems = response.json().total;
-        this.setPage();
-
-      },
-      error => {
-        alert(error.text());
-        console.log(error.text());
-      }
-      );
-  }
-
-  setPage() {
-    if (this.pager.currentPage < 1 || this.pager.currentPage > this.pager.TotalPages) {
-      return;
-    }
-
-    this.pager = this.pagerService.getPager(this.pager.totalItems, this.pager.currentPage, this.pager.pageSize);
-    console.log("pager", this.pager);
-    // this.getStateList();
-    this.pagedItems = this.hsnCodeData;
   }
 
   onCSVFilePicked(files: FileList) {
@@ -156,7 +122,7 @@ export class AdminHsnCodeComponent implements OnInit {
         let csv: string = reader.result;
         console.log(csv);
         var csvString = this.ExcelServiceService.CSV2JSON(csv);
-        this.jsonString=csvString;
+        this.jsonString = csvString;
         // var csvString=this.CSV2JSON(csv);
         // this.uploadCsvFileToServer(csvString);
       }
@@ -164,7 +130,7 @@ export class AdminHsnCodeComponent implements OnInit {
   }
 
   uploadCsvFileToServer() {
-    
+
     const headers = new Headers();
 
     headers.append('Content-Type', 'application/json');
@@ -174,13 +140,23 @@ export class AdminHsnCodeComponent implements OnInit {
       "data": JSON.parse(this.jsonString)
     };
 
-    this.url = "http://localhost:3000/api/hsn/uploadFile?token="+this.access_token;
+    if (this.isGoodsSelected) {
+      this.url = "http://localhost:3000/api/goods/uploadFile?token=" + this.access_token;
+    }
+    else {
+      this.url = "http://localhost:3000/api/services/uploadFile?token=" + this.access_token;
+    }
+
     return this.http.post(this.url, body, requestOptions)
       .subscribe(
       response => {
         console.log("suceessfull data", response.json().message);
         this.closeModal();
-        alert(response.json().message);
+        this.closeCsv.nativeElement.click();
+        this.closeChoose.nativeElement.click();
+        this.ifSuccess=true;
+        this.closeChoose
+        // alert(response.json().message);
       },
       error => {
         console.log("error", error.message);
@@ -193,11 +169,11 @@ export class AdminHsnCodeComponent implements OnInit {
     this.submitted = true; // set form submit to true
     console.log(isValid);
     console.log("hi form module is called from page");
-    this.hsnCodeSubmitData = this.myForm.value;
+    this.hsnCodeSubmitData = this.goodsForm.value;
 
     console.log("form valuse", this.hsnCodeSubmitData);
 
-    if (isValid == true && this.myForm.value.selectedStatusType != 'Select Status') {
+    if (isValid == true) {
 
       const headers = new Headers();
 
@@ -205,21 +181,38 @@ export class AdminHsnCodeComponent implements OnInit {
       // headers.append('x-access-token', access_token);
       const requestOptions = new RequestOptions({ headers: headers });
       const body = {
-        "code": this.myForm.value.hsn_code,
-        "rate": this.myForm.value.rate,
-        "description": this.myForm.value.description
+        "hsn_code": this.goodsForm.value.hsn_code,
+        "cgst": this.goodsForm.value.cgst,
+        "sgst": this.goodsForm.value.sgst,
+        "igst": this.goodsForm.value.igst,
+        "description": this.goodsForm.value.description,
+        "condition": this.goodsForm.value.condition
       };
 
-      this.url = "http://localhost:3000/api/hsn/create?token="+this.access_token;
+      if (this.isGoodsSelected) {
+        this.url = "http://localhost:3000/api/goods/create?token=" + this.access_token;
+      }
+      else {
+        this.url = "http://localhost:3000/api/services/create?token=" + this.access_token;
+      }
+
       return this.http.post(this.url, body, requestOptions)
         .subscribe(
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeModal();
-
+          this.submitted = false;
           // this.hsnCodeData.push(body);
           // alert(response.json().message);
-          this.getAllHSNCodeList(this.pager.currentPage);
+          this.goodsForm.reset();
+          if (this.isGoodsSelected) {
+            this.getAllGoods(this.goodsPager.currentPage);
+          }
+          else {
+            this.getAllServices(this.servicesPager.currentPage);
+          }
+
+
         },
         error => {
           console.log("error", error.message);
@@ -230,44 +223,47 @@ export class AdminHsnCodeComponent implements OnInit {
   }
 
   update(isValid: boolean) {
-    console.log("HIIII");
-    this.submitted_edit = true; // set form submit to true
+    this.submitted = true; // set form submit to true
     console.log(isValid);
-    console.log("hi form module is called from page");
-
-    
-    this.hsnCodeSubmitData = this.myForm_edit.value;
-    console.log("form valuse", this.hsnCodeSubmitData);
 
     if (isValid == true) {
       // if (isValid == true) {
       const headers = new Headers();
 
       headers.append('Content-Type', 'application/json');
-      headers.append('x-access-token',this.access_token);
+      headers.append('x-access-token', this.access_token);
       const requestOptions = new RequestOptions({ headers: headers });
       console.log("_ID___", this.hsnRowData._id);
       const body = {
-        "code": this.myForm_edit.value.hsn_code_edit,
-        "rate": this.myForm_edit.value.rate_edit,
-        
-        "description": this.myForm_edit.value.description_edit,
-        // "statusDesc":this.myForm_edit.value.selectedStatusType_edit,
+        "hsn_code": this.goodsFormEdit.value.hsn_code,
+        "cgst": this.goodsFormEdit.value.cgst,
+        "sgst": this.goodsFormEdit.value.sgst,
+        "igst": this.goodsFormEdit.value.igst,
+        "description": this.goodsFormEdit.value.description,
+        "condition": this.goodsFormEdit.value.condition,
         "_id": this.hsnRowData._id
       };
 
-      this.url = "http://localhost:3000/api/hsn/update?token="+this.access_token;
+
+      if (this.isGoodsSelected) {
+        this.url = "http://localhost:3000/api/goods/update?token=" + this.access_token;
+      }
+      else {
+        this.url = "http://localhost:3000/api/services/update?token=" + this.access_token;
+      }
+
+
       return this.http.put(this.url, body, requestOptions)
         .subscribe(
         response => {
-          // console.log("suceessfull data", response);
-          this.closeEditModal();
-          this.submitted_edit = false;
-          // this.hsnCodeData.push(body);
-          // this.hsnCodeData.findIndex()
-          this.getAllHSNCodeList(this.pager.currentPage);
-          // alert(response);
-          // this.getAllHSNCodeList();
+          this.closeEditModl();
+          this.submitted = false;
+          if (this.isGoodsSelected) {
+            this.getAllGoods(this.goodsPager.currentPage);
+          }
+          else {
+            this.getAllServices(this.servicesPager.currentPage);
+          }
         },
         error => {
           console.log("error", error.message);
@@ -278,14 +274,15 @@ export class AdminHsnCodeComponent implements OnInit {
   }
 
   editHSNRecord(data) {
-    
-    console.log("VALUEATINDEX", this.hsnCodeData.indexOf(data));
-    var temp;
-    
-    this.myForm_edit.get("rate_edit").setValue(data.rate);
-    this.myForm_edit.get("hsn_code_edit").setValue(data.code);
-    this.myForm_edit.get("description_edit").setValue(data.description);
 
+    var temp;
+
+    this.goodsFormEdit.get("sgst").setValue(data.sgst);
+    this.goodsFormEdit.get("igst").setValue(data.igst);
+    this.goodsFormEdit.get("cgst").setValue(data.cgst);
+    this.goodsFormEdit.get("description").setValue(data.description);
+    this.goodsFormEdit.get("hsn_code").setValue(data.hsn_code);
+    this.goodsFormEdit.get("selectCategory").setValue(data.selectCategory);
     this.hsnRowData = data;
   }
 
@@ -298,25 +295,130 @@ export class AdminHsnCodeComponent implements OnInit {
     const headers = new Headers();
 
     headers.append('Content-Type', 'application/json');
-    
+
     const requestOptions = new RequestOptions({ headers: headers });
     console.log("_ID___", this.hsnRowData._id);
 
-    this.url = "http://localhost:3000/api/hsn/delete/" + this.hsnRowData._id;
+    if (this.isGoodsSelected) {
+      this.url = "http://localhost:3000/api/goods/delete/" + this.hsnRowData._id;
+    }
+    else {
+      this.url = "http://localhost:3000/api/services/delete/" + this.hsnRowData._id;
+    }
+
     return this.http.delete(this.url, requestOptions)
       .subscribe(
       response => {
         console.log("suceessfull data", response.json().message);
         this.closeModal();
-
-        // this.hsnCodeData.push(body);
-        // alert(response.json().message);
-        this.getAllHSNCodeList(this.pager.currentPage);
+        if (this.isGoodsSelected) {
+          this.getAllGoods(this.goodsPager.currentPage);
+        }
+        else {
+          this.getAllServices(this.servicesPager.currentPage);
+        }
       },
       error => {
         console.log("error", error.message);
         console.log(error.text());
       }
       );
+  }
+
+  getAllServices(page: number) {
+    this.servicesPager.currentPage = page;
+    let response: any;
+    let myHeaders = new Headers({ 'Content-Type': 'application/json' });
+    // myHeaders.append('x-access-token', this.access_token);
+    myHeaders.append('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization, x-access-token');
+    myHeaders.append('Access-Control-Allow-Methods', 'GET, OPTIONS, POST');
+    myHeaders.append('Access-Control-Allow-Origin', '*');
+    // headers.append('Accept','charset=utf-8');
+    myHeaders.append('Access-Control-Allow-Credentials', 'true');
+
+    let options = new RequestOptions({ headers: myHeaders });
+
+    this.http.get('http://localhost:3000/api/services/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + page + '&search=' + "&sortBy=" + this.sortBy, options)
+      .subscribe(
+      response => {
+        console.log("BRANCH_LIST_API_RESPONSE", response.json());
+        console.log("BRANCH_LIST_API_RESPONSE_2", response.json().docs);
+
+        this.servicesData = response.json().docs;
+        this.servicesPager.pageSize = response.json().limit;
+        this.servicesPager.totalItems = response.json().total;
+        this.setServicesPagination();
+
+      },
+      error => {
+        // alert(error.text());
+        console.log(error.text());
+      }
+      );
+  }
+
+  getAllGoods(page: number) {
+    this.goodsPager.currentPage = page;
+    console.log("getALLHSNCODELIST");
+    let response: any;
+    let myHeaders = new Headers({ 'Content-Type': 'application/json' });
+    // myHeaders.append('x-access-token', this.access_token);
+    myHeaders.append('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization, x-access-token');
+    myHeaders.append('Access-Control-Allow-Methods', 'GET, OPTIONS, POST');
+    myHeaders.append('Access-Control-Allow-Origin', '*');
+    // headers.append('Accept','charset=utf-8');
+    myHeaders.append('Access-Control-Allow-Credentials', 'true');
+
+    let options = new RequestOptions({ headers: myHeaders });
+
+    this.http.get('http://localhost:3000/api/goods/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + page + '&search=' + "&sortBy=" + this.sortBy, options)
+      .subscribe(
+      response => {
+        console.log("BRANCH_LIST_API_RESPONSE", response.json());
+        console.log("BRANCH_LIST_API_RESPONSE_2", response.json().docs);
+
+        this.goodsData = response.json().docs;
+        this.goodsPager.pageSize = response.json().limit;
+        this.goodsPager.totalItems = response.json().total;
+        this.setGoodsPagination();
+
+      },
+      error => {
+        // alert(error.text());
+        console.log(error.text());
+      }
+      );
+  }
+
+  getList(isGoods: boolean) {
+    this.isGoodsSelected = isGoods;
+    if (isGoods) {
+      this.getAllGoods(this.goodsPager.currentPage);
+    }
+    else {
+      this.getAllServices(this.servicesPager.currentPage);
+    }
+  }
+
+  setGoodsPagination() {
+    if (this.goodsPager.currentPage < 1 || this.goodsPager.currentPage > this.goodsPager.TotalPages) {
+      return;
+    }
+
+    this.goodsPager = this.pagerService.getPager(this.goodsPager.totalItems, this.goodsPager.currentPage, this.goodsPager.pageSize);
+    console.log("pager", this.goodsPager);
+    // this.getStateList();
+    this.goodsPagedItems = this.goodsData;
+  }
+
+  setServicesPagination() {
+    if (this.servicesPager.currentPage < 1 || this.servicesPager.currentPage > this.servicesPager.TotalPages) {
+      return;
+    }
+
+    this.servicesPager = this.pagerService.getPager(this.servicesPager.totalItems, this.servicesPager.currentPage, this.servicesPager.pageSize);
+    console.log("pager", this.servicesPager);
+    // this.getStateList();
+    this.servicesPagedItems = this.servicesData;
   }
 }

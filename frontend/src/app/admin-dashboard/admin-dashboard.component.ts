@@ -14,19 +14,17 @@ export class AdminDashboardComponent implements OnInit {
 
   onLoad()
   {
-    
+   
   }
 
   ngOnInit() {
     var context=this;
-    window.onbeforeunload = function (e) {
-      if (localStorage.getItem('admin_token')) {
-        context.onLoad();
-      }
-      else {
-        context.router.navigate(['/admin-login']);
-      }
-    };
+    if (localStorage.getItem('admin_token')) {
+      context.onLoad();
+    }
+    else {
+      context.router.navigate(['/admin-login']);
+    }
   }
 
   logout() {

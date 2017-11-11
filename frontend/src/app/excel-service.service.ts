@@ -105,5 +105,9 @@ export class ExcelServiceService {
     return (arrData);
   }
 
+  getCurrentDateAndTime()
+  {
+    return new Date().getMilliseconds();
+  }
 
 }

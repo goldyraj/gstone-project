@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
+import { RouterModule, Routes, Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-about-us',
@@ -25,7 +26,7 @@ export class AdminAboutUsComponent implements OnInit {
   public events: any[] = []; // use later to display form changes
   pager: any = {};
   pagedItems: any[];
-  constructor(private _fb: FormBuilder, private http: Http) {
+  constructor(private _fb: FormBuilder, private http: Http,public Router:Router) {
     this.access_token = localStorage.getItem("admin_token");
     this.getAboutUsList();
   }
@@ -34,6 +35,15 @@ export class AdminAboutUsComponent implements OnInit {
     this.editAbout = new FormGroup({
       discription: new FormControl('', [<any>Validators.required]),
     });
+
+    var context=this;
+    if (localStorage.getItem('admin_token')) {
+      
+    }
+    else {
+      context.Router.navigate(['/admin-login']);
+    }
+
   }
   getAboutUsList() {
     console.log('list called');

@@ -57,7 +57,7 @@
             <tbody>
               <!-- <tr *ngFor="let item of stateList;let i = index;"> -->
               <tr *ngFor="let item of stateList | stateFilter:searchString; let i = index;">
-                <td align="center">{{i+1}}</td>
+                <td align="center">{{pager.pageSize * (pager.currentPage-1)+i+1}}</td>
                 <td align="center">{{item.name}}</td>
                 <td align="center">{{item.code}}</td>
 
@@ -140,14 +140,7 @@
                     Contact is required (minimum 5 characters).
                   </small>
                 </div>
-                <!-- <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                      <select class="form-control" id="country" formControlName="country" [(ngModel)]="person.country">
-                        <option *ngFor="let c of countries" [ngValue]="c">{{c.name}}</option>
-                      </select>
-                      <small [hidden]="myForm.controls.country.valid || (myForm.controls.country.pristine && !submitted)">
-                        Status is required .
-                      </small>
-                    </div> -->
+
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <button type="submit" class="btn btn-primary">Add State</button>
                   <button type="button" class="btn btn-success pull-right" data-dismiss="modal">Cancel</button>
@@ -193,14 +186,7 @@
                     Contact is required (minimum 5 characters).
                   </small>
                 </div>
-                <!-- <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                      <select class="form-control" id="country" formControlName="country" [(ngModel)]="country">
-                        <option *ngFor="let c of countries" [ngValue]="c.name">{{c.name}}</option>
-                      </select>
-                      <small [hidden]="myFormEdit.controls.country.valid || (myFormEdit.controls.country.pristine && !submitted)">
-                        Status is required !
-                      </small>
-                    </div> -->
+
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <button type="submit" class="btn btn-primary">Update</button>
                   <button type="button" class="btn btn-success pull-right" data-dismiss="modal">Cancel</button>

@@ -4,6 +4,7 @@ import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import * as _ from 'underscore';
 import {PagerService} from '../service/pager.service';
+import { RouterModule, Routes, Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-internal-updates',
@@ -39,7 +40,7 @@ export class AdminInternalUpdatesComponent implements OnInit {
   public chapter;
 
   access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
-  constructor(private _fb: FormBuilder, private http: Http,public PagerService:PagerService) {
+  constructor(private _fb: FormBuilder, private http: Http,public PagerService:PagerService,public router:Router) {
     this.pager.currentPage=1;
     this.access_token = localStorage.getItem("admin_token");
     this.getInternalUpdateList(this.pager.currentPage);
@@ -64,6 +65,14 @@ export class AdminInternalUpdatesComponent implements OnInit {
 
     this.setupChapterArray();
     this.setupArticleArray();
+
+    var context=this;
+    if (localStorage.getItem('admin_token')!=null) {
+      
+    }
+    else {
+      context.router.navigate(['/admin-login']);
+    }
   }
 
   getInternalUpdateList(page:number) {
@@ -148,8 +157,17 @@ export class AdminInternalUpdatesComponent implements OnInit {
       this.editInternalUpdate.get("title").setValue(data.title);
       this.editInternalUpdate.get("details").setValue(data.details);
       this.editInternalUpdate.get("link").setValue(data.link);
-      this.editInternalUpdate.get("selectChapterArticle").setValue(data.selectChapterArticle);
+      
+      if(data.selectUpdateType==="chapter")
+      {
+        this.secondDropDownArray=this.chapterArray;
+      }
+      else if(data.selectUpdateType==="article")
+      {
+        this.secondDropDownArray=this.articleArray;
+      }
       this.editInternalUpdate.get("selectUpdateType").setValue(data.selectUpdateType);
+      this.editInternalUpdate.get("selectChapterArticle").setValue(data.selectChapterArticle);
       this.selectUpdateType=data.type;
       if(data.article!=null)
       {
@@ -160,6 +178,9 @@ export class AdminInternalUpdatesComponent implements OnInit {
       {
         this.selectChapterArticle=data.chapter;
       }
+
+      console.log("DROP_DOWN_ARRAY",this.secondDropDownArray);
+      console.log("SELECTED_CHAPTER_ARTICLE",this.selectChapterArticle);
     }
     this.notiRowData = data;
   }

@@ -16,7 +16,7 @@ const Branch = new Schema({
     address:String,
     city:String,
     state:String,
-   created_at:  { type: Date},
+   created_at:  { type: Date ,default: Date.now},
   updated_at:  { type: Date}
 })
 

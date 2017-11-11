@@ -49,7 +49,7 @@ const onError = (error) => {
     if(req.query.sortBy && req.query.sortBy.length>0){    
     sortfiled=req.query.sortBy
 }else{
-   sortfiled={ date: -1 } 
+   sortfiled={ created_at: -1 } 
 }
 var option={
     select:'hsn_code description cgst sgst igst condition',
@@ -169,9 +169,6 @@ exports.create = (req, res) => {
     POST /api/user/uploadfile
 */
 exports.uploadfile=(req,res)=>{
-
-
-
 var myobj= req.body.data
 //=========Authrise function
  var myCallback=usingItNow(req.decoded)

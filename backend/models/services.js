@@ -13,7 +13,7 @@ const Services = new Schema({
     sgst: String,
     igst: String,
     condition: String,
-      created_at:  { type: Date},
+      created_at:  { type: Date,default: Date.now},
   updated_at:  { type: Date}
 })
 

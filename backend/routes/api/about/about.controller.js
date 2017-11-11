@@ -88,7 +88,7 @@ exports.create = (req, res) => {
     POST /api/HSN/update
 */
 exports.update=(req,res)=>{
-        const {_id,description} = req.body 
+        const {_id,discription} = req.body 
  //=========Authrise function
  var myCallback=usingItNow(req.decoded)
  if(myCallback) {
@@ -97,7 +97,7 @@ exports.update=(req,res)=>{
         }) 
     }
       var updated_at=  Date.now();
-         About.findOneAndUpdate({_id:_id}, {$set:{discription:description,updated_at:updated_at
+         About.findOneAndUpdate({_id:_id}, {$set:{discription:discription,updated_at:updated_at
           }}, {new: true}, function(err, doc){
     if(err){
         console.log("Something wrong when updating data!");
@@ -117,7 +117,7 @@ exports.update=(req,res)=>{
             message: error.message
         })
     }
-      About.findOneByUsername(description)          
+      About.findOneByUsername(discription)          
          .then(respond)
          .catch(onError)
 }

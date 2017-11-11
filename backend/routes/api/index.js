@@ -62,6 +62,8 @@ router.use('/branch/update', authMiddleware)
 router.use('/branch/create', authMiddleware)
 router.use('/branch', branch)
 router.use('/goods/update', authMiddleware)
+router.use('/goods/uploadfile', authMiddleware)
+
 router.use('/goods/index', authMiddleware)
 router.use('/goods/create', authMiddleware)
 router.use('/goods', goods)

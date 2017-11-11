@@ -26,6 +26,12 @@ export class ContactComponent implements OnInit {
       company: new FormControl('', [<any>Validators.required]),
       remarks: new FormControl('', [<any>Validators.required])
     });
+    this.url = "";
+    this.errorMsg = "";
+  }
+  onLoad() {
+    this.contactForm.value.name = "";
+
   }
 
   sendContact(isValid: boolean) {
@@ -56,7 +62,7 @@ export class ContactComponent implements OnInit {
           console.log("suceessfull data", response.json().message);
           this.errorType = true;
           this.errorMsg = response.json().message;
-          this.contactForm.reset();
+          this.onLoad();
         },
         error => {
           // alert(error.message);

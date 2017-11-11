@@ -148,8 +148,8 @@
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <select class="form-control" formControlName="selectUpdateType" required (ngModelChange)="onSelectType($event)">
                     <option selected="0" value="0">Select Update Type</option>
-                    <option value="Chapter">Chapter</option>
-                    <option value="Article">Article</option>
+                    <option value="chapter">Chapter</option>
+                    <option value="article">Article</option>
                   </select>
                   <small *ngIf="internalUpdateForm.controls.selectUpdateType=='0' && submitted">
                     Select Update Type !
@@ -218,8 +218,8 @@
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <select class="form-control" formControlName="selectUpdateType" required (ngModelChange)="onSelectType($event)" [(ngModel)]="selectUpdateType">
                     <option selected="0" value="0">Select Update Type</option>
-                    <option value="Chapter">Chapter</option>
-                    <option value="Article">Article</option>
+                    <option value="chapter">Chapter</option>
+                    <option value="article">Article</option>
                   </select>
                   <small *ngIf="editInternalUpdate.controls.selectUpdateType=='0' && submitted">
                     Select Update Type !

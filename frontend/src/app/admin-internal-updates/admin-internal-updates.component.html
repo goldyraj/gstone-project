@@ -81,7 +81,7 @@
             </tbody>
           </table>
 
-          <ul class="pagination btn-sm">
+          <ul class="pagination btn-sm" *ngIf="internalUpdateList?.length > 10">
             <li [ngClass]="{disabled:pager.currentPage === 1}">
               <a [class.hide]="pager.currentPage == 1" (click)="getNotificationList(pager.currentPage - 1)">Previous</a>
             </li>

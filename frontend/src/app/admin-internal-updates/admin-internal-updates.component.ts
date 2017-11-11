@@ -56,7 +56,7 @@ export class AdminInternalUpdatesComponent implements OnInit {
   getInternalUpdateList(page:number) {
     this.pager.currentPage=page;
     console.log('list called');
-    this.http.get('http://localhost:3000/api/internal/index?token='+this.access_token+'&limit=' + 5 + '&page=' + this.pager.currentPage + '&sortBy=created_at&search=').subscribe(data => {
+    this.http.get('http://localhost:3000/api/internal/index?token='+this.access_token+'&limit=' + 10 + '&page=' + this.pager.currentPage + '&sortBy=created_at&search=').subscribe(data => {
       this.internalUpdateList = data.json().docs;
       this.pager.pageSize = data.json().limit;
       this.pager.totalItems=data.json().total;
@@ -179,7 +179,7 @@ export class AdminInternalUpdatesComponent implements OnInit {
     // headers.append('x-access-token', access_token);
     const requestOptions = new RequestOptions({ headers: headers });
 
-    this.url = "http://localhost:3000/api/internal/delete/" + this.notiRowData._id;
+    this.url = "http://localhost:3000/api/internal/delete/" + this.notiRowData._id+"?token="+this.access_token;
     return this.http.delete(this.url, requestOptions)
       .subscribe(
       response => {

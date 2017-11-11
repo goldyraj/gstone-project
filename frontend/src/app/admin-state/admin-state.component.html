@@ -78,7 +78,7 @@
           </table>
 
 
-          <ul class="pagination btn-sm">
+          <ul class="pagination btn-sm" *ngIf="stateList?.length > 1">
             <li [ngClass]="{disabled:pager.currentPage === 1}">
               <a *ngIf="pager.currentPage > 1" (click)="getStateList(pager.currentPage - 1)">Previous</a>
             </li>

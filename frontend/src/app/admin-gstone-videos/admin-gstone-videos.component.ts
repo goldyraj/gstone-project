@@ -4,6 +4,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { PagerService } from '../service/pager.service';
+import { RouterModule, Routes, Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-gstone-videos',
@@ -30,7 +31,7 @@ export class AdminGstoneVideosComponent implements OnInit {
   public submitted: boolean; // keep track on whether form is submitted
   public submittedEdit: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
-  constructor(private _fb: FormBuilder, private http: Http,private PagerService:PagerService) {
+  constructor(private _fb: FormBuilder, private http: Http,private PagerService:PagerService,public router:Router) {
     this.pager.currentPage = 1;
     this.access_token = localStorage.getItem("admin_token");
     this.getVideosList(this.pager.currentPage);
@@ -47,12 +48,26 @@ export class AdminGstoneVideosComponent implements OnInit {
       description: new FormControl('', [<any>Validators.required]),
       link: new FormControl('', [<any>Validators.required])
     });
+
+    var context = this;
+    if (localStorage.getItem('admin_token')) {
+      context.onLoad();
+    }
+    else {
+      context.router.navigate(['/admin-login']);
+    }
+
+  }
+
+  onLoad()
+  {
+
   }
 
   getVideosList(page:number) {
     this.pager.currentPage = page;
     console.log('list called');
-    this.http.get('http://localhost:3000/api/vedio/index?token='+this.access_token+'&limit=' + 5 + '&page=' + this.pager.currentPage + '&sortBy=created_at&search=').subscribe(data => {
+    this.http.get('http://localhost:3000/api/vedio/index?token='+this.access_token+'&limit=' + 10 + '&page=' + this.pager.currentPage).subscribe(data => {
       this.videosList = data.json().docs;
       this.pager.pageSize = data.json().limit;
       this.pager.totalItems = data.json().total;
@@ -202,5 +217,10 @@ export class AdminGstoneVideosComponent implements OnInit {
   }
   private closeDeleteModal(): void {
     this.closeBtn3.nativeElement.click();
+  }
+
+  resetForm()
+  {
+    this.gstVideosForm.reset();
   }
 }

@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
+import { RouterModule, Routes, Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-faqs',
@@ -30,7 +31,7 @@ export class AdminFaqsComponent implements OnInit {
   public submitted: boolean; // keep track on whether form is submitted
   public submittedEdit: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
-  constructor(private _fb: FormBuilder, private http: Http) {
+  constructor(private _fb: FormBuilder, private http: Http,public Router:Router) {
     this.access_token = localStorage.getItem("admin_token");
     this.getFaqsList();
   }
@@ -44,6 +45,15 @@ export class AdminFaqsComponent implements OnInit {
       question: new FormControl('', [<any>Validators.required]),
       answer: new FormControl('', [<any>Validators.required])
     });
+
+    var context=this;
+    if (localStorage.getItem('admin_token')) {
+      
+    }
+    else {
+      context.Router.navigate(['/admin-login']);
+    }
+    
   }
 
   saveFaqs(isValid: boolean) {
@@ -82,7 +92,7 @@ export class AdminFaqsComponent implements OnInit {
 
   getFaqsList() {
     console.log('list called');
-    this.http.get('http://localhost:3000/api/faq/index?token='+this.access_token+'&limit=' + this.Paging.limit + '&page=' + this.Paging.page + '&sortBy=title&search=').subscribe(data => {
+    this.http.get('http://localhost:3000/api/faq/index?token='+this.access_token+'&limit=' + 10 + '&page=' + this.Paging.page).subscribe(data => {
       this.faqsList = data.json().docs;
       this.TotalPages = data.json().total;
       this.pageSize = this.Paging.limit;
@@ -197,5 +207,10 @@ export class AdminFaqsComponent implements OnInit {
   }
   private closeDeleteModal(): void {
     this.closeBtn3.nativeElement.click();
+  }
+
+  resetForm()
+  {
+    this.FaqForm.reset();
   }
 }

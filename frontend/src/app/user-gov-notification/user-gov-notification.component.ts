@@ -44,7 +44,7 @@ export class UserGovNotificationComponent implements OnInit {
     this.pager.currentPage=page;
 
     console.log('list called');
-    this.http.get('http://localhost:3000/api/home/notification').subscribe(data => {
+    this.http.get('http://localhost:3000/api/home/notification?limit=10&page='+this.pager.currentPage).subscribe(data => {
       this.notificationList = data.json().docs;
       this.pager.pageSize = data.json().limit;
       this.pager.totalItems = data.json().total;

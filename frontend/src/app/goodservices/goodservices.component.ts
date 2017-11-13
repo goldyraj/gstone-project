@@ -18,6 +18,11 @@ export class GoodservicesComponent implements OnInit {
   @ViewChild('closeBtn') closeBtn: ElementRef;
   @ViewChild('closeBtn2') closeBtn2: ElementRef;
   @ViewChild('closeBtn3') closeBtn3: ElementRef;
+  isDownloadSuccessful:boolean;
+  ifSuccess:boolean;
+  @ViewChild('closeChoose') closeChoose: ElementRef;
+  @ViewChild('closeCsv') closeCsv:ElementRef;
+  jsonString;
 
   url;
   goodsAndServicesDataList = [];
@@ -252,36 +257,39 @@ export class GoodservicesComponent implements OnInit {
       reader.onload = (e) => {
         let csv: string = reader.result;
         console.log(csv);
-        var csvString = this.CSV2JSON(csv);
+        var csvString = this.excelServiceService.CSV2JSON(csv);
+        this.jsonString = csvString;
         // var csvString=this.CSV2JSON(csv);
-
         // this.uploadCsvFileToServer(csvString);
       }
     }
   }
 
-  uploadCsvFileToServer(jsonString) {
+  uploadCsvFileToServer() {
 
     const headers = new Headers();
 
     headers.append('Content-Type', 'application/json');
-    // headers.append('x-access-token', access_token);
+    headers.append('x-access-token', this.access_token);
     const requestOptions = new RequestOptions({ headers: headers });
     const body = {
-      "data": JSON.parse(jsonString)
+      "data": JSON.parse(this.jsonString)
     };
 
+    console.log("CSV_DATA", body);
 
-
-    console.log(body);
     this.url = "http://localhost:3000/api/goods/uploadFile?token=" + this.access_token;
+
     return this.http.post(this.url, body, requestOptions)
       .subscribe(
       response => {
         console.log("suceessfull data", response.json().message);
-        // this.closeModal();
-
-        alert(response.json().message);
+        this.closeModal();
+        this.closeCsv.nativeElement.click();
+        this.closeChoose.nativeElement.click();
+        this.ifSuccess = true;
+        this.getGoodsAndServicesList(this.pager.currentPage);
+        // alert(response.json().message);
       },
       error => {
         console.log("error", error.message);
@@ -291,76 +299,39 @@ export class GoodservicesComponent implements OnInit {
   }
 
   downloadJSONTOCSV() {
-    this.getGoodsAndServicesList(this.pager.currentPage);
-    this.excelServiceService.exportAsExcelFile(this.goodsAndServicesDataList, "BranchesJSNTOCSV");
+    let response: any;
+    let myHeaders = new Headers({ 'Content-Type': 'application/json' });
+    var exportedList;
+    myHeaders.append('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization, x-access-token');
+    myHeaders.append('Access-Control-Allow-Methods', 'GET, OPTIONS, POST');
+    myHeaders.append('Access-Control-Allow-Origin', '*');
+
+    myHeaders.append('Access-Control-Allow-Credentials', 'true');
+
+    let options = new RequestOptions({ headers: myHeaders });
+
+    this.http.get('http://localhost:3000/api/goods/index?token='+this.access_token, options)
+      .subscribe(
+      response => {
+        exportedList = response.json().docs;
+        this.excelServiceService.exportAsExcelFile(exportedList,String(this.excelServiceService.getCurrentDateAndTime()));
+        this.isDownloadSuccessful=true;
+      },
+      error => {
+        // alert(error.text());
+        console.log(error.text());
+      }
+      );
   }
 
-  CSV2JSON(csv) {
-    var array = this.CSVToArray(csv, ",");
-
-    var objArray = [];
-    for (var i = 1; i < array.length; i++) {
-      objArray[i - 1] = {};
-      for (var k = 0; k < array[0].length && k < array[i].length; k++) {
-        var key = array[0][k];
-        objArray[i - 1][key] = array[i][k]
-      }
-    }
-
-    var json = JSON.stringify(objArray.splice(0, objArray.length - 1));
-    var str = json.replace(/},/g, "},\r\n");
-    return str;
+  closeDownloadModal()
+  {
+    this.isDownloadSuccessful=false;
   }
 
-  CSVToArray(strData, strDelimiter) {
-    // Check to see if the delimiter is defined. If not,
-    // then default to comma.
-    strDelimiter = (strDelimiter || ",");
-    // Create a regular expression to parse the CSV values.
-    var objPattern = new RegExp((
-      // Delimiters.
-      "(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
-      // Quoted fields.
-      "(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
-      // Standard fields.
-      "([^\"\\" + strDelimiter + "\\r\\n]*))"), "gi");
-    // Create an array to hold our data. Give the array
-    // a default empty first row.
-    var arrData = [[]];
-    // Create an array to hold our individual pattern
-    // matching groups.
-    var arrMatches = null;
-    // Keep looping over the regular expression matches
-    // until we can no longer find a match.
-    while (arrMatches = objPattern.exec(strData)) {
-      // Get the delimiter that was found.
-      var strMatchedDelimiter = arrMatches[1];
-      // Check to see if the given delimiter has a length
-      // (is not the start of string) and if it matches
-      // field delimiter. If id does not, then we know
-      // that this delimiter is a row delimiter.
-      if (strMatchedDelimiter.length && (strMatchedDelimiter != strDelimiter)) {
-        // Since we have reached a new row of data,
-        // add an empty row to our data array.
-        arrData.push([]);
-      }
-      // Now that we have our delimiter out of the way,
-      // let's check to see which kind of value we
-      // captured (quoted or unquoted).
-      if (arrMatches[2]) {
-        // We found a quoted value. When we capture
-        // this value, unescape any double quotes.
-        var strMatchedValue = arrMatches[2].replace(
-          new RegExp("\"\"", "g"), "\"");
-      } else {
-        // We found a non-quoted value.
-        var strMatchedValue = arrMatches[3];
-      }
-      // Now that we have our value string, let's add
-      // it to the data array.
-      arrData[arrData.length - 1].push(strMatchedValue);
-    }
-    // Return the parsed data.
-    return (arrData);
+  resetForm()
+  {
+    this.addNewGoodsForm.reset();
   }
+
 }

@@ -93,7 +93,7 @@ exports.login = (req, res) => {
                             name: user.name,
                             username: user.username,
                             admin: user.admin,
-                             type: user.type
+                            type: user.type
                         }, 
                         secret, 
                         {

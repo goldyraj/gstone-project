@@ -128,14 +128,14 @@
               <form [formGroup]="myForm" novalidate (ngSubmit)="saveState(myForm.valid)">
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" formControlName="statename" placeholder="State Name" name="statename" id="statename"
+                  <input type="text" pattern="[A-Za-z]{3}" maxlength="25" class="form-control" formControlName="statename" placeholder="State Name" name="statename" id="statename"
                     required>
                   <small [hidden]="myForm.controls.statename.valid || (myForm.controls.statename.pristine && !submitted)">
                     Name is required (minimum 5 characters).
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" formControlName="statecode" placeholder="State Code" name="statecode" required>
+                  <input type="text" pattern="[A-Za-z]{3}" maxlength="5" class="form-control" formControlName="statecode" placeholder="State Code" name="statecode" required>
                   <small [hidden]="myForm.controls.statecode.valid || (myForm.controls.statecode.pristine && !submitted)">
                     Contact is required (minimum 5 characters).
                   </small>

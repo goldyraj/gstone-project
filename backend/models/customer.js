@@ -29,9 +29,9 @@ Customer.statics.create = function(name,pan_no,gstin,city,contact,email,address,
 }
 
 // find one user by using username
-Customer.statics.findOneByUsername = function(name) {
+Customer.statics.findOneByUsername = function(gstin) {
     return this.findOne({
-        name        
+        gstin        
     }).exec()
 }
 Customer.statics.all = function() {

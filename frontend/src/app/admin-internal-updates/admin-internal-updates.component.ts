@@ -48,16 +48,16 @@ export class AdminInternalUpdatesComponent implements OnInit {
 
   ngOnInit() {
     this.internalUpdateForm = new FormGroup({
-      selectUpdateType:new FormControl("Select Update Type"),
-      selectChapterArticle:new FormControl("Select Chapter/Article"),
+      selectUpdateType:new FormControl("0"),
+      selectChapterArticle:new FormControl("0"),
       title: new FormControl('', [<any>Validators.required]),
       details: new FormControl('', [<any>Validators.required]),
       link: new FormControl('', [<any>Validators.required])
     });
 
     this.editInternalUpdate = new FormGroup({
-      selectUpdateType:new FormControl("Select Update Type"),
-      selectChapterArticle:new FormControl("Select Chapter/Article"),
+      selectUpdateType:new FormControl("0"),
+      selectChapterArticle:new FormControl("0"),
       title: new FormControl('', [<any>Validators.required]),
       details: new FormControl('', [<any>Validators.required]),
       link: new FormControl('', [<any>Validators.required]),
@@ -112,7 +112,7 @@ export class AdminInternalUpdatesComponent implements OnInit {
       // headers.append('x-access-token', access_token);
       var chapterParam;
       var articleParam;
-      if(this.internalUpdateForm.value.selectedType==="chapter")
+      if(this.internalUpdateForm.value.selectUpdateType==="chapter")
       {
         chapterParam=this.internalUpdateForm.value.selectChapterArticle;
       }
@@ -127,7 +127,7 @@ export class AdminInternalUpdatesComponent implements OnInit {
         "details": this.internalUpdateForm.value.details,
         "link": this.internalUpdateForm.value.link,
         "date": "13/11/2017",
-        "type":this.internalUpdateForm.value.selectedType,
+        "type":this.internalUpdateForm.value.selectUpdateType,
         "chapter":chapterParam,
         "article":articleParam
       };
@@ -138,7 +138,7 @@ export class AdminInternalUpdatesComponent implements OnInit {
           console.log("suceessfull data", response.json().message);
           this.closeModal();
           this.internalUpdateForm.reset();
-          this.submitted=false;
+          
           this.getInternalUpdateList(this.pager.currentPage);
         },
         error => {
@@ -150,6 +150,7 @@ export class AdminInternalUpdatesComponent implements OnInit {
   }
 
   editInternalRecord(data) {
+    this.submittedEdit = false;
     this.rowDataIndex = data._id;
     var temp;
     if (data) {
@@ -166,8 +167,8 @@ export class AdminInternalUpdatesComponent implements OnInit {
       {
         this.secondDropDownArray=this.articleArray;
       }
-      this.editInternalUpdate.get("selectUpdateType").setValue(data.selectUpdateType);
-      this.editInternalUpdate.get("selectChapterArticle").setValue(data.selectChapterArticle);
+      this.editInternalUpdate.get("selectUpdateType").setValue(data.type);
+      
       this.selectUpdateType=data.type;
       if(data.article!=null)
       {
@@ -199,13 +200,13 @@ export class AdminInternalUpdatesComponent implements OnInit {
       headers.append('Content-Type', 'application/json');
       var chapterParam;
       var articleParam;
-      if(this.internalUpdateForm.value.selectedType==="chapter")
+      if(this.editInternalUpdate.value.selectUpdateType==="chapter")
       {
-        chapterParam=this.internalUpdateForm.value.selectChapterArticle;
+        chapterParam=this.editInternalUpdate.value.selectChapterArticle;
       }
       else
       {
-        articleParam=this.internalUpdateForm.value.selectChapterArticle;
+        articleParam=this.editInternalUpdate.value.selectChapterArticle;
       }
       
       const requestOptions = new RequestOptions({ headers: headers });
@@ -215,7 +216,7 @@ export class AdminInternalUpdatesComponent implements OnInit {
         "title": this.editInternalUpdate.value.title,
         "details": this.editInternalUpdate.value.details,
         "link": this.editInternalUpdate.value.link,
-        "type":this.internalUpdateForm.value.selectedType,
+        "type":this.editInternalUpdate.value.selectUpdateType,
         "chapter":chapterParam,
         "article":articleParam
       };
@@ -226,7 +227,7 @@ export class AdminInternalUpdatesComponent implements OnInit {
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeEditModal();
-          this.submittedEdit = false;
+          
           this.getInternalUpdateList(this.pager.currentPage);
         },
         error => {
@@ -237,7 +238,8 @@ export class AdminInternalUpdatesComponent implements OnInit {
     }
   }
 
-  deleteInternalRecord(data) {
+  recordToBeDeleted(data) {
+    this.submittedEdit = false;
     this.rowDataIndex = data._id;
     this.notiRowData = data;
   }
@@ -278,6 +280,7 @@ export class AdminInternalUpdatesComponent implements OnInit {
 
   resetForm()
   {
+    this.submitted=false;
     this.internalUpdateForm.reset();
     this.internalUpdateForm.get('selectUpdateType').setValue('0');
     this.internalUpdateForm.get('selectChapterArticle').setValue('0');
@@ -285,7 +288,7 @@ export class AdminInternalUpdatesComponent implements OnInit {
 
   setupChapterArray()
   {
-    for(var i=0;i<=5;i++)
+    for(var i=1;i<=5;i++)
     {
       this.chapterArray.push("Chapter "+i);
     }
@@ -294,25 +297,25 @@ export class AdminInternalUpdatesComponent implements OnInit {
 
   setupArticleArray()
   {
-    for(var i=0;i<=5;i++)
+    for(var i=1;i<=5;i++)
     {
       this.articleArray.push("Article "+i);
     }
   }
 
-  onSelectType(selectedType)
+  onSelectType(selectUpdateType)
   {
-    console.log("OnModelChange",selectedType);
-    if(selectedType=='0')
+    console.log("OnModelChange",selectUpdateType);
+    if(selectUpdateType=='0')
     {
       return;
     }
-    if(selectedType==="Chapter")
+    if(selectUpdateType==="chapter")
     {
       this.secondDropDownArray=this.chapterArray;
       
     }
-    else if(selectedType==="Article")
+    else if(selectUpdateType==="article")
     {
       this.secondDropDownArray=this.articleArray;
     }

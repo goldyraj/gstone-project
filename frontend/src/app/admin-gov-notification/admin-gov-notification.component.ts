@@ -76,6 +76,7 @@ export class AdminGovNotificationComponent implements OnInit {
   }
 
   editNotificationRecord(data) {
+    this.submittedEdit = false;
     this.rowDataIndex = data._id;
     var temp;
     if (data) {
@@ -115,7 +116,7 @@ export class AdminGovNotificationComponent implements OnInit {
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeEditModal();
-          this.submittedEdit = false;
+          
           this.getNotificationList(this.pager.currentPage);
           // alert(response.json().message);
         },
@@ -128,6 +129,7 @@ export class AdminGovNotificationComponent implements OnInit {
   }
 
   deleteNotiRecord(data) {
+    this.submittedEdit = false;
     this.rowDataIndex = data._id;
     this.notiRowData = data;
   }
@@ -141,13 +143,13 @@ export class AdminGovNotificationComponent implements OnInit {
     // headers.append('x-access-token', access_token);
     const requestOptions = new RequestOptions({ headers: headers });
 
-    this.url = "http://localhost:3000/api/notification/delete/" + this.notiRowData._id+"?token="+this.access_token;
+    this.url = "http://localhost:3000/api/notification/delete/" + this.notiRowData._id;
     return this.http.delete(this.url, requestOptions)
       .subscribe(
       response => {
         console.log("suceessfull data", response.json().message);
         this.closeDeleteModal();
-        this.submittedEdit = false;
+        this.getNotificationList(this.pager.currentPage);
         // alert(response.json().message);
       },
       error => {
@@ -183,7 +185,8 @@ export class AdminGovNotificationComponent implements OnInit {
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeModal();
-          this.submitted = false;
+          this.getNotificationList(this.pager.currentPage);
+          
         },
         error => {
           console.log("error", error.message);

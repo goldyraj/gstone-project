@@ -6,17 +6,15 @@ import * as _ from 'underscore';
 import { PagerService } from '../service/pager.service';
 import { ExcelServiceService } from '../excel-service.service';
 import { RouterModule, Routes, Router } from '@angular/router';
+import { NumberValidatorsService } from "../number-validators.service";
 
 @Component({
   selector: 'app-admin-hsn-code',
   templateUrl: './admin-hsn-code.component.html',
   styleUrls: ['./admin-hsn-code.component.css'],
-  providers: [PagerService, ExcelServiceService]
+  providers: [PagerService, ExcelServiceService,NumberValidatorsService]
 })
 export class AdminHsnCodeComponent implements OnInit {
-
-  @ViewChild('closeChoose') closeChoose: ElementRef;
-  @ViewChild('closeCsv') closeCsv: ElementRef;
 
   public addStateForm: FormGroup; // our model driven form
   public submitted: boolean = false; // keep track on whether form is submitted
@@ -45,6 +43,8 @@ export class AdminHsnCodeComponent implements OnInit {
   servicesPagedItems: any = [];
   @ViewChild('closeBtn') closeBtn: ElementRef;
   @ViewChild('closeEditModal') closeEditModal: ElementRef;
+  @ViewChild('closeChoose') closeChoose: ElementRef;
+  @ViewChild('closeCsv') closeCsv: ElementRef;
   public selectCategory;
   public isDownloadSuccessful;
   isGoodsSelected = true;
@@ -56,20 +56,20 @@ export class AdminHsnCodeComponent implements OnInit {
   ngOnInit() {
 
     this.goodsForm = new FormGroup({
-      hsn_code: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      cgst: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      sgst: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      igst: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
+      hsn_code: new FormControl(0, [Validators.required,, NumberValidatorsService.min(0)]),
+      cgst: new FormControl(0,[Validators.required,, NumberValidatorsService.min(0)]),
+      sgst: new FormControl(0,[Validators.required,, NumberValidatorsService.min(0)]),
+      igst: new FormControl(0,[Validators.required,, NumberValidatorsService.min(0)]),
       description: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
       selectCategory: new FormControl('Select Category'),
       comment: new FormControl()
     });
 
     this.goodsFormEdit = new FormGroup({
-      hsn_code: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      cgst: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      sgst: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      igst: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
+      hsn_code: new FormControl(0, [Validators.required,, NumberValidatorsService.min(0)]),
+      cgst: new FormControl(0,[Validators.required,, NumberValidatorsService.min(0)]),
+      sgst: new FormControl(0,[Validators.required,, NumberValidatorsService.min(0)]),
+      igst: new FormControl(0,[Validators.required,, NumberValidatorsService.min(0)]),
       description: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
       selectCategory: new FormControl('Select Category'),
       comment: new FormControl()
@@ -210,10 +210,10 @@ export class AdminHsnCodeComponent implements OnInit {
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeModal();
-          this.submitted = false;
+          
           // this.hsnCodeData.push(body);
           // alert(response.json().message);
-          this.goodsForm.reset();
+          // this.goodsForm.reset();
           if (this.isGoodsSelected) {
             this.getAllGoods(this.goodsPager.currentPage);
           }
@@ -236,6 +236,7 @@ export class AdminHsnCodeComponent implements OnInit {
     console.log(isValid);
 
     if (isValid == true) {
+      this.submitted=false;
       // if (isValid == true) {
       const headers = new Headers();
 
@@ -266,7 +267,7 @@ export class AdminHsnCodeComponent implements OnInit {
         .subscribe(
         response => {
           this.closeEditModl();
-          this.submitted = false;
+          
           if (this.isGoodsSelected) {
             this.getAllGoods(this.goodsPager.currentPage);
           }
@@ -285,13 +286,21 @@ export class AdminHsnCodeComponent implements OnInit {
   editHSNRecord(data) {
 
     var temp;
-
+    // this.submitted=false;
     this.goodsFormEdit.get("sgst").setValue(data.sgst);
     this.goodsFormEdit.get("igst").setValue(data.igst);
     this.goodsFormEdit.get("cgst").setValue(data.cgst);
     this.goodsFormEdit.get("description").setValue(data.description);
     this.goodsFormEdit.get("hsn_code").setValue(data.hsn_code);
-    this.goodsFormEdit.get("selectCategory").setValue(data.selectCategory);
+    if(this.isGoodsSelected)
+    {
+      this.goodsFormEdit.get("selectCategory").setValue("Goods");
+    }
+    else
+    {
+      this.goodsFormEdit.get("selectCategory").setValue("Services");
+    }
+    
     this.selectCategory=data.selectCategory;
     this.hsnRowData = data;
   }
@@ -310,10 +319,10 @@ export class AdminHsnCodeComponent implements OnInit {
     console.log("_ID___", this.hsnRowData._id);
 
     if (this.isGoodsSelected) {
-      this.url = "http://localhost:3000/api/goods/delete/" + this.hsnRowData._id + "?token=" + this.access_token;
+      this.url = "http://localhost:3000/api/goods/delete/" + this.hsnRowData._id ;
     }
     else {
-      this.url = "http://localhost:3000/api/services/delete/" + this.hsnRowData._id + "?token=" + this.access_token;
+      this.url = "http://localhost:3000/api/services/delete/" + this.hsnRowData._id ;
     }
 
     return this.http.delete(this.url, requestOptions)
@@ -474,6 +483,8 @@ export class AdminHsnCodeComponent implements OnInit {
 
   resetForm()
   {
+    this.submitted = false;
     this.goodsForm.reset();
+    this.goodsForm.get("selectCategory").setValue("Select Category");
   }
 }

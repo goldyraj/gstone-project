@@ -10,7 +10,6 @@ const authMiddleware = (req, res, next) => {
             message: 'not logged in'
         })
     }
-
     // create a promise that decodes the token
     const p = new Promise(
         (resolve, reject) => {
@@ -35,5 +34,4 @@ const authMiddleware = (req, res, next) => {
         next()
     }).catch(onError)
 }
-
 module.exports = authMiddleware

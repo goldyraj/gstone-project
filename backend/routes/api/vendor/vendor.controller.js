@@ -193,15 +193,13 @@ var myobj= req.body.data
      
   });
 
-    
-   
 }
 /*
     POST /api/vendor/delete
 */
 exports.delete=(req,res)=>{
     
-       console.log('format',req.baseUrl)
+
   Vendor.findByIdAndRemove(req.params.id, function(err) {
   if (err){ 
     res.json({'invoice':err})

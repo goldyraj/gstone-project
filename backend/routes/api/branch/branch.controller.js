@@ -149,6 +149,7 @@ var myCallback=usingItNow(req.decoded)
     // assign admin if count is 1
    
  const respond = () => {
+
         res.json({
             message: 'Branch Successfully Save'
         
@@ -157,9 +158,11 @@ var myCallback=usingItNow(req.decoded)
     }
 
     // run when there is an error (username exists)
+
     const onError = (error) => {
+         console.log(error.message.index)
         res.status(409).json({
-            messages: error.message
+            messages: "Pan Number allready exites "
         })
     }
 

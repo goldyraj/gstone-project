@@ -67,7 +67,7 @@
             </tbody>
           </table>
 
-          <ul class="pagination btn-sm" *ngIf="notificationList?.length > 10">
+          <ul class="pagination btn-sm" *ngIf="notificationList?.length > 1">
             <li [ngClass]="{disabled:pager.currentPage === 1}">
               <a *ngIf="pager.currentPage > 1" (click)="getNotificationList(pager.currentPage - 1)">Previous</a>
             </li>

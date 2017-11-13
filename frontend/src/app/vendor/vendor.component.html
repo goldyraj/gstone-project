@@ -31,7 +31,7 @@
 		<div class="col-md-12 col-sm-12 section-top-20 section-bottom-90">
 			<div class="alert alert-danger" *ngIf="vendorList == true">
 				<strong>Sorry!</strong> Your dont have vendor list.
-			  </div>
+			</div>
 			<table class="table table-condensed table-bordered" *ngIf="vendorList == false">
 				<thead>
 					<tr>
@@ -191,7 +191,7 @@
 	<div class="modal-dialog modal-md" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<button type="button" class="close" data-dismiss="modal" #closeChoose aria-label="Close">
 					<span class="modal-text" aria-hidden="true">X</span>
 				</button>
 				<h4 class="text-blue text-center">Choose Import/Export</h4>
@@ -200,10 +200,10 @@
 				<div class="service-section">
 					<div class="row">
 						<div class="col-md-12 col-sm-12 col-xs-12 text-center section-top-10 section-bottom-40">
-							<a href="" data-toggle="modal" data-target=".bs-Import-sm">
+							<a data-toggle="modal" data-target=".bs-Import-sm">
 								<input type="button" class="btn btn-success" data-dismiss="modal" value="Import Excel/CSV">
 							</a> &nbsp; &nbsp; &nbsp;
-							<a href="" data-toggle="modal" data-target=".bs-Export-sm">
+							<a data-toggle="modal" data-target=".bs-Export-sm">
 								<input type="button" class="btn btn-primary" data-dismiss="modal" value="Export Excel/CSV ">
 							</a>
 						</div>
@@ -220,7 +220,7 @@
 	<div class="modal-dialog modal-md" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<button type="button" class="close" data-dismiss="modal" #closeCsv aria-label="Close">
 					<span class="modal-text" aria-hidden="true">X</span>
 				</button>
 				<h4 class="text-blue text-center">Import Customer data</h4>
@@ -234,13 +234,13 @@
 
 							<div class="col-md-5 col-sm-5 col-xs-12 col-md-offset-1">
 								<!-- <input type="file" value=""> -->
-								<input type="file" class="btn btn-success" (change)="onCSVFilePicked($event.target.files)" accept=".csv,.xlsx">
+								<input class="btn btn-success" type="file" (change)="onCSVFilePicked($event.target.files)" accept=".csv,.xlsx">
 							</div>
 							<div class="col-md-4 col-sm-4 col-xs-12 col-md-offset-1">
 								<input type="button" class="btn btn-primary" value="Upload" (click)="uploadCsvFileToServer()">
 							</div>
 						</div>
-						<p class="text-info text-center">Successfully file uploaded</p>
+						<p *ngIf="ifSuccess==true" class="text-info text-center">Successfully file uploaded</p>
 					</div>
 					<div align="center">
 						<input type="button" class="btn btn-success" data-dismiss="modal" value="Close">
@@ -268,16 +268,14 @@
 						<div class="col-md-12 col-sm-12 col-xs-12 section-top-10 section-bottom-20">
 							<!-- <p align="center">Please choose Excel/CSV file</p> -->
 							<br>
-
-							<div class="col-md-4 col-sm-4 col-xs-12 col-md-offset-1">
+							<div align="center">
 								<input type="button" class="btn btn-primary" value="Download" (click)="downloadJSONTOCSV()">
 							</div>
-
 						</div>
-						<!-- <p class="text-info text-center">Successfully file uploaded</p> -->
+						<p *ngIf="isDownloadSuccessful==true" class="text-info text-center">Download Complete !</p>
 					</div>
 					<div align="center">
-						<input type="button" class="btn btn-success" data-dismiss="modal" value="Close">
+						<input type="button" (click)="closeDownloadModal()" class="btn btn-success" data-dismiss="modal" value="Close">
 					</div>
 				</div>
 			</div>
@@ -285,6 +283,9 @@
 		</div>
 	</div>
 </div>
+
+
+
 <div class="modal fade bs-user-lg-edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
 	<div class="modal-dialog modal-md" role="document">
 		<div class="modal-content section-form">

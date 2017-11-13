@@ -45,6 +45,8 @@ export class AdminHsnCodeComponent implements OnInit {
   servicesPagedItems: any = [];
   @ViewChild('closeBtn') closeBtn: ElementRef;
   @ViewChild('closeEditModal') closeEditModal: ElementRef;
+  public selectCategory;
+  public isDownloadSuccessful;
   isGoodsSelected = true;
 
   constructor(private http: Http, private pagerService: PagerService, public excelServiceService: ExcelServiceService, private router: Router) {
@@ -290,6 +292,7 @@ export class AdminHsnCodeComponent implements OnInit {
     this.goodsFormEdit.get("description").setValue(data.description);
     this.goodsFormEdit.get("hsn_code").setValue(data.hsn_code);
     this.goodsFormEdit.get("selectCategory").setValue(data.selectCategory);
+    this.selectCategory=data.selectCategory;
     this.hsnRowData = data;
   }
 
@@ -378,7 +381,7 @@ export class AdminHsnCodeComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/goods/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + page + '&search=' + "&sortBy=" + this.sortBy, options)
+    this.http.get('http://localhost:3000/api/goods/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + page, options)
       .subscribe(
       response => {
         console.log("BRANCH_LIST_API_RESPONSE", response.json());
@@ -453,6 +456,7 @@ export class AdminHsnCodeComponent implements OnInit {
       response => {
         exportedList = response.json().docs;
         this.excelServiceService.exportAsExcelFile(exportedList, "JSONTOCSV1");
+        this.isDownloadSuccessful=true;
       },
       error => {
         // alert(error.text());
@@ -463,9 +467,13 @@ export class AdminHsnCodeComponent implements OnInit {
     
   }
 
-  exportCSV(url: string) {
-
+  closeDownloadModal()
+  {
+    this.isDownloadSuccessful=false;
   }
 
-  download
+  resetForm()
+  {
+    this.goodsForm.reset();
+  }
 }

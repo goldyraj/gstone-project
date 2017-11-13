@@ -137,7 +137,7 @@ export class AdminStateComponent implements OnInit {
 
   getStateList(page: number) {
     this.pager.currentPage = page;
-    this.http.get('http://localhost:3000/api/state/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + this.pager.currentPage+"&sortBy="+this.sortBy).subscribe(data => {
+    this.http.get('http://localhost:3000/api/state/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + this.pager.currentPage).subscribe(data => {
       this.stateList = data.json().docs;
       // this.pager.TotalPages = data.json().total;
       this.pager.pageSize = data.json().limit;
@@ -252,5 +252,10 @@ export class AdminStateComponent implements OnInit {
 
   recordToDelete(item) {
     this.stateRowData = item;
+  }
+
+  resetForm()
+  {
+    this.myForm.reset();
   }
 }

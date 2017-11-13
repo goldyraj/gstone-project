@@ -5,6 +5,7 @@ import{ExcelServiceService} from '../excel-service.service';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
+import { RouterModule, Routes, Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-gov-notification',
@@ -35,7 +36,7 @@ export class AdminGovNotificationComponent implements OnInit {
   public events: any[] = []; // use later to display form changes
   access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
 
-  constructor(private _fb: FormBuilder, private http: Http,public ExcelServiceService:ExcelServiceService,public PagerService:PagerService) {
+  constructor(private _fb: FormBuilder, private http: Http,public ExcelServiceService:ExcelServiceService,public PagerService:PagerService,public Router:Router) {
     this.pager.currentPage=1;
     this.access_token = localStorage.getItem("admin_token");
     this.getNotificationList(this.pager.currentPage);
@@ -52,12 +53,21 @@ export class AdminGovNotificationComponent implements OnInit {
       description: new FormControl('', [<any>Validators.required]),
       link: new FormControl('', [<any>Validators.required])
     });
+
+    var context=this;
+    if (localStorage.getItem('admin_token')) {
+      
+    }
+    else {
+      context.Router.navigate(['/admin-login']);
+    }
+
   }
 
   getNotificationList(page: number) {
     this.pager.currentPage=page;
     console.log('list called');
-    this.http.get('http://localhost:3000/api/notification/index?token='+this.access_token+'&limit='+5 + '&page=' + this.pager.currentPage + '&sortBy=created_at&search=').subscribe(data => {
+    this.http.get('http://localhost:3000/api/notification/index?token='+this.access_token+'&limit='+10 + '&page=' + this.pager.currentPage).subscribe(data => {
       this.notificationList = data.json().docs;
       this.pager.pageSize = data.json().limit;
       this.pager.totalItems=data.json().total;
@@ -202,6 +212,11 @@ export class AdminGovNotificationComponent implements OnInit {
     console.log("pager", this.pager);
     // this.getStateList();
     this.pagedItems = this.notificationList;
+  }
+
+  resetForm()
+  {
+    this.govNotiForm.reset();
   }
 
 }

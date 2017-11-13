@@ -4,6 +4,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { PagerService } from '../service/pager.service';
+import { RouterModule, Routes, Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-contact-us',
@@ -35,7 +36,7 @@ export class AdminContactUsComponent implements OnInit {
     // paged items
     pagedItems: any[];
 
-  constructor(private _fb: FormBuilder, private http: Http,public PagerService:PagerService) {
+  constructor(private _fb: FormBuilder, private http: Http,public PagerService:PagerService,public Router:Router) {
     this.access_token = localStorage.getItem("admin_token");
     this.pager.currentPage=1;
     this.getNotificationList(this.pager.currentPage);
@@ -49,6 +50,14 @@ export class AdminContactUsComponent implements OnInit {
       remark: new FormControl('', [<any>Validators.required]),
       company: new FormControl('', [<any>Validators.required]),
     });
+
+    var context=this;
+    if (localStorage.getItem('admin_token')) {
+      
+    }
+    else {
+      context.Router.navigate(['/admin-login']);
+    }
    
   }
   getNotificationList(page:number) {

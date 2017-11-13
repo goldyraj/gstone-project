@@ -24,6 +24,7 @@
 
 					</ul>
 				</div>
+
 			</div> -->
 			<div class="col-md-12 col-sm-12 section-bottom-100 scroll">
 
@@ -49,6 +50,27 @@
 						</tr>
 					</tbody>
 				</table>
+
+				<ul class="pagination btn-sm" >
+					<li [ngClass]="{disabled:pager.currentPage === 1}">
+					  <a *ngIf="pager.currentPage > 1" (click)="getNotificationList(pager.currentPage - 1)">Previous</a>
+					</li>
+		
+					<li [ngClass]="{disabled:pager.currentPage === 1}">
+					  <a *ngIf="pager.currentPage ==1">Previous</a>
+					</li>
+		
+					<li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+					  <a (click)="getNotificationList(page)">{{page}}</a>
+					</li>
+		
+					<li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
+					  <a *ngIf="pager.currentPage < pager.endPage" (click)="getNotificationList(pager.currentPage + 1)">Next</a>
+					</li>
+					<li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
+					  <a *ngIf="pager.currentPage == pager.endPage">Next</a>
+					</li>
+				  </ul>
 
 			</div>
 

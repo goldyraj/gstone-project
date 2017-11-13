@@ -6,12 +6,13 @@ import { PagerService } from '../service/pager.service';
 import * as _ from 'underscore';
 import { RouterModule, Routes, Router } from '@angular/router';
 import {PreventLoggedInAccess} from '../PreventLoggedInAccess';
+import { NumberValidatorsService } from "../number-validators.service";
 
 @Component({
   selector: 'app-admin-state',
   templateUrl: './admin-state.component.html',
   styleUrls: ['./admin-state.component.css'],
-  providers: [PagerService,PreventLoggedInAccess]
+  providers: [PagerService,PreventLoggedInAccess,NumberValidatorsService]
 })
 export class AdminStateComponent implements OnInit {
 
@@ -75,13 +76,13 @@ export class AdminStateComponent implements OnInit {
     this.person.country = this.countries.filter(c => c.id === this.person.country.id)[0];
     this.myForm = new FormGroup({
       statename: new FormControl('', [<any>Validators.required]),
-      statecode: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
+      statecode: new FormControl(0,[Validators.required,, NumberValidatorsService.min(0)]),
       country: new FormControl('Select Status', [])
     });
 
     this.myFormEdit = new FormGroup({
       statename: new FormControl('', [<any>Validators.required]),
-      statecode: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
+      statecode: new FormControl(0,[Validators.required,, NumberValidatorsService.min(0)]),
       country: new FormControl('Select Status', [])
     });
 
@@ -124,7 +125,7 @@ export class AdminStateComponent implements OnInit {
           this.getStateList(this.pager.currentPage);
           this.myForm.reset();
           this.myForm.get("country").setValue("Select Status");
-          this.submitted = false;
+          
         },
         error => {
           console.log("error", error.message);
@@ -173,7 +174,7 @@ export class AdminStateComponent implements OnInit {
 
   editStateRecords(data) {
     var temp;
-    
+    this.submitted = false;
     if (data) {
       console.log("DATA", data);
 
@@ -212,13 +213,13 @@ export class AdminStateComponent implements OnInit {
           console.log("suceessfull data", response.json().message);
           this.closeEditModal();
           this.getStateList(this.pager.currentPage);
-          this.submitted = false;
+          
         },
         error => {
           // this.closeEditModal();
           console.log("error", error.message);
           console.log(error.text());
-          alert(error.text());
+          // alert(error.text());
         }
         );
     }
@@ -232,7 +233,7 @@ export class AdminStateComponent implements OnInit {
     const requestOptions = new RequestOptions({ headers: headers });
     console.log("_ID___", this.stateRowData._id);
 
-    this.url = "http://localhost:3000/api/state/delete/" + this.stateRowData._id+"?token="+this.access_token;
+    this.url = "http://localhost:3000/api/state/delete/" + this.stateRowData._id;
     return this.http.delete(this.url, requestOptions)
       .subscribe(
       response => {
@@ -256,6 +257,7 @@ export class AdminStateComponent implements OnInit {
 
   resetForm()
   {
+    this.submitted = false;
     this.myForm.reset();
   }
 }

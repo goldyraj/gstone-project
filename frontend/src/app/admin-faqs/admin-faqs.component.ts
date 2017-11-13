@@ -115,6 +115,7 @@ export class AdminFaqsComponent implements OnInit {
   }
 
   deleteFaqsRecord(data) {
+    this.submittedEdit = false;
     this.rowDataIndex = data._id;
     this.faqsRowData = data;
   }
@@ -172,7 +173,7 @@ export class AdminFaqsComponent implements OnInit {
       response => {
         console.log("suceessfull data", response.json().message);
         this.closeDeleteModal();
-        this.submittedEdit = false;
+        
         // alert(response.json().message);
         this.getFaqsList();
       },
@@ -211,6 +212,7 @@ export class AdminFaqsComponent implements OnInit {
 
   resetForm()
   {
+    this.submitted = false;
     this.FaqForm.reset();
   }
 }

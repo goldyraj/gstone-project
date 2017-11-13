@@ -304,16 +304,16 @@
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="HSN Code" name="hsn_code" id="hsn_code" required formControlName="hsn_code">
-                  <small [hidden]="goodsForm.controls.hsn_code.valid || (goodsForm.controls.hsn_code.pristine && !submitted)">
-                    HSN Code is required (minimum 2 characters).
+                  <input type="number" maxlength="15" min="1" class="form-control" placeholder="HSN Code" name="hsn_code" id="hsn_code" required formControlName="hsn_code">
+                  <small *ngIf="goodsForm.controls.hsn_code.errors && submitted">
+                    HSN Code is required !
                   </small>
                 </div>
 
                 <!-- Description -->
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <textarea rows="4" type="text" class="form-control" placeholder="Description" name="description" id="description" required
+                  <textarea rows="4" type="text" maxlength="500" class="form-control" placeholder="Description" name="description" id="description" required
                     formControlName="description"></textarea>
                   <small [hidden]="goodsForm.controls.description.valid || (goodsForm.controls.description.pristine && !submitted)">
                     Description is required !
@@ -324,28 +324,28 @@
 
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" maxlength="2" class="form-control" placeholder="CGST" name="cgst" required formControlName="cgst">
-                  <small [hidden]="goodsForm.controls.cgst.valid || (goodsForm.controls.cgst.pristine && !submitted)">
-                    Rate is required (minimum 2 characters).
+                  <input type="number" step="0.01" min="0" maxlength="5" class="form-control" placeholder="CGST" name="cgst" required formControlName="cgst">
+                  <small *ngIf="goodsForm.controls.cgst.errors && submitted">
+                    CGST is required !
                   </small>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" maxlength="2" class="form-control" placeholder="SGST" name="sgst" required formControlName="sgst">
-                  <small [hidden]="goodsForm.controls.sgst.valid || (goodsForm.controls.sgst.pristine && !submitted)">
-                    Rate is required (minimum 2 characters).
+                  <input type="number" step="0.01" min="0" maxlength="5" class="form-control" placeholder="SGST" name="sgst" required formControlName="sgst">
+                  <small *ngIf="goodsForm.controls.sgst.errors && submitted">
+                    SGST is required !
                   </small>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" maxlength="2" class="form-control" placeholder="IGST" name="statecode" required formControlName="igst">
-                  <small [hidden]="goodsForm.controls.igst.valid || (goodsForm.controls.igst.pristine && !submitted)">
-                    IGST is required (minimum 2 characters).
+                  <input type="number" step="0.01" min="0" maxlength="5" class="form-control" placeholder="IGST" name="statecode" required formControlName="igst">
+                  <small *ngIf="goodsForm.controls.igst.errors  && submitted">
+                    IGST is required !
                   </small>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <textarea rows="3" type="text" class="form-control" placeholder="Condition" name="comment" required formControlName="comment"></textarea>
+                  <textarea rows="3" type="text" class="form-control" placeholder="Condition" name="comment" formControlName="comment"></textarea>
                   <!-- <small [hidden]="goodsForm.controls.comment.valid || (goodsForm.controls.comment.pristine && !submitted)">
                     Condition is required !
                   </small> -->
@@ -371,7 +371,7 @@
   <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" #closeBtn aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" #closeEditModal aria-label="Close">
           <span class="modal-text" aria-hidden="true">X</span>
         </button>
         <h4 class="modal-title modal-text">Edit</h4>
@@ -394,16 +394,16 @@
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="HSN Code" name="statename" id="statename" required formControlName="hsn_code">
-                  <small [hidden]="goodsFormEdit.controls.hsn_code.valid || (goodsFormEdit.controls.hsn_code.pristine && !submitted)">
-                    HSN Code is required (minimum 2 characters).
+                  <input type="number" min="0" class="form-control" placeholder="HSN Code" name="statename" id="statename" required formControlName="hsn_code">
+                  <small *ngIf="goodsFormEdit.controls.hsn_code.errors && submitted">
+                    HSN Code is required !
                   </small>
                 </div>
 
                 <!-- Description -->
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <textarea rows="4" type="text" class="form-control" placeholder="Description" name="description" id="description" required
+                  <textarea rows="4" maxlength="500" type="text" class="form-control" placeholder="Description" name="description" id="description" required
                     formControlName="description"></textarea>
                   <small [hidden]="goodsFormEdit.controls.description.valid || (goodsFormEdit.controls.description.pristine && !submitted)">
                     Description is required !
@@ -414,28 +414,28 @@
 
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" maxlength="2" class="form-control" placeholder="CGST" name="cgst" required formControlName="cgst">
-                  <small [hidden]="goodsFormEdit.controls.cgst.valid || (goodsFormEdit.controls.cgst.pristine && !submitted)">
-                    Rate is required (minimum 2 characters).
+                  <input type="number" min="0" step="0.1" maxlength="5" class="form-control" placeholder="CGST" name="cgst" required formControlName="cgst">
+                  <small *ngIf="goodsFormEdit.controls.cgst.errors  && submitted">
+                    CGST is required !
                   </small>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" maxlength="2" class="form-control" placeholder="SGST" name="sgst" required formControlName="sgst">
-                  <small [hidden]="goodsFormEdit.controls.sgst.valid || (goodsFormEdit.controls.sgst.pristine && !submitted)">
-                    Rate is required (minimum 2 characters).
+                  <input type="number" min="0" step="0.1" maxlength="5" class="form-control" placeholder="SGST" name="sgst" required formControlName="sgst">
+                  <small *ngIf="goodsFormEdit.controls.sgst.errors && submitted">
+                    SGST is required !
                   </small>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" maxlength="2" class="form-control" placeholder="IGST" name="statecode" required formControlName="igst">
-                  <small [hidden]="goodsFormEdit.controls.igst.valid || (goodsFormEdit.controls.igst.pristine && !submitted)">
-                    IGST is required (minimum 2 characters).
+                  <input type="number" min="0" step="0.1" maxlength="5" class="form-control" placeholder="IGST" name="statecode" required formControlName="igst">
+                  <small *ngIf="goodsFormEdit.controls.igst.errors  && submitted">
+                    IGST is required !
                   </small>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <textarea rows="3" type="text" class="form-control" placeholder="Condition" name="comment" required formControlName="comment"></textarea>
+                  <textarea rows="3" maxlength="500" type="text" class="form-control" placeholder="Condition" name="comment" formControlName="comment"></textarea>
                   <!-- <small [hidden]="goodsFormEdit.controls.comment.valid || (goodsFormEdit.controls.comment.pristine && !submitted)">
                       Condition is required !
                     </small> -->

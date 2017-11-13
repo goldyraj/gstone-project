@@ -72,7 +72,7 @@
                     <button class="fa fa-edit btn btn-primary btn-sm" title="Edit" (click)="editInternalRecord(item)"></button>
                   </a>
                   <a href="" data-toggle="modal" data-target=".bs-delete-sm">
-                    <i class="fa fa-trash btn btn-danger btn-sm" (click)="deleteInternalRecord(item)" title="Delete"></i>
+                    <i class="fa fa-trash btn btn-danger btn-sm" (click)="recordToBeDeleted(item)" title="Delete"></i>
                   </a>
                 </td>
               </tr>
@@ -101,20 +101,6 @@
               <a [class.hide]="pager.currentPage < pager.endPage">Next</a>
             </li>
           </ul>
-
-          <!-- <ul class="pagination btn-sm">
-            <li [ngClass]="{disabled:pager.currentPage === 1}">
-              <a (click)="getInternalUpdateList(pager.currentPage - 1)">Previous</a>
-            </li>
-
-            <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
-              <a (click)="getInternalUpdateList(page)">{{page}}</a>
-            </li>
-
-            <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-              <a (click)="getInternalUpdateList(pager.currentPage + 1)">Next</a>
-            </li>
-          </ul> -->
         </div>
 
       </div>
@@ -146,22 +132,22 @@
               <form [formGroup]="internalUpdateForm" novalidate (ngSubmit)="addInternalUpdate(internalUpdateForm.valid)">
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <select class="form-control" formControlName="selectUpdateType" required (ngModelChange)="onSelectType($event)">
-                    <option selected="0" value="0">Select Update Type</option>
+                  <select class="form-control" formControlName="selectUpdateType" required (ngModelChange)="onSelectType($event)" >
+                    <option value="0">Select Update Type</option>
                     <option value="chapter">Chapter</option>
                     <option value="article">Article</option>
                   </select>
-                  <small *ngIf="internalUpdateForm.controls.selectUpdateType=='0' && submitted">
+                  <small *ngIf="internalUpdateForm.controls.selectUpdateType.value=='0' && submitted">
                     Select Update Type !
                   </small>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <select class="form-control" formControlName="selectChapterArticle" required>
-                    <option value="0" selected="0">Select Chapter/Article</option>
+                  <select class="form-control" formControlName="selectChapterArticle" required > 
+                    <option value="0" >Select Chapter/Article</option>
                     <option *ngFor="let item of secondDropDownArray" value="{{item}}">{{item}}</option>
                   </select>
-                  <small *ngIf="editInternalUpdate.controls.selectChapterArticle=='0' && submitted">
+                  <small *ngIf="internalUpdateForm.controls.selectChapterArticle.value=='0'  && submitted">
                     Select Chapter/Article !
                   </small>
                 </div>
@@ -217,21 +203,21 @@
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <select class="form-control" formControlName="selectUpdateType" required (ngModelChange)="onSelectType($event)" [(ngModel)]="selectUpdateType">
-                    <option selected="0" value="0">Select Update Type</option>
+                    <option value="0">Select Update Type</option>
                     <option value="chapter">Chapter</option>
                     <option value="article">Article</option>
                   </select>
-                  <small *ngIf="editInternalUpdate.controls.selectUpdateType=='0' && submitted">
+                  <small *ngIf="editInternalUpdate.controls.selectUpdateType.value=='0' && submitted">
                     Select Update Type !
                   </small>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <select class="form-control" formControlName="selectChapterArticle" required [(ngModel)]="selectChapterArticle">
-                    <option value="0" selected="0">Select Chapter/Article</option>
+                    <option value="0" >Select Chapter/Article</option>
                     <option *ngFor="let item of secondDropDownArray" value="{{item}}">{{item}}</option>
                   </select>
-                  <small *ngIf="editInternalUpdate.controls.selectChapterArticle=='0' && submitted">
+                  <small *ngIf="editInternalUpdate.controls.selectChapterArticle.value=='0' && submitted">
                     Select Chapter/Article !
                   </small>
                 </div>
@@ -254,19 +240,6 @@
                     Link is required .
                   </small>
                 </div>
-
-                <!-- <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <select class="form-control" formControlName="status" required>
-                    <option selected="selected" value=""> --- Salect Status Type ---</option>
-                    <option value="Approved"> Approved </option>
-                    <option value="Pending">Pending</option>
-                    <option value="Denied">Denied</option>
-                  </select>
-                  <small [hidden]="editInternalUpdate.controls.status.valid || (editInternalUpdate.controls.status.pristine && !submitted)">
-                    Status is required .
-                  </small>
-                </div> -->
-
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <!-- <input type="button" class="btn btn-primary" value="Add Notifications"> -->

@@ -131,13 +131,13 @@
                   <input type="text" pattern="[A-Za-z]{3}" maxlength="25" class="form-control" formControlName="statename" placeholder="State Name" name="statename" id="statename"
                     required>
                   <small [hidden]="myForm.controls.statename.valid || (myForm.controls.statename.pristine && !submitted)">
-                    Name is required (minimum 5 characters).
+                    State Name is required !
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" pattern="[A-Za-z]{3}" maxlength="5" class="form-control" formControlName="statecode" placeholder="State Code" name="statecode" required>
-                  <small [hidden]="myForm.controls.statecode.valid || (myForm.controls.statecode.pristine && !submitted)">
-                    Contact is required (minimum 5 characters).
+                  <input type="number" maxlength="5" class="form-control" formControlName="statecode" placeholder="State Code" name="statecode" required>
+                  <small *ngIf="myForm.controls.statecode.errors  && submitted">
+                    State Code is required !
                   </small>
                 </div>
 
@@ -177,13 +177,13 @@
                   <input type="text" class="form-control" formControlName="statename" placeholder="State Name" name="statename" id="statename"
                     required>
                   <small [hidden]="myFormEdit.controls.statename.valid || (myFormEdit.controls.statename.pristine && !submitted)">
-                    Name is required (minimum 5 characters).
+                    State Name is required !
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" formControlName="statecode" placeholder="State Code" name="statecode" required>
-                  <small [hidden]="myFormEdit.controls.statecode.valid || (myFormEdit.controls.statecode.pristine && !submitted)">
-                    Contact is required (minimum 5 characters).
+                  <input type="number" maxlength="5" class="form-control" formControlName="statecode" placeholder="State Code" name="statecode" required>
+                  <small *ngIf="myForm.controls.statecode.errors  && submitted">
+                    State Code is required !
                   </small>
                 </div>
 

@@ -30,7 +30,7 @@
 
 		<div class="col-md-12 col-sm-12 section-top-20 section-bottom-90">
 			<div class="alert alert-danger" *ngIf="vendorList == true">
-				<strong>Sorry!</strong> Your dont have vendor list.
+				<strong>Sorry!</strong> Your dont have Vendor list.
 			</div>
 			<table class="table table-condensed table-bordered" *ngIf="vendorList == false">
 				<thead>
@@ -45,7 +45,8 @@
 				</thead>
 				<tbody class="table_form">
 					<tr *ngFor="let item of venderList;let i = index;">
-						<td align="center"> {{i+1}}</td>
+						<!-- <td align="center"> {{i+1}}</td> -->
+						<td align="center">{{pager.pageSize * (pager.currentPage-1)+i+1}}</td>
 						<td align="center">{{item.name}}</td>
 						<td align="center">{{item.gstin}}</td>
 						<td align="center">{{item.address}}</td>
@@ -64,6 +65,27 @@
 			</table>
 
 			<ul class="pagination btn-sm" *ngIf="vendorList == false">
+					<li [ngClass]="{disabled:pager.currentPage === 1}">
+					  <a *ngIf="pager.currentPage > 1" (click)="getVenderList(pager.currentPage - 1)">Previous</a>
+					</li>
+		
+					<li [ngClass]="{disabled:pager.currentPage === 1}">
+					  <a *ngIf="pager.currentPage ==1">Previous</a>
+					</li>
+		
+					<li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+					  <a (click)="getVenderList(page)">{{page}}</a>
+					</li>
+		
+					<li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
+					  <a *ngIf="pager.currentPage < pager.endPage" (click)="getVenderList(pager.currentPage + 1)">Next</a>
+					</li>
+					<li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
+					  <a *ngIf="pager.currentPage == pager.endPage">Next</a>
+					</li>
+				  </ul>
+
+			<!-- <ul class="pagination btn-sm" *ngIf="vendorList == false">
 				<li [ngClass]="{disabled:pager.currentPage === 1}">
 					<a (click)="getVenderList(pager.currentPage - 1)">Previous</a>
 				</li>
@@ -75,7 +97,7 @@
 				<li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
 					<a (click)="getVenderList(pager.currentPage + 1)">Next</a>
 				</li>
-			</ul>
+			</ul> -->
 
 		</div>
 	</div>
@@ -96,25 +118,25 @@
 			<div class="modal-body">
 				<div class="service-section">
 					<div class="row">
-						<div class="col-md-10 col-sm-10">
+						<div class="col-md-12 col-sm-12">
 							<form [formGroup]="myForm" novalidate (ngSubmit)="saveVender(myForm.valid)">
 								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="name" placeholder="Name" required>
 									<small [hidden]="myForm.controls.name.valid || (myForm.controls.name.pristine && !submitted)">
-										Name is required (minimum 5 characters).
+										Name is required .
 									</small>
 								</div>
 
 								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="gstin" placeholder="GSTIN" name="gstin" id="gstin">
 									<small [hidden]="myForm.controls.gstin.valid || (myForm.controls.gstin.pristine && !submitted)">
-										GSTIN is required (minimum 5 characters).
+										GSTIN is required .
 									</small>
 								</div>
 								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="address" placeholder="Address" name="address" id="address">
 									<small [hidden]="myForm.controls.address.valid || (myForm.controls.address.pristine && !submitted)">
-										Address is required (minimum 5 characters).
+										Address is required .
 									</small>
 								</div>
 

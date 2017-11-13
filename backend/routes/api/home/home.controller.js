@@ -130,7 +130,7 @@ const onError = (error) => {
    sortfiled={ created_at: -1 } 
 }
 var option={
-    select:'title details link date status',
+    select:'title details link chapter article date status type',
     sort:sortfiled,
    // populate:'title description link',
     offset:offset,

@@ -51,7 +51,8 @@
 				</thead>
 				<tbody class="table_form">
 					<tr *ngFor="let item of custList;let i = index;">
-						<td align="center"> {{i+1}}</td>
+						<!-- <td align="center"> {{i+1}}</td> -->
+						<td align="center">{{pager.pageSize * (pager.currentPage-1)+i+1}}</td>
 						<td align="center">{{item.name}}</td>
 						<td align="center">{{item.pan_no}}</td>
 						<td align="center">{{item.gstin}}</td>
@@ -71,7 +72,7 @@
 				</tbody>
 			</table>
 
-			<ul class="pagination btn-sm" *ngIf="isCustList == false">
+			<!-- <ul class="pagination btn-sm" *ngIf="isCustList == false">
 				<li [ngClass]="{disabled:pager.currentPage === 1}">
 					<a (click)="getCustomerList(pager.currentPage - 1)">Previous</a>
 				</li>
@@ -83,7 +84,28 @@
 				<li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
 					<a (click)="getCustomerList(pager.currentPage + 1)">Next</a>
 				</li>
-			</ul>
+			</ul> -->
+
+			<ul class="pagination btn-sm" *ngIf="isCustList == false">
+					<li [ngClass]="{disabled:pager.currentPage === 1}">
+					  <a *ngIf="pager.currentPage > 1" (click)="getCustomerList(pager.currentPage - 1)">Previous</a>
+					</li>
+		
+					<li [ngClass]="{disabled:pager.currentPage === 1}">
+					  <a *ngIf="pager.currentPage ==1">Previous</a>
+					</li>
+		
+					<li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+					  <a (click)="getCustomerList(page)">{{page}}</a>
+					</li>
+		
+					<li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
+					  <a *ngIf="pager.currentPage < pager.endPage" (click)="getCustomerList(pager.currentPage + 1)">Next</a>
+					</li>
+					<li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
+					  <a *ngIf="pager.currentPage == pager.endPage">Next</a>
+					</li>
+				  </ul>
 
 		</div>
 	</div>
@@ -114,7 +136,7 @@
 									</small>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<input type="text" class="form-control" formControlName="contact" placeholder="Contact No." pattern="^(?:(?:\+|0{0,2})91(\s*[\ -]\s*)?|[0]?)?[789]\d{9}|(\d[ -]?){10}\d$">
+									<input type="text" class="form-control" formControlName="contact" maxlength="10" placeholder="Contact No." pattern="^(?:(?:\+|0{0,2})91(\s*[\ -]\s*)?|[0]?)?[789]\d{9}|(\d[ -]?){10}\d$">
 									<!-- <small [hidden]="myForm.controls.contact.valid || (myForm.controls.contact.pristine && !submitted)">
 										Contact is required (minimum 5 characters).
 									</small> -->

@@ -66,6 +66,7 @@ import { hsnSerCodePipe } from './user-hsn-code/hsnSerCode.pipe';
 import { PreventLoggedInAccess } from './PreventLoggedInAccess';
 import { AuthService } from './auth.service';
 import { videosPipe } from './admin-gstone-videos/videos.pipe';
+import { GstupdateDetailComponent } from './gstupdate-detail/gstupdate-detail.component';
 
 @NgModule({
   declarations: [
@@ -121,7 +122,8 @@ import { videosPipe } from './admin-gstone-videos/videos.pipe';
     FaqsComponent,
     AboutUsComponent,
     ContactComponent,
-    UserDashboardComponent
+    UserDashboardComponent,
+    GstupdateDetailComponent
     //DatepickerModule
   ],
   imports: [

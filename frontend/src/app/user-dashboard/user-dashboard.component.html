@@ -66,7 +66,7 @@
 					</div>
 				</div>
 			</div>
-			<ul class="pagination btn-sm" *ngIf="isBranchList == false && branchesList?.length > 1">
+			<!-- <ul class="pagination btn-sm" *ngIf="branchesList?.length > 1">
 				<li [ngClass]="{disabled:pager.currentPage === 1}">
 					<a (click)="getBranches(pager.currentPage - 1)">Previous</a>
 				</li>
@@ -78,7 +78,27 @@
 				<li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
 					<a (click)="getBranches(pager.currentPage + 1)">Next</a>
 				</li>
-			</ul>
+			</ul> -->
+			<ul class="pagination btn-sm" *ngIf="isBranchList == false">
+					<li [ngClass]="{disabled:pager.currentPage === 1}">
+					  <a *ngIf="pager.currentPage > 1" (click)="getBranches(pager.currentPage - 1)">Previous</a>
+					</li>
+		
+					<li [ngClass]="{disabled:pager.currentPage === 1}">
+					  <a *ngIf="pager.currentPage ==1">Previous</a>
+					</li>
+		
+					<li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+					  <a (click)="getBranches(page)">{{page}}</a>
+					</li>
+		
+					<li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
+					  <a *ngIf="pager.currentPage < pager.endPage" (click)="getBranches(pager.currentPage + 1)">Next</a>
+					</li>
+					<li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
+					  <a *ngIf="pager.currentPage == pager.endPage">Next</a>
+					</li>
+				  </ul>
 
 			<!-- -->
 
@@ -128,6 +148,10 @@
 				<div class="service-section">
 					<div class="row">
 						<div class="col-md-1 col-sm-1"></div>
+						
+						<div class="col-md-10 alert alert-danger" *ngIf="errorType == true">
+								<strong>Sorry!</strong>{{errorMsg}} 
+							</div>
 						<div class="col-md-10 col-sm-10">
 							<form [formGroup]="myForm" novalidate (ngSubmit)="save( myForm.valid)">
 								<!-- <form [formGroup]="myForm" novalidate (ngSubmit)="save()"> -->
@@ -139,7 +163,7 @@
 									</small>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<input type="text" class="form-control" formControlName="contact" placeholder="Contact No.">
+									<input type="text" class="form-control" formControlName="contact" maxlength="10" placeholder="Contact No.">
 									<small [hidden]="myForm.controls.contact.valid || (myForm.controls.contact.pristine && !submitted)">
 										Contact is required (minimum 5 characters).
 									</small>
@@ -198,13 +222,13 @@
 									</small>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<select class="form-control" (input)="onInput($event)">
+									<select class="form-control" (input)="onInput($event)" >
 										<option value="" selected="selected"> -- Select State -- </option>
-										<option *ngFor="let item of stateList" value=" {{item.name}}">{{item.name}}</option>
+										<option *ngFor="let item of stateList" value="{{item.name}}">{{item.name}}</option>
 									</select>
-									<small *ngIf="myForm.controls.selectedState.value=='-1' && submitted">
-										Please select status !
-									</small>
+									<!-- <small *ngIf="!myForm.controls.selectedState.value && submitted">
+										Please select State !
+									</small> -->
 								</div>
 								<div class="col-md-12 col-sm-12 col-xs-12 form-group" align="center">
 									<button type="submit" class="btn btn-primary">Create</button>

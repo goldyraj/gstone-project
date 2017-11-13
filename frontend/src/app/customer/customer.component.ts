@@ -77,7 +77,7 @@ export class CustomerComponent implements OnInit {
       gstin: new FormControl('', [<any>Validators.required]),
       address: new FormControl('', [<any>Validators.required]),
       city: new FormControl('', [<any>Validators.required]),
-      selectedstateDropdown: new FormControl('-1')
+      state: new FormControl('Select State')
     });
 
     this.myFormEdit = new FormGroup({
@@ -88,7 +88,7 @@ export class CustomerComponent implements OnInit {
       gstin: new FormControl('', [<any>Validators.required]),
       address: new FormControl('', [<any>Validators.required]),
       city: new FormControl('', [<any>Validators.required]),
-      selectedstateDropdown: new FormControl('Select State')
+      state: new FormControl('Select State')
     });
   }
 
@@ -126,7 +126,7 @@ export class CustomerComponent implements OnInit {
           // this.custList.push(body);
           // alert(response.json().message);
           this.myForm.reset();
-          this.myForm.get("selectedstateDropdown").setValue("Select State");
+          // this.myForm.get("selectedstateDropdown").setValue("Select State");
           this.submitted = false;
           this.getCustomerList(this.pager.currentPage);
           this.customerRowData = null;
@@ -260,7 +260,7 @@ export class CustomerComponent implements OnInit {
         "city": this.myFormEdit.value.city,
         "email": this.myFormEdit.value.email,
         "address": this.myFormEdit.value.address,
-        "state": this.myFormEdit.value.selectedstateDropdown,
+        "state": this.selectedState,
         "contact": this.myFormEdit.value.contact
       };
       console.log("body",body);

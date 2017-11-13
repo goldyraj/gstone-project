@@ -75,7 +75,8 @@ export class UserHsnCodeComponent implements OnInit {
       comment: new FormControl()
     });
 
-   
+    this.getAllGoods(this.goodsPager.currentPage);
+    this.getAllServices(this.goodsPager.currentPage);
   }
 
   onLoad() {
@@ -93,242 +94,6 @@ export class UserHsnCodeComponent implements OnInit {
 
   }
 
-  private closeModal(): void {
-    this.closeBtn.nativeElement.click();
-  }
-
-  private closeEditModl() {
-    this.closeEditModal.nativeElement.click();
-  }
-
-  onStatusSelect(data) {
-    console.log("LOG_ON_STATUS_SELECT", data);
-  }
-
-  onCSVFilePicked(files: FileList) {
-    console.log(files);
-    if (files && files.length > 0) {
-      let file: File = files.item(0);
-      console.log(file.name);
-      console.log(file.size);
-      console.log(file.type);
-      let reader: FileReader = new FileReader();
-      reader.readAsText(file);
-      reader.onload = (e) => {
-        let csv: string = reader.result;
-        console.log(csv);
-        var csvString = this.excelServiceService.CSV2JSON(csv);
-        this.jsonString = csvString;
-        // var csvString=this.CSV2JSON(csv);
-        // this.uploadCsvFileToServer(csvString);
-      }
-    }
-  }
-
-  uploadCsvFileToServer() {
-
-    const headers = new Headers();
-
-    headers.append('Content-Type', 'application/json');
-    headers.append('x-access-token', this.access_token);
-    const requestOptions = new RequestOptions({ headers: headers });
-    const body = {
-      "data": JSON.parse(this.jsonString)
-    };
-
-    console.log("CSV_DATA", body);
-
-    if (this.isGoodsSelected) {
-      this.url = "http://localhost:3000/api/goods/uploadFile?token=" + this.access_token;
-    }
-    else {
-      this.url = "http://localhost:3000/api/services/uploadFile?token=" + this.access_token;
-    }
-
-    return this.http.post(this.url, body, requestOptions)
-      .subscribe(
-      response => {
-        console.log("suceessfull data", response.json().message);
-        this.closeModal();
-        this.closeCsv.nativeElement.click();
-        this.closeChoose.nativeElement.click();
-        this.ifSuccess = true;
-        if (this.isGoodsSelected) {
-          this.getAllGoods(this.goodsPager.currentPage);
-        }
-        else {
-          this.getAllServices(this.servicesPager.currentPage);
-        }
-        // alert(response.json().message);
-      },
-      error => {
-        console.log("error", error.message);
-        console.log(error.text());
-      }
-      );
-  }
-
-  save(isValid: boolean) {
-    this.submitted = true; // set form submit to true
-    console.log(isValid);
-    console.log("hi form module is called from page");
-    this.hsnCodeSubmitData = this.goodsForm.value;
-
-    console.log("form valuse", this.hsnCodeSubmitData);
-
-    if (isValid == true) {
-
-      const headers = new Headers();
-
-      headers.append('Content-Type', 'application/json');
-      // headers.append('x-access-token', access_token);
-      const requestOptions = new RequestOptions({ headers: headers });
-      const body = {
-        "hsn_code": this.goodsForm.value.hsn_code,
-        "cgst": this.goodsForm.value.cgst,
-        "sgst": this.goodsForm.value.sgst,
-        "igst": this.goodsForm.value.igst,
-        "description": this.goodsForm.value.description,
-        "condition": this.goodsForm.value.condition
-      };
-
-      if (this.isGoodsSelected) {
-        this.url = "http://localhost:3000/api/goods/create?token=" + this.access_token;
-      }
-      else {
-        this.url = "http://localhost:3000/api/services/create?token=" + this.access_token;
-      }
-
-      return this.http.post(this.url, body, requestOptions)
-        .subscribe(
-        response => {
-          console.log("suceessfull data", response.json().message);
-          this.closeModal();
-          this.submitted = false;
-          // this.hsnCodeData.push(body);
-          // alert(response.json().message);
-          this.goodsForm.reset();
-          if (this.isGoodsSelected) {
-            this.getAllGoods(this.goodsPager.currentPage);
-          }
-          else {
-            this.getAllServices(this.servicesPager.currentPage);
-          }
-
-
-        },
-        error => {
-          console.log("error", error.message);
-          console.log(error.text());
-        }
-        );
-    }
-  }
-
-  update(isValid: boolean) {
-    this.submitted = true; // set form submit to true
-    console.log(isValid);
-
-    if (isValid == true) {
-      // if (isValid == true) {
-      const headers = new Headers();
-
-      headers.append('Content-Type', 'application/json');
-      headers.append('x-access-token', this.access_token);
-      const requestOptions = new RequestOptions({ headers: headers });
-      console.log("_ID___", this.hsnRowData._id);
-      const body = {
-        "hsn_code": this.goodsFormEdit.value.hsn_code,
-        "cgst": this.goodsFormEdit.value.cgst,
-        "sgst": this.goodsFormEdit.value.sgst,
-        "igst": this.goodsFormEdit.value.igst,
-        "description": this.goodsFormEdit.value.description,
-        "condition": this.goodsFormEdit.value.condition,
-        "_id": this.hsnRowData._id
-      };
-
-
-      if (this.isGoodsSelected) {
-        this.url = "http://localhost:3000/api/goods/update?token=" + this.access_token;
-      }
-      else {
-        this.url = "http://localhost:3000/api/services/update?token=" + this.access_token;
-      }
-
-
-      return this.http.put(this.url, body, requestOptions)
-        .subscribe(
-        response => {
-          this.closeEditModl();
-          this.submitted = false;
-          if (this.isGoodsSelected) {
-            this.getAllGoods(this.goodsPager.currentPage);
-          }
-          else {
-            this.getAllServices(this.servicesPager.currentPage);
-          }
-        },
-        error => {
-          console.log("error", error.message);
-          console.log(error.text());
-        }
-        );
-    }
-  }
-
-  editHSNRecord(data) {
-
-    var temp;
-
-    this.goodsFormEdit.get("sgst").setValue(data.sgst);
-    this.goodsFormEdit.get("igst").setValue(data.igst);
-    this.goodsFormEdit.get("cgst").setValue(data.cgst);
-    this.goodsFormEdit.get("description").setValue(data.description);
-    this.goodsFormEdit.get("hsn_code").setValue(data.hsn_code);
-    this.goodsFormEdit.get("selectCategory").setValue(data.selectCategory);
-    this.selectCategory=data.selectCategory;
-    this.hsnRowData = data;
-  }
-
-  recordToBeDeleted(item) {
-    this.hsnRowData = item;
-  }
-
-  deleteHSNRecord() {
-
-    const headers = new Headers();
-
-    headers.append('Content-Type', 'application/json');
-
-    const requestOptions = new RequestOptions({ headers: headers });
-    console.log("_ID___", this.hsnRowData._id);
-
-    if (this.isGoodsSelected) {
-      this.url = "http://localhost:3000/api/goods/delete/" + this.hsnRowData._id + "?token=" + this.access_token;
-    }
-    else {
-      this.url = "http://localhost:3000/api/services/delete/" + this.hsnRowData._id + "?token=" + this.access_token;
-    }
-
-    return this.http.delete(this.url, requestOptions)
-      .subscribe(
-      response => {
-        console.log("suceessfull data", response.json().message);
-        this.closeModal();
-        if (this.isGoodsSelected) {
-          this.getAllGoods(this.goodsPager.currentPage);
-        }
-        else {
-          this.getAllServices(this.servicesPager.currentPage);
-        }
-      },
-      error => {
-        console.log("error", error.message);
-        console.log(error.text());
-      }
-      );
-  }
-
   getAllServices(page: number) {
     this.servicesPager.currentPage = page;
     let response: any;
@@ -342,16 +107,15 @@ export class UserHsnCodeComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/services/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + page + '&search=' + "&sortBy=" + this.sortBy, options)
+    this.http.get('http://localhost:3000/api/services/list', options)
       .subscribe(
       response => {
         console.log("BRANCH_LIST_API_RESPONSE", response.json());
-        console.log("BRANCH_LIST_API_RESPONSE_2", response.json().docs);
+        console.log("BRANCH_LIST_API_RESPONSE_2", response.json().services);
 
-        this.servicesData = response.json().docs;
+        this.servicesData = response.json().services;
         this.servicesPager.pageSize = response.json().limit;
         this.servicesPager.totalItems = response.json().total;
-        this.setServicesPagination();
 
       },
       error => {
@@ -375,16 +139,15 @@ export class UserHsnCodeComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/goods/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + page, options)
+    this.http.get('http://localhost:3000/api/goods/list', options)
       .subscribe(
       response => {
         console.log("BRANCH_LIST_API_RESPONSE", response.json());
         console.log("BRANCH_LIST_API_RESPONSE_2", response.json().docs);
 
-        this.goodsData = response.json().docs;
+        this.goodsData = response.json().goods;
         this.goodsPager.pageSize = response.json().limit;
         this.goodsPager.totalItems = response.json().total;
-        this.setGoodsPagination();
 
       },
       error => {
@@ -394,81 +157,5 @@ export class UserHsnCodeComponent implements OnInit {
       );
   }
 
-  getList(isGoods: boolean) {
-    this.isGoodsSelected = isGoods;
-    if (isGoods) {
-      this.getAllGoods(this.goodsPager.currentPage);
-    }
-    else {
-      this.getAllServices(this.servicesPager.currentPage);
-    }
-  }
-
-  setGoodsPagination() {
-    if (this.goodsPager.currentPage < 1 || this.goodsPager.currentPage > this.goodsPager.TotalPages) {
-      return;
-    }
-
-    this.goodsPager = this.pagerService.getPager(this.goodsPager.totalItems, this.goodsPager.currentPage, this.goodsPager.pageSize);
-    console.log("pager", this.goodsPager);
-    // this.getStateList();
-    this.goodsPagedItems = this.goodsData;
-  }
-
-  setServicesPagination() {
-    if (this.servicesPager.currentPage < 1 || this.servicesPager.currentPage > this.servicesPager.TotalPages) {
-      return;
-    }
-
-    this.servicesPager = this.pagerService.getPager(this.servicesPager.totalItems, this.servicesPager.currentPage, this.servicesPager.pageSize);
-    console.log("pager", this.servicesPager);
-    // this.getStateList();
-    this.servicesPagedItems = this.servicesData;
-  }
-
-  downloadJSONTOCSV() {
-    let response: any;
-    let myHeaders = new Headers({ 'Content-Type': 'application/json' });
-    var exportedList;
-    myHeaders.append('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization, x-access-token');
-    myHeaders.append('Access-Control-Allow-Methods', 'GET, OPTIONS, POST');
-    myHeaders.append('Access-Control-Allow-Origin', '*');
-
-    myHeaders.append('Access-Control-Allow-Credentials', 'true');
-
-    let options = new RequestOptions({ headers: myHeaders });
-
-    if (this.isGoodsSelected) {
-      this.url = 'http://localhost:3000/api/services/index?token=' + this.access_token;
-    }
-    else {
-      this.url = 'http://localhost:3000/api/goods/index?token=' + this.access_token;
-    }
-
-    this.http.get(this.url, options)
-      .subscribe(
-      response => {
-        exportedList = response.json().docs;
-        this.excelServiceService.exportAsExcelFile(exportedList, "JSONTOCSV1");
-        this.isDownloadSuccessful=true;
-      },
-      error => {
-        // alert(error.text());
-        console.log(error.text());
-      }
-      );
-
-    
-  }
-
-  closeDownloadModal()
-  {
-    this.isDownloadSuccessful=false;
-  }
-
-  resetForm()
-  {
-    this.goodsForm.reset();
-  }
 
 }

@@ -70,11 +70,11 @@
                   </div>
                 </div>
 
-                <div class="col-md-4 col-xs-12">
+                <!-- <div class="col-md-4 col-xs-12">
                   <div class="input-group">
                     <input type="button" class="btn btn-primary" value="clear">
                   </div>
-                </div>
+                </div> -->
               </div>
 
               <div class="clearfix"></div>
@@ -89,7 +89,7 @@
                       <th width="10%">SGST</th>
                       <th width="10%">IGST</th>
                       <!-- <th width="12%">Status</th> -->
-                      <th width="25%" class="text-center">Action</th>
+                      <!-- <th width="25%" class="text-center">Action</th> -->
                     </tr>
                   </thead>
                   <!-- 
@@ -100,24 +100,23 @@
                   <td align="center">{{item.description}}</td>
                   <td align="center">{{item.rate}}</td>
                 </tr> -->
-                  <tr *ngFor="let item of goodsData | hsnCodeFilter:searchString |hsnCodeFilter:codeValue   ; let i = index;">
+                  <tr *ngFor="let item of goodsData | hsnCodeFilter:searchString |hsnDescFilter:codeValue   ; let i = index;">
                     <!-- <td align="center">{{ hsnCodeData.indexOf(item) }}</td> -->
-                    <td align="center">{{goodsPager.pageSize * (goodsPager.currentPage-1)+goodsData.indexOf(item)+1}}</td>
+                    <td align="center">{{i+1}}</td>
                     <td align="center">{{ item.hsn_code }}</td>
                     <td align="center">{{item.description}}</td>
                     <td align="center">{{item.cgst}}</td>
                     <td align="center">{{item.sgst}}</td>
                     <td align="center">{{item.igst}}</td>
 
-                    <td align="center">
-                      <!-- <i class="fa fa-eye btn btn-primary btn-sm" title="View"></i> -->
+                    <!-- <td align="center">
                       <a href="" data-toggle="modal" data-target=".bs-goodsFormEdit-lg">
                         <button class="fa fa-edit btn btn-warning btn-sm" title="Update" (click)="editHSNRecord(item)"></button>
                       </a>
                       <a href="" data-toggle="modal" data-target=".bs-delete-sm">
                         <button class="fa fa-trash btn btn-danger btn-sm" title="Delete" (click)="recordToBeDeleted(item)"></button>
                       </a>
-                    </td>
+                    </td> -->
                   </tr>
 
                 </table>
@@ -131,7 +130,7 @@
 
                 <div class="col-md-4 col-xs-12">
                   <div class="input-group">
-                    <input type="text" class="form-control" [(ngModel)]="codeValue" placeholder="HNS Code">
+                    <input type="text" class="form-control" [(ngModel)]="codeSerValue" placeholder="HNS Code">
                     <div class="input-group-addon">
                       <i class="fa fa-search"></i>
                     </div>
@@ -139,18 +138,18 @@
                 </div>
                 <div class="col-md-4 col-xs-12">
                   <div class="input-group">
-                    <input type="text" class="form-control" [(ngModel)]="searchString" placeholder="Description">
+                    <input type="text" class="form-control" [(ngModel)]="searchDescString" placeholder="Description">
                     <div class="input-group-addon">
                       <i class="fa fa-search"></i>
                     </div>
                   </div>
                 </div>
 
-                <div class="col-md-4 col-xs-12">
+                <!-- <div class="col-md-4 col-xs-12">
                   <div class="input-group">
                     <input type="button" class="btn btn-primary" value="clear">
                   </div>
-                </div>
+                </div> -->
               </div>
 
               <div class="clearfix"></div>
@@ -165,30 +164,29 @@
                       <th width="10%">SGST</th>
                       <th width="10%">IGST</th>
                       <!-- <th width="12%">Status</th> -->
-                      <th width="25%" class="text-center">Action</th>
+                      <!-- <th width="25%" class="text-center">Action</th> -->
                     </tr>
                   </thead>
 
                   <!-- <ng-template ngFor let-item [ngForOf]="hsnCodeData"> -->
-                  <tr *ngFor="let item of servicesData | hsnCodeFilter:searchString |hsnCodeFilter:codeValue   ; let i = index;">
+                  <tr *ngFor="let item of servicesData  | hsnSerDescFilter:codeSerValue | hsnSerCodeFilter: searchDescString ; let i = index;">
                     <!-- <td align="center">{{ hsnCodeData.indexOf(item) }}</td> -->
-                    <td align="center">{{servicesPager.pageSize * (servicesPager.currentPage-1)+servicesData.indexOf(item)+1}}</td>
+                    <td align="center">{{i+1}}</td>
                     <td align="center">{{ item.hsn_code }}</td>
                     <td align="center">{{item.description}}</td>
                     <td align="center">{{item.cgst}}</td>
                     <td align="center">{{item.sgst}}</td>
                     <td align="center">{{item.igst}}</td>
 
-
+                    <!-- 
                     <td align="center">
-                      <!-- <i class="fa fa-eye btn btn-primary btn-sm" title="View"></i> -->
                       <a href="" data-toggle="modal" data-target=".bs-goodsFormEdit-lg">
                         <button class="fa fa-edit btn btn-warning btn-sm" title="Update" (click)="editHSNRecord(item)"></button>
                       </a>
                       <a href="" data-toggle="modal" data-target=".bs-delete-sm">
                         <button class="fa fa-trash btn btn-danger btn-sm" title="Delete" (click)="recordToBeDeleted(item)"></button>
                       </a>
-                    </td>
+                    </td> -->
                   </tr>
 
                 </table>

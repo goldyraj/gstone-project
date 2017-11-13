@@ -123,7 +123,7 @@
 					</div>
 					<ul class="tabile">
 						<marquee behavior="scroll" direction="up" onMouseOver="this.stop();" height="230" scrollamount="2" onMouseOut="this.start();">
-							<li *ngFor="let item of notificationList ;let i = index;">
+							<li *ngFor="let item of videosList ;let i = index;">
 								<i class="fa fa-check"></i> &nbsp;
 								<a href="{{item.link}}" target="_blank">{{item.title}}</a>
 							</li>

@@ -67,6 +67,25 @@ Internal.paginate(query,option).then( intenal=>res.json(intenal)
     .catch(onError);
 }
 /* 
+    GET /api/user/view
+*/
+exports.view=(req,res)=>{
+   //console.log(req.params.id);
+Internal.findById(req.params.id, function (err, internal) { 
+
+if(err){
+    return res.status(403).json({
+            message: 'NO data found '
+        }) 
+}else{
+     return res.status(403).json({
+          internal
+        }) 
+}
+ } );
+}
+
+/* 
     GET /api/user/list
 */
 

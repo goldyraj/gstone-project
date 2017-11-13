@@ -78,9 +78,9 @@ if(err){
             message: 'NO data found '
         }) 
 }else{
-     return res.json(
+     return res.json({
           internal
-        ) 
+        }) 
 }
  } );
 }

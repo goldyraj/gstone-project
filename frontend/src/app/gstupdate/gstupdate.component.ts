@@ -3,6 +3,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { RouterModule, Routes, Router } from '@angular/router';
+import { PagerService } from '../service/pager.service';
 
 @Component({
   selector: 'app-gstupdate',
@@ -11,7 +12,7 @@ import { RouterModule, Routes, Router } from '@angular/router';
 })
 export class GstupdateComponent implements OnInit {
 
-  
+
   internalUpdateList = [];
   url = "";
   notiRowData;
@@ -25,6 +26,8 @@ export class GstupdateComponent implements OnInit {
   currentPage: number;
   loading = false;
   modelHide = '';
+  pagedItems: any[];
+  pager: any = {};
   reg = {};
   venderList = [];
   public myForm: FormGroup; // our model driven form
@@ -32,20 +35,20 @@ export class GstupdateComponent implements OnInit {
   public events: any[] = []; // use later to display form changes
   access_token;
 
-  constructor(public http: Http, private router: Router, private _fb: FormBuilder) {
+  constructor(public http: Http, private router: Router, private _fb: FormBuilder, public pagerService: PagerService) {
     this.access_token = localStorage.getItem("user_token");
     console.log("user_token", this.access_token);
-    this.getInternalUpdateList();
+    this.getInternalUpdateList(1);
   }
 
   ngOnInit() {
   }
 
- 
 
-  getInternalUpdateList() {
+
+  getInternalUpdateList(page: number) {
     console.log('list called');
-    this.http.get('http://localhost:3000/api/home/internal').subscribe(data => {
+    this.http.get('http://localhost:3000/api/home/internal?limit=2&page=' + this.pager.currentPage).subscribe(data => {
       this.internalUpdateList = data.json().docs;
       this.TotalPages = data.json().total;
       this.pageSize = this.Paging.limit;
@@ -55,6 +58,17 @@ export class GstupdateComponent implements OnInit {
       console.log("TotalPages", this.TotalPages);
       console.log("TotalPages", this.pageSize);
     });
+  }
+
+  setPage() {
+    if (this.pager.currentPage < 1 || this.pager.currentPage > this.pager.TotalPages) {
+      return;
+    }
+
+    this.pager = this.pagerService.getPager(this.pager.totalItems, this.pager.currentPage, this.pager.pageSize);
+    console.log("pager", this.pager);
+    // this.getStateList();
+    this.pagedItems = this.internalUpdateList;
   }
 
 }

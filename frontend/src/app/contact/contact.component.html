@@ -27,7 +27,7 @@
                                 Contact has been send successfully
                             </div>
                             <div class="alert alert-danger" *ngIf="errorType == false">
-                                Contact not send.
+                                Contact not send please re-try.
                             </div>
                             <form [formGroup]="contactForm" novalidate (ngSubmit)="sendContact(contactForm.valid)">
 
@@ -35,7 +35,7 @@
                                 <div class="col-sm-6 form-group">
                                     <input type="text" class="form-control" formControlName="name" placeholder="Name">
                                     <small [hidden]="contactForm.controls.name.valid || (contactForm.controls.name.pristine && !submitted)">
-                                        Name is required (minimum 5 characters).
+                                        Name is required .
                                     </small>
                                 </div>
                                 <div class="col-sm-6 form-group">

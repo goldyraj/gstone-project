@@ -112,7 +112,7 @@ export class AdminGstoneVideosComponent implements OnInit {
           // alert(response.json().message);
           // this.TotalPages=this.TotalPages+1;
           this.getVideosList(this.pager.currentPage);
-          this.submitted=false;
+          
           this.gstVideosForm.reset();
         },
         error => {
@@ -221,6 +221,7 @@ export class AdminGstoneVideosComponent implements OnInit {
 
   resetForm()
   {
+    this.submitted=false;
     this.gstVideosForm.reset();
   }
 }

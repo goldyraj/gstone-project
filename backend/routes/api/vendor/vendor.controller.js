@@ -48,7 +48,7 @@ const onError = (error) => {
     if(req.query.sortBy && req.query.sortBy.length>0){    
     sortfiled=req.query.sortBy
 }else{
-   sortfiled={ date: -1 } 
+   sortfiled={ created_at: -1 } 
 }
 var option={
     select:'name pan_no gstin city contact email address state',
@@ -142,7 +142,7 @@ exports.update=(req,res)=>{
     }
         const {_id,name,pan_no,gstin,city,contact,email,address,state} = req.body
      
-         Vendor.findOneAndUpdate({_id:_id}, {$set:{name:name,pan_no:pan_no,gstin:gstin,contact:contact,email:email,address:address,state:state}}, {new: true}, function(err, doc){
+         Vendor.findOneAndUpdate({_id:_id}, {$set:{name:name,pan_no:pan_no,gstin:gstin,contact:contact,city:city,email:email,address:address,state:state}}, {new: true}, function(err, doc){
     if(err){
         console.log("Something wrong when updating data!");
     }

@@ -68,7 +68,7 @@
 
         <!-- TABLE -->
 
-        <ul class="pagination btn-sm" *ngIf="faqsList?.length > 0">
+        <ul class="pagination btn-sm" *ngIf="faqsList?.length > 1">
           <li>
             <!-- <a href="#">Previous</a> -->
             <button (click)="previousPage()" class="btn btn-primary">Previous</button>
@@ -125,7 +125,7 @@
 
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <button type="submit" class="btn btn-primary">Add FAQ</button>
+                  <button type="submit" class="btn btn-primary" (click)="resetForm()">Add FAQ</button>
                   <button type="button" class="btn btn-success pull-right" data-dismiss="modal">Cancel</button>
                 </div>
               </form>

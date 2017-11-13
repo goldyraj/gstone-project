@@ -24,7 +24,7 @@
       <div class="col-md-4 col-xs-12">
         <div class="text-right">
 
-          <input type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-user-lg" value="Add New">
+          <input type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-user-lg" value="Add New" (click)="resetForm()">
         </div>
       </div>
 
@@ -59,7 +59,7 @@
 
               <!-- <tr *ngFor="let item of internalUpdateList ;let i = index;"> -->
               <tr *ngFor="let item of internalUpdateList | updateFilter:searchString  ;let i = index;">
-                <td align="center">{{pager.pageSize * (pager.currentPage-1)+i+1}}</td>
+                  <td align="center">{{pager.pageSize * (pager.currentPage-1)+i+1}}</td>
                 <td align="center">{{item.title}}</td>
                 <td align="center">
                   <a target="_blank">{{item.details}}</a>
@@ -81,7 +81,7 @@
             </tbody>
           </table>
 
-          <ul class="pagination btn-sm" *ngIf="internalUpdateList?.length > 10">
+          <ul class="pagination btn-sm" *ngIf="internalUpdateList?.length > 1">
             <li [ngClass]="{disabled:pager.currentPage === 1}">
               <a [class.hide]="pager.currentPage == 1" (click)="getNotificationList(pager.currentPage - 1)">Previous</a>
             </li>
@@ -91,7 +91,7 @@
             </li>
 
             <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
-              <a  (click)="getNotificationList(page)">{{page}}</a>
+              <a (click)="getNotificationList(page)">{{page}}</a>
             </li>
 
             <li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
@@ -144,6 +144,28 @@
             <div class="col-md-12 col-sm-12">
 
               <form [formGroup]="internalUpdateForm" novalidate (ngSubmit)="addInternalUpdate(internalUpdateForm.valid)">
+
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <select class="form-control" formControlName="selectUpdateType" required (ngModelChange)="onSelectType($event)">
+                    <option selected="0" value="0">Select Update Type</option>
+                    <option value="chapter">Chapter</option>
+                    <option value="article">Article</option>
+                  </select>
+                  <small *ngIf="internalUpdateForm.controls.selectUpdateType=='0' && submitted">
+                    Select Update Type !
+                  </small>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <select class="form-control" formControlName="selectChapterArticle" required>
+                    <option value="0" selected="0">Select Chapter/Article</option>
+                    <option *ngFor="let item of secondDropDownArray" value="{{item}}">{{item}}</option>
+                  </select>
+                  <small *ngIf="editInternalUpdate.controls.selectChapterArticle=='0' && submitted">
+                    Select Chapter/Article !
+                  </small>
+                </div>
+
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <input type="text" class="form-control" placeholder="Title" formControlName="title" name="title" id="title">
                   <small [hidden]="internalUpdateForm.controls.title.valid || (internalUpdateForm.controls.title.pristine && !submitted)">
@@ -162,17 +184,6 @@
                     Link is required .
                   </small>
                 </div>
-                <!-- <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <select class="form-control" formControlName="status" required>
-                    <option selected="selected" value=""> --- Salect Status Type ---</option>
-                    <option value="Approved"> Approved </option>
-                    <option value="Pending">Pending</option>
-                    <option value="Denied">Denied</option>
-                  </select>
-                  <small [hidden]="internalUpdateForm.controls.status.valid || (internalUpdateForm.controls.status.pristine && !submitted)">
-                    Status is required .
-                  </small>
-                </div> -->
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <!-- <input type="button" class="btn btn-primary" value="Add Notifications"> -->
@@ -203,6 +214,28 @@
           <div class="row">
             <div class="col-md-12 col-sm-12">
               <form [formGroup]="editInternalUpdate" novalidate (ngSubmit)="updateInternal(editInternalUpdate.valid)">
+
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <select class="form-control" formControlName="selectUpdateType" required (ngModelChange)="onSelectType($event)" [(ngModel)]="selectUpdateType">
+                    <option selected="0" value="0">Select Update Type</option>
+                    <option value="chapter">Chapter</option>
+                    <option value="article">Article</option>
+                  </select>
+                  <small *ngIf="editInternalUpdate.controls.selectUpdateType=='0' && submitted">
+                    Select Update Type !
+                  </small>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <select class="form-control" formControlName="selectChapterArticle" required [(ngModel)]="selectChapterArticle">
+                    <option value="0" selected="0">Select Chapter/Article</option>
+                    <option *ngFor="let item of secondDropDownArray" value="{{item}}">{{item}}</option>
+                  </select>
+                  <small *ngIf="editInternalUpdate.controls.selectChapterArticle=='0' && submitted">
+                    Select Chapter/Article !
+                  </small>
+                </div>
+
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <input type="text" class="form-control" placeholder="Title" formControlName="title" name="title" id="title">
                   <small [hidden]="editInternalUpdate.controls.title.valid || (editInternalUpdate.controls.title.pristine && !submitted)">
@@ -264,7 +297,7 @@
           <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
               <div class="col-md-12 col-sm-12 col-xs-12 text-center">
-                <h4 class="text-blue">sure, you want to delete ?
+                <h4 class="text-blue">Sure, you want to delete ?
                   <br>
                   <br>
                 </h4>

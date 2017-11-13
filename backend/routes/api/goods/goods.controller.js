@@ -49,10 +49,10 @@ const onError = (error) => {
     if(req.query.sortBy && req.query.sortBy.length>0){    
     sortfiled=req.query.sortBy
 }else{
-   sortfiled={ date: -1 } 
+ sortfiled={ created_at: -1 }
 }
 var option={
-    select:'hsn_code description cgst sgst igst condition',
+    select:'hsn_code description cgst sgst igst condition ',
     sort:sortfiled, 
     offset:offset,
     limit:req.query.limit
@@ -69,12 +69,12 @@ Goods.paginate(query,option).then(goods=>
 
 exports.list = (req, res) => {
     // refuse if not an admin
-  var myCallback=usingItNow(req.decoded)
- if(myCallback) {
-   return res.status(403).json({
-            message: 'you are not an authorise'
-        }) 
-    }
+ //  var myCallback=usingItNow(req.decoded)
+ // if(myCallback) {
+ //   return res.status(403).json({
+ //            message: 'you are not an authorise'
+ //        }) 
+ //    }
  Goods.find({}).exec()
     .then(
         goods=> {

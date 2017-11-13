@@ -1,4 +1,5 @@
 const Internal = require('../../../models/internal')
+var fs=require('fs');
 
   var usingItNow = function(req) {
 if(req.type=="agentuser"||req.type=="admin"){
@@ -53,7 +54,7 @@ const onError = (error) => {
     if(req.query.sortBy && req.query.sortBy.length>0){    
     sortfiled=req.query.sortBy
 }else{
-   sortfiled={ date: -1 } 
+   sortfiled={ created_at: -1 } 
 }
 var option={
     select:'title details link chapter article date status type',
@@ -142,8 +143,9 @@ var myCallback=usingItNow(req.decoded)
     POST /api/State/upadate
 */
 exports.update=(req,res)=>{
-        const {_id, title , details ,link , date,chapter,article } = req.body
+        const {_id, title , details ,link , date,chapter,article,type } = req.body
      //=========Authrise function
+     console.log(req.decoded)
 var myCallback=usingItNow(req.decoded)
  if(myCallback) {
    return res.status(403).json({

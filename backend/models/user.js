@@ -17,7 +17,7 @@ const User = new Schema({
     address: String,
     city: String, 
     state:String,
-    created_at:  { type: Date},
+    created_at:  { type: Date,default: Date.now},
     updated_at:  { type: Date},
     type:String,
     admin: { type: Boolean, default: false }

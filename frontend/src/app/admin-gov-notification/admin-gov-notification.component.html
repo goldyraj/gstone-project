@@ -26,7 +26,7 @@
         <div class="text-right">
           <!-- <input type="button" class="btn btn-primary" value="Import CSV"> -->
 
-          <input type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-user-lg" value="Add New">
+          <input type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-user-lg" value="Add New" (click)="resetForm()">
         </div>
       </div>
 
@@ -66,7 +66,7 @@
             <tbody>
               <!-- <tr *ngFor="let item of notificationList ;let i = index;"> -->
               <tr *ngFor="let item of notificationList | notifyFilter:searchString ;let i = index;">
-                <td align="center">{{pager.pageSize * (pager.currentPage-1)+i+1}}</td>
+                  <td align="center">{{pager.pageSize * (pager.currentPage-1)+i+1}}</td>
                 <td align="center">{{item.title}}</td>
                 <td align="center">
                   <a href="{{item.link}}" target="_blank">{{item.description}}</a>
@@ -93,7 +93,7 @@
             </tbody>
           </table>
 
-          <ul class="pagination btn-sm" *ngIf="notificationList?.length > 10">
+          <ul class="pagination btn-sm" *ngIf="notificationList?.length > 1">
             <li [ngClass]="{disabled:pager.currentPage === 1}">
               <a *ngIf="pager.currentPage > 1" (click)="getNotificationList(pager.currentPage - 1)">Previous</a>
             </li>

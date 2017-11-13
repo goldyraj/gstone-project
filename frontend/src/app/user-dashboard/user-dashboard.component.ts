@@ -15,12 +15,18 @@ import * as _ from 'underscore'
 })
 export class UserDashboardComponent implements OnInit {
 
+  @ViewChild('closeCsv') closeCsv:ElementRef;
+  @ViewChild('closeChoose') closeChoose:ElementRef;
+  filename;
+  ifSuccess:boolean;
+  isDownloadSuccessful:boolean;
   headers: Headers;
   branchesList: Array<{ name: string, contact: string, panNo: string, email: string, gstin: string, address: string, selectedDealer: string, city: string, branchName: string, state: string }> = [];
   isEditingClicked: boolean;
   publicBranchData;
   selectedDealerStateEdit = "0";
   selectedDealerStateNew = "0";
+  jsonString;
   // constructor() { }
   @ViewChild('closeBtn') closeBtn: ElementRef;
   modelHide = '';
@@ -29,6 +35,7 @@ export class UserDashboardComponent implements OnInit {
   stateList=[];
   public myForm: FormGroup; // our model driven form
   public submitted: boolean; // keep track on whether form is submitted
+  public isBranchList: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
   public csvString: string;
   access_token;
@@ -139,8 +146,16 @@ export class UserDashboardComponent implements OnInit {
         console.log("BRANCH_LIST_API_RESPONSE_2", response.json().docs);
         this.branchesList=response.json().docs;
         this.pager.pageSize = response.json().limit;
+        let isList = this.branchesList.length;
         this.pager.totalItems = response.json().total;
         this.setPage();
+        if (isList === 0) {
+          this.isBranchList = true;
+          // console.log("")
+        } else {
+          this.isBranchList = false;
+        }
+        
         // for (let data of response.json().docs) {
         //   this.branchesList.push({ name: data.name, contact: data.contact, panNo: data.pan_no, email: data.email, gstin: data.gstin, address: data.address, selectedDealer: data.state, city: data.city, branchName: data.branch_name, state: data.state });
         // }
@@ -188,7 +203,8 @@ export class UserDashboardComponent implements OnInit {
       reader.onload = (e) => {
         let csv: string = reader.result;
         console.log(csv);
-        this.csvString = this.excelServiceService.CSV2JSON(csv);
+        var csvString = this.excelServiceService.CSV2JSON(csv);
+        this.jsonString = csvString;
         // var csvString=this.CSV2JSON(csv);
         // this.uploadCsvFileToServer(csvString);
       }
@@ -196,43 +212,71 @@ export class UserDashboardComponent implements OnInit {
   }
 
   uploadCsvFileToServer() {
+
     const headers = new Headers();
 
     headers.append('Content-Type', 'application/json');
-    // headers.append('x-access-token', access_token);
+    headers.append('x-access-token', this.access_token);
     const requestOptions = new RequestOptions({ headers: headers });
     const body = {
-      "data": JSON.parse(this.csvString)
+      "data": JSON.parse(this.jsonString)
     };
 
-    this.url = "http://localhost:3000/api/branch/uploadFile?token="+this.access_token;
+    console.log("CSV_DATA", body);
+
+    this.url = "http://localhost:3000/api/branch/uploadFile?token=" + this.access_token;
+
     return this.http.post(this.url, body, requestOptions)
       .subscribe(
       response => {
-        console.log("suceessfull data", response.json());
+        console.log("suceessfull data", response.json().message);
         this.closeModal();
-        if (response.json().message != null) {
-          alert(response.json().message);
-          this.getBranches(this.pager.currentPage);
-        }
-        else if (response.json().error != null) {
-          alert("Your CSV/Excel file contains some repeated data !");
-        }
+        this.closeCsv.nativeElement.click();
+        this.closeChoose.nativeElement.click();
+        this.ifSuccess = true;
+        this.getBranches(this.pager.currentPage);
+        // alert(response.json().message);
       },
       error => {
         console.log("error", error.message);
         console.log(error.text());
-        var errorString = error.text();
-
-        if (errorString != null) {
-          alert("Your CSV/Excel file contains some repeated data !");
-        }
       }
       );
   }
 
   downloadJSONTOCSV() {
-    this.getBranches(this.pager.currentPage);
-    this.excelServiceService.exportAsExcelFile(this.branchesList, "BranchesJSNTOCSV");
+    let response: any;
+    let myHeaders = new Headers({ 'Content-Type': 'application/json' });
+    var exportedList;
+    myHeaders.append('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization, x-access-token');
+    myHeaders.append('Access-Control-Allow-Methods', 'GET, OPTIONS, POST');
+    myHeaders.append('Access-Control-Allow-Origin', '*');
+
+    myHeaders.append('Access-Control-Allow-Credentials', 'true');
+
+    let options = new RequestOptions({ headers: myHeaders });
+
+    this.http.get('http://localhost:3000/api/branch/index?token='+this.access_token, options)
+      .subscribe(
+      response => {
+        exportedList = response.json().docs;
+        this.excelServiceService.exportAsExcelFile(exportedList,String(this.excelServiceService.getCurrentDateAndTime()));
+        this.isDownloadSuccessful=true;
+      },
+      error => {
+        // alert(error.text());
+        console.log(error.text());
+      }
+      );
+  }
+
+  closeDownloadModal()
+  {
+    this.isDownloadSuccessful=false;
+  }
+
+  resetForm()
+  {
+    this.myForm.reset();
   }
 }

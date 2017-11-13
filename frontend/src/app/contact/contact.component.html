@@ -23,6 +23,12 @@
                             </div>
                         </div>
                         <div class="row">
+                            <div class="alert alert-success" *ngIf="errorType == true">
+                                Contact has been send successfully
+                            </div>
+                            <div class="alert alert-danger" *ngIf="errorType == false">
+                                Contact not send.
+                            </div>
                             <form [formGroup]="contactForm" novalidate (ngSubmit)="sendContact(contactForm.valid)">
 
 
@@ -54,19 +60,17 @@
                                 </div>
                                 <div class="col-sm-12 form-group">
                                     <textarea class="form-control" rows="5" formControlName="remarks" placeholder="Remark"></textarea>
-                                    <small [hidden]="contactForm.controls.remarks.valid || (contactForm.controls.remarks.pristine && !submitted)">
-                                        Remarks is required.
-                                    </small>
+                                    
                                 </div>
                                 <div class="col-sm-12 form-group">
                                     <button class="btn btn-primary unicod-btn-green" type="submit">Send</button>
                                 </div>
-                                <small *ngIf="errorType == true && submitted">
+                                <!-- <small *ngIf="errorType == true && submitted">
                                     Contact has been send successfully.
                                 </small>
                                 <small *ngIf="errorType == false && submitted">
                                     Contact not send.
-                                </small>
+                                </small> -->
                             </form>
                         </div>
                     </form>

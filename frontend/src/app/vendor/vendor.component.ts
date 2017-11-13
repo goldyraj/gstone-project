@@ -15,21 +15,32 @@ import { PagerService } from '../service/pager.service';
 export class VendorComponent implements OnInit {
   // constructor() { }
   @ViewChild('closeBtn') closeBtn: ElementRef;
+  @ViewChild('closeBtn2') closeBtn2: ElementRef;
+  @ViewChild('closeBtn3') closeBtn3: ElementRef;
+  @ViewChild('closeCsv') closeCsv:ElementRef;
+  @ViewChild('closeChoose') closeChoose:ElementRef;
 
+  ifSuccess:boolean;
   modelHide = '';
+  isDownloadSuccessful:boolean;
+  jsonString;
   url = "";
   vender = {};
   venderList = [];
+  stateList = [];
   rowDataIndex;
   public myForm: FormGroup; // our model driven form
   public myFormEdit: FormGroup;
   public submitted: boolean; // keep track on whether form is submitted
+  public vendorList: boolean; // keep track on whether form is submitted
+  public submittedEdit: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
   public vendorRowData;
   public csvString;
   access_token;
   pager: any = {};
   pagedItems: any[];
+  selectedState = "";
   venderRowData;
 
   constructor(private _fb: FormBuilder, private http: Http, public excelServiceService: ExcelServiceService, public pagerService: PagerService) {
@@ -37,6 +48,7 @@ export class VendorComponent implements OnInit {
     this.access_token = localStorage.getItem("user_token");
     this.getVenderList(1);
     console.log("custructor call");
+    this.getStateList();
 
   }
 
@@ -63,6 +75,12 @@ export class VendorComponent implements OnInit {
       state: new FormControl('Select State')
     });
   }
+  onInput($event) {
+    $event.preventDefault();
+    console.log('selected: ' + $event.target.value);
+    this.selectedState = $event.target.value;
+  }
+
 
   saveVender(isValid: boolean) {
     this.submitted = true; // set form submit to true
@@ -82,7 +100,7 @@ export class VendorComponent implements OnInit {
         "name": this.myForm.value.name,
         "gstin": this.myForm.value.gstin,
         "address": this.myForm.value.address,
-        "state": this.myForm.value.state
+        "state": this.selectedState
       };
       this.url = "http://localhost:3000/api/vendor/create?token=" + this.access_token;
       return this.http.post(this.url, body, requestOptions)
@@ -90,7 +108,7 @@ export class VendorComponent implements OnInit {
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeModal();
-          alert(response.json().message);
+          // alert(response.json().message);
           this.getVenderList(this.pager.currentPage);
           this.myForm.reset();
           this.myForm.get("state").setValue("Select State");
@@ -104,13 +122,88 @@ export class VendorComponent implements OnInit {
     }
   }
 
+  updateVendorRecord(isValid: boolean) {
+    this.submittedEdit = true; // set form submit to true
+    console.log(isValid);
+    console.log("hi form module is called from page");
+    console.log("edited form data", this.myFormEdit.value);
+
+    // if (isValid == true && this.myFormEdit.value.selectedstateDropdown!='Select State') {
+    if (isValid == true) {
+
+      const headers = new Headers();
+
+      headers.append('Content-Type', 'application/json');
+      // headers.append('x-access-token', this.access_token);
+      const requestOptions = new RequestOptions({ headers: headers });
+
+      const body = {
+        "_id": this.venderRowData._id,
+        "name": this.myFormEdit.value.name,
+        "gstin": this.myFormEdit.value.gstin,
+        "address": this.myFormEdit.value.address,
+        "state": this.selectedState
+      };
+      console.log("body", body);
+
+      this.url = "http://localhost:3000/api/vendor/update?token=" + this.access_token;
+      return this.http.put(this.url, body, requestOptions)
+        .subscribe(
+        response => {
+          console.log("suceessfull data", response.json().message);
+          this.closeEditModal();
+          this.submittedEdit = false;
+          this.getVenderList(this.pager.currentPage);
+          // this.hsnCodeData.push(body);
+
+          this.venderList[this.rowDataIndex] = body;
+          // alert(response.json().message);
+        },
+        error => {
+          // this.closeEditModal();
+          console.log("error", error.message);
+          console.log(error.text());
+        }
+        );
+    }
+  }
+
+
+  private closeEditModal(): void {
+    this.closeBtn2.nativeElement.click();
+  }
+  private closeDeleteModal(): void {
+    this.closeBtn3.nativeElement.click();
+  }
+
+  getStateList() {
+    console.log('list called');
+    this.http.get('http://localhost:3000/api/state/list').subscribe(data => {
+      this.stateList = data.json().state;
+      // this.TotalPages = data.json().total;
+      // this.pageSize = this.Paging.limit;
+      // this.currentPage = this.Paging.page;
+      console.log("pagecount", )
+      console.log("getStateList", this.stateList);
+      // console.log("TotalPages", this.TotalPages);
+    });
+  }
+
   getVenderList(page: number) {
     this.pager.currentPage = page;
     this.http.get('http://localhost:3000/api/vendor/index?token=' + this.access_token + '&page=' + this.pager.currentPage + '&limit=' + 5).subscribe(data => {
       this.venderList = data.json().docs;
+      let isList = this.venderList.length;
       console.log("verder  PArse", this.venderList);
+      console.log("isList", isList);
       this.pager.pageSize = data.json().limit;
       this.pager.totalItems = data.json().total;
+      if (isList === 0) {
+        this.vendorList = true;
+        // console.log("")
+      } else {
+        this.vendorList = false;
+      }
       this.setPage();
     });
   }
@@ -130,99 +223,57 @@ export class VendorComponent implements OnInit {
     this.closeBtn.nativeElement.click();
   }
 
-  // closeDeleteModal()
-  // {
-  //   this.closeBtn3.nativeElement.click();
-  // }
 
   recordToDelete(item) {
     this.vendorRowData = item;
   }
 
-  editGoodsServicesRecord(data){
+  editGoodsServicesRecord(data) {
     this.rowDataIndex = data._id;
     var temp;
     if (data) {
       console.log("DATA", data);
 
       this.myFormEdit.get("name").setValue(data.name);
-      this.myFormEdit.get("gstn").setValue(data.gstn);
+      this.myFormEdit.get("gstin").setValue(data.gstin);
       this.myFormEdit.get("address").setValue(data.address);
       this.myFormEdit.get("state").setValue(data.state);
-      // this.myFormEdit.get("state").setValue(data.state);
     }
 
     this.venderRowData = data;
 
   }
 
-  CSV2JSON(csv) {
-    var array = this.CSVToArray(csv, ",");
-
-    var objArray = [];
-    for (var i = 1; i < array.length; i++) {
-      objArray[i - 1] = {};
-      for (var k = 0; k < array[0].length && k < array[i].length; k++) {
-        var key = array[0][k];
-        objArray[i - 1][key] = array[i][k]
-      }
-    }
-
-    var json = JSON.stringify(objArray.splice(0, objArray.length - 1));
-    var str = json.replace(/},/g, "},\r\n");
-    return str;
+  deleteVendorRecord(data) {
+    this.rowDataIndex = data._id;
+    this.venderRowData = data;
   }
 
-  CSVToArray(strData, strDelimiter) {
-    // Check to see if the delimiter is defined. If not,
-    // then default to comma.
-    strDelimiter = (strDelimiter || ",");
-    // Create a regular expression to parse the CSV values.
-    var objPattern = new RegExp((
-      // Delimiters.
-      "(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
-      // Quoted fields.
-      "(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
-      // Standard fields.
-      "([^\"\\" + strDelimiter + "\\r\\n]*))"), "gi");
-    // Create an array to hold our data. Give the array
-    // a default empty first row.
-    var arrData = [[]];
-    // Create an array to hold our individual pattern
-    // matching groups.
-    var arrMatches = null;
-    // Keep looping over the regular expression matches
-    // until we can no longer find a match.
-    while (arrMatches = objPattern.exec(strData)) {
-      // Get the delimiter that was found.
-      var strMatchedDelimiter = arrMatches[1];
-      // Check to see if the given delimiter has a length
-      // (is not the start of string) and if it matches
-      // field delimiter. If id does not, then we know
-      // that this delimiter is a row delimiter.
-      if (strMatchedDelimiter.length && (strMatchedDelimiter != strDelimiter)) {
-        // Since we have reached a new row of data,
-        // add an empty row to our data array.
-        arrData.push([]);
+  deleteVendor() {
+    console.log("delete api", this.venderRowData._id);
+    const headers = new Headers();
+
+    headers.append('Content-Type', 'application/json');
+    // headers.append('x-access-token', access_token);
+    const requestOptions = new RequestOptions({ headers: headers });
+
+    this.url = "http://localhost:3000/api/vendor/delete/" + this.venderRowData._id;
+    return this.http.delete(this.url, requestOptions)
+      .subscribe(
+      response => {
+        console.log("suceessfull data", response.json().message);
+        // this.custList.splice(this.custRowData._id,1);
+        this.closeDeleteModal();
+        this.getVenderList(this.pager.currentPage);
+        this.submittedEdit = false;
+
+        // alert(response.json().message);
+      },
+      error => {
+        console.log("error", error.message);
+        console.log(error.text());
       }
-      // Now that we have our delimiter out of the way,
-      // let's check to see which kind of value we
-      // captured (quoted or unquoted).
-      if (arrMatches[2]) {
-        // We found a quoted value. When we capture
-        // this value, unescape any double quotes.
-        var strMatchedValue = arrMatches[2].replace(
-          new RegExp("\"\"", "g"), "\"");
-      } else {
-        // We found a non-quoted value.
-        var strMatchedValue = arrMatches[3];
-      }
-      // Now that we have our value string, let's add
-      // it to the data array.
-      arrData[arrData.length - 1].push(strMatchedValue);
-    }
-    // Return the parsed data.
-    return (arrData);
+      );
   }
 
   onCSVFilePicked(files: FileList) {
@@ -237,7 +288,8 @@ export class VendorComponent implements OnInit {
       reader.onload = (e) => {
         let csv: string = reader.result;
         console.log(csv);
-        this.csvString = this.CSV2JSON(csv);
+        var csvString = this.excelServiceService.CSV2JSON(csv);
+        this.jsonString = csvString;
         // var csvString=this.CSV2JSON(csv);
         // this.uploadCsvFileToServer(csvString);
       }
@@ -245,48 +297,72 @@ export class VendorComponent implements OnInit {
   }
 
   uploadCsvFileToServer() {
+
     const headers = new Headers();
 
     headers.append('Content-Type', 'application/json');
-    // headers.append('x-access-token', access_token);
+    headers.append('x-access-token', this.access_token);
     const requestOptions = new RequestOptions({ headers: headers });
     const body = {
-      "data": JSON.parse(this.csvString)
+      "data": JSON.parse(this.jsonString)
     };
 
+    console.log("CSV_DATA", body);
+
     this.url = "http://localhost:3000/api/vendor/uploadFile?token=" + this.access_token;
+
     return this.http.post(this.url, body, requestOptions)
       .subscribe(
       response => {
-        console.log("suceessfull data", response.json());
+        console.log("suceessfull data", response.json().message);
         this.closeModal();
-        if (response.json().message != null) {
-          alert(response.json().message);
-          this.getVenderList(this.pager.currentPage);
-        }
-        else if (response.json().error != null) {
-          alert("Your CSV/Excel file contains some repeated data !");
-        }
+        this.closeCsv.nativeElement.click();
+        this.closeChoose.nativeElement.click();
+        this.ifSuccess = true;
+        this.getVenderList(this.pager.currentPage);
+        // alert(response.json().message);
       },
       error => {
         console.log("error", error.message);
         console.log(error.text());
-        var errorString = error.text();
-
-        if (errorString != null) {
-          alert("Your CSV/Excel file contains some repeated data !");
-        }
       }
       );
   }
 
-  exportJSONToCSV() {
-    // this.excelServiceService.exportAsExcelFile()
+  downloadJSONTOCSV() {
+    let response: any;
+    let myHeaders = new Headers({ 'Content-Type': 'application/json' });
+    var exportedList;
+    myHeaders.append('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization, x-access-token');
+    myHeaders.append('Access-Control-Allow-Methods', 'GET, OPTIONS, POST');
+    myHeaders.append('Access-Control-Allow-Origin', '*');
+
+    myHeaders.append('Access-Control-Allow-Credentials', 'true');
+
+    let options = new RequestOptions({ headers: myHeaders });
+
+    this.http.get('http://localhost:3000/api/vendor/index?token='+this.access_token, options)
+      .subscribe(
+      response => {
+        exportedList = response.json().docs;
+        this.excelServiceService.exportAsExcelFile(exportedList,String(this.excelServiceService.getCurrentDateAndTime()));
+        this.isDownloadSuccessful=true;
+      },
+      error => {
+        // alert(error.text());
+        console.log(error.text());
+      }
+      );
   }
 
-  downloadJSONTOCSV() {
-    this.getVenderList(this.pager.currentPage);
-    this.excelServiceService.exportAsExcelFile(this.venderList, "JSONTOCSV1");
+  closeDownloadModal()
+  {
+    this.isDownloadSuccessful=false;
+  }
+
+  resetForm()
+  {
+    this.myForm.reset();
   }
 
   onUrlChanged() {

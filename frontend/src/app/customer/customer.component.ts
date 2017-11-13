@@ -17,6 +17,15 @@ export class CustomerComponent implements OnInit {
   @ViewChild('closeBtn') closeBtn: ElementRef;
   @ViewChild('closeBtn2') closeBtn2: ElementRef;
   @ViewChild('closeBtn3') closeBtn3: ElementRef;
+  @ViewChild('closeInnerExportModal') closeInnerExportModal:ElementRef;
+  @ViewChild('closeImportExport') closeImportExport:ElementRef;
+  @ViewChild('closeImportModal') closeImportModal:ElementRef;
+  isDownloadSuccessful:boolean;
+  ifSuccess:boolean;
+  @ViewChild('closeChoose') closeChoose: ElementRef;
+  @ViewChild('closeCsv') closeCsv:ElementRef;
+  jsonString;
+  
   modelHide = '';
   url = "";
   cutomer = {};
@@ -28,6 +37,7 @@ export class CustomerComponent implements OnInit {
   public myForm: FormGroup; // our model driven form
   public myFormEdit: FormGroup;
   public submitted: boolean; // keep track on whether form is submitted
+  public isCustList: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
   public csvString;
   customerRowData;
@@ -55,11 +65,10 @@ export class CustomerComponent implements OnInit {
     this.selectedState = $event.target.value;
   }
   ngOnInit() {
-
+    this.getCustomerList(1);
     this.stateDropdown.push("Jabalpur");
     this.stateDropdown.push("Bhopal");
     this.stateDropdown.push("Indore");
-
     this.myForm = new FormGroup({
       name: new FormControl('', [<any>Validators.required]),
       contact: new FormControl('', [<any>Validators.required, <any>Validators.minLength(10)]),
@@ -162,8 +171,11 @@ export class CustomerComponent implements OnInit {
       .subscribe(
       response => {
         console.log("suceessfull data", response.json().message);
+        // this.custList.splice(this.custRowData._id,1);
         this.closeDeleteModal();
+        this.getCustomerList(this.pager.currentPage);
         this.submittedEdit = false;
+
         // alert(response.json().message);
       },
       error => {
@@ -176,15 +188,22 @@ export class CustomerComponent implements OnInit {
   private closeDeleteModal(): void {
     this.closeBtn3.nativeElement.click();
   }
-  
+
 
   getCustomerList(page: number) {
     this.pager.currentPage = page;
     this.http.get('http://localhost:3000/api/customer/index?token=' + this.access_token + '&limit=5&page=' + this.pager.currentPage + '&sortBy=title&search=').subscribe(data => {
       console.log("customer list", data);
       this.custList = data.json().docs;
+      let isList = this.custList.length;
       this.pager.pageSize = data.json().limit;
       this.pager.totalItems = data.json().total;
+      if (isList === 0) {
+        this.isCustList = true;
+        // console.log("")
+      } else {
+        this.isCustList = false;
+      }
       this.setPage();
       console.log("verder  PArse", this.custList);
     });
@@ -222,7 +241,8 @@ export class CustomerComponent implements OnInit {
     this.submittedEdit = true; // set form submit to true
     console.log(isValid);
     console.log("hi form module is called from page");
-
+    console.log("edited form data",this.myFormEdit.value);
+    
     // if (isValid == true && this.myFormEdit.value.selectedstateDropdown!='Select State') {
     if (isValid == true) {
 
@@ -243,6 +263,7 @@ export class CustomerComponent implements OnInit {
         "state": this.myFormEdit.value.selectedstateDropdown,
         "contact": this.myFormEdit.value.contact
       };
+      console.log("body",body);
 
       this.url = "http://localhost:3000/api/customer/update?token=" + this.access_token;
       return this.http.put(this.url, body, requestOptions)
@@ -251,7 +272,9 @@ export class CustomerComponent implements OnInit {
           console.log("suceessfull data", response.json().message);
           this.closeEditModal();
           this.submittedEdit = false;
+          this.getCustomerList(this.pager.currentPage);
           // this.hsnCodeData.push(body);
+
           this.custList[this.rowDataIndex] = body;
           // alert(response.json().message);
         },
@@ -276,7 +299,8 @@ export class CustomerComponent implements OnInit {
       reader.onload = (e) => {
         let csv: string = reader.result;
         console.log(csv);
-        this.csvString = this.excelServiceService.CSV2JSON(csv);
+        var csvString = this.excelServiceService.CSV2JSON(csv);
+        this.jsonString = csvString;
         // var csvString=this.CSV2JSON(csv);
         // this.uploadCsvFileToServer(csvString);
       }
@@ -284,44 +308,72 @@ export class CustomerComponent implements OnInit {
   }
 
   uploadCsvFileToServer() {
+
     const headers = new Headers();
 
     headers.append('Content-Type', 'application/json');
-
+    headers.append('x-access-token', this.access_token);
     const requestOptions = new RequestOptions({ headers: headers });
     const body = {
-      "data": JSON.parse(this.csvString)
+      "data": JSON.parse(this.jsonString)
     };
 
-    this.url = "http://localhost:3000/api/customer/uploadFile?token=" + this.access_token;
+    console.log("CSV_DATA", body);
+
+    this.url = "http://localhost:3000/api/vendor/uploadFile?token=" + this.access_token;
+
     return this.http.post(this.url, body, requestOptions)
       .subscribe(
       response => {
-        console.log("suceessfull data", response.json());
+        console.log("suceessfull data", response.json().message);
         this.closeModal();
-        if (response.json().message != null) {
-          alert(response.json().message);
-          this.getCustomerList(this.pager.currentPage);
-        }
-        else if (response.json().error != null) {
-          alert("Your CSV/Excel file contains some repeated data !");
-        }
+        this.closeCsv.nativeElement.click();
+        this.closeChoose.nativeElement.click();
+        this.ifSuccess = true;
+        this.getCustomerList(this.pager.currentPage);
+        // alert(response.json().message);
       },
       error => {
         console.log("error", error.message);
         console.log(error.text());
-        var errorString = error.text();
-
-        if (errorString != null) {
-          alert("Your CSV/Excel file contains some repeated data !");
-        }
       }
       );
   }
 
   downloadJSONTOCSV() {
-    this.getCustomerList(this.pager.currentPage);
-    this.excelServiceService.exportAsExcelFile(this.custList, "CustomerJSNTOCSV");
+    let response: any;
+    let myHeaders = new Headers({ 'Content-Type': 'application/json' });
+    var exportedList;
+    myHeaders.append('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization, x-access-token');
+    myHeaders.append('Access-Control-Allow-Methods', 'GET, OPTIONS, POST');
+    myHeaders.append('Access-Control-Allow-Origin', '*');
+
+    myHeaders.append('Access-Control-Allow-Credentials', 'true');
+
+    let options = new RequestOptions({ headers: myHeaders });
+
+    this.http.get('http://localhost:3000/api/vendor/index?token='+this.access_token, options)
+      .subscribe(
+      response => {
+        exportedList = response.json().docs;
+        this.excelServiceService.exportAsExcelFile(exportedList,String(this.excelServiceService.getCurrentDateAndTime()));
+        this.isDownloadSuccessful=true;
+      },
+      error => {
+        // alert(error.text());
+        console.log(error.text());
+      }
+      );
+  }
+
+  closeDownloadModal()
+  {
+    this.isDownloadSuccessful=false;
+  }
+
+  resetForm()
+  {
+    this.myForm.reset();
   }
 
   setPage() {

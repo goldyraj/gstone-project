@@ -9,7 +9,7 @@ const State = new Schema({
     name: String,
     code: String,
   
-     created_at:  { type: Date},
+     created_at:  { type: Date,default: Date.now},
   updated_at:  { type: Date},
 })
 

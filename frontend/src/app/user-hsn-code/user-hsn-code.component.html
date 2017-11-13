@@ -133,17 +133,18 @@
             <div class="tab-pane section-top-20" id="Services">
               <div class="section-bottom-10">
 
-                <div class="col-md-4 col-xs-12">
+                <!-- <div class="col-md-4 col-xs-12">
                   <div class="input-group">
                     <input type="text" class="form-control" [(ngModel)]="codeSerValue" placeholder="HNS Code">
                     <div class="input-group-addon">
                       <i class="fa fa-search"></i>
                     </div>
                   </div>
-                </div>
+                </div> -->
                 <div class="col-md-4 col-xs-12">
                   <div class="input-group">
-                    <input type="text" class="form-control" [(ngModel)]="searchDescString" placeholder="Description">
+                    <!-- <input type="text" class="form-control" [(ngModel)]="searchDescString" placeholder="Description"> -->
+                    <input type="text" class="form-control" [(ngModel)]="searchDescString" placeholder="HNS Code">
                     <div class="input-group-addon">
                       <i class="fa fa-search"></i>
                     </div>
@@ -177,7 +178,7 @@
                   </thead>
 
                   <!-- <ng-template ngFor let-item [ngForOf]="hsnCodeData"> -->
-                  <tr *ngFor="let item of servicesData  | hsnSerDescFilter:codeSerValue | hsnSerCodeFilter: searchDescString ; let i = index;">
+                  <tr *ngFor="let item of servicesData  |hsnSerCodeFilter: searchDescString  ; let i = index;">
                     <!-- <td align="center">{{ hsnCodeData.indexOf(item) }}</td> -->
                     <td align="center">{{i+1}}</td>
                     <td align="center">{{ item.hsn_code }}</td>

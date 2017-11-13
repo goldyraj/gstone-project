@@ -7,6 +7,7 @@ import { ExcelServiceService } from '../excel-service.service';
 import { RouterModule, Routes, Router } from '@angular/router';
 import * as _ from 'underscore';
 import { PagerService } from '../service/pager.service';
+import { NumberValidatorsService } from "../number-validators.service";
 
 @Component({
   selector: 'app-goodservices',

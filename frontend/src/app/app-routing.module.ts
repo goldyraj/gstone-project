@@ -45,35 +45,11 @@ import { AboutUsComponent } from './about-us/about-us.component';
 import { ContactComponent } from './contact/contact.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 import {PreventLoggedInAccess} from './PreventLoggedInAccess';
+import { GstupdateDetailComponent } from './gstupdate-detail/gstupdate-detail.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  // { path: '/**', component: HomeComponent  },
-  // { path: '/**', redirectTo: ['MycmpnameCmp'] },
-  // { path: 'home', component: HomeComponent },
-  // { path: 'Register', component: RegistrationComponent },
-  // { path: 'user', component: UserComponent },
-  // { path: 'client', component: ClientComponent },
-  // { path: 'customer', component: CustomerComponent },
-  // { path: 'update', component: GstupdateComponent },
-  // { path: 'videos', component: VideoslinkComponent },
-  // { path: 'gstr', component: Gstr1Component },
-  // { path: 'edit', component: EditComponent },
-  // { path: 'workreturns', component: WorkreturnsComponent },
-  // { path: 'goods', component: GoodservicesComponent },
-  // { path: 'vendor', component: VendorComponent },
-  //{ path: 'newinvoice', component: AadNewInvoiceComponent },
-  // { path: 'editinvoice', component: EditinvoiceComponent },
-  // { path: 'summarypage', component: SummaryComponent },
-  // { path: 'newinvoice', component: AddnewinvoiceComponent },
-  // { path: 'addbos', component: AddbosComponent },
-  // { path: 'exportinv', component: ExportinvoiceComponent },
-  // { path: 'amendment', component: NewamendmentComponent },
-  // { path: 'other', component: OtherpageComponent },
   { path: 'admin-login', component: AdminLoginComponent },
-  
-  // { path: 'gst-update', component: GstupdateComponent },
-  // { path: 'user-videos', component: VideoslinkComponent },
   {
     path: 'home', component: HomeComponent,
     children: [
@@ -82,6 +58,7 @@ const routes: Routes = [
       // { path: 'DealerType', component: DealerTypeComponent },
       { path: 'update', component: GstupdateComponent },
       { path: 'notification', component: UserGovNotificationComponent },
+      { path: 'update-details/:id', component: GstupdateDetailComponent },
       { path: 'videos', component: VideoslinkComponent },
       // { path: 'newinvoice', component: AadNewInvoiceComponent },
       { path: 'admin-login', component: AdminLoginComponent },

@@ -3,7 +3,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { ExcelServiceService } from '../excel-service.service';
-import {PagerService} from '../service/pager.service';
+import { PagerService } from '../service/pager.service';
 import { RouterModule, Routes, Router } from '@angular/router';
 import * as _ from 'underscore'
 
@@ -11,15 +11,15 @@ import * as _ from 'underscore'
   selector: 'app-user-dashboard',
   templateUrl: './user-dashboard.component.html',
   styleUrls: ['./user-dashboard.component.css'],
-  providers:[ExcelServiceService,PagerService]
+  providers: [ExcelServiceService, PagerService]
 })
 export class UserDashboardComponent implements OnInit {
 
-  @ViewChild('closeCsv') closeCsv:ElementRef;
-  @ViewChild('closeChoose') closeChoose:ElementRef;
+  @ViewChild('closeCsv') closeCsv: ElementRef;
+  @ViewChild('closeChoose') closeChoose: ElementRef;
   filename;
-  ifSuccess:boolean;
-  isDownloadSuccessful:boolean;
+  ifSuccess: boolean;
+  isDownloadSuccessful: boolean;
   headers: Headers;
   branchesList: Array<{ name: string, contact: string, panNo: string, email: string, gstin: string, address: string, selectedDealer: string, city: string, branchName: string, state: string }> = [];
   isEditingClicked: boolean;
@@ -32,7 +32,9 @@ export class UserDashboardComponent implements OnInit {
   modelHide = '';
   url = "";
   cutomer = {};
-  stateList=[];
+  errorMsg = "";
+  public errorType: boolean = false;
+  stateList = [];
   public myForm: FormGroup; // our model driven form
   public submitted: boolean; // keep track on whether form is submitted
   public isBranchList: boolean; // keep track on whether form is submitted
@@ -41,16 +43,17 @@ export class UserDashboardComponent implements OnInit {
   access_token;
   // pager object
   pager: any = {};
+  selectedState = "";
 
   // paged items
   pagedItems: any[];
   // private http: Http HttpClient,
-  public userName:string;
-  constructor(private _fb: FormBuilder, private http: Http, public excelServiceService: ExcelServiceService,public PagerService:PagerService,private router: Router) {
+  public userName: string;
+  constructor(private _fb: FormBuilder, private http: Http, public excelServiceService: ExcelServiceService, public PagerService: PagerService, private router: Router) {
     this.isEditingClicked = false;
     this.pager.currentPage = 1;
     this.access_token = localStorage.getItem("user_token");
-    this.userName=localStorage.getItem("user_name");
+    this.userName = localStorage.getItem("user_name");
     this.getBranches(1);
     this.getStateList();
   } // form builder simplify form initialization
@@ -70,8 +73,8 @@ export class UserDashboardComponent implements OnInit {
       address: new FormControl('', [<any>Validators.required]),
       city: new FormControl('', [<any>Validators.required]),
       branch_name: new FormControl('', [<any>Validators.required]),
-      selectedState: new FormControl('-1'),
-      selectedDealer: new FormControl('-1')
+      state: new FormControl('Select State'),
+      selectedDealer: new FormControl('Select Dealer')
       // address: new FormGroup({
       //   street: new FormControl('', <any>Validators.required),
       //   postcode: new FormControl('8000')
@@ -79,6 +82,11 @@ export class UserDashboardComponent implements OnInit {
     });
   }
 
+  onInput($event) {
+    $event.preventDefault();
+    console.log('selected: ' + $event.target.value);
+    this.selectedState = $event.target.value;
+  }
 
   save(isValid: boolean) {
     this.submitted = true; // set form submit to true
@@ -104,20 +112,23 @@ export class UserDashboardComponent implements OnInit {
         "contact": this.myForm.value.contact,
         "email": this.myForm.value.email,
         "address": this.myForm.value.address,
-        "state": this.myForm.value.selectedState,
+        "state": this.selectedState,
         "branch_name": this.myForm.value.branch_name
       };
-      this.url = "http://localhost:3000/api/customer/create?token="+this.access_token;
+      this.url = "http://localhost:3000/api/branch/create?token=" + this.access_token;
       return this.http.post(this.url, body, requestOptions)
         .subscribe(
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeModal();
           // alert(response.json().message);
+          this.getBranches(this.pager.currentPage)
         },
         error => {
           console.log("error", error.message);
           console.log(error.text());
+          this.errorType = true;
+          this.errorMsg = error.json().messages;
         }
         );
     }
@@ -126,8 +137,8 @@ export class UserDashboardComponent implements OnInit {
     this.closeBtn.nativeElement.click();
   }
 
-  getBranches(page:number) {
-    this.pager.currentPage=page;
+  getBranches(page: number) {
+    this.pager.currentPage = page;
     let response: any;
     let myHeaders = new Headers({ 'Content-Type': 'application/json' });
     // myHeaders.append('x-access-token', access_token);
@@ -139,12 +150,12 @@ export class UserDashboardComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/branch/index?token='+this.access_token+'&page='+this.pager.currentPage+'&limit='+5, options)
+    this.http.get('http://localhost:3000/api/branch/index?token=' + this.access_token + '&page=' + this.pager.currentPage + '&limit=' + 5, options)
       .subscribe(
       response => {
-        
+
         console.log("BRANCH_LIST_API_RESPONSE_2", response.json().docs);
-        this.branchesList=response.json().docs;
+        this.branchesList = response.json().docs;
         this.pager.pageSize = response.json().limit;
         let isList = this.branchesList.length;
         this.pager.totalItems = response.json().total;
@@ -155,7 +166,7 @@ export class UserDashboardComponent implements OnInit {
         } else {
           this.isBranchList = false;
         }
-        
+
         // for (let data of response.json().docs) {
         //   this.branchesList.push({ name: data.name, contact: data.contact, panNo: data.pan_no, email: data.email, gstin: data.gstin, address: data.address, selectedDealer: data.state, city: data.city, branchName: data.branch_name, state: data.state });
         // }
@@ -177,6 +188,7 @@ export class UserDashboardComponent implements OnInit {
     // this.getStateList();
     this.pagedItems = this.branchesList;
   }
+
 
   getStateList() {
     console.log('list called');
@@ -256,12 +268,12 @@ export class UserDashboardComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/branch/index?token='+this.access_token, options)
+    this.http.get('http://localhost:3000/api/branch/index?token=' + this.access_token, options)
       .subscribe(
       response => {
         exportedList = response.json().docs;
-        this.excelServiceService.exportAsExcelFile(exportedList,String(this.excelServiceService.getCurrentDateAndTime()));
-        this.isDownloadSuccessful=true;
+        this.excelServiceService.exportAsExcelFile(exportedList, String(this.excelServiceService.getCurrentDateAndTime()));
+        this.isDownloadSuccessful = true;
       },
       error => {
         // alert(error.text());
@@ -270,13 +282,11 @@ export class UserDashboardComponent implements OnInit {
       );
   }
 
-  closeDownloadModal()
-  {
-    this.isDownloadSuccessful=false;
+  closeDownloadModal() {
+    this.isDownloadSuccessful = false;
   }
 
-  resetForm()
-  {
+  resetForm() {
     this.myForm.reset();
   }
 }

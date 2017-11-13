@@ -84,7 +84,6 @@ if(err){
 }
  } );
 }
-
 /* 
     GET /api/user/list
 */
@@ -203,8 +202,6 @@ exports.delete=(req,res)=>{
 }else{
     res.json({'message':'Internal is Successfully deleted'})  
 }
-
-
   // we have deleted the user
    
 });

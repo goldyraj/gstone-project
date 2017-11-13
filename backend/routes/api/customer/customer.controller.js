@@ -96,7 +96,7 @@ var myCallback=usingItNow(req.decoded)
           //  debug('User %o', user);
    
         if(custormer) {
-            throw new Error('Customer Name exists')
+            throw new Error('Customer gstin Allready exists')
         } else {
             return Customer.create(name,pan_no,gstin,city,contact,email,address,state)
         }
@@ -116,11 +116,11 @@ var myCallback=usingItNow(req.decoded)
     // run when there is an error (username exists)
     const onError = (error) => {
         res.status(409).json({
-            message: error.message
+          message: 'Customer pan number Allready exists'
         })
     }
     // check Customer Name duplication
-    Customer.findOneByUsername(name)
+    Customer.findOneByUsername(gstin)
     .then(create)
     .then(count)   
     .then(respond)

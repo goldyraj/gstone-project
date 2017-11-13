@@ -7,7 +7,7 @@ const config = require('../config')
    var mongoosePaginate = require('mongoose-paginate');
 const Branch = new Schema({
     name: String,
-    pan_no: String,
+    pan_no:{ type: String, unique: true },
     gstin:String,
     dealer_type:String,
     branch_name:{ type: String, unique: true },

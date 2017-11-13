@@ -78,7 +78,7 @@ if(err){
             message: 'NO data found '
         }) 
 }else{
-     return res.status(403).json({
+     return res.json({
           internal
         }) 
 }

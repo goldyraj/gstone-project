@@ -18,7 +18,7 @@
 							<th width="6%">S. No</th>
 							<th width="15%">Title</th>
 							<th width="50%">Description </th>
-							<th width="15%">Category</th>
+							<th width="15%">Video Link</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -26,7 +26,7 @@
 							<td align="center"> {{pageSize * (currentPage-1)+i+1}}.</td>
 							<td>{{item.title}}</td>
 							<td>
-								<a href="{{item.link}}">{{item.description}}</a>
+								<a href="{{item.link}}" target="_blank">{{item.description}}</a>
 							</td>
 							<td>
 								<iframe width="190" height="110" src="https://www.youtube.com/embed/uiwuoYxv-4I" frameborder="0" allowfullscreen></iframe>

@@ -60,9 +60,12 @@ import { StatePipe } from './admin-state/state.pipe';
 import { NotifyPipe } from './admin-gov-notification/notification.pipe';
 import { InternalUpdatePipe } from './admin-internal-updates/internal.pipe';
 import { hsnCodePipe } from './user-hsn-code/hsnCode.pipe';
-import {PreventLoggedInAccess} from './PreventLoggedInAccess';
-import {AuthService} from './auth.service';
-import{videosPipe} from './admin-gstone-videos/videos.pipe';
+import { hsnDescPipe } from './user-hsn-code/hsnDesc.pipe';
+import { hsnSerDescPipe } from './user-hsn-code/hsnSerDesc.pipe';
+import { hsnSerCodePipe } from './user-hsn-code/hsnSerCode.pipe';
+import { PreventLoggedInAccess } from './PreventLoggedInAccess';
+import { AuthService } from './auth.service';
+import { videosPipe } from './admin-gstone-videos/videos.pipe';
 
 @NgModule({
   declarations: [
@@ -71,6 +74,9 @@ import{videosPipe} from './admin-gstone-videos/videos.pipe';
     NotifyPipe,
     StatePipe,
     hsnCodePipe,
+    hsnDescPipe,
+    hsnSerDescPipe,
+    hsnSerCodePipe,
     AppComponent,
     HomeComponent,
     RegistrationComponent,
@@ -128,7 +134,7 @@ import{videosPipe} from './admin-gstone-videos/videos.pipe';
     NgbModule.forRoot(),
     NgxPaginationModule,
   ],
-  providers: [ApiserviceService, ExcelServiceService, PagerService,PreventLoggedInAccess,AuthService],
+  providers: [ApiserviceService, ExcelServiceService, PagerService, PreventLoggedInAccess, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

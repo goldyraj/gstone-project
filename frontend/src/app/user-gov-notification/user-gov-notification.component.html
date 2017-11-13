@@ -38,13 +38,13 @@
 					</thead>
 					<tbody>
 						<tr *ngFor="let item of notificationList ;let i = index;">
-							<td align="center"> 01.</td>
+							<td align="center"> {{i+1}}.</td>
 							<td>
 								<B>{{item.title}}</B>
 							</td>
 							<td>{{item.description}}</td>
 							<td>
-								<a href="{{item.link}}" target="_blank" (click)="fetchFile(item.link)" class="btn btn-primary">Download</a>
+								<a href="{{item.link}}" target="_blank"  class="btn btn-primary">Download</a>
 							</td>
 						</tr>
 					</tbody>

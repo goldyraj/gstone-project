@@ -18,14 +18,16 @@
 						<span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu">
+
 						<li>
-							<a href="#">
+							<a class="page-scroll" routerLink="/user">
+								<i class="fa fa-user"></i>Dashboard</a>
+						</li>
+						<li>
+							<a routerLink="/user">
 								<i class="fa fa-user"></i> Profile</a>
 						</li>
-						<li>
-							<a href="#">
-								<i class="fa fa-cog"></i> Setting</a>
-						</li>
+
 						<li>
 							<a (click)="logout()">
 								<i class="fa fa-key"></i> Logout</a>

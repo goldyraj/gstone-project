@@ -133,21 +133,21 @@
             <div class="col-md-12 col-sm-12">
               <form [formGroup]="gstVideosForm" novalidate (ngSubmit)="saveGstVideos(gstVideosForm.valid)">
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="Title" formControlName="title" name="title" id="title">
+                  <input type="text" maxlength="100" class="form-control" placeholder="Title" formControlName="title" name="title" id="title">
                   <small [hidden]="gstVideosForm.controls.title.valid || (gstVideosForm.controls.title.pristine && !submitted)">
-                    Question is required .
+                    Title is required .
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="Description" formControlName="description" name="description">
+                  <input type="text" maxlength="1000" class="form-control" placeholder="Description" formControlName="description" name="description">
                   <small [hidden]="gstVideosForm.controls.description.valid || (gstVideosForm.controls.description.pristine && !submitted)">
-                    Question is required .
+                    Description is required .
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <input type="text" class="form-control" placeholder="Link" formControlName="link" name="statecode" required>
                   <small [hidden]="gstVideosForm.controls.link.valid || (gstVideosForm.controls.link.pristine && !submitted)">
-                    Question is required .
+                    Link is required .
                   </small>
                 </div>
 
@@ -157,6 +157,13 @@
                   <button type="submit" class="btn btn-primary">Add Videos</button>
                   <button type="button" class="btn btn-success pull-right" data-dismiss="modal">Cancel</button>
                 </div>
+
+                <div class="text-center">
+                  <small *ngIf="apiResult==-1 || apiResult==1">
+                    {{apiMessage}}
+                  </small>
+                </div>
+
               </form>
             </div>
           </div>
@@ -181,21 +188,21 @@
             <div class="col-md-12 col-sm-12">
               <form [formGroup]="editGstVideosForm" novalidate (ngSubmit)="updateVideos(editGstVideosForm.valid)">
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="Title" formControlName="title" name="title" id="title">
+                  <input type="text" maxlength="100"  class="form-control" placeholder="Title" formControlName="title" name="title" id="title">
                   <small [hidden]="editGstVideosForm.controls.title.valid || (editGstVideosForm.controls.title.pristine && !submitted)">
-                    Question is required .
+                    Title is required .
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="Description" formControlName="description" name="description">
+                  <input type="text" maxlength="1000"  class="form-control" placeholder="Description" formControlName="description" name="description">
                   <small [hidden]="editGstVideosForm.controls.description.valid || (editGstVideosForm.controls.description.pristine && !submitted)">
-                    Question is required .
+                    Description is required .
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <input type="text" class="form-control" placeholder="Link" formControlName="link" name="statecode" required>
                   <small [hidden]="editGstVideosForm.controls.link.valid || (editGstVideosForm.controls.link.pristine && !submitted)">
-                    Question is required .
+                    Link is required .
                   </small>
                 </div>
 
@@ -204,6 +211,12 @@
                   <!-- <input type="button" class="btn btn-primary" value="Add Notifications"> -->
                   <button type="submit" class="btn btn-primary">Update</button>
                   <button type="button" class="btn btn-success pull-right" data-dismiss="modal">Cancel</button>
+                </div>
+
+                <div class="text-center">
+                  <small *ngIf="apiResult==-1 || apiResult==1">
+                    {{apiMessage}}
+                  </small>
                 </div>
               </form>
             </div>

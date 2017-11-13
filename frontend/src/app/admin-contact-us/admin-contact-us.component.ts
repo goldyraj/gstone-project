@@ -10,7 +10,7 @@ import { RouterModule, Routes, Router } from '@angular/router';
   selector: 'app-admin-contact-us',
   templateUrl: './admin-contact-us.component.html',
   styleUrls: ['./admin-contact-us.component.css'],
-  providers:[PagerService]
+  providers: [PagerService]
 })
 export class AdminContactUsComponent implements OnInit {
 
@@ -23,8 +23,8 @@ export class AdminContactUsComponent implements OnInit {
   url = "";
   notiRowData;
   rowDataIndex = "";
-  
-  access_token:string;
+
+  access_token: string;
   public contactUsForm: FormGroup; // our model driven form
   public editcontactUsForm: FormGroup; // our model driven form
   public submitted: boolean; // keep track on whether form is submitted
@@ -32,13 +32,13 @@ export class AdminContactUsComponent implements OnInit {
   public events: any[] = []; // use later to display form changes
   // pager object
   pager: any = {};
-  
-    // paged items
-    pagedItems: any[];
 
-  constructor(private _fb: FormBuilder, private http: Http,public PagerService:PagerService,public Router:Router) {
+  // paged items
+  pagedItems: any[];
+
+  constructor(private _fb: FormBuilder, private http: Http, public PagerService: PagerService, public Router: Router) {
     this.access_token = localStorage.getItem("admin_token");
-    this.pager.currentPage=1;
+    this.pager.currentPage = 1;
     this.getNotificationList(this.pager.currentPage);
   }
 
@@ -51,28 +51,27 @@ export class AdminContactUsComponent implements OnInit {
       company: new FormControl('', [<any>Validators.required]),
     });
 
-    var context=this;
+    var context = this;
     if (localStorage.getItem('admin_token')) {
-      
+
     }
     else {
       context.Router.navigate(['/admin-login']);
     }
-   
+
   }
-  getNotificationList(page:number) {
-    this.pager.currentPage=page;
-    if(page==this.pager.endPage)
-    {
+  getNotificationList(page: number) {
+    this.pager.currentPage = page;
+    if (page == this.pager.endPage) {
       console.log("ENDPAGE");
       return;
     }
     console.log('list called');
-    this.http.get('http://localhost:3000/api/contact/index?token='+this.access_token+'&limit=' + 5 + '&page=' + this.pager.currentPage + '&sortBy=created_at&search=').subscribe(data => {
+    this.http.get('http://localhost:3000/api/contact/index?token=' + this.access_token + '&limit=' + 5 + '&page=' + this.pager.currentPage + '&sortBy=created_at&search=').subscribe(data => {
       this.notificationList = data.json().docs;
-      console.log("CONTACTS_LIST",this.notificationList);
+      console.log("CONTACTS_LIST", this.notificationList);
       this.pager.pageSize = data.json().limit;
-      this.pager.totalItems=data.json().total;
+      this.pager.totalItems = data.json().total;
       this.setPage();
     });
   }
@@ -109,7 +108,7 @@ export class AdminContactUsComponent implements OnInit {
         "company": this.contactUsForm.value.company,
         "remark": this.contactUsForm.value.remark
       };
-      this.url = "http://localhost:3000/api/contact/create?token="+this.access_token;
+      this.url = "http://localhost:3000/api/contact/create?token=" + this.access_token;
       return this.http.post(this.url, body, requestOptions)
         .subscribe(
         response => {
@@ -123,7 +122,7 @@ export class AdminContactUsComponent implements OnInit {
         );
     }
   }
-  
+
   private closeModal(): void {
     this.closeBtn.nativeElement.click();
   }

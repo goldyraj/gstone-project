@@ -24,6 +24,8 @@ export class AdminInternalUpdatesComponent implements OnInit {
   StateVal = {};
   url = "";
   notiRowData;
+  apiMessage;
+  apiResult=0;
   rowDataIndex = "";
   // pager object
   pager: any = {};
@@ -32,6 +34,7 @@ export class AdminInternalUpdatesComponent implements OnInit {
   pagedItems: any[];
   selectUpdateType;
   selectChapterArticle;
+  
   public internalUpdateForm: FormGroup; // our model driven form
   public editInternalUpdate: FormGroup; // our model driven form
   public submitted: boolean; // keep track on whether form is submitted
@@ -105,7 +108,7 @@ export class AdminInternalUpdatesComponent implements OnInit {
     this.StateVal = this.internalUpdateForm.value;
     console.log("form valuse", this.StateVal);
 
-    if (isValid == true) {
+    if (isValid == true && this.editInternalUpdate.controls.selectUpdateType.value!="0" &&  this.editInternalUpdate.controls.selectChapterArticle.value!="0") {
       const headers = new Headers();
 
       headers.append('Content-Type', 'application/json');
@@ -138,10 +141,13 @@ export class AdminInternalUpdatesComponent implements OnInit {
           console.log("suceessfull data", response.json().message);
           this.closeModal();
           this.internalUpdateForm.reset();
-          
+          this.apiResult=1;
+          this.apiMessage=response.json().message;
           this.getInternalUpdateList(this.pager.currentPage);
         },
         error => {
+          this.apiResult=-1;
+          this.apiMessage=error.json().message;
           console.log("error", error.message);
           console.log(error.text());
         }
@@ -150,6 +156,8 @@ export class AdminInternalUpdatesComponent implements OnInit {
   }
 
   editInternalRecord(data) {
+    this.apiMessage="";
+    this.apiResult=0;
     this.submittedEdit = false;
     this.rowDataIndex = data._id;
     var temp;
@@ -193,7 +201,7 @@ export class AdminInternalUpdatesComponent implements OnInit {
     this.StateVal = this.editInternalUpdate.value;
     console.log("form valuse", this.StateVal);
 
-    if (isValid == true) {
+    if (isValid == true && this.editInternalUpdate.controls.selectUpdateType.value!="0" &&  this.editInternalUpdate.controls.selectChapterArticle.value!="0") {
 
       const headers = new Headers();
 
@@ -227,12 +235,15 @@ export class AdminInternalUpdatesComponent implements OnInit {
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeEditModal();
-          
+          this.apiResult=1;
           this.getInternalUpdateList(this.pager.currentPage);
+          this.apiMessage=response.json().message;
         },
         error => {
+          this.apiResult=-1;
           console.log("error", error.message);
           console.log(error.text());
+          this.apiMessage= error.json().message;
         }
         );
     }
@@ -280,6 +291,8 @@ export class AdminInternalUpdatesComponent implements OnInit {
 
   resetForm()
   {
+    this.apiMessage="";
+    this.apiResult=0;
     this.submitted=false;
     this.internalUpdateForm.reset();
     this.internalUpdateForm.get('selectUpdateType').setValue('0');

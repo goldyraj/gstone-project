@@ -19,6 +19,7 @@ export class VendorComponent implements OnInit {
   @ViewChild('closeBtn3') closeBtn3: ElementRef;
   @ViewChild('closeCsv') closeCsv:ElementRef;
   @ViewChild('closeChoose') closeChoose:ElementRef;
+  @ViewChild('clearInputFile') clearInputFile:ElementRef;
 
   ifSuccess:boolean;
   modelHide = '';
@@ -319,6 +320,7 @@ export class VendorComponent implements OnInit {
         this.closeCsv.nativeElement.click();
         this.closeChoose.nativeElement.click();
         this.ifSuccess = true;
+        this.clearInputFile.nativeElement.value="";
         this.getVenderList(this.pager.currentPage);
         // alert(response.json().message);
       },

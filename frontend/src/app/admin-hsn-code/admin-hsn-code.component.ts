@@ -20,7 +20,7 @@ export class AdminHsnCodeComponent implements OnInit {
   public submitted: boolean = false; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
 
-  public ifSuccess: boolean = false;
+  public ifSuccess: number = 0;
   goodsData = Array();
   servicesData = Array();
   hsnRowData;
@@ -45,6 +45,7 @@ export class AdminHsnCodeComponent implements OnInit {
   @ViewChild('closeEditModal') closeEditModal: ElementRef;
   @ViewChild('closeChoose') closeChoose: ElementRef;
   @ViewChild('closeCsv') closeCsv: ElementRef;
+  @ViewChild('clearInputFile') clearInputFile:ElementRef;
   public selectCategory;
   public isDownloadSuccessful;
   isGoodsSelected = true;
@@ -112,6 +113,7 @@ export class AdminHsnCodeComponent implements OnInit {
   }
 
   onCSVFilePicked(files: FileList) {
+    
     console.log(files);
     if (files && files.length > 0) {
       let file: File = files.item(0);
@@ -158,7 +160,8 @@ export class AdminHsnCodeComponent implements OnInit {
         this.closeModal();
         this.closeCsv.nativeElement.click();
         this.closeChoose.nativeElement.click();
-        this.ifSuccess = true;
+        this.ifSuccess = 1;
+        this.clearInputFile.nativeElement.value="";
         if (this.isGoodsSelected) {
           this.getAllGoods(this.goodsPager.currentPage);
         }
@@ -168,6 +171,7 @@ export class AdminHsnCodeComponent implements OnInit {
         // alert(response.json().message);
       },
       error => {
+        this.ifSuccess = -1;
         console.log("error", error.message);
         console.log(error.text());
       }
@@ -486,5 +490,10 @@ export class AdminHsnCodeComponent implements OnInit {
     this.submitted = false;
     this.goodsForm.reset();
     this.goodsForm.get("selectCategory").setValue("Select Category");
+  }
+
+  resteCSVForm()
+  {
+    this.ifSuccess=0;
   }
 }

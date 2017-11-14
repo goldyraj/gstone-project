@@ -20,8 +20,9 @@ export class CustomerComponent implements OnInit {
   @ViewChild('closeInnerExportModal') closeInnerExportModal:ElementRef;
   @ViewChild('closeImportExport') closeImportExport:ElementRef;
   @ViewChild('closeImportModal') closeImportModal:ElementRef;
+  @ViewChild('clearInputFile') clearInputFile:ElementRef;
   isDownloadSuccessful:boolean;
-  ifSuccess:boolean;
+  ifSuccess:number=0;
   @ViewChild('closeChoose') closeChoose: ElementRef;
   @ViewChild('closeCsv') closeCsv:ElementRef;
   jsonString;
@@ -329,11 +330,13 @@ export class CustomerComponent implements OnInit {
         this.closeModal();
         this.closeCsv.nativeElement.click();
         this.closeChoose.nativeElement.click();
-        this.ifSuccess = true;
+        this.clearInputFile.nativeElement.value="";
+        this.ifSuccess = 1;
         this.getCustomerList(this.pager.currentPage);
         // alert(response.json().message);
       },
       error => {
+        this.ifSuccess = -1;
         console.log("error", error.message);
         console.log(error.text());
       }
@@ -386,4 +389,10 @@ export class CustomerComponent implements OnInit {
     // this.getStateList();
     this.pagedItems = this.custList;
   }
+
+  resteCSVForm()
+  {
+    this.ifSuccess=0;
+  }
+  
 }

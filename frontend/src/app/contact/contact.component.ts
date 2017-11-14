@@ -14,7 +14,7 @@ export class ContactComponent implements OnInit {
   contact = [];
   url = "";
   errorMsg = "";
-  alertType ="";
+  alertType = "";
   public errorType: boolean;
   public submitted: boolean; // keep track on whether form is submitted
   constructor(private _fb: FormBuilder, private http: Http) { }
@@ -30,10 +30,7 @@ export class ContactComponent implements OnInit {
     this.url = "";
     this.errorMsg = "";
   }
-  onLoad() {
-    this.contactForm.value.name = "";
 
-  }
 
   sendContact(isValid: boolean) {
     this.submitted = true; // set form submit to true
@@ -63,7 +60,8 @@ export class ContactComponent implements OnInit {
           console.log("suceessfull data", response.json().message);
           this.errorType = true;
           this.errorMsg = response.json().message;
-          this.onLoad();
+          this.contactForm.reset();
+          this.submitted = false;
         },
         error => {
           // alert(error.message);

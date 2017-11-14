@@ -87,7 +87,6 @@ const routes: Routes = [
       { path: 'gstr', component: Gstr1Component },
       { path: 'edit', component: EditComponent },
       { path: 'summarypage', component: SummaryComponent },
-      { path: 'addbos', component: AddbosComponent },
       { path: 'exportinv', component: ExportinvoiceComponent },
       { path: 'amendment', component: NewamendmentComponent },
       { path: 'update', component: GstupdateComponent },

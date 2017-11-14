@@ -61,7 +61,7 @@ export class HomeComponent implements OnInit {
     this.selectedState = $event.target.value;
   }
   ngOnInit() {
-    
+
     this.myForm = new FormGroup({
       name: new FormControl('', [<any>Validators.required]),
       contact: new FormControl('', [<any>Validators.required, <any>Validators.minLength(10)]),
@@ -200,11 +200,34 @@ export class HomeComponent implements OnInit {
       return this.http.post(this.url, body)
         .subscribe(
         response => {
-          localStorage.setItem('user_token', response.json().token);
-          
-          console.log(response.json().message);
-          this.button2.nativeElement.click();
-          this.router.navigate(['/user']);
+          // localStorage.setItem('user_token', response.json().token);
+          this.http.get('http://localhost:3000/api/auth/check?token=' + response.json().token).subscribe(data => {
+            this.userDetails = data.json().info;
+            this.userIsLogged = data.json().success;
+            console.log(response.json().message);
+
+            if (this.userDetails['admin'] === true) {
+              this.button2.nativeElement.click();
+              this.router.navigate(['/admin/dashboard']);
+              localStorage.setItem('admin_token', response.json().token);
+            } else {
+              this.button2.nativeElement.click();
+              this.router.navigate(['/user']);
+              localStorage.setItem('user_token', response.json().token);
+            }
+            // this.router.navigate(['/user']);
+            console.log("State  PArse", this.userDetails);
+            console.log("userIsLogged", this.userIsLogged);
+            console.log("type", this.userDetails['type']);
+            this.submitted = false;
+          }, error => {
+            console.log("error", error.message);
+            this.userIsLogged = error.json().success;
+            console.log(error.text());
+          });
+          // console.log(response.json().message);
+          // this.button2.nativeElement.click();
+          // this.router.navigate(['/user']);
         },
         error => {
           console.log(error.text());

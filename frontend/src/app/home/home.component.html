@@ -74,7 +74,7 @@
 												<a routerLink="/user">
 													<i class="fa fa-user"></i> Profile</a>
 											</li>
-											
+
 											<li>
 												<a (click)="logout()">
 													<i class="fa fa-key"></i> Logout</a>
@@ -196,7 +196,7 @@
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="contact" placeholder="Contact No." pattern="^(?:(?:\+|0{0,2})91(\s*[\ -]\s*)?|[0]?)?[789]\d{9}|(\d[ -]?){10}\d$">
-									
+
 									<small [hidden]="myForm.controls.contact.valid || (myForm.controls.contact.pristine && !submitted)">
 										<span style="color:red" [hidden]="myForm.controls.contact.valid">Contact no is required.</span>
 										<b [hidden]="myForm.controls.contact.pristine">characters not allowed.</b>
@@ -255,7 +255,7 @@
 										<option value="" selected="selected"> -- Select State -- </option>
 										<option *ngFor="let item of stateList" value=" {{item.name}}">{{item.name}}</option>
 									</select>
-									
+
 								</div>
 
 
@@ -288,8 +288,14 @@
 			<div class="modal-body">
 				<div class="service-section">
 					<div class="row">
+						<!-- <div class="alert alert-success" *ngIf="errorType == true">
+							Contact has been send successfully
+						</div> -->
 						<form [formGroup]="LoginForm" novalidate (ngSubmit)="submitForm(LoginForm.valid)">
 							<div class="col-md-12 col-sm-12 col-xs-12">
+								<div class="col-md-12 alert alert-danger" *ngIf="errorType == false">
+									<strong>Sorry!</strong>{{errorMsg}}
+								</div>
 								<div class=" col-md-12 col-sm-12 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="email" placeholder="Email Id" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
 									<small [hidden]="LoginForm.controls.email.valid || (LoginForm.controls.email.pristine && !submitted)">
@@ -311,9 +317,7 @@
 								<!-- <small *ngIf="errorType == true">
 									{{errorMsg}}
 								</small> -->
-								<small *ngIf="errorType == false">
-									{{errorMsg}}
-								</small>
+
 							</div>
 						</form>
 

@@ -98,7 +98,7 @@ var myCallback=usingItNow(req.decoded)
         if(custormer) {
             throw new Error('Customer gstin Allready exists')
         } else {
-            return Customer.create(name,pan_no,gstin,city,contact,email,address,state)
+            return Customer.create(name,pan_no,gstin,city,contact,email,address,state,req.decoded._id)
         }
     }
     // count the number of the Customer
@@ -171,7 +171,9 @@ var myCallback=usingItNow(req.decoded)
             message: 'you are not an authorise'
         }) 
     }
-
+     for (var i = 0; i <myobj.length; i++) {
+       myobj[i].userid=req.decoded._id; 
+     }
  var multirecord = function () {
       return new Customer.insertMany(myobj, function(err, res) {})
   }

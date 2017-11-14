@@ -26,7 +26,7 @@ if(req.query.search && req.query.search.length>0){
    // console.log(query={description:req.query.search})
     query={description:req.query.search}
 }
-//======== check user admin or nor and fillter record =========
+//======== check user admin or not and fillter record =========
 if(req.decoded.type===req.app.get('usertype')){
    query={userid:req.decoded._id}
 }

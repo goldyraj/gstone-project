@@ -14,15 +14,16 @@ const Customer = new Schema({
     email: String,
     address: String,
     state: String,
+       userid : { type: Schema.Types.ObjectId, ref: 'User' },
    created_at:  { type: Date,default: Date.now},
   updated_at:  { type: Date}
 })
 
 // create new Customer document
-Customer.statics.create = function(name,pan_no,gstin,city,contact,email,address,state) {
+Customer.statics.create = function(name,pan_no,gstin,city,contact,email,address,state,userid) {
      var created_at=  Date.now();
      const customer = new this({
-       name,pan_no,gstin,city,contact,email,address,state ,created_at       
+       name,pan_no,gstin,city,contact,email,address,state, userid,created_at       
     })
     // return the Promise
     return customer.save()

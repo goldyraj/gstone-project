@@ -27,6 +27,10 @@ if(req.query.search && req.query.search.length>0){
     console.log(query={description:req.query.search})
     query={description:req.query.search}
 }
+// USer Id 
+if(req.decoded.type===req.app.get('usertype')){
+   query={userid:req.decoded._id}
+}
 if(!req.query.limit ||isNaN(req.query.limit) ){
     req.query.limit=5;
 }
@@ -52,7 +56,7 @@ const onError = (error) => {
  sortfiled={ created_at: -1 }
 }
 var option={
-    select:'hsn_code description cgst sgst igst condition ',
+    select:'hsn_code description cgst sgst igst cess condition ',
     sort:sortfiled, 
     offset:offset,
     limit:req.query.limit
@@ -83,7 +87,7 @@ exports.list = (req, res) => {
     )
    }
 exports.update=(req,res)=>{
-        const {_id, description, hsn_code,cgst,sgst,igst,condition } = req.body
+        const {_id, description, hsn_code,cgst,sgst,igst,cess,condition } = req.body
   var myCallback=usingItNow(req.decoded)
  if(myCallback) {
    return res.status(403).json({
@@ -91,7 +95,7 @@ exports.update=(req,res)=>{
         }) 
     }
      var updated_at=  Date.now();
-         Goods.findOneAndUpdate({_id:_id}, {$set:{hsn_code:hsn_code,description:description,cgst:cgst,sgst:sgst,igst:igst,condition:condition,updated_at:updated_at}}, {new: true}, function(err, doc){
+         Goods.findOneAndUpdate({_id:_id}, {$set:{hsn_code:hsn_code,description:description,cgst:cgst,sgst:sgst,igst:igst,condition:condition,cess:cess,updated_at:updated_at}}, {new: true}, function(err, doc){
     if(err){
         console.log("Something wrong when updating data!");
     }
@@ -115,7 +119,7 @@ exports.update=(req,res)=>{
          .catch(onError)
 }
 exports.create = (req, res) => {
-    const {description, hsn_code,cgst,sgst,igst,condition} = req.body
+    const {description, hsn_code,cgst,sgst,igst,cess,condition} = req.body
     let newUser = null
     console.log(req.decoded)
  var myCallback=usingItNow(req.decoded)
@@ -131,7 +135,7 @@ exports.create = (req, res) => {
         if(goods) {
             throw new Error('Goods Name exists')
         } else {
-            return Goods.create(  description, hsn_code,cgst,sgst,igst,condition )
+            return Goods.create(description, hsn_code,cgst,sgst,igst,condition,cess,req.decoded._id)
         }
     }
     // count the number of the user
@@ -180,7 +184,10 @@ var myobj= req.body.data
             message: 'you are not an authorise'
         }) 
     }
-    
+   for (var i = 0; i <myobj.length; i++) {
+        myobj[i].userid=req.decoded._id; 
+       }
+     
  var multirecord = function () {
       return new Goods.insertMany(myobj, function(err, res) {})
   }

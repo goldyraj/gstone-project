@@ -41,7 +41,7 @@
                 <div class="panel box box-primary" *ngFor="let item of faqsList ;let i = index;">
                   <div class="box-header with-border">
                     <h4 class="box-title">
-                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne{{pageSize * (currentPage-1)+i+1}}">
+                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne{{pager.pageSize * (pager.currentPage-1)+i+1}}">
                         {{item.question}}
                       </a>
                     </h4>
@@ -53,7 +53,7 @@
                       <i class="fa fa-trash btn btn-danger btn-sm" title="Delete"></i>
                     </a>
                   </div>
-                  <div id="collapseOne{{pageSize * (currentPage-1)+i+1}}" class="panel-collapse collapse">
+                  <div id="collapseOne{{pager.pageSize * (pager.currentPage-1)+i+1}}" class="panel-collapse collapse">
                     <div class="box-body">
                       {{item.answer}}
                     </div>

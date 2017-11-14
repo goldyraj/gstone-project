@@ -1015,7 +1015,7 @@ span {
   padding:0px 0px;
     float: left;
     font-size: 14px;
-    left: 0;
+    left: 16px;
     list-style: outside none none;
     margin: 2px 0 0;
     min-width: 100%;
@@ -1049,8 +1049,12 @@ span {
 .admintext{ font-size: 16px!important; font-weight: bold; padding-top: 10px;}
 .navuser{ margin-top: 12px;}
 .text-primary{font-size: 25px;vertical-align:middle; padding-top: 5px;}
-.navbar-default .navbar-nav>li>a{ color: #ffffff;}
 
+.navbar-default .navbar-nav>li>a{ color: #ffffff!important;}
+.gstlogout{ color: #ffffff; cursor: pointer; padding: 20px;}
+.gstlogout i{margin-top: 15px;}
+.gstlogout:hover{color: #ffffff;}
+.user_profile b{text-align: right!important;}
 @media(min-width:767px) {
     .navbar {
         padding: 1px 0;

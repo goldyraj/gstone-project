@@ -7,12 +7,13 @@ import {PagerService} from '../service/pager.service';
 import { RouterModule, Routes, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-admin-internal-updates',
-  templateUrl: './admin-internal-updates.component.html',
-  styleUrls: ['./admin-internal-updates.component.css'],
+  selector: 'app-admin-internal-update-innerpage',
+  templateUrl: './admin-internal-update-innerpage.component.html',
+  styleUrls: ['./admin-internal-update-innerpage.component.css'],
   providers:[PagerService]
 })
-export class AdminInternalUpdatesComponent implements OnInit {
+export class AdminInternalUpdateInnerpageComponent implements OnInit {
+
   @ViewChild('closeBtn') closeBtn: ElementRef;
   @ViewChild('closeBtn2') closeBtn2: ElementRef;
   @ViewChild('closeBtn3') closeBtn3: ElementRef;
@@ -335,9 +336,6 @@ export class AdminInternalUpdatesComponent implements OnInit {
 
     console.log("SELECTED",this.secondDropDownArray);
   }
+  
 
-  editInNewWindow(item)
-  {
-    
-  }
 }

@@ -34,7 +34,8 @@ export class AdminHsnCodeComponent implements OnInit {
   rowIndexToModify;
   goodsForm: FormGroup;
   goodsFormEdit: FormGroup;
-  sortBy = "created_at";
+  // sortBy = "created_at";
+  sortBy = "hsn_code";
   jsonString;
   access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
   goodsPager: any = {};
@@ -394,7 +395,7 @@ export class AdminHsnCodeComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/goods/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + page, options)
+    this.http.get('http://localhost:3000/api/goods/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + page+"&sortBy="+this.sortBy, options)
       .subscribe(
       response => {
         console.log("BRANCH_LIST_API_RESPONSE", response.json());

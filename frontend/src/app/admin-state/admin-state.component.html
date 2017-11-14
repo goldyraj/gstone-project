@@ -73,7 +73,6 @@
                   </a>
                 </td>
               </tr>
-
             </tbody>
           </table>
 
@@ -128,7 +127,7 @@
               <form [formGroup]="myForm" novalidate (ngSubmit)="saveState(myForm.valid)">
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" pattern="[A-Za-z]{3}" maxlength="25" class="form-control" formControlName="statename" placeholder="State Name" name="statename" id="statename"
+                  <input type="text" pattern="^[a-zA-Z \-\']+" maxlength="25" class="form-control" formControlName="statename" placeholder="State Name" name="statename" id="statename"
                     required>
                   <small [hidden]="myForm.controls.statename.valid || (myForm.controls.statename.pristine && !submitted)">
                     State Name is required !
@@ -174,7 +173,7 @@
               <form [formGroup]="myFormEdit" novalidate (ngSubmit)="updateState(myFormEdit.valid)">
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" formControlName="statename" placeholder="State Name" name="statename" id="statename"
+                  <input type="text" pattern="^[a-zA-Z \-\']+" class="form-control" formControlName="statename" placeholder="State Name" name="statename" id="statename"
                     required>
                   <small [hidden]="myFormEdit.controls.statename.valid || (myFormEdit.controls.statename.pristine && !submitted)">
                     State Name is required !
@@ -228,7 +227,6 @@
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>

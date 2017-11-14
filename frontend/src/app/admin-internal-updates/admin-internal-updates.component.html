@@ -32,7 +32,7 @@
 
       <div class="col-md-4 col-xs-12">
         <div class="input-group section-bottom-20">
-          <input type="text" [(ngModel)]="searchString" placeholder="Title" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
+          <input type="text" [(ngModel)]="searchString" placeholder="Search Title" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
           <div class="input-group-addon">
             <i class="fa fa-search"></i>
           </div>
@@ -69,7 +69,8 @@
                 </td>
                 <td align="center">
                   <a data-toggle="modal" data-target=".bs-user-lg-edit">
-                    <button class="fa fa-edit btn btn-primary btn-sm" title="Edit" (click)="editInternalRecord(item)"></button>
+                    <!-- <button class="fa fa-edit btn btn-primary btn-sm" title="Edit" (click)="editInternalRecord(item)"></button> -->
+                    <button class="fa fa-edit btn btn-primary btn-sm" title="Edit" (click)="editInNewWindow(item)"></button>
                   </a>
                   <a href="" data-toggle="modal" data-target=".bs-delete-sm">
                     <i class="fa fa-trash btn btn-danger btn-sm" (click)="recordToBeDeleted(item)" title="Delete"></i>

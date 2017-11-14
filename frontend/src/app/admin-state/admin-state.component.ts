@@ -75,13 +75,13 @@ export class AdminStateComponent implements OnInit {
     // we will initialize our form model here
     this.person.country = this.countries.filter(c => c.id === this.person.country.id)[0];
     this.myForm = new FormGroup({
-      statename: new FormControl('', [<any>Validators.required]),
+      statename: new FormControl('', Validators.pattern('^[a-zA-Z \-\']+')),
       statecode: new FormControl(0,[Validators.required,, NumberValidatorsService.min(0)]),
       country: new FormControl('Select Status', [])
     });
 
     this.myFormEdit = new FormGroup({
-      statename: new FormControl('', [<any>Validators.required]),
+      statename: new FormControl('', Validators.pattern('^[a-zA-Z \-\']+')),
       statecode: new FormControl(0,[Validators.required,, NumberValidatorsService.min(0)]),
       country: new FormControl('Select Status', [])
     });
@@ -123,8 +123,6 @@ export class AdminStateComponent implements OnInit {
           this.closeModal();
           // alert(response.json().message);
           this.getStateList(this.pager.currentPage);
-          this.myForm.reset();
-          this.myForm.get("country").setValue("Select Status");
           
         },
         error => {
@@ -257,7 +255,8 @@ export class AdminStateComponent implements OnInit {
 
   resetForm()
   {
-    this.submitted = false;
     this.myForm.reset();
+    this.myForm.get("country").setValue("Select Status");
+    this.submitted = false;
   }
 }

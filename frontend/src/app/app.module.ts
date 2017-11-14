@@ -67,6 +67,9 @@ import { PreventLoggedInAccess } from './PreventLoggedInAccess';
 import { AuthService } from './auth.service';
 import { videosPipe } from './admin-gstone-videos/videos.pipe';
 import { GstupdateDetailComponent } from './gstupdate-detail/gstupdate-detail.component';
+import { CharOnlyDirective } from './Directives/char-only.directive';
+import { NumbersOnlyDirective } from './Directives/numbers-only.directive';
+import { AdminInternalUpdateInnerpageComponent } from './admin-internal-update-innerpage/admin-internal-update-innerpage.component';
 
 @NgModule({
   declarations: [
@@ -123,7 +126,10 @@ import { GstupdateDetailComponent } from './gstupdate-detail/gstupdate-detail.co
     AboutUsComponent,
     ContactComponent,
     UserDashboardComponent,
-    GstupdateDetailComponent
+    GstupdateDetailComponent,
+    CharOnlyDirective,
+    NumbersOnlyDirective,
+    AdminInternalUpdateInnerpageComponent
     //DatepickerModule
   ],
   imports: [

@@ -55,7 +55,7 @@
 
               <div class="col-md-4 col-xs-12">
                 <div class="input-group section-bottom-20">
-                  <input type="text" [(ngModel)]="codeValue" placeholder="HSN Code" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
+                  <input type="text" [(ngModel)]="codeValue" placeholder="Search HSN/SAC Code" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
                   <div class="input-group-addon">
                     <i class="fa fa-search"></i>
                   </div>
@@ -63,7 +63,7 @@
               </div>
               <div class="col-md-4 col-xs-12">
                 <div class="input-group section-bottom-20">
-                  <input type="text" [(ngModel)]="searchString" placeholder="Description" class="form-control" data-inputmask="'alias': 'ip'"
+                  <input type="text" [(ngModel)]="searchString" placeholder="Search Description" class="form-control" data-inputmask="'alias': 'ip'"
                     data-mask>
                   <div class="input-group-addon">
                     <i class="fa fa-search"></i>
@@ -81,14 +81,16 @@
                   <table class="table table-condensed  table-hover table-bordered">
                     <thead>
                       <tr>
-                        <th width="5%">#</th>
+                        <th width="5%">S. No.</th>
                         <th width="15%">HSN Code</th>
-                        <th width="43%">Description</th>
+                        <th width="40%">Description</th>
                         <th width="8%">CGST</th>
                         <th width="8%">SGST</th>
                         <th width="8%">IGST</th>
+                        <th width="8%">CESS</th>
+                        <th width="8%">Condition</th>
                         <!-- <th width="12%">Status</th> -->
-                        <th width="12%" class="text-center">Action</th>
+                        <th width="15%" class="text-center">Action</th>
                       </tr>
                     </thead>
 
@@ -97,7 +99,7 @@
                     <tbody>
                       <!-- <tr class="header" (ngModel)="item"> -->
                       <!-- <tr *ngFor="let item of hsnCodeData | updateFilter:searchString  ;let i = index;"> -->
-                        <tr *ngFor="let item of goodsData | hsnCodeFilter:codeValue |hsnDescFilter:searchString   ; let i = index;">
+                      <tr *ngFor="let item of goodsData | hsnCodeFilter:codeValue |hsnDescFilter:searchString   ; let i = index;">
                         <!-- <td align="center">{{ hsnCodeData.indexOf(item) }}</td> -->
                         <td align="center">{{goodsPager.pageSize * (goodsPager.currentPage-1)+i+1}}</td>
                         <td align="center">{{ item.hsn_code }}</td>
@@ -105,6 +107,8 @@
                         <td align="center">{{item.cgst}}</td>
                         <td align="center">{{item.sgst}}</td>
                         <td align="center">{{item.igst}}</td>
+                        <td align="center">{{item.igst}}</td>
+                        <td align="center">{{item.condition}}</td>
 
                         <td align="center">
                           <!-- <i class="fa fa-eye btn btn-primary btn-sm" title="View"></i> -->
@@ -158,7 +162,8 @@
 
               <div class="col-md-4 col-xs-12">
                 <div class="input-group section-bottom-20">
-                  <input type="text" placeholder="HSN Code" [(ngModel)]="codeSerValue" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
+                  <input type="text" placeholder="Search HSN/SAC Code" [(ngModel)]="codeSerValue" class="form-control" data-inputmask="'alias': 'ip'"
+                    data-mask>
                   <div class="input-group-addon">
                     <i class="fa fa-search"></i>
                   </div>
@@ -166,7 +171,8 @@
               </div>
               <div class="col-md-4 col-xs-12">
                 <div class="input-group section-bottom-20">
-                  <input type="text" placeholder="Description" [(ngModel)]="searchDescString" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
+                  <input type="text" placeholder="Search Description"  [(ngModel)]="searchDescString" class="form-control"
+                    data-inputmask="'alias': 'ip'" data-mask>
                   <div class="input-group-addon">
                     <i class="fa fa-search"></i>
                   </div>
@@ -188,8 +194,9 @@
                         <th width="8%">CGST</th>
                         <th width="8%">SGST</th>
                         <th width="8%">IGST</th>
+                        <th width="8%">Condition</th>
                         <!-- <th width="12%">Status</th> -->
-                        <th width="12%" class="text-center">Action</th>
+                        <th width="15%" class="text-center">Action</th>
                       </tr>
                     </thead>
 
@@ -198,7 +205,7 @@
                     <tbody>
                       <!-- <tr class="header" (ngModel)="item"> -->
                       <!-- <tr *ngFor="let item of hsnCodeData | updateFilter:searchString  ;let i = index;"> -->
-                        <tr *ngFor="let item of servicesData  |hsnSerCodeFilter: codeSerValue  ; let i = index;">
+                      <tr *ngFor="let item of servicesData  |hsnSerCodeFilter: codeSerValue  ; let i = index;">
                         <!-- <td align="center">{{ hsnCodeData.indexOf(item) }}</td> -->
                         <!-- <td align="center">{{servicesPager.pageSize * (servicesPager.currentPage-1)+servicesData.indexOf(item)+1}}</td> -->
                         <td align="center">{{servicesPager.pageSize * (servicesPager.currentPage-1)+i+1}}</td>
@@ -207,7 +214,7 @@
                         <td align="center">{{item.cgst}}</td>
                         <td align="center">{{item.sgst}}</td>
                         <td align="center">{{item.igst}}</td>
-
+                        <td algin="center">{{item.condition}}</td>
 
                         <td align="center">
                           <!-- <i class="fa fa-eye btn btn-primary btn-sm" title="View"></i> -->
@@ -304,7 +311,8 @@
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="number" maxlength="15" min="1" class="form-control" placeholder="HSN Code" name="hsn_code" id="hsn_code" required formControlName="hsn_code">
+                  <input type="number" maxlength="15" min="1" class="form-control" placeholder="HSN Code" name="hsn_code" id="hsn_code" required
+                    formControlName="hsn_code">
                   <small *ngIf="goodsForm.controls.hsn_code.errors && submitted">
                     HSN Code is required !
                   </small>
@@ -313,8 +321,8 @@
                 <!-- Description -->
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <textarea rows="4" type="text" maxlength="500" class="form-control" placeholder="Description" name="description" id="description" required
-                    formControlName="description"></textarea>
+                  <textarea rows="4" type="text" maxlength="5000" class="form-control" placeholder="Description" name="description" id="description"
+                    required formControlName="description"></textarea>
                   <small [hidden]="goodsForm.controls.description.valid || (goodsForm.controls.description.pristine && !submitted)">
                     Description is required !
                   </small>
@@ -338,7 +346,8 @@
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="number" step="0.01" min="0" maxlength="5" class="form-control" placeholder="IGST" name="statecode" required formControlName="igst">
+                  <input type="number" step="0.01" min="0" maxlength="5" class="form-control" placeholder="IGST" name="statecode" required
+                    formControlName="igst">
                   <small *ngIf="goodsForm.controls.igst.errors  && submitted">
                     IGST is required !
                   </small>
@@ -403,8 +412,8 @@
                 <!-- Description -->
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <textarea rows="4" maxlength="500" type="text" class="form-control" placeholder="Description" name="description" id="description" required
-                    formControlName="description"></textarea>
+                  <textarea rows="4" maxlength="5000" type="text" class="form-control" placeholder="Description" name="description" id="description"
+                    required formControlName="description"></textarea>
                   <small [hidden]="goodsFormEdit.controls.description.valid || (goodsFormEdit.controls.description.pristine && !submitted)">
                     Description is required !
                   </small>

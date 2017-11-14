@@ -13,15 +13,17 @@ const Goods = new Schema({
     sgst: String,
     igst: String,
     condition: String,
-      created_at:  { type: Date,default: Date.now},
+    cess: String,
+        userid : { type: Schema.Types.ObjectId, ref: 'User' },
+    created_at:  { type: Date,default: Date.now},
   updated_at:  { type: Date}
 })
 
 // create new User document
-Goods.statics.create = function(description, hsn_code,cgst,sgst,igst,condition) {
+Goods.statics.create = function(description, hsn_code,cgst,sgst,igst,condition,cess,userid) {
    var created_at=  Date.now();
     const Goods = new this({
-        description, hsn_code,cgst,sgst,igst,condition,created_at     
+        description, hsn_code,cgst,sgst,igst,condition,cess,userid,created_at     
     })
 
     // return the Promise

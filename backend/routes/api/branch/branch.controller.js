@@ -26,6 +26,9 @@ if(req.query.search && req.query.search.length>0){
     console.log(query={name:req.query.search})
     query={name:req.query.search}
 }
+if(req.decoded.type===req.app.get('usertype')){
+   query={userid:req.decoded._id}
+}
 if(!req.query.limit ||isNaN(req.query.limit) ){
     req.query.limit=5;
 }
@@ -136,7 +139,7 @@ var myCallback=usingItNow(req.decoded)
         if(branch) {
             throw new Error('Branch Name exists')
         } else {
-            return Branch.create(name,pan_no,gstin,dealer_type,branch_name,contact,email,address,city,state)
+            return Branch.create(name,pan_no,gstin,dealer_type,branch_name,contact,email,address,city,state,req.decoded._id)
         }
     }
     // count the number of the user
@@ -188,6 +191,9 @@ var myCallback=usingItNow(req.decoded)
             message: 'you are not an authorise'
         }) 
     }
+      for (var i = 0; i <myobj.length; i++) {
+       myobj[i].userid=req.decoded._id; 
+     }
  var multirecord = function () {
       return new Branch.insertMany(myobj, function(err, res) {})
   }

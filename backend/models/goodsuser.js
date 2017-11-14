@@ -10,16 +10,17 @@ const Goodsuser = new Schema({
     hsn_code: String,
     unit: String,
     rate: String,
+     type: String,
     userid : { type: Schema.Types.ObjectId, ref: 'User' },
     created_at:  { type: Date},
     updated_at:  { type: Date}
 })
 
 // create new User document
-Goodsuser.statics.create = function(description, hsn_code,unit,rate,userid) {
+Goodsuser.statics.create = function(description, hsn_code,unit,rate,type,userid) {
    var created_at=  Date.now();
     const Goodsuser = new this({
-        description, hsn_code,unit,rate,created_at,userid    
+        description, hsn_code,unit,rate,type,created_at,userid    
     })
 
     // return the Promise

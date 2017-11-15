@@ -213,10 +213,7 @@ exports.delete=(req,res)=>{
     res.json({'invoice':err})
 }else{
     res.json({'message':'HSN is Successfully deleted'})  
-}
-
-
-  // we have deleted the user
+}  // we have deleted the user
    
 });
 }

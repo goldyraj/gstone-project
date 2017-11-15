@@ -207,7 +207,7 @@ var myobj= req.body.data
 }
 exports.delete=(req,res)=>{
   
-  Goods.findByIdAndRemove(req.params.id, function(err) {
+  Services.findByIdAndRemove(req.params.id, function(err) {
   if (err){ 
     res.json({'invoice':err})
 }else{

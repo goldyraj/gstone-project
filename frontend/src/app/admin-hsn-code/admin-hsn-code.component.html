@@ -60,18 +60,18 @@
 
               <div class="col-md-4 col-xs-12">
                 <div class="input-group section-bottom-20">
-                  <input type="text" (input)="searchKeyword($event.target.value)" (ngModel)="codeValue" placeholder="Search HSN/SAC Code" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
+                  <input type="text" (input)="searchGoodsKeyword($event.target.value)" (ngModel)="codeValue" placeholder="Search HSN/SAC Code" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
                   <div class="input-group-addon">
-                    <i class="fa fa-search" (click)="searchKeyword(codeValue)"></i>
+                    <i class="fa fa-search" (click)="searchGoodsKeyword(codeValue)"></i>
                   </div>
                 </div>
               </div>
               <div class="col-md-4 col-xs-12">
                 <div class="input-group section-bottom-20">
-                  <input type="text" (input)="searchKeyword($event.target.value)" (ngModel)="searchString"  placeholder="Search Description" class="form-control" data-inputmask="'alias': 'ip'"
+                  <input type="text" (input)="searchGoodsKeyword($event.target.value)" (ngModel)="searchString"  placeholder="Search Description" class="form-control" data-inputmask="'alias': 'ip'"
                     data-mask>
                   <div class="input-group-addon">
-                    <i class="fa fa-search" (click)="searchKeyword(searchString)"></i>
+                    <i class="fa fa-search" (click)="searchGoodsKeyword(searchString)"></i>
                   </div>
                 </div>
               </div>
@@ -168,19 +168,19 @@
 
               <div class="col-md-4 col-xs-12">
                 <div class="input-group section-bottom-20">
-                  <input type="text" placeholder="Search HSN/SAC Code" (input)="searchKeyword($event.target.value)" [(ngModel)]="codeSerValue" class="form-control" data-inputmask="'alias': 'ip'"
+                  <input type="text" placeholder="Search HSN/SAC Code" (input)="searchServicesKeyword($event.target.value)" [(ngModel)]="codeSerValue" class="form-control" data-inputmask="'alias': 'ip'"
                     data-mask>
                   <div class="input-group-addon">
-                    <i class="fa fa-search" (click)="searchKeyword(codeSerValue)"></i>
+                    <i class="fa fa-search" (click)="searchServicesKeyword(codeSerValue)"></i>
                   </div>
                 </div>
               </div>
               <div class="col-md-4 col-xs-12">
                 <div class="input-group section-bottom-20">
-                  <input type="text" placeholder="Search Description" (input)="searchKeyword($event.target.value)" [(ngModel)]="searchDescString" class="form-control"
+                  <input type="text" placeholder="Search Description" (input)="searchServicesKeyword($event.target.value)" [(ngModel)]="searchDescString" class="form-control"
                     data-inputmask="'alias': 'ip'" data-mask>
                   <div class="input-group-addon">
-                    <i class="fa fa-search" (click)="searchKeyword(searchString)"></i>
+                    <i class="fa fa-search" (click)="searchServicesKeyword(searchString)"></i>
                   </div>
                 </div>
               </div>

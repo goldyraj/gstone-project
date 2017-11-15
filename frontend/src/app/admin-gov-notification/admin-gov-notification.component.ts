@@ -74,7 +74,9 @@ export class AdminGovNotificationComponent implements OnInit {
       this.notificationList = data.json().docs;
       this.pager.pageSize = data.json().limit;
       this.pager.totalItems=data.json().total;
+      this.backupNotificationList=this.notificationList;
       this.setPage();
+      this.backupNotificationPager=this.pager;
     });
   }
 

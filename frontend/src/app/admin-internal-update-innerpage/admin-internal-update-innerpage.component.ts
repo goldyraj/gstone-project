@@ -87,8 +87,9 @@ export class AdminInternalUpdateInnerpageComponent implements OnInit {
       this.internalUpdateList = data.json().docs;
       this.pager.pageSize = data.json().limit;
       this.pager.totalItems=data.json().total;
+      this.backupInternalList=this.internalUpdateList;
       this.setPage();
-
+      this.backupInternalPager=this.pager;
     });
   }
 

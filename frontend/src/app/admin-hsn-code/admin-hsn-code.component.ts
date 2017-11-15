@@ -20,13 +20,14 @@ export class AdminHsnCodeComponent implements OnInit {
   public submitted: boolean = false; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
   backupGoodsDataList;
-  saveGoodsPager;
   backupServicesDataList;
   public ifSuccess: number = 0;
   goodsData = Array();
   servicesData = Array();
   hsnRowData;
   hsnCodeSubmitData = {};
+  goodsKeyWord;
+  servicesKeyWord;
   modelHide = '';
   public selectedStatusType;
   url = "";
@@ -412,7 +413,7 @@ export class AdminHsnCodeComponent implements OnInit {
         this.goodsPager.totalItems = response.json().total;
         this.backupGoodsDataList = this.goodsData;
         this.setGoodsPagination();
-        this.saveGoodsPager = this.goodsPager;
+        this.backupGoodsPager = this.goodsPager;
       },
       error => {
         // alert(error.text());
@@ -423,10 +424,18 @@ export class AdminHsnCodeComponent implements OnInit {
 
   getList(isGoods: boolean) {
     this.isGoodsSelected = isGoods;
-    if (isGoods) {
+    if (isGoods && this.backupGoodsDataList==null) {
       this.getAllGoods(this.goodsPager.currentPage);
     }
-    else {
+    else if(isGoods && this.backupGoodsDataList)
+    {
+      this.searchGoodsKeyword(this.goodsKeyWord);
+    }
+    else if(!isGoods && this.backupServicesDataList)
+    {
+      this.searchServicesKeyword(this.servicesKeyWord);
+    }
+    else{
       this.getAllServices(this.servicesPager.currentPage);
     }
   }
@@ -508,6 +517,7 @@ export class AdminHsnCodeComponent implements OnInit {
 
   searchGoodsKeyword(searchString) {
     console.log("SEARCH_HIT");
+    this.goodsKeyWord=searchString;
 
     if (searchString) {
       this.http.get('http://localhost:3000/api/goods/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
@@ -527,7 +537,7 @@ export class AdminHsnCodeComponent implements OnInit {
 
   searchServicesKeyword(searchString) {
     console.log("SEARCH_HIT");
-
+    this.servicesKeyWord=searchString;
     if (searchString) {
       this.http.get('http://localhost:3000/api/services/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
         this.servicesData = data.json().docs;

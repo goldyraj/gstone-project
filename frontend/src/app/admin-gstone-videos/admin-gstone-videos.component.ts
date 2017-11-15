@@ -75,8 +75,9 @@ export class AdminGstoneVideosComponent implements OnInit {
       this.videosList = data.json().docs;
       this.pager.pageSize = data.json().limit;
       this.pager.totalItems = data.json().total;
+      this.backupVideoList=this.videosList;
       this.setPage();
-
+      this.backupVideoPager=this.pager;
     });
   }
 

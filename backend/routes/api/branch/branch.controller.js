@@ -223,9 +223,10 @@ exports.apipost=(req,res,next)=>{
  
     res.result= result;
   })
-
+var s ={};
 process.on('unhandledRejection', (reason, p) => {
-  console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
+  console.log('Unhandled Rejection at: Promise', p);
+   s=p;
   // application specific logging, throwing an error, or other logic here
 });
  var s=JSON.stringify(res.result)

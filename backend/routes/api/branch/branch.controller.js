@@ -216,10 +216,20 @@ var myCallback=usingItNow(req.decoded)
 
 exports.apipost=(req,res,next)=>{
 
-  // var list =Branch.hello()
-  // list.then{
-  //    console.log(list)
-  // }
+  // var promise =Branch.hello()
+  // console.log(promise)
+ Branch.find({}).then(function(err, result) {
+    if (err) throw err;
+
+    res.result=result;
+  })
+ console.log(res.result)
+  res.json(
+         {'ss':'s'}
+        )
+  // promise.then({
+  //    console.log('list')
+  // })
  
 //     var upload = multer({
 //     storage: storage,

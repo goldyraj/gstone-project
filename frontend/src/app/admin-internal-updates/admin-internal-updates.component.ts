@@ -18,6 +18,8 @@ export class AdminInternalUpdatesComponent implements OnInit {
   @ViewChild('closeBtn3') closeBtn3: ElementRef;
 
   chapterArray=[];
+  backupInternalPager:any={};
+  backupInternalList=[];
   articleArray=[];
   secondDropDownArray=[];
   internalUpdateList = [];
@@ -339,5 +341,24 @@ export class AdminInternalUpdatesComponent implements OnInit {
   editInNewWindow(item)
   {
     
+  }
+
+  searchKeyword(searchString) {
+    console.log("SEARCH_HIT");
+
+    if (searchString) {
+      this.http.get('http://localhost:3000/api/internal/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
+        this.internalUpdateList = data.json().docs;
+        this.pager.pageSize = data.json().limit;
+        this.pager.totalItems = data.json().total;
+        this.setPage();
+        console.log("URL_DATA",this.internalUpdateList);
+      });
+    }
+    else {
+      console.log("SEARCH_EMPTY");
+      this.internalUpdateList = this.backupInternalList;
+      this.pager=this.backupInternalPager;
+    }
   }
 }

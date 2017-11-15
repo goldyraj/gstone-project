@@ -25,6 +25,8 @@ export class AdminGovNotificationComponent implements OnInit {
   rowDataIndex = "";
   // pager object
   pager: any = {};
+  backupNotificationPager:any={};
+  backupNotificationList=[];
 
   // paged items
   pagedItems: any[];
@@ -223,6 +225,24 @@ export class AdminGovNotificationComponent implements OnInit {
     this.submitted=false;
     this.submittedEdit=false;
     this.govNotiForm.reset();
+  }
+
+  searchKeyword(searchString) {
+    console.log("SEARCH_HIT");
+
+    if (searchString) {
+      this.http.get('http://localhost:3000/api/notification/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
+        this.notificationList = data.json().docs;
+        this.pager.pageSize = data.json().limit;
+        this.pager.totalItems = data.json().total;
+        this.setPage();
+      });
+    }
+    else {
+      console.log("SEARCH_EMPTY");
+      this.notificationList = this.backupNotificationList;
+      this.pager=this.backupNotificationPager;
+    }
   }
 
 }

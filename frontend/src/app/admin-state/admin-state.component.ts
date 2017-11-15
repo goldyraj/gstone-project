@@ -147,10 +147,10 @@ export class AdminStateComponent implements OnInit {
       // this.pager.TotalPages = data.json().total;
       this.pager.pageSize = data.json().limit;
       this.pager.totalItems = data.json().total;
-      this.savePagerStatus = this.pager;
       this.backupStateList = this.stateList;
       this.setPage();
-      console.log("State  PArse", this.stateList);
+      this.savePagerStatus = this.pager;
+      console.log("DATA_API", this.stateList);
     });
   }
 
@@ -160,6 +160,7 @@ export class AdminStateComponent implements OnInit {
     }
 
     this.pager = this.pagerService.getPager(this.pager.totalItems, this.pager.currentPage, this.pager.pageSize);
+
     console.log("pager", this.pager);
     // this.getStateList();
     this.pagedItems = this.stateList;
@@ -268,10 +269,6 @@ export class AdminStateComponent implements OnInit {
     console.log("REAL_LIST", this.stateList);
     console.log("BACKUP_LIST", this.backupStateList);
 
-    this.zone.run(() => {
-      
-    });
-
     if (searchString) {
       this.http.get('http://localhost:3000/api/state/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
         this.stateList = data.json().docs;
@@ -285,6 +282,8 @@ export class AdminStateComponent implements OnInit {
       console.log("SEARCH_EMPTY");
       this.stateList = this.backupStateList;
       this.pager=this.savePagerStatus;
+      console.log("PAGER_CURRENT",this.pager);
+      console.log("BACKUP_PAGER",this.savePagerStatus);
     }
   }
 

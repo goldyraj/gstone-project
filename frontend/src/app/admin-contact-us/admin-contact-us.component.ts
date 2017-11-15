@@ -23,7 +23,8 @@ export class AdminContactUsComponent implements OnInit {
   url = "";
   notiRowData;
   rowDataIndex = "";
-
+  backupNotificationPager:any={};
+  backupNotificationList=[];
   access_token: string;
   public contactUsForm: FormGroup; // our model driven form
   public editcontactUsForm: FormGroup; // our model driven form
@@ -131,5 +132,23 @@ export class AdminContactUsComponent implements OnInit {
   }
   private closeDeleteModal(): void {
     this.closeBtn3.nativeElement.click();
+  }
+
+  searchKeyword(searchString) {
+    console.log("SEARCH_HIT");
+
+    if (searchString) {
+      this.http.get('http://localhost:3000/api/contact/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
+        this.notificationList = data.json().docs;
+        this.pager.pageSize = data.json().limit;
+        this.pager.totalItems = data.json().total;
+        this.setPage();
+      });
+    }
+    else {
+      console.log("SEARCH_EMPTY");
+      this.notificationList = this.backupNotificationList;
+      this.pager=this.backupNotificationPager;
+    }
   }
 }

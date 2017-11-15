@@ -23,14 +23,14 @@ var myCallback=usingItNow(req.decoded)
         }) 
     }
 req.query.limit=parseInt(req.query.limit);
-if(req.query.search && req.query.search.length>0){    
+if(req.query.search && req.query.search.length>0){  
+   query={title:new RegExp(req.query.search,'i')}  
     if(req.query.type && req.query.type.length>0){  
-   if(req.query.type=="chapter"){
-     //query={chapter:req.query.search}
+   if(req.query.type=="chapter"){ 
       query={chapter:new RegExp(req.query.search,'i')}
  }else{
    query={article:new RegExp(req.query.search,'i')}
-    //query={article:req.query.search}
+ 
  }
 }
 }

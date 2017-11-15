@@ -71,8 +71,6 @@ import { CharOnlyDirective } from './Directives/char-only.directive';
 import { NumbersOnlyDirective } from './Directives/numbers-only.directive';
 import { AdminInternalUpdateInnerpageComponent } from './admin-internal-update-innerpage/admin-internal-update-innerpage.component';
 import {ToasterModule, ToasterService} from 'angular2-toaster';
-import { AlertComponent } from './_directives/index';
-import { AlertService } from './_services/index';
 
 @NgModule({
   declarations: [
@@ -132,8 +130,7 @@ import { AlertService } from './_services/index';
     GstupdateDetailComponent,
     CharOnlyDirective,
     NumbersOnlyDirective,
-    AdminInternalUpdateInnerpageComponent,
-    AlertComponent
+    AdminInternalUpdateInnerpageComponent
     //DatepickerModule
   ],
   imports: [
@@ -146,7 +143,7 @@ import { AlertService } from './_services/index';
     NgbModule.forRoot(),
     NgxPaginationModule,
   ],
-  providers: [ApiserviceService, ExcelServiceService, PagerService, PreventLoggedInAccess, AuthService,AlertService],
+  providers: [ApiserviceService, ExcelServiceService, PagerService, PreventLoggedInAccess, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

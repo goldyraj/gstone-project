@@ -286,6 +286,12 @@ export class UserDashboardComponent implements OnInit {
     this.isDownloadSuccessful = false;
   }
 
+  clearCSVForm()
+  {
+    this.clearInputFile.nativeElement.value = "";
+    this.ifSuccess=false;
+  }
+
   resetForm() {
     this.myForm.reset();
   }

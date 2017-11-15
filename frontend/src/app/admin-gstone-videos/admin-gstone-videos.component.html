@@ -133,13 +133,13 @@
             <div class="col-md-12 col-sm-12">
               <form [formGroup]="gstVideosForm" novalidate (ngSubmit)="saveGstVideos(gstVideosForm.valid)">
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" maxlength="100" class="form-control" placeholder="Title" formControlName="title" name="title" id="title">
+                  <input type="text" maxlength="50" class="form-control" placeholder="Title" formControlName="title" name="title" id="title">
                   <small [hidden]="gstVideosForm.controls.title.valid || (gstVideosForm.controls.title.pristine && !submitted)">
                     Title is required .
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" maxlength="1000" class="form-control" placeholder="Description" formControlName="description" name="description">
+                  <input type="text" maxlength="5000" class="form-control" placeholder="Description" formControlName="description" name="description">
                   <small [hidden]="gstVideosForm.controls.description.valid || (gstVideosForm.controls.description.pristine && !submitted)">
                     Description is required .
                   </small>
@@ -188,13 +188,13 @@
             <div class="col-md-12 col-sm-12">
               <form [formGroup]="editGstVideosForm" novalidate (ngSubmit)="updateVideos(editGstVideosForm.valid)">
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" maxlength="100"  class="form-control" placeholder="Title" formControlName="title" name="title" id="title">
+                  <input type="text" maxlength="50"  class="form-control" placeholder="Title" formControlName="title" name="title" id="title">
                   <small [hidden]="editGstVideosForm.controls.title.valid || (editGstVideosForm.controls.title.pristine && !submitted)">
                     Title is required .
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" maxlength="1000"  class="form-control" placeholder="Description" formControlName="description" name="description">
+                  <input type="text" maxlength="5000"  class="form-control" placeholder="Description" formControlName="description" name="description">
                   <small [hidden]="editGstVideosForm.controls.description.valid || (editGstVideosForm.controls.description.pristine && !submitted)">
                     Description is required .
                   </small>

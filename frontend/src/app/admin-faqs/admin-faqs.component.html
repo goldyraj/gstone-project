@@ -129,13 +129,13 @@
               <form [formGroup]="FaqForm" novalidate (ngSubmit)="saveFaqs( FaqForm.valid )">
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" formControlName="question" placeholder="Question" name="question" id="question" required>
+                  <input type="text" maxlength="300" class="form-control" formControlName="question" placeholder="Question" name="question" id="question" required>
                   <small *ngIf="!FaqForm.controls.question.valid && submitted">
                     Question is required .
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <textarea type="text" class="form-control" formControlName="answer" placeholder="Answer" name="answer" id="answer" required></textarea>
+                  <textarea type="text" maxlength="1000" class="form-control" formControlName="answer" placeholder="Answer" name="answer" id="answer" required></textarea>
                   <small *ngIf="!FaqForm.controls.answer.valid && submitted">
                     Answer is required .
                   </small>

@@ -44,14 +44,15 @@ export class AdminGovNotificationComponent implements OnInit {
 
   ngOnInit() {
     this.govNotiForm = new FormGroup({
-      title: new FormControl('', [<any>Validators.required]),
+      title: new FormControl('',[Validators.required,Validators.pattern(".*\\S.*"),Validators.pattern('^[a-zA-Z \-\']+')]),
       description: new FormControl('', [<any>Validators.required]),
-      link: new FormControl('', [<any>Validators.required])
+      link: new FormControl('',[Validators.required,Validators.pattern(".*\\S.*")])
     });
+
     this.editGovNotiForm = new FormGroup({
-      title: new FormControl('', [<any>Validators.required]),
-      description: new FormControl('', [<any>Validators.required]),
-      link: new FormControl('', [<any>Validators.required])
+      title: new FormControl('',[Validators.required,Validators.pattern(".*\\S.*"),Validators.pattern('^[a-zA-Z \-\']+')]),
+      description: new FormControl('',[Validators.required,Validators.pattern(".*\\S.*")]),
+      link: new FormControl('',[Validators.required,Validators.pattern(".*\\S.*")])
     });
 
     var context=this;
@@ -219,6 +220,8 @@ export class AdminGovNotificationComponent implements OnInit {
 
   resetForm()
   {
+    this.submitted=false;
+    this.submittedEdit=false;
     this.govNotiForm.reset();
   }
 

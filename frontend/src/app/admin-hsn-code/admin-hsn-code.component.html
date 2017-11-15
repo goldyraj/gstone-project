@@ -1,5 +1,10 @@
 <!-- Content Wrapper. Contains page content -->
 <!-- Content Header (Page header) -->
+
+<!-- <link href="node_modules/ng2-toastr/bundles/ng2-toastr.min.css" rel="stylesheet" />
+<script src="node_modules/ng2-toastr/bundles/ng2-toastr.min.js"></script> -->
+<link rel="stylesheet" type="text/css" href="/node_modules/angular2-toaster/toaster.css" />
+
 <section class="content-header">
   <h1>&nbsp; </h1>
   <ol class="breadcrumb">
@@ -113,7 +118,7 @@
                         <td align="center">
                           <!-- <i class="fa fa-eye btn btn-primary btn-sm" title="View"></i> -->
                           <a data-toggle="modal" data-target=".bs-goodsFormEdit-lg">
-                            <button class="fa fa-edit btn btn-warning btn-sm" title="Update" (click)="editHSNRecord(item)"></button>
+                            <button class="fa fa-edit btn btn-primary btn-sm" title="Update" (click)="editHSNRecord(item)"></button>
                           </a>
                           <a data-toggle="modal" data-target=".bs-delete-sm">
                             <button class="fa fa-trash btn btn-danger btn-sm" title="Delete" (click)="recordToBeDeleted(item)"></button>
@@ -219,7 +224,7 @@
                         <td align="center">
                           <!-- <i class="fa fa-eye btn btn-primary btn-sm" title="View"></i> -->
                           <a data-toggle="modal" data-target=".bs-goodsFormEdit-lg">
-                            <button class="fa fa-edit btn btn-warning btn-sm" title="Update" (click)="editHSNRecord(item)"></button>
+                            <button class="fa fa-edit btn btn-primary btn-sm" title="Update" (click)="editHSNRecord(item)"></button>
                           </a>
                           <a data-toggle="modal" data-target=".bs-delete-sm">
                             <button class="fa fa-trash btn btn-danger btn-sm" title="Delete" (click)="recordToBeDeleted(item)"></button>
@@ -267,13 +272,6 @@
         </div>
       </div>
 
-
-
-
-      <!-- -->
-
-
-
     </div>
   </div>
 
@@ -311,9 +309,9 @@
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="number" maxlength="15" min="1" class="form-control" placeholder="HSN Code" name="hsn_code" id="hsn_code" required
+                  <input type="text" OnlyNumber="true" maxlength="10" class="form-control" placeholder="HSN Code" name="hsn_code" id="hsn_code" required
                     formControlName="hsn_code">
-                  <small *ngIf="goodsForm.controls.hsn_code.errors && submitted">
+                  <small *ngIf="goodsForm.controls.hsn_code.valid && submitted">
                     HSN Code is required !
                   </small>
                 </div>
@@ -332,23 +330,23 @@
 
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="number" step="0.01" min="0" maxlength="5" class="form-control" placeholder="CGST" name="cgst" required formControlName="cgst">
-                  <small *ngIf="goodsForm.controls.cgst.errors && submitted">
+                  <input type="text" OnlyNumber="true" maxlength="5" class="form-control" placeholder="CGST" name="cgst" required formControlName="cgst">
+                  <small *ngIf="goodsForm.controls.cgst.valid && submitted">
                     CGST is required !
                   </small>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="number" step="0.01" min="0" maxlength="5" class="form-control" placeholder="SGST" name="sgst" required formControlName="sgst">
-                  <small *ngIf="goodsForm.controls.sgst.errors && submitted">
+                  <input type="text" OnlyNumber="true" maxlength="5" class="form-control" placeholder="SGST" name="sgst" required formControlName="sgst">
+                  <small *ngIf="goodsForm.controls.sgst.valid && submitted">
                     SGST is required !
                   </small>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="number" step="0.01" min="0" maxlength="5" class="form-control" placeholder="IGST" name="statecode" required
+                  <input type="text" OnlyNumber="true" maxlength="5" class="form-control" placeholder="IGST" name="statecode" required
                     formControlName="igst">
-                  <small *ngIf="goodsForm.controls.igst.errors  && submitted">
+                  <small *ngIf="goodsForm.controls.igst.valid  && submitted">
                     IGST is required !
                   </small>
                 </div>
@@ -403,8 +401,8 @@
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="number" min="0" class="form-control" placeholder="HSN Code" name="statename" id="statename" required formControlName="hsn_code">
-                  <small *ngIf="goodsFormEdit.controls.hsn_code.errors && submitted">
+                  <input type="text" OnlyNumber="true" maxlength="10" class="form-control" placeholder="HSN Code" name="statename" id="statename" required formControlName="hsn_code">
+                  <small *ngIf="goodsFormEdit.controls.hsn_code.valid && submitted">
                     HSN Code is required !
                   </small>
                 </div>
@@ -423,31 +421,28 @@
 
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="number" min="0" step="0.1" maxlength="5" class="form-control" placeholder="CGST" name="cgst" required formControlName="cgst">
-                  <small *ngIf="goodsFormEdit.controls.cgst.errors  && submitted">
+                  <input type="text" OnlyNumber="true" maxlength="5" class="form-control" placeholder="CGST" name="cgst" required formControlName="cgst">
+                  <small *ngIf="goodsFormEdit.controls.cgst.valid  && submitted">
                     CGST is required !
                   </small>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="number" min="0" step="0.1" maxlength="5" class="form-control" placeholder="SGST" name="sgst" required formControlName="sgst">
-                  <small *ngIf="goodsFormEdit.controls.sgst.errors && submitted">
+                  <input type="text" OnlyNumber="true" maxlength="5" class="form-control" placeholder="SGST" name="sgst" required formControlName="sgst">
+                  <small *ngIf="goodsFormEdit.controls.sgst.valid && submitted">
                     SGST is required !
                   </small>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="number" min="0" step="0.1" maxlength="5" class="form-control" placeholder="IGST" name="statecode" required formControlName="igst">
-                  <small *ngIf="goodsFormEdit.controls.igst.errors  && submitted">
+                  <input type="text" OnlyNumber="true" maxlength="5" class="form-control" placeholder="IGST" name="statecode" required formControlName="igst">
+                  <small *ngIf="goodsFormEdit.controls.igst.valid  && submitted">
                     IGST is required !
                   </small>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <textarea rows="3" maxlength="500" type="text" class="form-control" placeholder="Condition" name="comment" formControlName="comment"></textarea>
-                  <!-- <small [hidden]="goodsFormEdit.controls.comment.valid || (goodsFormEdit.controls.comment.pristine && !submitted)">
-                      Condition is required !
-                    </small> -->
+                  <textarea rows="3" maxlength="1000" type="text" class="form-control" placeholder="Condition" name="comment" formControlName="comment"></textarea>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
@@ -462,22 +457,6 @@
     </div>
   </div>
 </div>
-
-<!-- Goods Edit Form End -->
-
-
-<!-- Services Add Form -->
-
-
-<!-- Services End Add Form -->
-
-
-<!-- Services Edit Form Start -->
-
-
-<!-- sErvices Edit Form End -->
-
-<!-- delete Start -->
 
 <div class="modal fade bs-delete-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
   <div class="modal-dialog modal-sm" role="document">
@@ -568,7 +547,7 @@
                 <input type="button" class="btn btn-primary" value="Upload" (click)="uploadCsvFileToServer()">
               </div>
             </div>
-            <p *ngIf="ifSuccess==1" class="text-info text-center">Successfully file uploaded</p>
+            <p *ngIf="ifSuccess==1" class="text-info text-center">Success !</p>
             <p *ngIf="ifSuccess==-1" class="text-info text-center">Failed !</p>
           </div>
           <div align="center">

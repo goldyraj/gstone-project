@@ -70,6 +70,9 @@ import { GstupdateDetailComponent } from './gstupdate-detail/gstupdate-detail.co
 import { CharOnlyDirective } from './Directives/char-only.directive';
 import { NumbersOnlyDirective } from './Directives/numbers-only.directive';
 import { AdminInternalUpdateInnerpageComponent } from './admin-internal-update-innerpage/admin-internal-update-innerpage.component';
+import {ToasterModule, ToasterService} from 'angular2-toaster';
+import { AlertComponent } from './_directives/index';
+import { AlertService } from './_services/index';
 
 @NgModule({
   declarations: [
@@ -129,11 +132,12 @@ import { AdminInternalUpdateInnerpageComponent } from './admin-internal-update-i
     GstupdateDetailComponent,
     CharOnlyDirective,
     NumbersOnlyDirective,
-    AdminInternalUpdateInnerpageComponent
+    AdminInternalUpdateInnerpageComponent,
+    AlertComponent
     //DatepickerModule
   ],
   imports: [
-
+    ToasterModule,
     ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,
@@ -142,7 +146,7 @@ import { AdminInternalUpdateInnerpageComponent } from './admin-internal-update-i
     NgbModule.forRoot(),
     NgxPaginationModule,
   ],
-  providers: [ApiserviceService, ExcelServiceService, PagerService, PreventLoggedInAccess, AuthService],
+  providers: [ApiserviceService, ExcelServiceService, PagerService, PreventLoggedInAccess, AuthService,AlertService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

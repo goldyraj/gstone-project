@@ -75,13 +75,14 @@ export class AdminStateComponent implements OnInit {
     // we will initialize our form model here
     this.person.country = this.countries.filter(c => c.id === this.person.country.id)[0];
     this.myForm = new FormGroup({
-      statename: new FormControl('', Validators.pattern('^[a-zA-Z \-\']+')),
+      // statename: new FormControl('', [Validators.pattern('[A-Za-z]{3}')]),
+      statename: new FormControl('',[Validators.required,Validators.pattern(".*\\S.*"),Validators.pattern('^[a-zA-Z \-\']+')]),
       statecode: new FormControl(0,[Validators.required,, NumberValidatorsService.min(0)]),
       country: new FormControl('Select Status', [])
     });
 
     this.myFormEdit = new FormGroup({
-      statename: new FormControl('', Validators.pattern('^[a-zA-Z \-\']+')),
+      statename: new FormControl('',[Validators.required,Validators.pattern(".*\\S.*"),Validators.pattern('^[a-zA-Z \-\']+')]),
       statecode: new FormControl(0,[Validators.required,, NumberValidatorsService.min(0)]),
       country: new FormControl('Select Status', [])
     });

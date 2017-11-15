@@ -319,8 +319,8 @@ export class VendorComponent implements OnInit {
         this.closeModal();
         this.closeCsv.nativeElement.click();
         this.closeChoose.nativeElement.click();
+        this.clearInputFile.nativeElement.value = "";
         this.ifSuccess = true;
-        this.clearInputFile.nativeElement.value="";
         this.getVenderList(this.pager.currentPage);
         // alert(response.json().message);
       },
@@ -343,12 +343,12 @@ export class VendorComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/vendor/index?token='+this.access_token, options)
+    this.http.get('http://localhost:3000/api/vendor/index?token=' + this.access_token+"&limit="+1000, options)
       .subscribe(
       response => {
         exportedList = response.json().docs;
-        this.excelServiceService.exportAsExcelFile(exportedList,String(this.excelServiceService.getCurrentDateAndTime()));
-        this.isDownloadSuccessful=true;
+        this.excelServiceService.exportAsExcelFile(exportedList, String(this.excelServiceService.getCurrentDateAndTime()));
+        this.isDownloadSuccessful = true;
       },
       error => {
         // alert(error.text());
@@ -357,14 +357,19 @@ export class VendorComponent implements OnInit {
       );
   }
 
-  closeDownloadModal()
-  {
-    this.isDownloadSuccessful=false;
+  closeDownloadModal() {
+    this.isDownloadSuccessful = false;
   }
 
   resetForm()
   {
     this.myForm.reset();
+  }
+
+  clearCSVForm()
+  {
+    this.clearInputFile.nativeElement.value = "";
+    this.ifSuccess=false;
   }
 
   onUrlChanged() {

@@ -33,7 +33,7 @@
 
       <div class="col-md-3 col-xs-12">
         <div class="input-group section-bottom-20">
-          <input type="text" placeholder="Name" [(ngModel)]="searchString" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
+          <input type="text" placeholder="Search Name" [(ngModel)]="searchString" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
           <div class="input-group-addon">
             <i class="fa fa-search"></i>
           </div>
@@ -127,15 +127,15 @@
               <form [formGroup]="myForm" novalidate (ngSubmit)="saveState(myForm.valid)">
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" pattern="^[a-zA-Z \-\']+" maxlength="25" class="form-control" formControlName="statename" placeholder="State Name" name="statename" id="statename"
+                  <input type="text" maxlength="30" class="form-control" formControlName="statename" placeholder="State Name" name="statename" id="statename"
                     required>
                   <small [hidden]="myForm.controls.statename.valid || (myForm.controls.statename.pristine && !submitted)">
                     State Name is required !
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="number" maxlength="5" class="form-control" formControlName="statecode" placeholder="State Code" name="statecode" required>
-                  <small *ngIf="myForm.controls.statecode.errors  && submitted">
+                  <input type="text" OnlyNumber="true" maxlength="5" class="form-control" formControlName="statecode" placeholder="State Code" name="statecode" required>
+                  <small *ngIf="(myForm.controls.statecode.value <= 0 || !myForm.controls.statecode.valid)  && submitted">
                     State Code is required !
                   </small>
                 </div>
@@ -173,15 +173,15 @@
               <form [formGroup]="myFormEdit" novalidate (ngSubmit)="updateState(myFormEdit.valid)">
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" pattern="^[a-zA-Z \-\']+" class="form-control" formControlName="statename" placeholder="State Name" name="statename" id="statename"
+                  <input type="text" maxlength="30" class="form-control" formControlName="statename" placeholder="State Name" name="statename" id="statename"
                     required>
                   <small [hidden]="myFormEdit.controls.statename.valid || (myFormEdit.controls.statename.pristine && !submitted)">
                     State Name is required !
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="number" maxlength="5" class="form-control" formControlName="statecode" placeholder="State Code" name="statecode" required>
-                  <small *ngIf="myForm.controls.statecode.errors  && submitted">
+                  <input type="text" OnlyNumber="true" maxlength="5" class="form-control" formControlName="statecode" placeholder="State Code" name="statecode" required>
+                  <small *ngIf="myForm.controls.statecode.valid  && submitted">
                     State Code is required !
                   </small>
                 </div>

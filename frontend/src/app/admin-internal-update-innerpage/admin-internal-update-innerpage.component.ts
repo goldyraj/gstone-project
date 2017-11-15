@@ -54,15 +54,15 @@ export class AdminInternalUpdateInnerpageComponent implements OnInit {
     this.internalUpdateForm = new FormGroup({
       selectUpdateType:new FormControl("0"),
       selectChapterArticle:new FormControl("0"),
-      title: new FormControl('', [<any>Validators.required]),
-      details: new FormControl('', [<any>Validators.required]),
-      link: new FormControl('', [<any>Validators.required])
+      title: new FormControl('',[Validators.required,Validators.pattern(".*\\S.*"),Validators.pattern('^[a-zA-Z \-\']+')]),
+      details: new FormControl('',[Validators.required,Validators.pattern(".*\\S.*")]),
+      link: new FormControl('',[Validators.required,Validators.pattern(".*\\S.*")])
     });
 
     this.editInternalUpdate = new FormGroup({
       selectUpdateType:new FormControl("0"),
       selectChapterArticle:new FormControl("0"),
-      title: new FormControl('', [<any>Validators.required]),
+      title: new FormControl('',[Validators.required,Validators.pattern(".*\\S.*"),Validators.pattern('^[a-zA-Z \-\']+')]),
       details: new FormControl('', [<any>Validators.required]),
       link: new FormControl('', [<any>Validators.required]),
     });

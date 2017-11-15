@@ -38,9 +38,15 @@ Branch.statics.findOneByUsername = function(branch_name) {
         branch_name        
     }).exec()
 }
-Branch.statics.hello=function(){
-  return this.find().exec()
-}
+// Branch.statics.hello=function(){
+//   return this.find({}).exec()
+//     .then(
+//         Branch=> {
+//             res.json({Branch})
+//         }
+//     )
+//    }
+
 
 Branch.plugin(mongoosePaginate);
 

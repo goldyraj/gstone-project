@@ -24,7 +24,7 @@ var query={};
 req.query.limit=parseInt(req.query.limit);
 if(req.query.search && req.query.search.length>0){
     console.log(query={name:req.query.search})
-    query={name:req.query.search}
+ query={name:new RegExp(req.query.search,'i')}
 }
 if(req.decoded.type===req.app.get('usertype')){
    query={userid:req.decoded._id}
@@ -216,10 +216,22 @@ var myCallback=usingItNow(req.decoded)
 
 exports.apipost=(req,res,next)=>{
 
-  // var list =Branch.hello()
-  // list.then{
-  //    console.log(list)
-  // }
+  // var promise =Branch.hello()
+  // console.log(promise)
+ Branch.find({}).then(function(err, result) {
+    if (err) throw err;
+  const p = new Promise((resolve, reject) => {
+    
+  })
+    res.result=result;
+  })
+ console.log(res.result)
+  res.json(
+         {'ss':'s'}
+        )
+  // promise.then({
+  //    console.log('list')
+  // })
  
 //     var upload = multer({
 //     storage: storage,

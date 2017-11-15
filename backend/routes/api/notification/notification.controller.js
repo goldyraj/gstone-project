@@ -28,7 +28,8 @@ var myCallback=usingItNow(req.decoded)
 req.query.limit=parseInt(req.query.limit);
 if(req.query.search && req.query.search.length>0){
     console.log(query={title:req.query.search})
-    query={title:req.query.search}
+  
+      query={title:new RegExp(req.query.search,'i')}
 }
 if(!req.query.limit ||isNaN(req.query.limit) ){
     req.query.limit=5;

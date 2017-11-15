@@ -23,7 +23,9 @@ var query={};
 req.query.limit=parseInt(req.query.limit);
 if(req.query.search && req.query.search.length>0){
     console.log(query={name:req.query.search})
-    query={name:req.query.search}
+    query={name:new RegExp(req.query.search,'i')}
+    query={state:new RegExp(req.query.search,'i')}
+
 }
 // USer Id 
 if(req.decoded.type===req.app.get('usertype')){

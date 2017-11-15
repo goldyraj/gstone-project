@@ -24,7 +24,8 @@ var query={};
 req.query.limit=parseInt(req.query.limit);
 if(req.query.search && req.query.search.length>0){
    // console.log(query={description:req.query.search})
-    query={description:req.query.search}
+    query={description:new RegExp(req.query.search,'i')}
+     //   query={description:req.query.search}
 }
 //======== check user admin or not and fillter record =========
 if(req.decoded.type===req.app.get('usertype')){

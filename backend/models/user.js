@@ -11,7 +11,7 @@ const User = new Schema({
     username: String,
     password: String,
     email: String,
-    contact: { type: String, unique: true },
+    contact: { type: String, unique: true },    
     pan_no: { type: String, unique: true },
     gstin: String,
     address: String,

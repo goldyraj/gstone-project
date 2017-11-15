@@ -215,6 +215,12 @@ var myCallback=usingItNow(req.decoded)
 }
 
 exports.apipost=(req,res,next)=>{
+
+  // var list =Branch.hello()
+  // list.then{
+  //    console.log(list)
+  // }
+ 
 //     var upload = multer({
 //     storage: storage,
 //     // limits: { fileSize: 1048576, files: 1 } // limit file size to 1048576 bytes or 1 MB

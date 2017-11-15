@@ -12,7 +12,7 @@ const User = new Schema({
     password: String,
     email: String,
     contact: { type: String, unique: true },
-    pan_no: { type: String, unique: true },
+             pan_no: { type: String, unique: true },
     gstin: String,
     address: String,
     city: String, 

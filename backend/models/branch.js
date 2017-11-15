@@ -16,15 +16,16 @@ const Branch = new Schema({
     address:String,
     city:String,
     state:String,
+       userid : { type: Schema.Types.ObjectId, ref: 'User' },
    created_at:  { type: Date ,default: Date.now},
   updated_at:  { type: Date}
 })
 
 // create new User document
-Branch.statics.create = function(name,pan_no,gstin,dealer_type,branch_name,contact,email,address,city,state) {
+Branch.statics.create = function(name,pan_no,gstin,dealer_type,branch_name,contact,email,address,city,state,userid) {
        var created_at=  Date.now();
     const Branch = new this({
-       name,pan_no,gstin,dealer_type,branch_name,contact,email,address,city,state ,created_at     
+       name,pan_no,gstin,dealer_type,branch_name,contact,email,address,city,state,userid ,created_at     
     })
 
     // return the Promise
@@ -36,6 +37,9 @@ Branch.statics.findOneByUsername = function(branch_name) {
     return this.findOne({
         branch_name        
     }).exec()
+}
+Branch.statics.hello=function(){
+  return this.find().exec()
 }
 
 Branch.plugin(mongoosePaginate);

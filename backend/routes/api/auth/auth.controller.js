@@ -79,7 +79,7 @@ exports.login = (req, res) => {
     const check = (user) => {
         if(!user) {
             // user does not exist
-            throw new Error('login failed')
+            throw new Error('The username you have entered is invalid')
         } else {
             // user exists, check the password
             if(user.verify(password)) {
@@ -107,7 +107,7 @@ exports.login = (req, res) => {
                 })
                 return p
             } else {
-                throw new Error('The username or password you have entered is invalid')
+                throw new Error('The  password you have entered is invalid')
             }
         }
     }

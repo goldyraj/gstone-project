@@ -25,6 +25,10 @@ if(req.query.search && req.query.search.length>0){
     console.log(query={name:req.query.search})
     query={name:req.query.search}
 }
+// USer Id 
+if(req.decoded.type===req.app.get('usertype')){
+   query={userid:req.decoded._id}
+}
 if(!req.query.limit ||isNaN(req.query.limit) ){
     req.query.limit=5;
 }
@@ -98,7 +102,7 @@ var myCallback=usingItNow(req.decoded)
         if(custormer) {
             throw new Error('Customer gstin Allready exists')
         } else {
-            return Customer.create(name,pan_no,gstin,city,contact,email,address,state)
+            return Customer.create(name,pan_no,gstin,city,contact,email,address,state,req.decoded._id)
         }
     }
     // count the number of the Customer
@@ -171,7 +175,9 @@ var myCallback=usingItNow(req.decoded)
             message: 'you are not an authorise'
         }) 
     }
-
+     for (var i = 0; i <myobj.length; i++) {
+       myobj[i].userid=req.decoded._id; 
+     }
  var multirecord = function () {
       return new Customer.insertMany(myobj, function(err, res) {})
   }

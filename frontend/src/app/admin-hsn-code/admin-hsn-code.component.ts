@@ -34,7 +34,8 @@ export class AdminHsnCodeComponent implements OnInit {
   rowIndexToModify;
   goodsForm: FormGroup;
   goodsFormEdit: FormGroup;
-  sortBy = "created_at";
+  // sortBy = "created_at";
+  sortBy = "hsn_code";
   jsonString;
   access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
   goodsPager: any = {};
@@ -61,7 +62,7 @@ export class AdminHsnCodeComponent implements OnInit {
       cgst: new FormControl(0,[Validators.required,, NumberValidatorsService.min(0)]),
       sgst: new FormControl(0,[Validators.required,, NumberValidatorsService.min(0)]),
       igst: new FormControl(0,[Validators.required,, NumberValidatorsService.min(0)]),
-      description: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
+      description: new FormControl('',[Validators.required,Validators.pattern(".*\\S.*")]),
       selectCategory: new FormControl('Select Category'),
       comment: new FormControl()
     });
@@ -71,7 +72,7 @@ export class AdminHsnCodeComponent implements OnInit {
       cgst: new FormControl(0,[Validators.required,, NumberValidatorsService.min(0)]),
       sgst: new FormControl(0,[Validators.required,, NumberValidatorsService.min(0)]),
       igst: new FormControl(0,[Validators.required,, NumberValidatorsService.min(0)]),
-      description: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
+      description: new FormControl('',[Validators.required,Validators.pattern(".*\\S.*")]),
       selectCategory: new FormControl('Select Category'),
       comment: new FormControl()
     });
@@ -157,9 +158,9 @@ export class AdminHsnCodeComponent implements OnInit {
       .subscribe(
       response => {
         console.log("suceessfull data", response.json().message);
-        this.closeModal();
-        this.closeCsv.nativeElement.click();
-        this.closeChoose.nativeElement.click();
+        // this.closeModal();
+        // this.closeCsv.nativeElement.click();
+        // this.closeChoose.nativeElement.click();
         this.ifSuccess = 1;
         this.clearInputFile.nativeElement.value="";
         if (this.isGoodsSelected) {
@@ -168,6 +169,7 @@ export class AdminHsnCodeComponent implements OnInit {
         else {
           this.getAllServices(this.servicesPager.currentPage);
         }
+        
         // alert(response.json().message);
       },
       error => {
@@ -394,7 +396,7 @@ export class AdminHsnCodeComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/goods/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + page, options)
+    this.http.get('http://localhost:3000/api/goods/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + page+"&sortBy="+this.sortBy, options)
       .subscribe(
       response => {
         console.log("BRANCH_LIST_API_RESPONSE", response.json());
@@ -494,6 +496,12 @@ export class AdminHsnCodeComponent implements OnInit {
 
   resteCSVForm()
   {
+    this.clearInputFile.nativeElement.value="";
     this.ifSuccess=0;
+  }
+
+  searchKeyWord()
+  {
+    
   }
 }

@@ -46,6 +46,7 @@ import { ContactComponent } from './contact/contact.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 import {PreventLoggedInAccess} from './PreventLoggedInAccess';
 import { GstupdateDetailComponent } from './gstupdate-detail/gstupdate-detail.component';
+import { AdminInternalUpdateInnerpageComponent } from './admin-internal-update-innerpage/admin-internal-update-innerpage.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -108,6 +109,7 @@ const routes: Routes = [
       { path: 'admin-privacy-policy', component: AdminPrivacyPolicyComponent , canActivate: [PreventLoggedInAccess]},
       { path: 'admin-contact-us', component: AdminContactUsComponent, canActivate: [PreventLoggedInAccess] },
       { path: 'admin-faqs', component: AdminFaqsComponent , canActivate: [PreventLoggedInAccess]},
+      {path:'admin-internal-updates-edit',component:AdminInternalUpdateInnerpageComponent}
     ]
 
   }

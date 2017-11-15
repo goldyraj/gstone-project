@@ -11,30 +11,6 @@
           </p>
           <p>Goods which are not specified in table below have IGST tax rate of 18%. </p>
 
-          <!-- <div class="row section-top-30">
-            <div class="col-md-4 col-xs-12">
-              <div class="input-group">
-                <input type="text" class="form-control" [(ngModel)]="codeValue" placeholder="HNS Code">
-                <div class="input-group-addon">
-                  <i class="fa fa-search"></i>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4 col-xs-12">
-              <div class="input-group">
-                <input type="text" class="form-control" [(ngModel)]="searchString" placeholder="Description">
-                <div class="input-group-addon">
-                  <i class="fa fa-search"></i>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-md-4 col-xs-12">
-              <div class="input-group">
-                <input type="button" class="btn btn-primary" value="clear">
-              </div>
-            </div>
-          </div> -->
         </div>
 
       </div>
@@ -96,14 +72,7 @@
                       <!-- <th width="25%" class="text-center">Action</th> -->
                     </tr>
                   </thead>
-                  <!-- 
-                <tr *ngFor="let item of hsnCodeData | hsnCodeFilter:searchString |hsnCodeFilter:codeValue   ; let i = index;">
-                  
-                  <td align="center">{{ hsnCodeData.indexOf(item) }}</td>
-                  <td align="center">{{ item.code }}</td>
-                  <td align="center">{{item.description}}</td>
-                  <td align="center">{{item.rate}}</td>
-                </tr> -->
+
                   <tr *ngFor="let item of goodsData | hsnCodeFilter:searchString |hsnDescFilter:codeValue   ; let i = index;">
                     <!-- <td align="center">{{ hsnCodeData.indexOf(item) }}</td> -->
                     <td align="center">{{i+1}}</td>
@@ -114,14 +83,6 @@
                     <td align="center">{{item.sgst}}</td>
                     <td align="center">{{item.igst}}</td>
 
-                    <!-- <td align="center">
-                      <a href="" data-toggle="modal" data-target=".bs-goodsFormEdit-lg">
-                        <button class="fa fa-edit btn btn-warning btn-sm" title="Update" (click)="editHSNRecord(item)"></button>
-                      </a>
-                      <a href="" data-toggle="modal" data-target=".bs-delete-sm">
-                        <button class="fa fa-trash btn btn-danger btn-sm" title="Delete" (click)="recordToBeDeleted(item)"></button>
-                      </a>
-                    </td> -->
                   </tr>
 
                 </table>

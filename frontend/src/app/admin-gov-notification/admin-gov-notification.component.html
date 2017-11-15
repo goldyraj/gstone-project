@@ -35,7 +35,7 @@
 
       <div class="col-md-3 col-xs-12">
         <div class="input-group section-bottom-20">
-          <input type="text" placeholder="Title" [(ngModel)]="searchString" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
+          <input type="text" placeholder="Search Title" [(ngModel)]="searchString" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
           <div class="input-group-addon">
             <i class="fa fa-search"></i>
           </div>
@@ -141,13 +141,13 @@
             <div class="col-md-12 col-sm-12">
               <form [formGroup]="govNotiForm" novalidate (ngSubmit)="saveNotification(govNotiForm.valid)">
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="Title" formControlName="title" name="title" id="title">
+                  <input type="text" maxlength="30" class="form-control" placeholder="Title" formControlName="title" name="title" id="title">
                   <small [hidden]="govNotiForm.controls.title.valid || (govNotiForm.controls.title.pristine && !submitted)">
                     Title is required !
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="Description" formControlName="description" name="description">
+                  <textarea type="text" maxlength="5000" class="form-control" placeholder="Description" formControlName="description" name="description"></textarea>
                   <small [hidden]="govNotiForm.controls.description.valid || (govNotiForm.controls.description.pristine && !submitted)">
                     Description is required .
                   </small>
@@ -188,13 +188,13 @@
             <div class="col-md-12 col-sm-12">
               <form [formGroup]="editGovNotiForm" novalidate (ngSubmit)="updateNotification(editGovNotiForm.valid)">
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="Title" formControlName="title" name="title" id="title">
+                  <input type="text" maxlength="30" class="form-control" placeholder="Title" formControlName="title" name="title" id="title">
                   <small [hidden]="editGovNotiForm.controls.title.valid || (editGovNotiForm.controls.title.pristine && !submitted)">
                     Title is required .
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="Description" formControlName="description" name="description">
+                  <textarea type="text" maxlength="5000" class="form-control" placeholder="Description" formControlName="description" name="description"></textarea>
                   <small [hidden]="editGovNotiForm.controls.description.valid || (editGovNotiForm.controls.description.pristine && !submitted)">
                     Description is required .
                   </small>

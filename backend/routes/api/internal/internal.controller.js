@@ -26,9 +26,11 @@ req.query.limit=parseInt(req.query.limit);
 if(req.query.search && req.query.search.length>0){    
     if(req.query.type && req.query.type.length>0){  
    if(req.query.type=="chapter"){
-     query={chapter:req.query.search}
+     //query={chapter:req.query.search}
+      query={chapter:new RegExp(req.query.search,'i')}
  }else{
-    query={article:req.query.search}
+   query={article:new RegExp(req.query.search,'i')}
+    //query={article:req.query.search}
  }
 }
 }

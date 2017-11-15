@@ -220,14 +220,19 @@ exports.apipost=(req,res,next)=>{
   // console.log(promise)
  Branch.find({}).then(function(err, result) {
     if (err) throw err;
-  const p = new Promise((resolve, reject) => {
-    
+ 
+    res.result= result;
   })
-    res.result=result;
-  })
- console.log(res.result)
+
+process.on('unhandledRejection', (reason, p) => {
+  console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
+  // application specific logging, throwing an error, or other logic here
+});
+ var s=JSON.stringify(res.result)
+
+ console.log(s)
   res.json(
-         {'ss':'s'}
+         s
         )
   // promise.then({
   //    console.log('list')

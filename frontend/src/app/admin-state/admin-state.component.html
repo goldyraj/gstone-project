@@ -98,6 +98,27 @@
             </li>
           </ul>
 
+          <!-- <ul class="pagination btn-sm" *ngIf="stateList?.length > 1">
+            <li [ngClass]="{disabled:pager.currentPage === 1}">
+              <a *ngIf="pager.currentPage > 1" (click)="getStateList(pager.currentPage - 1)">Previous</a>
+            </li>
+
+            <li [ngClass]="{disabled:pager.currentPage === 1}">
+              <a *ngIf="pager.currentPage ==1">Previous</a>
+            </li>
+
+            <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+              <a (click)="getStateList(page)">{{page}}</a>
+            </li>
+
+            <li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
+              <a *ngIf="pager.currentPage < pager.endPage" (click)="getStateList(pager.currentPage + 1)">Next</a>
+            </li>
+            <li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
+              <a *ngIf="pager.currentPage == pager.endPage">Next</a>
+            </li>
+          </ul> -->
+
           <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
 
         </div>

@@ -19,15 +19,20 @@ export class AdminHsnCodeComponent implements OnInit {
   public addStateForm: FormGroup; // our model driven form
   public submitted: boolean = false; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
-
+  backupGoodsDataList;
+  backupServicesDataList;
   public ifSuccess: number = 0;
   goodsData = Array();
   servicesData = Array();
   hsnRowData;
   hsnCodeSubmitData = {};
+  goodsKeyWord;
+  servicesKeyWord;
   modelHide = '';
   public selectedStatusType;
   url = "";
+  backupGoodsPager:any={};
+  backupServicesPager:any={};
   selectedStatusTypeDrop;
   public hsn_code_status = "0";
   public statusDropDown = Array();
@@ -372,8 +377,9 @@ export class AdminHsnCodeComponent implements OnInit {
         this.servicesData = response.json().docs;
         this.servicesPager.pageSize = response.json().limit;
         this.servicesPager.totalItems = response.json().total;
+        this.backupServicesDataList=this.servicesData;
         this.setServicesPagination();
-
+        this.backupServicesPager=this.servicesPager;
       },
       error => {
         // alert(error.text());
@@ -405,8 +411,9 @@ export class AdminHsnCodeComponent implements OnInit {
         this.goodsData = response.json().docs;
         this.goodsPager.pageSize = response.json().limit;
         this.goodsPager.totalItems = response.json().total;
+        this.backupGoodsDataList = this.goodsData;
         this.setGoodsPagination();
-
+        this.backupGoodsPager = this.goodsPager;
       },
       error => {
         // alert(error.text());
@@ -417,10 +424,18 @@ export class AdminHsnCodeComponent implements OnInit {
 
   getList(isGoods: boolean) {
     this.isGoodsSelected = isGoods;
-    if (isGoods) {
+    if (isGoods && this.backupGoodsDataList==null) {
       this.getAllGoods(this.goodsPager.currentPage);
     }
-    else {
+    else if(isGoods && this.backupGoodsDataList)
+    {
+      this.searchGoodsKeyword(this.goodsKeyWord);
+    }
+    else if(!isGoods && this.backupServicesDataList)
+    {
+      this.searchServicesKeyword(this.servicesKeyWord);
+    }
+    else{
       this.getAllServices(this.servicesPager.currentPage);
     }
   }
@@ -500,8 +515,42 @@ export class AdminHsnCodeComponent implements OnInit {
     this.ifSuccess=0;
   }
 
-  searchKeyWord()
-  {
-    
+  searchGoodsKeyword(searchString) {
+    console.log("SEARCH_HIT");
+    this.goodsKeyWord=searchString;
+
+    if (searchString) {
+      this.http.get('http://localhost:3000/api/goods/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
+        this.goodsData = data.json().docs;
+        this.goodsPager.pageSize = data.json().limit;
+        this.goodsPager.totalItems = data.json().total;
+        this.setGoodsPagination();
+        console.log("State  PArse", this.goodsData);
+      });
+    }
+    else {
+      console.log("SEARCH_EMPTY");
+      this.goodsData = this.backupGoodsDataList;
+      this.goodsPager=this.backupGoodsPager;
+    }
+  }
+
+  searchServicesKeyword(searchString) {
+    console.log("SEARCH_HIT");
+    this.servicesKeyWord=searchString;
+    if (searchString) {
+      this.http.get('http://localhost:3000/api/services/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
+        this.servicesData = data.json().docs;
+        this.servicesPager.pageSize = data.json().limit;
+        this.servicesPager.totalItems = data.json().total;
+        this.setServicesPagination();
+        console.log("State  PArse", this.goodsData);
+      });
+    }
+    else {
+      console.log("SEARCH_EMPTY");
+      this.servicesData = this.backupServicesDataList;
+      this.servicesPager=this.backupGoodsPager;
+    }
   }
 }

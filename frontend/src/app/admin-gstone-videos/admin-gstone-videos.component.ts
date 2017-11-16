@@ -23,6 +23,8 @@ export class AdminGstoneVideosComponent implements OnInit {
   notiRowData;
   rowDataIndex = "";
   pager: any = {};
+  backupVideoPager:any={};
+  backupVideoList=[];
   apiMessage;
   apiResult=0;
   pagedItems: any[];
@@ -73,8 +75,9 @@ export class AdminGstoneVideosComponent implements OnInit {
       this.videosList = data.json().docs;
       this.pager.pageSize = data.json().limit;
       this.pager.totalItems = data.json().total;
+      this.backupVideoList=this.videosList;
       this.setPage();
-
+      this.backupVideoPager=this.pager;
     });
   }
 
@@ -231,5 +234,23 @@ export class AdminGstoneVideosComponent implements OnInit {
   {
     this.submitted=false;
     this.gstVideosForm.reset();
+  }
+
+  searchKeyword(searchString) {
+    console.log("SEARCH_HIT");
+
+    if (searchString) {
+      this.http.get('http://localhost:3000/api/vedio/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
+        this.videosList = data.json().docs;
+        this.pager.pageSize = data.json().limit;
+        this.pager.totalItems = data.json().total;
+        this.setPage();
+      });
+    }
+    else {
+      console.log("SEARCH_EMPTY");
+      this.videosList = this.backupVideoList;
+      this.pager=this.backupVideoPager;
+    }
   }
 }

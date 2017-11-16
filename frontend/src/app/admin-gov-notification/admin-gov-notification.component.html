@@ -35,18 +35,12 @@
 
       <div class="col-md-3 col-xs-12">
         <div class="input-group section-bottom-20">
-          <input type="text" placeholder="Search Title" [(ngModel)]="searchString" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
+          <input type="text" placeholder="Search Title" (input)="searchKeyword($event.target.value)" [(ngModel)]="searchString" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
           <div class="input-group-addon">
-            <i class="fa fa-search"></i>
+            <i class="fa fa-search" (click)="searchKeyword(searchString)"></i>
           </div>
         </div>
       </div>
-      <!-- <div class="col-md-3 col-xs-12">
-              <input type="text" class="form-control">
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <input type="text" class="form-control">
-            </div> -->
 
       <div class="col-lg-12 col-xs-12">
 
@@ -55,7 +49,7 @@
           <table class="table table-condensed  table-hover table-bordered">
             <thead>
               <tr>
-                <th width="2%">#</th>
+                <th width="2%">S. No.</th>
                 <th width="20%">Title</th>
                 <th width="15%">Description</th>
                 <!-- <th width="6%">Date</th> -->
@@ -64,8 +58,8 @@
               </tr>
             </thead>
             <tbody>
-              <!-- <tr *ngFor="let item of notificationList ;let i = index;"> -->
-              <tr *ngFor="let item of notificationList | notifyFilter:searchString ;let i = index;">
+              <tr *ngFor="let item of notificationList ;let i = index;">
+              <!-- <tr *ngFor="let item of notificationList | notifyFilter:searchString ;let i = index;"> -->
                   <td align="center">{{pager.pageSize * (pager.currentPage-1)+i+1}}</td>
                 <td align="center">{{item.title}}</td>
                 <td align="center">

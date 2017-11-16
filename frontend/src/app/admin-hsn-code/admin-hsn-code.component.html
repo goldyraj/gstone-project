@@ -3,7 +3,7 @@
 
 <!-- <link href="node_modules/ng2-toastr/bundles/ng2-toastr.min.css" rel="stylesheet" />
 <script src="node_modules/ng2-toastr/bundles/ng2-toastr.min.js"></script> -->
-<link rel="stylesheet" type="text/css" href="/node_modules/angular2-toaster/toaster.css" />
+<!-- <link rel="stylesheet" type="text/css" href="/node_modules/angular2-toaster/toaster.css" /> -->
 
 <section class="content-header">
   <h1>&nbsp; </h1>
@@ -60,18 +60,18 @@
 
               <div class="col-md-4 col-xs-12">
                 <div class="input-group section-bottom-20">
-                  <input type="text" [(ngModel)]="codeValue" placeholder="Search HSN/SAC Code" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
+                  <input type="text" (input)="searchGoodsKeyword($event.target.value)" (ngModel)="codeValue" placeholder="Search HSN/SAC Code" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
                   <div class="input-group-addon">
-                    <i class="fa fa-search"></i>
+                    <i class="fa fa-search" (click)="searchGoodsKeyword(codeValue)"></i>
                   </div>
                 </div>
               </div>
               <div class="col-md-4 col-xs-12">
                 <div class="input-group section-bottom-20">
-                  <input type="text" [(ngModel)]="searchString" placeholder="Search Description" class="form-control" data-inputmask="'alias': 'ip'"
+                  <input type="text" (input)="searchGoodsKeyword($event.target.value)" (ngModel)="searchString"  placeholder="Search Description" class="form-control" data-inputmask="'alias': 'ip'"
                     data-mask>
                   <div class="input-group-addon">
-                    <i class="fa fa-search"></i>
+                    <i class="fa fa-search" (click)="searchGoodsKeyword(searchString)"></i>
                   </div>
                 </div>
               </div>
@@ -104,8 +104,9 @@
                     <tbody>
                       <!-- <tr class="header" (ngModel)="item"> -->
                       <!-- <tr *ngFor="let item of hsnCodeData | updateFilter:searchString  ;let i = index;"> -->
-                      <tr *ngFor="let item of goodsData | hsnCodeFilter:codeValue |hsnDescFilter:searchString   ; let i = index;">
+                      <!-- <tr *ngFor="let item of goodsData | hsnCodeFilter:codeValue |hsnDescFilter:searchString   ; let i = index;"> -->
                         <!-- <td align="center">{{ hsnCodeData.indexOf(item) }}</td> -->
+                        <tr *ngFor="let item of goodsData; let i = index;">
                         <td align="center">{{goodsPager.pageSize * (goodsPager.currentPage-1)+i+1}}</td>
                         <td align="center">{{ item.hsn_code }}</td>
                         <td align="center">{{item.description}}</td>
@@ -167,19 +168,19 @@
 
               <div class="col-md-4 col-xs-12">
                 <div class="input-group section-bottom-20">
-                  <input type="text" placeholder="Search HSN/SAC Code" [(ngModel)]="codeSerValue" class="form-control" data-inputmask="'alias': 'ip'"
+                  <input type="text" placeholder="Search HSN/SAC Code" (input)="searchServicesKeyword($event.target.value)" [(ngModel)]="codeSerValue" class="form-control" data-inputmask="'alias': 'ip'"
                     data-mask>
                   <div class="input-group-addon">
-                    <i class="fa fa-search"></i>
+                    <i class="fa fa-search" (click)="searchServicesKeyword(codeSerValue)"></i>
                   </div>
                 </div>
               </div>
               <div class="col-md-4 col-xs-12">
                 <div class="input-group section-bottom-20">
-                  <input type="text" placeholder="Search Description"  [(ngModel)]="searchDescString" class="form-control"
+                  <input type="text" placeholder="Search Description" (input)="searchServicesKeyword($event.target.value)" [(ngModel)]="searchDescString" class="form-control"
                     data-inputmask="'alias': 'ip'" data-mask>
                   <div class="input-group-addon">
-                    <i class="fa fa-search"></i>
+                    <i class="fa fa-search" (click)="searchServicesKeyword(searchString)"></i>
                   </div>
                 </div>
               </div>
@@ -193,7 +194,7 @@
                   <table class="table table-condensed  table-hover table-bordered">
                     <thead>
                       <tr>
-                        <th width="5%">#</th>
+                        <th width="5%">S. No.</th>
                         <th width="15%">SAC Code</th>
                         <th width="43%">Description</th>
                         <th width="8%">CGST</th>
@@ -210,7 +211,7 @@
                     <tbody>
                       <!-- <tr class="header" (ngModel)="item"> -->
                       <!-- <tr *ngFor="let item of hsnCodeData | updateFilter:searchString  ;let i = index;"> -->
-                      <tr *ngFor="let item of servicesData  |hsnSerCodeFilter: codeSerValue  ; let i = index;">
+                      <tr *ngFor="let item of servicesData  ; let i = index;">
                         <!-- <td align="center">{{ hsnCodeData.indexOf(item) }}</td> -->
                         <!-- <td align="center">{{servicesPager.pageSize * (servicesPager.currentPage-1)+servicesData.indexOf(item)+1}}</td> -->
                         <td align="center">{{servicesPager.pageSize * (servicesPager.currentPage-1)+i+1}}</td>

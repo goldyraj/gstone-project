@@ -1,0 +1,3904 @@
+{
+   "type":"object",
+   "title":"GSTR1 Schema",
+   "additionalProperties": false,
+   "properties":{
+      "gstin":{
+         "description":"Supplier GSTIN",
+         "$ref":"#/definitions/gstin"
+      },
+      "fp":{
+         "description":"Financial Period",
+         "type":"string",
+         "minLength":1,
+         "pattern":"^((0[1-9]|1[012])((19|20)\\d\\d))$"
+      },
+      "gt":{
+         "description":"Gross Turnover of the taxpayer in the previous FY",
+         "type":"number",
+         "multipleOf":0.01,
+         "maximum":999999999999999.99,
+         "minimum":0
+      },
+      "cur_gt":{
+         "description":"Gross Turnover of the taxpayer in the previous FY",
+         "type":"number",
+         "multipleOf":0.01,
+         "maximum":999999999999999.99,
+         "minimum":0
+      },
+      "b2b":{
+         "type":"array",
+         "items":{
+            "type":"object",
+			"additionalProperties": false,
+            "properties":{
+               "ctin":{
+                  "description":"GSTIN/UID of the Receiver taxpayer/UN,Govt Bodies",
+                  "$ref":"#/definitions/ctin"
+               },
+               "inv":{
+                  "type":"array",
+                  "minLength":1,
+                  "items":{
+                     "anyOf":[
+                        {
+                           "type":"object",
+						   "additionalProperties": false,
+                           "properties":{
+                              "etin":{
+                                 "description":"Ecom Tin",
+                                 "anyOf":[
+                                    {
+                                       "$ref":"#/definitions/etin"
+                                    },
+                                    {
+                                       "$ref":"#/definitions/etinEmptyChck"
+                                    }
+                                 ]
+                              },
+                              "inum":{
+                                 "description":"Supplier Invoice Number",
+                                 "$ref":"#/definitions/inum"
+                              },
+                              "idt":{
+                                 "description":"Supplier Invoice Date",
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+                              "val":{
+                                 "description":"Supplier Invoice Value",
+                                 "$ref":"#/definitions/totalValue"
+                              },
+                              "pos":{
+                                 "description":"Maintained in GST System common database POS as provided in law / actual provision of service.",
+                                 "$ref":"#/definitions/state_cd"
+                              },
+                              "rchrg":{
+                                 "description":"Reverse Charge",
+                                 "$ref":"#/definitions/boolean"
+                              },
+                              "inv_typ":{
+                                 "description":"tax payer action",
+                                 "type":"string",
+                                 "enum":[
+                                    "R",
+                                    "DE",
+                                    "SEWP",
+                                    "SEWOP"
+                                 ]
+                              },
+                              "itms":{
+                                 "type":"array",
+                                 "items":{
+                                    "type":"object",
+									"additionalProperties": false,
+                                    "properties":{
+                                       "num":{
+                                          "description":"Serial no",
+                                          "type":"integer",
+                                          "minimum":1
+                                       },
+                                       "itm_det":{
+                                          "type":"object",
+										  "additionalProperties": false,
+                                          "properties":{
+                                             "txval":{
+                                                "description":"Taxable value of Goods or Service as per invoice",
+                                                "$ref":"#/definitions/txval"
+                                             },
+                                             "rt":{
+                                                "description":"rate",
+                                                "type":"number",
+                                                "multipleOf":0.01,
+												"minimum":0,
+												"maximum":999.99
+                                             },
+                                             "iamt":{
+                                                "description":"IGST Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             },
+                                             "camt":{
+                                                "description":"CGST Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             },
+                                             "samt":{
+                                                "description":"SGST Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             },
+                                             "csamt":{
+                                                "description":"Cess Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             }
+                                          },
+                                          "required":[
+                                             "txval"
+                                          ]
+                                       }
+                                    }
+                                 }
+                              }
+                           },
+                           "required":[
+                              "inum",
+                              "idt",
+                              "val",
+                              "rchrg",
+                              "inv_typ",
+                              "itms"
+                           ]
+                        },
+                        {
+                           "type":"object",
+						   "additionalProperties": false,
+                           "properties":{
+                              "etin":{
+                                 "description":"Ecom Tin",
+                                 "anyOf":[
+                                    {
+                                       "$ref":"#/definitions/etin"
+                                    },
+                                    {
+                                       "$ref":"#/definitions/etinEmptyChck"
+                                    }
+                                 ]
+                              },
+                              "chksum":{
+                                 "description":"Checksum Value",
+                                 "$ref":"#/definitions/chksum"
+                              },
+                              "flag":{
+                                 "description":"tax payer action",
+                                 "type":"string",
+                                 "enum":[
+                                    "D",
+                                    "A",
+                                    "R",
+                                    "P"
+                                 ]
+                              },
+                              "inum":{
+                                 "description":"Supplier Invoice Number",
+                                 "$ref":"#/definitions/inum"
+                              },
+                              "idt":{
+                                 "description":"Supplier Invoice Date",
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+                              "val":{
+                                 "description":"Supplier Invoice Value",
+                                 "$ref":"#/definitions/totalValue"
+                              },
+                              "pos":{
+                                 "description":"Maintained in GST System common database POS as provided in law / actual provision of service.",
+                                 "$ref":"#/definitions/state_cd"
+                              },
+                              "rchrg":{
+                                 "description":"Reverse Charge",
+                                 "$ref":"#/definitions/boolean"
+                              },
+                              "inv_typ":{
+                                 "description":"tax payer action",
+                                 "type":"string",
+                                 "enum":[
+                                    "R",
+                                    "DE",
+                                    "SEWP",
+                                    "SEWOP"
+                                 ]
+                              },
+                              "itms":{
+                                 "type":"array",
+                                 "items":{
+                                    "type":"object",
+									"additionalProperties": false,
+                                    "properties":{
+									      "num":{
+                                          "description":"Serial no",
+                                          "type":"integer",
+                                          "minimum":1
+                                       },
+                                       "itm_det":{
+                                          "type":"object",
+										  "additionalProperties": false,
+                                          "properties":{
+                                             "txval":{
+                                                "description":"Taxable value of Goods or Service as per invoice",
+                                                "$ref":"#/definitions/txval"
+                                             },
+                                             "rt":{
+                                                "description":"rate",
+                                                "type":"number",
+                                                "multipleOf":0.01,
+												"minimum":0,
+												"maximum":999.99
+                                             },
+                                             "iamt":{
+                                                "description":"IGST Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             },
+                                             "camt":{
+                                                "description":"CGST Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             },
+                                             "samt":{
+                                                "description":"SGST Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             },
+                                             "csamt":{
+                                                "description":"Cess Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             }
+                                          }
+                                       }
+                                    }
+                                 }
+                              }
+                           },
+                           "required":[
+                              "inum",
+                              "idt",
+                              "flag"
+                           ]
+                        }
+                     ]
+                  }
+               }
+            },
+            "required":[
+               "ctin",
+               "inv"
+            ]
+         }
+      },
+     "b2ba":{
+         "type":"array",
+         "items":{
+            "type":"object",
+            "properties":{
+               "ctin":{
+                  "description":"GSTIN/UID of the Receiver taxpayer/UN,Govt Bodies",
+                  "$ref":"#/definitions/ctin"
+               },
+               "inv":{
+                  "type":"array",
+                  "minLength":1,
+                  "items":{
+                     "anyOf":[
+                        {
+                           "type":"object",
+                           "properties":{
+                              "etin":{
+                                 "description":"Ecom Tin",
+                                 "anyOf":[
+                                    {
+                                       "$ref":"#/definitions/etin"
+                                    },
+                                    {
+                                       "$ref":"#/definitions/etinEmptyChck"
+                                    }
+                                 ]
+                              },
+                              "inum":{
+                                 "description":"Supplier Invoice Number",
+                                 "$ref":"#/definitions/inum"
+                              },
+                              "idt":{
+                                 "description":"Supplier Invoice Date",
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+                              "oinum":{
+                                 "description":"Supplier Invoice Number",
+                                 "$ref":"#/definitions/inum"
+                              },
+                              "oidt":{
+                                 "description":"Supplier Invoice Date",
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+                              "val":{
+                                 "description":"Supplier Invoice Value",
+                                 "$ref":"#/definitions/totalValue"
+                              },
+                              "pos":{
+                                 "description":"Maintained in GST System common database POS as provided in law / actual provision of service.",
+                                 "$ref":"#/definitions/state_cd"
+                              },
+                              "rchrg":{
+                                 "description":"Reverse Charge",
+                                 "$ref":"#/definitions/boolean"
+                              },
+                              "inv_typ":{
+                                 "description":"tax payer action",
+                                 "type":"string",
+                                 "enum":[
+                                    "R",
+                                    "DE",
+                                    "SEWP",
+                                    "SEWOP"
+                                 ]
+                              },
+                              "itms":{
+                                 "type":"array",
+                                 "items":{
+                                    "type":"object",
+                                    "properties":{
+                                       "num":{
+                                          "description":"Serial no",
+                                          "type":"integer",
+                                          "minLength":1
+                                       },
+                                       "itm_det":{
+                                          "type":"object",
+                                          "properties":{
+                                             "txval":{
+                                                "description":"Taxable value of Goods or Service as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost",
+                                                "minLength":1
+                                             },
+                                             "rt":{
+                                                "description":"rate",
+                                                "type":"number",
+                                                "multipleOf":0.01
+                                             },
+                                             "iamt":{
+                                                "description":"IGST Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             },
+                                             "camt":{
+                                                "description":"CGST Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             },
+                                             "samt":{
+                                                "description":"SGST Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             },
+                                             "csamt":{
+                                                "description":"Cess Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             }
+                                          },
+                                          "required":[
+                                             "txval"
+                                          ]
+                                       }
+                                    }
+                                 }
+                              }
+                           },
+                           "required":[
+                              "inum",
+                              "idt",
+                              "oinum",
+                              "oidt",
+                              "val",
+                              "rchrg",
+                              "inv_typ",
+                              "itms"
+                           ]
+                        },
+                        {
+                           "type":"object",
+                           "properties":{
+                              "etin":{
+                                 "description":"Ecom Tin",
+                                 "anyOf":[
+                                    {
+                                       "$ref":"#/definitions/etin"
+                                    },
+                                    {
+                                       "$ref":"#/definitions/etinEmptyChck"
+                                    }
+                                 ]
+                              },
+                              "chksum":{
+                                 "description":"Checksum Value",
+                                 "$ref":"#/definitions/chksum"
+                              },
+                              "flag":{
+                                 "description":"tax payer action",
+                                 "type":"string",
+                                 "enum":[
+                                    "D",
+                                    "A",
+                                    "R",
+                                    "P"
+                                 ]
+                              },
+                              "inum":{
+                                 "description":"Supplier Invoice Number",
+                                 "$ref":"#/definitions/inum"
+                              },
+                              "idt":{
+                                 "description":"Supplier Invoice Date",
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+                              "oinum":{
+                                 "description":"Supplier Invoice Number",
+                                 "$ref":"#/definitions/inum"
+                              },
+                              "oidt":{
+                                 "description":"Supplier Invoice Date",
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+                              "val":{
+                                 "description":"Supplier Invoice Value",
+                                 "$ref":"#/definitions/totalValue"
+                              },
+                              "pos":{
+                                 "description":"Maintained in GST System common database POS as provided in law / actual provision of service.",
+                                 "$ref":"#/definitions/state_cd"
+                              },
+                              "rchrg":{
+                                 "description":"Reverse Charge",
+                                 "$ref":"#/definitions/boolean"
+                              },
+                              "inv_typ":{
+                                 "description":"tax payer action",
+                                 "type":"string",
+                                 "enum":[
+                                    "R",
+                                    "DE",
+                                    "SEWP",
+                                    "SEWOP"
+                                 ]
+                              },
+                              "itms":{
+                                 "type":"array",
+                                 "items":{
+                                    "type":"object",
+                                    "properties":{
+                                       "num":{
+                                          "description":"Serial no",
+                                          "type":"integer",
+                                          "minLength":1
+                                       },
+                                       "itm_det":{
+                                          "type":"object",
+                                          "properties":{
+                                             "txval":{
+                                                "description":"Taxable value of Goods or Service as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost",
+                                                "minLength":1
+                                             },
+                                             "rt":{
+                                                "description":"rate",
+                                                "type":"number",
+                                                "multipleOf":0.01
+                                             },
+                                             "iamt":{
+                                                "description":"IGST Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             },
+                                             "camt":{
+                                                "description":"CGST Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             },
+                                             "samt":{
+                                                "description":"SGST Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             },
+                                             "csamt":{
+                                                "description":"Cess Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             }
+                                          }
+                                       }
+                                    }
+                                 }
+                              }
+                           },
+                           "required":[
+                              "inum",
+                              "idt",
+                              "flag"
+                           ]
+                        }
+                     ]
+                  }
+               }
+            },
+            "required":[
+               "ctin",
+               "inv"
+            ]
+         }
+      },
+      "b2cl":{
+         "type":"array",
+         "items":{
+            "type":"object",
+			"additionalProperties": false,
+            "properties":{
+               "pos":{
+                  "description":"Maintained in GST System common database POS as provided in law / actual provision of service",
+                  "$ref":"#/definitions/state_cd"
+               },
+               "inv":{
+                  "minLength":1,
+                  "type":"array",
+                  "items":{
+                     "anyOf":[
+                        {
+                           "type":"object",
+						   "additionalProperties": false,
+                           "properties":{
+                              "etin":{
+                                 "description":"Ecom Tin",
+                                 "anyOf":[
+                                    {
+                                       "$ref":"#/definitions/etin"
+                                    },
+                                    {
+                                       "$ref":"#/definitions/etinEmptyChck"
+                                    }
+                                 ]
+                              },
+                              "inum":{
+                                 "description":"Supplier Invoice Number",
+                                 "$ref":"#/definitions/inum"
+                              },
+                              "idt":{
+                                 "description":"Supplier Invoice Date",
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+                              "val":{
+                                 "description":"Supplier Invoice Value",
+                                 "$ref":"#/definitions/totalValue"
+                              },
+                              "itms":{
+                                 "type":"array",
+                                 "items":{
+                                    "type":"object",
+									"additionalProperties": false,
+                                    "properties":{
+                                       "num":{
+                                          "description":"Serial no",
+                                          "type":"integer",
+                                          "minimum":1
+                                       },
+                                       "itm_det":{
+                                          "type":"object",
+										  "additionalProperties": false,
+                                          "properties":{
+                                             "rt":{
+                                                "description":"rate",
+                                                "type":"number",
+                                                "multipleOf":0.01,
+												"minimum":0,
+												"maximum":999.99
+                                             },
+                                             "txval":{
+                                                "description":"Taxable value of Goods or Service as per invoice",
+                                                "$ref":"#/definitions/txval"
+                                             },
+                                             "iamt":{
+                                                "description":"IGST Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             },
+                                             "csamt":{
+                                                "description":"Cess Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             }
+                                          },
+                                          "required":[
+                                             "rt",
+                                             "txval"
+                                          ]
+                                       }
+                                    },
+                                    "required":[
+                                       "num"
+                                    ]
+                                 }
+                              }
+                           },
+                           "required":[
+                              "inum",
+                              "idt",
+                              "val",
+                              "itms"
+                           ]
+                        },
+                        {
+                           "type":"object",
+						   "additionalProperties": false,
+                           "properties":{
+                              "etin":{
+                                 "description":"Ecom Tin",
+                                 "anyOf":[
+                                    {
+                                       "$ref":"#/definitions/etin"
+                                    },
+                                    {
+                                       "$ref":"#/definitions/etinEmptyChck"
+                                    }
+                                 ]
+                              },
+                              "chksum":{
+                                 "description":"Checksum Value",
+                                 "$ref":"#/definitions/chksum"
+                              },
+                              "flag":{
+                                 "description":"tax payer action",
+                                 "type":"string",
+                                 "enum":[
+                                    "D"
+                                 ]
+                              },
+                              "inum":{
+                                 "description":"Supplier Invoice Number",
+                                 "$ref":"#/definitions/inum"
+                              },
+                              "idt":{
+                                 "description":"Supplier Invoice Date",
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+                              "val":{
+                                 "description":"Supplier Invoice Value",
+                                 "$ref":"#/definitions/totalValue"
+                              },
+                              "pos":{
+                                 "description":"Maintained in GST System common database POS as provided in law / actual provision of service",
+                                 "$ref":"#/definitions/state_cd"
+                              },
+                              "itms":{
+                                 "type":"array",
+                                 "items":{
+                                    "type":"object",
+									"additionalProperties": false,
+                                    "properties":{
+                                       "num":{
+                                          "description":"Serial no",
+                                          "type":"integer",
+                                          "minimum":1
+                                       },
+                                       "itm_det":{
+                                          "type":"object",
+										  "additionalProperties": false,
+                                          "properties":{
+                                             "rt":{
+                                                "description":"rate",
+                                                "type":"number",
+                                                "multipleOf":0.01,
+												"minimum":0,
+												"maximum":999.99
+                                             },
+                                             "txval":{
+                                                "description":"Taxable value of Goods or Service as per invoice",
+                                                "$ref":"#/definitions/txval"
+                                             },
+                                             "iamt":{
+                                                "description":"IGST Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             },
+                                             "csamt":{
+                                                "description":"Cess Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             }
+                                          }
+                                       }
+                                    }
+                                 }
+                              }
+                           },
+                           "required":[
+                              "inum",
+                              "idt",
+                              "flag"
+                           ]
+                        }
+                     ]
+                  }
+               }
+            },
+            "required":[
+               "pos",
+               "inv"
+            ]
+         }
+      },
+      "b2cla":{
+         "type":"array",
+         "items":{
+            "type":"object",
+            "properties":{
+               "pos":{
+                  "description":"Maintained in GST System common database POS as provided in law / actual provision of service",
+                  "$ref":"#/definitions/state_cd"
+               },
+               "inv":{
+                  "minLength":1,
+                  "type":"array",
+                  "items":{
+                     "anyOf":[
+                        {
+                           "type":"object",
+                           "properties":{
+                              "etin":{
+                                 "description":"Ecom Tin",
+                                 "anyOf":[
+                                    {
+                                       "$ref":"#/definitions/etin"
+                                    },
+                                    {
+                                       "$ref":"#/definitions/etinEmptyChck"
+                                    }
+                                 ]
+                              },
+                              "chksum":{
+                                 "description":"Checksum Value",
+                                 "$ref":"#/definitions/chksum"
+                              },
+                              "flag":{
+                                 "description":"tax payer action",
+                                 "$ref":"#/definitions/flag"
+                              },
+                              "inum":{
+                                 "description":"Supplier Invoice Number",
+                                 "$ref":"#/definitions/inum"
+                              },
+                              "idt":{
+                                 "description":"Supplier Invoice Date",
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+                              "oinum":{
+                                 "description":"Supplier Invoice Number",
+                                 "$ref":"#/definitions/inum"
+                              },
+                              "oidt":{
+                                 "description":"Supplier Invoice Date",
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+                              "val":{
+                                 "description":"Supplier Invoice Value",
+                                 "$ref":"#/definitions/totalValue"
+                              },
+                              "itms":{
+                                 "type":"array",
+                                 "items":{
+                                    "type":"object",
+                                    "properties":{
+                                       "num":{
+                                          "description":"Serial no",
+                                          "type":"integer",
+                                          "minLength":1
+                                       },
+                                       "itm_det":{
+                                          "type":"object",
+                                          "properties":{
+                                             "rt":{
+                                                "description":"rate",
+                                                "type":"number",
+                                                "multipleOf":0.01
+                                             },
+                                             "txval":{
+                                                "description":"Taxable value of Goods or Service as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost",
+                                                "minLength":1
+                                             },
+                                             "iamt":{
+                                                "description":"IGST Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             },
+                                             "csamt":{
+                                                "description":"Cess Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             }
+                                          },
+                                          "required":[
+                                             "rt",
+                                             "txval"
+                                          ]
+                                       }
+                                    },
+                                    "required":[
+                                       "num"
+                                    ]
+                                 }
+                              }
+                           },
+                           "required":[
+                              "inum",
+                              "idt",
+                              "oinum",
+                              "oidt",
+                              "val",
+                              "itms"
+                           ]
+                        },
+                        {
+                           "type":"object",
+                           "properties":{
+                              "etin":{
+                                 "description":"Ecom Tin",
+                                 "anyOf":[
+                                    {
+                                       "$ref":"#/definitions/etin"
+                                    },
+                                    {
+                                       "$ref":"#/definitions/etinEmptyChck"
+                                    }
+                                 ]
+                              },
+                              "chksum":{
+                                 "description":"Checksum Value",
+                                 "$ref":"#/definitions/chksum"
+                              },
+                              "flag":{
+                                 "description":"tax payer action",
+                                 "type":"string",
+                                 "enum":[
+                                    "D"
+                                 ]
+                              },
+                              "inum":{
+                                 "description":"Supplier Invoice Number",
+                                 "$ref":"#/definitions/inum"
+                              },
+                              "idt":{
+                                 "description":"Supplier Invoice Date",
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+                              "oinum":{
+                                 "description":"Supplier Invoice Number",
+                                 "$ref":"#/definitions/inum"
+                              },
+                              "oidt":{
+                                 "description":"Supplier Invoice Date",
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+                              "val":{
+                                 "description":"Supplier Invoice Value",
+                                 "$ref":"#/definitions/totalValue"
+                              },
+                              "pos":{
+                                 "description":"Maintained in GST System common database POS as provided in law / actual provision of service",
+                                 "$ref":"#/definitions/state_cd"
+                              },
+                              "itms":{
+                                 "type":"array",
+                                 "items":{
+                                    "type":"object",
+                                    "properties":{
+                                       "num":{
+                                          "description":"Serial no",
+                                          "type":"integer",
+                                          "minLength":1
+                                       },
+                                       "itm_det":{
+                                          "type":"object",
+                                          "properties":{
+                                             "rt":{
+                                                "description":"rate",
+                                                "type":"number",
+                                                "multipleOf":0.01
+                                             },
+                                             "txval":{
+                                                "description":"Taxable value of Goods or Service as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost",
+                                                "minLength":1
+                                             },
+                                             "iamt":{
+                                                "description":"IGST Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             },
+                                             "csamt":{
+                                                "description":"Cess Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             }
+                                          }
+                                       }
+                                    }
+                                 }
+                              }
+                           },
+                           "required":[
+                              "inum",
+                              "idt",
+                              "flag"
+                           ]
+                        }
+                     ]
+                  }
+               }
+            },
+            "required":[
+               "pos",
+               "inv"
+            ]
+         }
+      },
+      "b2cs":{
+         "type":"array",
+         "items":{
+            "anyOf":[
+               {
+                  "type":"object",
+				  "additionalProperties": false,
+                  "properties":{
+                     "typ":{
+                        "description":"Type of B2cs",
+                        "type":"string",
+                        "maxLength":2,
+                        "enum":[
+                           "E",
+                           "OE"
+                        ]
+                     },
+                     "sply_ty":{
+                        "description":"Supply Type of B2cs",
+                        "type":"string",
+                        "maxLength":5,
+                        "enum":[
+                           "INTER",
+                           "INTRA"
+                        ]
+                     },
+                     "rt":{
+                        "description":"rate",
+                        "type":"number",
+                        "multipleOf":0.01,
+						"minimum":0,
+						"maximum":999.99
+                     },
+                     "etin":{
+                        "description":"Ecom Tin",
+                        "anyOf":[
+                           {
+                              "$ref":"#/definitions/etin"
+                           },
+                           {
+                              "$ref":"#/definitions/etinEmptyChck"
+                           }
+                        ]
+                     },
+                     "pos":{
+                        "description":"Recipient state code",
+                        "$ref":"#/definitions/state_cd"
+                     },
+                     "txval":{
+                        "description":"Taxable value of Goods or Service as per invoice",
+                        "$ref":"#/definitions/txval"
+                     },
+                     "iamt":{
+                        "description":"IGST Amount as per invoice",
+                        "$ref":"#/definitions/nonEmptyNil"
+                     },
+                     "camt":{
+                        "description":"CGST Rate as per invoice",
+                        "$ref":"#/definitions/nonEmptyNil"
+                     },
+                     "samt":{
+                        "description":"SGST Rate as per invoice",
+                        "$ref":"#/definitions/nonEmptyNil"
+                     },
+                     "csamt":{
+                        "description":"Cess Amount as per invoice",
+                        "$ref":"#/definitions/nonEmptyNil"
+                     }
+                  },
+                  "required":[
+                     "rt",
+                     "sply_ty",
+                     "typ",
+                     "txval"
+                  ]
+               },
+               {
+                  "type":"object",
+				  "additionalProperties": false,
+                  "properties":{
+                     "typ":{
+                        "description":"Type of B2cs",
+                        "type":"string",
+                        "maxLength":2,
+                        "enum":[
+                           "E",
+                           "OE"
+                        ]
+                     },
+                     "sply_ty":{
+                        "description":"Supply Type of B2cs",
+                        "type":"string",
+                        "maxLength":5,
+                        "enum":[
+                           "INTER",
+                           "INTRA"
+                        ]
+                     },
+                     "etin":{
+                        "description":"Ecom Tin",
+                        "anyOf":[
+                           {
+                              "$ref":"#/definitions/etin"
+                           },
+                           {
+                              "$ref":"#/definitions/etinEmptyChck"
+                           }
+                        ]
+                     },
+                     "chksum":{
+                        "description":"Checksum Value",
+                        "$ref":"#/definitions/chksum"
+                     },
+                     "flag":{
+                        "description":"tax payer action",
+                        "type":"string",
+                        "enum":[
+                           "D"
+                        ]
+                     },
+                     "rt":{
+                        "description":"rate",
+                        "type":"number",
+                        "multipleOf":0.01,
+						"minimum":0,
+						"maximum":999.99
+                     },
+                     "pos":{
+                        "description":"Recipient state code",
+                        "$ref":"#/definitions/state_cd"
+                     },
+                     "txval":{
+                        "description":"Taxable value of Goods or Service as per invoice",
+                        "minLength":1,
+                        "$ref":"#/definitions/txval"
+                     },
+                     "camt":{
+                        "description":"CGST Rate as per invoice",
+                        "$ref":"#/definitions/nonEmptyNil"
+                     },
+                     "samt":{
+                        "description":"SGST Rate as per invoice",
+                        "$ref":"#/definitions/nonEmptyNil"
+                     },
+                     "iamt":{
+                        "description":"IGST Amount as per invoice",
+                        "$ref":"#/definitions/nonEmptyNil"
+                     },
+                     "csamt":{
+                        "description":"Cess Amount as per invoice",
+                        "$ref":"#/definitions/nonEmptyNil"
+                     }
+                  },
+                  "required":[
+                     "flag",
+                     "sply_ty",
+                     "typ"
+                  ]
+               }
+            ]
+         }
+      },
+       "b2csa":{
+         "type":"array",
+         "items":{
+            "anyOf":[
+               {
+                  "type":"object",
+                  "properties":{
+                     "typ":{
+                        "description":"Type of B2cs",
+                        "type":"string",
+                        "maxLength":2,
+                        "enum":[
+                           "E",
+                           "OE"
+                        ]
+                     },
+                     "sply_ty":{
+                        "description":"Supply Type of B2cs",
+                        "type":"string",
+                        "maxLength":8,
+                        "enum":[
+                           "INTER",
+                           "INTRA"
+                        ]
+                     },
+                     "rt":{
+                        "description":"rate",
+                        "type":"number",
+                        "multipleOf":0.01
+                     },
+                     "etin":{
+                        "description":"Ecom Tin",
+                        "anyOf":[
+                           {
+                              "$ref":"#/definitions/etin"
+                           },
+                           {
+                              "$ref":"#/definitions/etinEmptyChck"
+                           }
+                        ]
+                     },
+                     "chksum":{
+                        "description":"Checksum Value",
+                        "$ref":"#/definitions/chksum"
+                     },
+                     "flag":{
+                        "description":"tax payer action",
+                        "$ref":"#/definitions/flag"
+                     },
+                     "pos":{
+                        "description":"Recipient state code",
+                        "$ref":"#/definitions/state_cd"
+                     },
+                     "opos":{
+                        "description":"Recipient state code",
+                        "$ref":"#/definitions/state_cd"
+                     },
+                     "omon":{
+                        "description":"Original Month",
+                        "type":"string",
+                        "minLength":1,
+                        "pattern":"^((0[1-9]|1[012])((19|20)\\d\\d))$"
+                     },
+                     "txval":{
+                        "description":"Taxable value of Goods or Service as per invoice",
+                        "minLength":1,
+                        "$ref":"#/definitions/nonEmptyNil"
+                     },
+                     "iamt":{
+                        "description":"IGST Amount as per invoice",
+                        "$ref":"#/definitions/nonEmptyNil"
+                     },
+                     "camt":{
+                        "description":"CGST Rate as per invoice",
+                        "$ref":"#/definitions/nonEmptyNil"
+                     },
+                     "samt":{
+                        "description":"SGST Rate as per invoice",
+                        "$ref":"#/definitions/nonEmptyNil"
+                     },
+                     "csamt":{
+                        "description":"Cess Amount as per invoice",
+                        "$ref":"#/definitions/nonEmptyNil"
+                     }
+                  },
+                  "required":[
+                     "rt",
+                     "sply_ty",
+                     "typ",
+                     "omon",
+                     "txval"
+                  ]
+               },
+               {
+                  "type":"object",
+                  "properties":{
+                     "typ":{
+                        "description":"Type of B2cs",
+                        "type":"string",
+                        "maxLength":2,
+                        "enum":[
+                           "E",
+                           "OE"
+                        ]
+                     },
+                     "sply_ty":{
+                        "description":"Supply Type of B2cs",
+                        "type":"string",
+                        "maxLength":8,
+                        "enum":[
+                           "INTER",
+                           "INTRA"
+                        ]
+                     },
+                     "opos":{
+                        "description":"Recipient state code",
+                        "$ref":"#/definitions/state_cd"
+                     },
+                     "omon":{
+                        "description":"Original Month",
+                        "type":"string",
+                        "minLength":1,
+                        "pattern":"^((0[1-9]|1[012])((19|20)\\d\\d))$"
+                     },
+                     "etin":{
+                        "description":"Ecom Tin",
+                        "anyOf":[
+                           {
+                              "$ref":"#/definitions/etin"
+                           },
+                           {
+                              "$ref":"#/definitions/etinEmptyChck"
+                           }
+                        ]
+                     },
+                     "chksum":{
+                        "description":"Checksum Value",
+                        "$ref":"#/definitions/chksum"
+                     },
+                     "flag":{
+                        "description":"tax payer action",
+                        "type":"string",
+                        "enum":[
+                           "D"
+                        ]
+                     },
+                     "rt":{
+                        "description":"rate",
+                        "type":"number",
+                        "multipleOf":0.01
+                     },
+                     "pos":{
+                        "description":"Recipient state code",
+                        "$ref":"#/definitions/state_cd"
+                     },
+                     "txval":{
+                        "description":"Taxable value of Goods or Service as per invoice",
+                        "minLength":1,
+                        "$ref":"#/definitions/nonEmptyNil"
+                     },
+                     "camt":{
+                        "description":"CGST Rate as per invoice",
+                        "$ref":"#/definitions/nonEmptyNil"
+                     },
+                     "samt":{
+                        "description":"SGST Rate as per invoice",
+                        "$ref":"#/definitions/nonEmptyNil"
+                     },
+                     "iamt":{
+                        "description":"IGST Amount as per invoice",
+                        "$ref":"#/definitions/nonEmptyNil"
+                     },
+                     "csamt":{
+                        "description":"Cess Amount as per invoice",
+                        "$ref":"#/definitions/nonEmptyNil"
+                     }
+                  },
+                  "required":[
+                     "flag",
+                     "sply_ty",
+                     "typ"
+                  ]
+               }
+            ]
+         }
+      },
+      "cdnr":{
+         "type":"array",
+         "items":{
+            "type":"object",
+			"additionalProperties": false,
+            "properties":{
+               "ctin":{
+                  "description":"GSTIN/UID of the Receiver taxpayer/UN,Govt Bodies",
+                  "$ref":"#/definitions/ctin"
+               },
+               "nt":{
+                  "type":"array",
+                  "minLength":1,
+                  "items":{
+                     "anyOf":[
+                        {
+                           "type":"object",
+						   "additionalProperties": false,
+                           "properties":{
+                              "etin":{
+                                 "description":"Ecom Tin",
+                                 "anyOf":[
+                                    {
+                                       "$ref":"#/definitions/etin"
+                                    },
+                                    {
+                                       "$ref":"#/definitions/etinEmptyChck"
+                                    }
+                                 ]
+                              },
+                              "inum":{
+                                 "description":"Supplier Invoice Number",
+                                 "$ref":"#/definitions/inum"
+                              },
+                              "idt":{
+                                 "description":"Supplier Invoice Date",
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+                              "val":{
+                                 "description":"Supplier Invoice Value",
+                                 "$ref":"#/definitions/totalValue"
+                              },
+                              "pos":{
+                                 "description":"Maintained in GST System common database POS as provided in law / actual provision of service.",
+                                 "$ref":"#/definitions/state_cd"
+                              },
+                              "rchrg":{
+                                 "description":"Reverse Charge",
+                                 "$ref":"#/definitions/boolean"
+                              },
+                              "ntty":{
+                                 "description":"Credit/debit note type",
+                                 "$ref":"#/definitions/ntty"
+                              },
+                              "nt_num":{
+                                 "type":"string",
+                                 "$ref":"#/definitions/inum"
+                              },
+                              "nt_dt":{
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+							  "p_gst" : {
+								"description":"Pre GSTIN",
+								"type":"string",
+                                 "enum":[
+                                    "Y",
+                                    "N"
+                                 ]
+							  },
+                              "rsn":{
+                                 "description":"Reason Code for issuing Debit/Credit Note",
+                                 "type":"string"
+                              },
+                              "itms":{
+                                 "type":"array",
+                                 "items":{
+                                    "type":"object",
+									"additionalProperties": false,
+                                    "properties":{
+                                       "num":{
+                                          "description":"Serial no",
+                                          "type":"integer",
+                                          "minimum":1
+                                       },
+                                       "itm_det":{
+                                          "type":"object",
+										  "additionalProperties": false,
+                                          "properties":{
+                                             "txval":{
+                                                "description":"Taxable value of Goods or Service as per invoice",
+                                                "$ref":"#/definitions/txval"
+                                             },
+                                             "rt":{
+                                                "description":"rate",
+                                                "type":"number",
+                                                "multipleOf":0.01,
+												"minimum":0,
+												"maximum":999.99
+                                             },
+                                             "iamt":{
+                                                "description":"IGST Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             },
+                                             "camt":{
+                                                "description":"CGST Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             },
+                                             "samt":{
+                                                "description":"SGST Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             },
+                                             "csamt":{
+                                                "description":"Cess Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             }
+                                          },
+                                          "required":[
+											"rt",
+                                             "txval"
+                                          ]
+                                       }
+                                    }
+                                 }
+                              }
+                           },
+                           "required":[
+                              "inum",
+                              "idt",
+                              "val",
+                              "nt_dt",
+                              "nt_num",
+                              "ntty",
+                              "rsn",
+							  "p_gst",
+                              "itms"
+                           ]
+                        },
+                        {
+                           "type":"object",
+						   "additionalProperties": false,
+                           "properties":{
+                              "etin":{
+                                 "description":"Ecom Tin",
+                                 "anyOf":[
+                                    {
+                                       "$ref":"#/definitions/etin"
+                                    },
+                                    {
+                                       "$ref":"#/definitions/etinEmptyChck"
+                                    }
+                                 ]
+                              },
+                              "chksum":{
+                                 "description":"Checksum Value",
+                                 "$ref":"#/definitions/chksum"
+                              },
+                              "flag":{
+                                 "description":"tax payer action",
+                                 "type":"string",
+                                 "enum":[
+                                    "D",
+                                    "A",
+                                    "R",
+                                    "P"
+                                 ]
+                              },
+                              "inum":{
+                                 "description":"Supplier Invoice Number",
+                                 "$ref":"#/definitions/inum"
+                              },
+                              "idt":{
+                                 "description":"Supplier Invoice Date",
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+                              "val":{
+                                 "description":"Supplier Invoice Value",
+                                 "$ref":"#/definitions/totalValue"
+                              },
+                              "pos":{
+                                 "description":"Maintained in GST System common database POS as provided in law / actual provision of service.",
+                                 "$ref":"#/definitions/state_cd"
+                              },
+                              "rchrg":{
+                                 "description":"Reverse Charge",
+                                 "$ref":"#/definitions/boolean"
+                              },
+                              "ntty":{
+                                 "description":"Credit/debit note type",
+                                 "$ref":"#/definitions/ntty"
+                              },
+                              "nt_num":{
+                                 "type":"string",
+                                 "$ref":"#/definitions/inum"
+                              },
+                              "nt_dt":{
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+							  "p_gst" : {
+								"description":"Pre GSTIN",
+								"type":"string",
+                                 "enum":[
+                                    "Y",
+                                    "N"
+                                 ]
+							  },
+                              "rsn":{
+                                 "description":"Reason Code for issuing Debit/Credit Note",
+                                 "type":"string"
+                              },
+                              "itms":{
+                                 "type":"array",
+                                 "items":{
+                                    "type":"object",
+									"additionalProperties": false,
+                                    "properties":{
+                                       "num":{
+                                          "description":"Serial no",
+                                          "type":"integer",
+                                          "minimum":1
+                                       },
+                                       "itm_det":{
+                                          "type":"object",
+										  "additionalProperties": false,
+                                          "properties":{
+                                             "txval":{
+                                                "description":"Taxable value of Goods or Service as per invoice",
+                                                "$ref":"#/definitions/txval",
+                                                "minLength":1
+                                             },
+                                             "rt":{
+                                                "description":"rate",
+                                                "type":"number",
+                                                "multipleOf":0.01,
+												"minimum":0,
+												"maximum":999.99
+                                             },
+                                             "iamt":{
+                                                "description":"IGST Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             },
+                                             "camt":{
+                                                "description":"CGST Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             },
+                                             "samt":{
+                                                "description":"SGST Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             },
+                                             "csamt":{
+                                                "description":"Cess Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             }
+                                          }
+                                       }
+                                    }
+                                 }
+                              }
+                           },
+                           "required":[
+                              "flag",
+                              "nt_dt",
+                              "nt_num"
+                           ]
+                        }
+                     ]
+                  }
+               }
+            },
+            "required":[
+               "ctin",
+               "nt"
+            ]
+         }
+      },
+      "cdnra":{
+         "type":"array",
+         "items":{
+            "type":"object",
+            "properties":{
+               "ctin":{
+                  "description":"GSTIN/UID of the Receiver taxpayer/UN,Govt Bodies",
+                  "$ref":"#/definitions/gstin"
+               },
+               "nt":{
+                  "type":"array",
+                  "minLength":1,
+                  "items":{
+                     "anyOf":[
+                        {
+                           "type":"object",
+                           "properties":{
+                              "etin":{
+                                 "description":"Ecom Tin",
+                                 "anyOf":[
+                                    {
+                                       "$ref":"#/definitions/etin"
+                                    },
+                                    {
+                                       "$ref":"#/definitions/etinEmptyChck"
+                                    }
+                                 ]
+                              },
+                              "inum":{
+                                 "description":"Supplier Invoice Number",
+                                 "$ref":"#/definitions/inum"
+                              },
+                              "idt":{
+                                 "description":"Supplier Invoice Date",
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+                              "val":{
+                                 "description":"Supplier Invoice Value",
+                                 "$ref":"#/definitions/totalValue"
+                              },
+                              "pos":{
+                                 "description":"Maintained in GST System common database POS as provided in law / actual provision of service.",
+                                 "$ref":"#/definitions/state_cd"
+                              },
+                              "rchrg":{
+                                 "description":"Reverse Charge",
+                                 "$ref":"#/definitions/boolean"
+                              },
+                              "ntty":{
+                                 "description":"Credit/debit note type",
+                                 "$ref":"#/definitions/ntty"
+                              },
+                              "nt_num":{
+                                 "type":"string",
+                                 "$ref":"#/definitions/inum"
+                              },
+                              "nt_dt":{
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+                              "ont_num":{
+                                 "type":"string",
+                                 "$ref":"#/definitions/inum"
+                              },
+                              "ont_dt":{
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+                              "rsn":{
+                                 "description":"Reason Code for issuing Debit/Credit Note",
+                                 "type":"string"
+                              },
+                              "itms":{
+                                 "type":"array",
+                                 "items":{
+                                    "type":"object",
+                                    "properties":{
+                                       "num":{
+                                          "description":"Serial no",
+                                          "type":"integer",
+                                          "minLength":1
+                                       },
+                                       "itm_det":{
+                                          "type":"object",
+                                          "properties":{
+                                             "txval":{
+                                                "description":"Taxable value of Goods or Service as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost",
+                                                "minLength":1
+                                             },
+                                             "rt":{
+                                                "description":"rate",
+                                                "type":"number",
+                                                "multipleOf":0.01
+                                             },
+                                             "iamt":{
+                                                "description":"IGST Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             },
+                                             "camt":{
+                                                "description":"CGST Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             },
+                                             "samt":{
+                                                "description":"SGST Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             },
+                                             "csamt":{
+                                                "description":"Cess Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             }
+                                          },
+                                          "required":[
+                                             "txval"
+                                          ]
+                                       }
+                                    }
+                                 }
+                              }
+                           },
+                           "required":[
+                              "inum",
+                              "idt",
+                              "val",
+                              "nt_dt",
+                              "nt_num",
+                              "ntty",
+                              "rsn",
+                              "itms"
+                           ]
+                        },
+                        {
+                           "type":"object",
+                           "properties":{
+                              "etin":{
+                                 "description":"Ecom Tin",
+                                 "anyOf":[
+                                    {
+                                       "$ref":"#/definitions/etin"
+                                    },
+                                    {
+                                       "$ref":"#/definitions/etinEmptyChck"
+                                    }
+                                 ]
+                              },
+                              "chksum":{
+                                 "description":"Checksum Value",
+                                 "$ref":"#/definitions/chksum"
+                              },
+                              "flag":{
+                                 "description":"tax payer action",
+                                 "type":"string",
+                                 "enum":[
+                                    "D",
+                                    "A",
+                                    "R",
+                                    "P"
+                                 ]
+                              },
+                              "inum":{
+                                 "description":"Supplier Invoice Number",
+                                 "$ref":"#/definitions/inum"
+                              },
+                              "idt":{
+                                 "description":"Supplier Invoice Date",
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+                              "val":{
+                                 "description":"Supplier Invoice Value",
+                                 "$ref":"#/definitions/totalValue"
+                              },
+                              "pos":{
+                                 "description":"Maintained in GST System common database POS as provided in law / actual provision of service.",
+                                 "$ref":"#/definitions/state_cd"
+                              },
+                              "rchrg":{
+                                 "description":"Reverse Charge",
+                                 "$ref":"#/definitions/boolean"
+                              },
+                              "ntty":{
+                                 "description":"Credit/debit note type",
+                                 "$ref":"#/definitions/ntty"
+                              },
+                              "nt_num":{
+                                 "type":"string",
+                                 "$ref":"#/definitions/inum"
+                              },
+                              "nt_dt":{
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+                              "ont_num":{
+                                 "type":"string",
+                                 "$ref":"#/definitions/inum"
+                              },
+                              "ont_dt":{
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+                              "rsn":{
+                                 "description":"Reason Code for issuing Debit/Credit Note",
+                                 "type":"string"
+                              },
+                              "itms":{
+                                 "type":"array",
+                                 "items":{
+                                    "type":"object",
+                                    "properties":{
+                                       "num":{
+                                          "description":"Serial no",
+                                          "type":"integer",
+                                          "minLength":1
+                                       },
+                                       "itm_det":{
+                                          "type":"object",
+                                          "properties":{
+                                             "txval":{
+                                                "description":"Taxable value of Goods or Service as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost",
+                                                "minLength":1
+                                             },
+                                             "rt":{
+                                                "description":"rate",
+                                                "type":"number",
+                                                "multipleOf":0.01
+                                             },
+                                             "iamt":{
+                                                "description":"IGST Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             },
+                                             "camt":{
+                                                "description":"CGST Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             },
+                                             "samt":{
+                                                "description":"SGST Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             },
+                                             "csamt":{
+                                                "description":"Cess Amount as per invoice",
+                                                "$ref":"#/definitions/nonEmptyCost"
+                                             }
+                                          }
+                                       }
+                                    }
+                                 }
+                              }
+                           },
+                           "required":[
+                              "flag",
+                              "nt_dt",
+                              "nt_num",
+							  "inum",
+							  "idt"
+                           ]
+                        }
+                     ]
+                  }
+               }
+            },
+            "required":[
+               "ctin",
+               "nt"
+            ]
+         }
+      },
+      "cdnur":{
+         "type":"array",
+         "minLength":1,
+         "anyOf":[
+            {
+			"additionalProperties": false,
+               "properties":{
+                  "typ":{
+                     "description":"Typ of invoice",
+                     "enum":[
+                        "B2CL",
+                        "EXPWP",
+                        "EXPWOP"
+                     ]
+                  },
+                  "inum":{
+                     "description":"Supplier Invoice Number",
+                     "$ref":"#/definitions/inum"
+                  },
+                  "idt":{
+                     "description":"Supplier Invoice Date",
+                     "$ref":"#/definitions/nonEmptydate"
+                  },
+                  "val":{
+                     "description":"Supplier Invoice Value",
+                     "$ref":"#/definitions/totalValue"
+                  },
+                  "ntty":{
+                     "description":"Credit/debit note type",
+                     "$ref":"#/definitions/ntty"
+                  },
+                  "nt_num":{
+                     "type":"string",
+                     "$ref":"#/definitions/inum"
+                  },
+                  "nt_dt":{
+                     "$ref":"#/definitions/nonEmptydate"
+                  },
+				  "p_gst" : {
+								"description":"Pre GSTIN",
+								"type":"string",
+                                 "enum":[
+                                    "Y",
+                                    "N"
+                                 ]
+							  },
+                  "rsn":{
+                     "description":"Reason Code for issuing Debit/Credit Note",
+                     "type":"string",
+					 "maxLength":50
+                  },
+                  "itms":{
+                     "type":"array",
+                     "items":{
+                        "type":"object",
+						"additionalProperties": false,
+                        "properties":{
+                           "num":{
+                              "description":"Serial no",
+                              "type":"integer",
+                              "minimum":1
+                           },
+                           "itm_det":{
+                              "type":"object",
+							  "additionalProperties": false,
+                              "properties":{
+                                 "txval":{
+                                    "description":"Taxable value of Goods or Service as per invoice",
+                                    "$ref":"#/definitions/txval"
+                                 },
+                                 "rt":{
+                                    "description":"rate",
+                                    "type":"number",
+                                    "multipleOf":0.01,
+									"minimum":0,
+									"maximum":999.99
+                                 },
+                                 "iamt":{
+                                    "description":"IGST Amount as per invoice",
+                                    "$ref":"#/definitions/nonEmptyCost"
+                                 },
+                                 "camt":{
+                                    "description":"CGST Amount as per invoice",
+                                    "$ref":"#/definitions/nonEmptyCost"
+                                 },
+                                 "samt":{
+                                    "description":"SGST Amount as per invoice",
+                                    "$ref":"#/definitions/nonEmptyCost"
+                                 },
+                                 "csamt":{
+                                    "description":"Cess Amount as per invoice",
+                                    "$ref":"#/definitions/nonEmptyCost"
+                                 }
+                              },
+                              "required":[
+									"rt",
+                                 "txval"
+                              ]
+                           }
+                        }
+                     }
+                  }
+               },
+               "required":[
+                  "inum",
+                  "idt",
+                  "val",
+                  "nt_dt",
+                  "nt_num",
+                  "ntty",
+                  "rsn",
+				  "p_gst",
+                  "itms"
+               ]
+            },
+            {
+			"additionalProperties": false,
+               "properties":{
+                  "typ":{
+                     "description":"Typ of invoice",
+                     "enum":[
+                        "B2CL",
+                        "EXPWP",
+                        "EXPWOP"
+                     ]
+                  },
+                  "chksum":{
+                     "description":"Checksum Value",
+                     "$ref":"#/definitions/chksum"
+                  },
+                  "flag":{
+                     "description":"tax payer action",
+                     "type":"string",
+                     "enum":[
+                        "D"
+                     ]
+                  },
+                  "inum":{
+                     "description":"Supplier Invoice Number",
+                     "$ref":"#/definitions/inum"
+                  },
+                  "idt":{
+                     "description":"Supplier Invoice Date",
+                     "$ref":"#/definitions/nonEmptydate"
+                  },
+                  "val":{
+                     "description":"Supplier Invoice Value",
+                     "$ref":"#/definitions/totalValue"
+                  },
+                  "ntty":{
+                     "description":"Credit/debit note type",
+                     "$ref":"#/definitions/ntty"
+                  },
+                  "nt_num":{
+                     "type":"string",
+                     "$ref":"#/definitions/inum"
+                  },
+                  "nt_dt":{
+                     "$ref":"#/definitions/nonEmptydate"
+                  },
+				  "p_gst" : {
+								"description":"Pre GSTIN",
+								"type":"string",
+                                 "enum":[
+                                    "Y",
+                                    "N"
+                                 ]
+							  },
+                  "rsn":{
+                     "description":"Reason Code for issuing Debit/Credit Note",
+                     "type":"string",
+					 "maxLength":50
+                  },
+                  "itms":{
+                     "type":"array",
+                     "items":{
+                        "type":"object",
+						"additionalProperties": false,
+                        "properties":{
+                           "num":{
+                              "description":"Serial no",
+                              "type":"integer",
+                              "minimum":1
+                           },
+                           "itm_det":{
+                              "type":"object",
+							  "additionalProperties": false,
+                              "properties":{
+                                 "txval":{
+                                    "description":"Taxable value of Goods or Service as per invoice",
+                                    "$ref":"#/definitions/txval"
+                                 },
+                                 "rt":{
+                                    "description":"rate",
+                                    "type":"number",
+                                    "multipleOf":0.01,
+									"minimum":0,
+									"maximum":999.99
+                                 },
+                                 "iamt":{
+                                    "description":"IGST Amount as per invoice",
+                                    "$ref":"#/definitions/nonEmptyCost"
+                                 },
+                                 "camt":{
+                                    "description":"CGST Amount as per invoice",
+                                    "$ref":"#/definitions/nonEmptyCost"
+                                 },
+                                 "samt":{
+                                    "description":"SGST Amount as per invoice",
+                                    "$ref":"#/definitions/nonEmptyCost"
+                                 },
+                                 "csamt":{
+                                    "description":"Cess Amount as per invoice",
+                                    "$ref":"#/definitions/nonEmptyCost"
+                                 }
+                              }
+                           }
+                        }
+                     }
+                  }
+               },
+               "required":[
+                  "flag",
+                  "inum",
+                  "idt",
+                  "nt_dt",
+                  "nt_num",
+                  "typ"
+               ]
+            }
+         ]
+      },
+      "cdnura":{
+         "type":"array",
+         "minLength":1,
+         "anyOf":[
+            {
+               "properties":{
+                  "typ":{
+                     "description":"Typ of invoice",
+                     "enum":[
+                        "B2CLA",
+                        "EXPWPA",
+                        "EXPWOPA"
+                     ]
+                  },
+                  "flag":{
+                     "description":"tax payer action",
+                     "$ref":"#/definitions/flag"
+                  },
+                  "inum":{
+                     "description":"Supplier Invoice Number",
+                     "$ref":"#/definitions/inum"
+                  },
+                  "idt":{
+                     "description":"Supplier Invoice Date",
+                     "$ref":"#/definitions/nonEmptydate"
+                  },
+                  "val":{
+                     "description":"Supplier Invoice Value",
+                     "$ref":"#/definitions/totalValue"
+                  },
+                  "ntty":{
+                     "description":"Credit/debit note type",
+                     "$ref":"#/definitions/ntty"
+                  },
+                  "nt_num":{
+                     "type":"string",
+                     "$ref":"#/definitions/inum"
+                  },
+                  "nt_dt":{
+                     "$ref":"#/definitions/nonEmptydate"
+                  },
+                  "rsn":{
+                     "description":"Reason Code for issuing Debit/Credit Note",
+                     "type":"string"
+                  },
+                  "itms":{
+                     "type":"array",
+                     "items":{
+                        "type":"object",
+                        "properties":{
+                           "num":{
+                              "description":"Serial no",
+                              "type":"integer",
+                              "minLength":1
+                           },
+                           "itm_det":{
+                              "type":"object",
+                              "properties":{
+                                 "txval":{
+                                    "description":"Taxable value of Goods or Service as per invoice",
+                                    "$ref":"#/definitions/nonEmptyCost",
+                                    "minLength":1
+                                 },
+                                 "rt":{
+                                    "description":"rate",
+                                    "type":"number",
+                                    "multipleOf":0.01
+                                 },
+                                 "iamt":{
+                                    "description":"IGST Amount as per invoice",
+                                    "$ref":"#/definitions/nonEmptyCost"
+                                 },
+                                 "camt":{
+                                    "description":"CGST Amount as per invoice",
+                                    "$ref":"#/definitions/nonEmptyCost"
+                                 },
+                                 "samt":{
+                                    "description":"SGST Amount as per invoice",
+                                    "$ref":"#/definitions/nonEmptyCost"
+                                 },
+                                 "csamt":{
+                                    "description":"Cess Amount as per invoice",
+                                    "$ref":"#/definitions/nonEmptyCost"
+                                 }
+                              },
+                              "required":[
+                                 "txval"
+                              ]
+                           }
+                        }
+                     }
+                  }
+               },
+               "required":[
+                  "inum",
+                  "idt",
+                  "val",
+                  "nt_dt",
+                  "nt_num",
+                  "ntty",
+                  "rsn",
+                  "itms"
+               ]
+            },
+            {
+               "properties":{
+                  "typ":{
+                     "description":"Typ of invoice",
+                     "enum":[
+                        "B2CL",
+                        "EXPWP",
+                        "EXPWOP"
+                     ]
+                  },
+                  "chksum":{
+                     "description":"Checksum Value",
+                     "$ref":"#/definitions/chksum"
+                  },
+                  "flag":{
+                     "description":"tax payer action",
+                     "type":"string",
+                     "enum":[
+                        "D"
+                     ]
+                  },
+                  "inum":{
+                     "description":"Supplier Invoice Number",
+                     "$ref":"#/definitions/inum"
+                  },
+                  "idt":{
+                     "description":"Supplier Invoice Date",
+                     "$ref":"#/definitions/nonEmptydate"
+                  },
+                  "val":{
+                     "description":"Supplier Invoice Value",
+                     "$ref":"#/definitions/totalValue"
+                  },
+                  "ntty":{
+                     "description":"Credit/debit note type",
+                     "$ref":"#/definitions/ntty"
+                  },
+                  "nt_num":{
+                     "type":"string",
+                     "$ref":"#/definitions/inum"
+                  },
+                  "nt_dt":{
+                     "$ref":"#/definitions/nonEmptydate"
+                  },
+                  "rsn":{
+                     "description":"Reason Code for issuing Debit/Credit Note",
+                     "type":"string"
+                  },
+                  "itms":{
+                     "type":"array",
+                     "items":{
+                        "type":"object",
+                        "properties":{
+                           "num":{
+                              "description":"Serial no",
+                              "type":"integer",
+                              "minLength":1
+                           },
+                           "itm_det":{
+                              "type":"object",
+                              "properties":{
+                                 "txval":{
+                                    "description":"Taxable value of Goods or Service as per invoice",
+                                    "$ref":"#/definitions/nonEmptyCost",
+                                    "minLength":1
+                                 },
+                                 "rt":{
+                                    "description":"rate",
+                                    "type":"number",
+                                    "multipleOf":0.01
+                                 },
+                                 "iamt":{
+                                    "description":"IGST Amount as per invoice",
+                                    "$ref":"#/definitions/nonEmptyCost"
+                                 },
+                                 "camt":{
+                                    "description":"CGST Amount as per invoice",
+                                    "$ref":"#/definitions/nonEmptyCost"
+                                 },
+                                 "samt":{
+                                    "description":"SGST Amount as per invoice",
+                                    "$ref":"#/definitions/nonEmptyCost"
+                                 },
+                                 "csamt":{
+                                    "description":"Cess Amount as per invoice",
+                                    "$ref":"#/definitions/nonEmptyCost"
+                                 }
+                              }
+                           }
+                        }
+                     }
+                  }
+               },
+               "required":[
+                  "flag",
+                  "inum",
+                  "idt",
+                  "nt_dt",
+                  "nt_num",
+                  "typ"
+               ]
+            }
+         ]
+      },
+      "nil":{
+         "type":"object",
+         "anyOf":[
+            {
+			"additionalProperties": false,
+               "properties":{
+                   "inv":{
+                     "type":"array",
+                     "items":{
+                        "type":"object",
+						"additionalProperties": false,
+                        "properties":{
+                           "sply_ty":{
+                              "description":"Supply Type",
+                              "type":"string",
+                              "maxLength":8,
+                              "enum":[
+                                 "INTRB2B",
+                                 "INTRB2C",
+                                 "INTRAB2B",
+                                 "INTRAB2C"
+                              ]
+                           },
+                           "nil_amt":{
+                              "description":"Total Nil rated outward supplies",
+                              "$ref":"#/definitions/nonEmptyNil"
+                           },
+                           "expt_amt":{
+                              "description":"Total Exempted outward supplies",
+                              "$ref":"#/definitions/nonEmptyNil"
+                           },
+                           "ngsup_amt":{
+                              "description":"Total Non GST outward supplies",
+                              "$ref":"#/definitions/nonEmptyNil"
+                           }
+                        },
+                        "required":[
+                           "sply_ty",
+                           "nil_amt",
+                           "expt_amt",
+                           "ngsup_amt"
+                        ]
+                     }
+                  }
+               },
+               "required":[
+                  "inv"
+               ]
+            },
+            {
+			"additionalProperties": false,
+               "properties":{
+                  "flag":{
+                     "description":"tax payer action",
+                     "type":"string",
+                     "enum":[
+                        "D"
+                     ]
+                  },
+                  "chksum":{
+                     "description":"Invoice Check sum value",
+                     "$ref":"#/definitions/chksum"
+                  },
+                  "inv":{
+                     "type":"array",
+                     "items":{
+                        "type":"object",
+						"additionalProperties": false,
+                        "properties":{
+                           "sply_ty":{
+                              "description":"Supply Type",
+                              "type":"string",
+                              "maxLength":8,
+                              "enum":[
+                                 "INTRB2B",
+                                 "INTRB2C",
+                                 "INTRAB2B",
+                                 "INTRAB2C"
+                              ]
+                           },
+                           "nil_amt":{
+                              "description":"Total Nil rated outward supplies",
+                              "$ref":"#/definitions/nonEmptyNil"
+                           },
+                           "expt_amt":{
+                              "description":"Total Exempted outward supplies",
+                              "$ref":"#/definitions/nonEmptyNil"
+                           },
+                           "ngsup_amt":{
+                              "description":"Total Non GST outward supplies",
+                              "$ref":"#/definitions/nonEmptyNil"
+                           }
+                        }
+                     }
+                  }
+               },
+               "required":[
+                  "flag"
+               ]
+            }
+         ]
+      },
+      "exp":{
+         "type":"array",
+         "items":{
+            "type":"object",
+			"additionalProperties": false,
+            "properties":{
+               "exp_typ":{
+                  "description":"Supplies exported types i.e WithPay,WithoutPay",
+                  "type":"string",
+                  "enum":[
+                     "WOPAY",
+                     "WPAY"
+                  ]
+               },
+               "inv":{
+                  "type":"array",
+                  "items":{
+                     "type":"object",
+                     "anyOf":[
+                        {
+						"additionalProperties": false,
+                           "properties":{
+                                 "inum":{
+                                 "description":"Invoice Number",
+                                 "$ref":"#/definitions/inum"
+                              },
+                              "idt":{
+                                 "description":"Export Invoice date",
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+                              "val":{
+                                 "$ref":"#/definitions/totalValue",
+                                 "description":"Supplier Invoice Value"
+                              },
+                               "sbnum": {
+								"description": "Shipping Bill No. or Bill of Export No.",
+								"type": "integer",
+								"maximum":9999999,
+								"minimum":0
+								},
+                              "sbdt":{
+                                 "description":"Shipping Bill Date. or Bill of Export Date",
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+                              "sbpcode":{
+                                 "description":"Port Code",
+                                 "$ref":"#/definitions/nonEmptyString"
+                              },
+                              "prs":{
+                                 "description":"Provisional assessment",
+                                 "$ref":"#/definitions/boolean"
+                              },
+                              "od_num":{
+                                 "description":"Order Number",
+                                 "$ref":"#/definitions/inum"
+                              },
+                              "od_dt":{
+                                 "description":"Order Date",
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+                              "itms":{
+                                 "type":"array",
+                                 "items":{
+                                    "type":"object",
+									"additionalProperties": false,
+                                    "properties":{
+                                       "txval":{
+                                          "description":"Taxable value of Goods or Service as per invoice",
+                                          "minLength":1,
+                                          "$ref":"#/definitions/txval"
+                                       },
+                                       "rt":{
+											"description":"rate",
+											"type":"number",
+											"multipleOf":0.01,
+											"minimum":0,
+											"maximum":999.99
+                                       },
+                                       "iamt":{
+                                          "description":"IGST Amount as per invoice",
+                                          "$ref":"#/definitions/nonEmptyCost"
+                                       },
+                                       "camt":{
+                                          "description":"CGST Amount as per invoice",
+                                          "$ref":"#/definitions/nonEmptyCost"
+                                       },
+                                       "samt":{
+                                          "description":"SGST Amount as per invoice",
+                                          "$ref":"#/definitions/nonEmptyCost"
+                                       },
+                                       "csamt":{
+                                          "description":"Cess Amount as per invoice",
+                                          "$ref":"#/definitions/nonEmptyCost"
+                                       }
+                                    },
+                                    "required":[
+										"rt",
+                                       "txval"
+                                    ]
+                                 }
+                              }
+                           },
+                           "required":[
+                              "inum",
+                              "idt",
+                              "val",
+                              "itms"
+                           ]
+                        },
+                        {
+						"additionalProperties": false,
+                           "properties":{
+                              "chksum":{
+                                 "description":"Checksum Value",
+                                 "$ref":"#/definitions/chksum"
+                              },
+                              "flag":{
+                                 "description":"tax payer action",
+                                 "type":"string",
+                                 "enum":[
+                                    "D"
+                                 ]
+                              },
+                              "inum":{
+                                 "description":"Invoice Number",
+                                 "$ref":"#/definitions/inum"
+                              },
+                              "idt":{
+                                 "description":"Export Invoice date",
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+                              "val":{
+                                 "$ref":"#/definitions/totalValue",
+                                 "description":"Supplier Invoice Value"
+                              },
+                              "sbnum": {
+								"description": "Shipping Bill No. or Bill of Export No.",
+								"type": "integer",
+								"maximum":9999999,
+								"minimum":0
+								},
+                              "sbdt":{
+                                 "description":"Shipping Bill Date. or Bill of Export Date",
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+                              "sbpcode":{
+                                 "description":"Port Code",
+                                 "$ref":"#/definitions/nonEmptyString"
+                              },
+                              "prs":{
+                                 "description":"Provisional assessment",
+                                 "$ref":"#/definitions/boolean"
+                              },
+                              "itms":{
+                                 "type":"array",
+                                 "items":{
+                                    "type":"object",
+									"additionalProperties": false,
+                                    "properties":{
+                                       "txval":{
+                                          "description":"Taxable value of Goods or Service as per invoice",
+                                          "minLength":1,
+                                          "$ref":"#/definitions/txval"
+                                       },
+                                       "rt":{
+											"description":"rate",
+											"type":"number",
+											"multipleOf":0.01,
+											"minimum":0,
+											"maximum":999.99
+                                       },
+                                       "iamt":{
+                                          "description":"IGST Amount as per invoice",
+                                          "$ref":"#/definitions/nonEmptyCost"
+                                       },
+                                       "camt":{
+                                          "description":"CGST Amount as per invoice",
+                                          "$ref":"#/definitions/nonEmptyCost"
+                                       },
+                                       "samt":{
+                                          "description":"SGST Amount as per invoice",
+                                          "$ref":"#/definitions/nonEmptyCost"
+                                       },
+                                       "csamt":{
+                                          "description":"Cess Amount as per invoice",
+                                          "$ref":"#/definitions/nonEmptyCost"
+                                       }
+                                    }
+                                 }
+                              }
+                           },
+                           "required":[
+                              "inum",
+                              "idt",
+                              "flag"
+                           ]
+                        }
+                     ]
+                  }
+               }
+            },
+            "required":[
+               "exp_typ",
+               "inv"
+            ]
+         }
+      },
+      "expa":{
+         "type":"array",
+         "items":{
+            "type":"object",
+            "properties":{
+               "exp_typ":{
+                  "type":"string",
+                  "description":"Supplies exported types i.e WithPay,WithoutPay",
+                  "enum":[
+                     "WOPAY",
+                     "WPAY"
+                  ]
+               },
+               "inv":{
+                  "type":"array",
+                  "items":{
+                     "type":"object",
+                     "anyOf":[
+                        {
+                           "properties":{
+                              "chksum":{
+                                 "description":"Checksum Value",
+                                 "$ref":"#/definitions/chksum"
+                              },
+                              "flag":{
+                                 "description":"tax payer action",
+                                 "$ref":"#/definitions/flag"
+                              },
+                              "inum":{
+                                 "description":"Invoice Number",
+                                 "$ref":"#/definitions/inum"
+                              },
+                              "idt":{
+                                 "description":"Export Invoice date",
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+                              "val":{
+                                 "description":"Supplier Invoice Value",
+                                 "minLength":1,
+                                 "$ref":"#/definitions/totalValue"
+                              },
+                              "sbnum":{
+                                 "description":"Shipping Bill No. or Bill of Export No.",
+                                 "minLength":1,
+                                 "type":"integer",
+                                 "maxLength":7
+                              },
+                              "sbdt":{
+                                 "description":"Shipping Bill Date. or Bill of Export Date",
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+                              "sbpcode":{
+                                 "description":"Port Code",
+                                 "$ref":"#/definitions/nonEmptyString"
+                              },
+                              "oinum":{
+                                 "description":"Original invoice number",
+                                 "$ref":"#/definitions/inum"
+                              },
+                              "oidt":{
+                                 "description":"Original invoice date",
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+                              "itms":{
+                                 "type":"array",
+                                 "items":{
+                                    "type":"object",
+                                    "properties":{
+                                       "txval":{
+                                          "description":"Taxable value of Goods or Service as per invoice",
+                                          "minLength":1,
+                                          "$ref":"#/definitions/nonEmptyCost"
+                                       },
+                                       "rt":{
+                                          "description":"Rate as per invoice",
+                                          "$ref":"#/definitions/nonEmptyCost"
+                                       },
+                                       "iamt":{
+                                          "description":"IGST Amount as per invoice",
+                                          "$ref":"#/definitions/nonEmptyCost"
+                                       },
+                                       "camt":{
+                                          "description":"CGST Amount as per invoice",
+                                          "$ref":"#/definitions/nonEmptyCost"
+                                       },
+                                       "samt":{
+                                          "description":"SGST Amount as per invoice",
+                                          "$ref":"#/definitions/nonEmptyCost"
+                                       },
+                                       "csamt":{
+                                          "description":"Cess Amount as per invoice",
+                                          "$ref":"#/definitions/nonEmptyCost"
+                                       }
+                                    },
+                                    "required":[
+                                       "txval"
+                                    ]
+                                 }
+                              }
+                           },
+                           "required":[
+                              "inum",
+                              "idt",
+                              "val",
+                              "oinum",
+                              "oidt",
+                              "sbnum",
+                              "sbdt",
+                              "sbpcode",
+                              "itms"
+                           ]
+                        },
+                        {
+                           "properties":{
+                              "chksum":{
+                                 "description":"Checksum Value",
+                                 "$ref":"#/definitions/chksum"
+                              },
+                              "flag":{
+                                 "description":"tax payer action",
+                                 "type":"string",
+                                 "enum":[
+                                    "D"
+                                 ]
+                              },
+                              "inum":{
+                                 "description":" Invoice Number",
+                                 "$ref":"#/definitions/inum"
+                              },
+                              "idt":{
+                                 "description":"Export Invoice date",
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+                              "val":{
+                                 "description":"Supplier Invoice Value",
+                                 "$ref":"#/definitions/totalValue"
+                              },
+                              "sbnum":{
+                                 "description":"Shipping Bill No. or Bill of Export No.",
+                                 "minLength":1,
+                                 "type":"integer",
+                                 "maxLength":7
+                              },
+                              "sbdt":{
+                                 "description":"Shipping Bill Date. or Bill of Export Date",
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+                              "sbpcode":{
+                                 "description":"Port Code",
+                                 "$ref":"#/definitions/nonEmptyString"
+                              },
+                              "oinum":{
+                                 "description":"Original invoice number",
+                                 "$ref":"#/definitions/inum"
+                              },
+                              "oidt":{
+                                 "description":"Original invoice date",
+                                 "$ref":"#/definitions/nonEmptydate"
+                              },
+                              "itms":{
+                                 "type":"array",
+                                 "items":{
+                                    "type":"object",
+                                    "properties":{
+                                       "txval":{
+                                          "description":"Taxable value of Goods or Service as per invoice",
+                                          "minLength":1,
+                                          "$ref":"#/definitions/nonEmptyCost"
+                                       },
+                                       "rt":{
+                                          "description":"IGST Rate as per invoice",
+                                          "$ref":"#/definitions/nonEmptyCost"
+                                       },
+                                       "iamt":{
+                                          "description":"IGST Amount as per invoice",
+                                          "$ref":"#/definitions/nonEmptyCost"
+                                       },
+                                       "camt":{
+                                          "description":"CGST Amount as per invoice",
+                                          "$ref":"#/definitions/nonEmptyCost"
+                                       },
+                                       "samt":{
+                                          "description":"SGST Amount as per invoice",
+                                          "$ref":"#/definitions/nonEmptyCost"
+                                       },
+                                       "csamt":{
+                                          "description":"Cess Amount as per invoice",
+                                          "$ref":"#/definitions/nonEmptyCost"
+                                       }
+                                    },
+                                    "required":[
+                                       "txval"
+                                    ]
+                                 }
+                              }
+                           },
+                           "required":[
+                              "inum",
+                              "idt",
+                              "chksum",
+                              "flag"
+                           ]
+                        }
+                     ]
+                  }
+               }
+            },
+            "required":[
+               "exp_typ",
+               "inv"
+            ]
+         }
+      },
+      "at":{
+         "type":"array",
+         "items":{
+            "anyOf":[
+               {
+                  "type":"object",
+                  "additionalProperties":false,
+                  "properties":{
+                    "pos":{
+                        "description":"Recipient state code",
+                        "$ref":"#/definitions/state_cd"
+                     },
+                     "sply_ty":{
+                        "description":"Supply Type of invoice",
+                        "type":"string",
+                        "maxLength":5,
+                        "enum":[
+                           "INTER",
+                           "INTRA"
+                        ]
+                     },
+                     "itms":{
+                        "minLength":1,
+                        "type":"array",
+                        "description":"Item Details",
+                        "items":{
+                           "type":"object",
+                           "additionalProperties":false,
+                           "properties":{
+                              "ad_amt":{
+                                 "description":"Amount of Advance received",
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "csamt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "camt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "samt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "iamt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "rt":{
+                                 "description":"rate",
+											"type":"number",
+											"multipleOf":0.01,
+											"minimum":0,
+											"maximum":999.99
+                              }
+                           },
+                           "required":[
+                              "ad_amt",
+                              "rt"
+                           ]
+                        }
+                     }
+                  },
+                  "required":[
+                     "sply_ty",
+                     "itms"
+                  ]
+               },
+               {
+                  "type":"object",
+                  "additionalProperties":false,
+                  "properties":{
+                     "chksum":{
+                        "description":"Checksum Value",
+                        "$ref":"#/definitions/chksum"
+                     },
+                     "flag":{
+                        "description":"tax payer action",
+                        "type":"string",
+                        "enum":[
+                           "D"
+                        ]
+                     },
+                     "pos":{
+                        "description":"Recipient state code",
+                        "$ref":"#/definitions/state_cd"
+                     },
+                     "sply_ty":{
+                        "description":"Supply Type of invoice",
+                        "type":"string",
+                        "maxLength":5,
+                        "enum":[
+                           "INTER",
+                           "INTRA"
+                        ]
+                     },
+                     "itms":{
+                        "minLength":1,
+                        "type":"array",
+                        "description":"Item Details",
+                        "items":{
+                           "type":"object",
+                           "additionalProperties":false,
+                           "properties":{
+                              "ad_amt":{
+                                 "description":"Amount of Advance received",
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "csamt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "camt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "samt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "iamt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "rt":{
+                                 "description":"rate",
+											"type":"number",
+											"multipleOf":0.01,
+											"minimum":0,
+											"maximum":999.99
+                              }
+                           }
+                        }
+                     }
+                  },
+                  "required":[
+                     "flag",
+                     "sply_ty"
+                  ]
+               }
+            ]
+         }
+      },
+      "ata":{
+         "type":"array",
+         "items":{
+            "anyOf":[
+               {
+                  "type":"object",
+                  "additionalProperties":false,
+                  "properties":{
+                     "chksum":{
+                        "description":"Checksum Value",
+                        "$ref":"#/definitions/chksum"
+                     },
+                     "flag":{
+                        "description":"tax payer action",
+                        "$ref":"#/definitions/flag"
+                     },
+                     "pos":{
+                        "description":"Recipient state code",
+                        "$ref":"#/definitions/state_cd"
+                     },
+                     "omon":{
+                        "description":"Original Month",
+                        "type":"string",
+                        "minLength":1,
+                        "pattern":"^((0[1-9]|1[012])((19|20)\\d\\d))$"
+                     },
+                     "sply_ty":{
+                        "description":"Supply Type of invoice",
+                        "type":"string",
+                        "maxLength":8,
+                        "enum":[
+                           "INTER",
+                           "INTRA"
+                        ]
+                     },
+                     "itms":{
+                        "minLength":1,
+                        "type":"array",
+                        "description":"Item Details",
+                        "items":{
+                           "type":"object",
+                           "additionalProperties":false,
+                           "properties":{
+                              "ad_amt":{
+                                 "description":"Amount of Advance received",
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "csamt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "camt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "samt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "iamt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "rt":{
+                                 "$ref":"#/definitions/nonEmptyRate"
+                              }
+                           },
+                           "required":[
+                              "ad_amt",
+                              "rt"
+                           ]
+                        }
+                     }
+                  },
+                  "required":[
+                     "sply_ty",
+                     "omon",
+                     "itms"
+                  ]
+               },
+               {
+                  "type":"object",
+                  "additionalProperties":false,
+                  "properties":{
+                     "chksum":{
+                        "description":"Checksum Value",
+                        "$ref":"#/definitions/chksum"
+                     },
+                     "flag":{
+                        "description":"tax payer action",
+                        "type":"string",
+                        "enum":[
+                           "D"
+                        ]
+                     },
+                     "pos":{
+                        "description":"Recipient state code",
+                        "$ref":"#/definitions/state_cd"
+                     },
+                     "omon":{
+                        "description":"Original Month",
+                        "type":"string",
+                        "minLength":1,
+                        "pattern":"^((0[1-9]|1[012])((19|20)\\d\\d))$"
+                     },
+                     "sply_ty":{
+                        "description":"Supply Type of invoice",
+                        "type":"string",
+                        "maxLength":8,
+                        "enum":[
+                           "INTER",
+                           "INTRA"
+                        ]
+                     },
+                     "itms":{
+                        "minLength":1,
+                        "type":"array",
+                        "description":"Item Details",
+                        "items":{
+                           "type":"object",
+                           "additionalProperties":false,
+                           "properties":{
+                              "ad_amt":{
+                                 "description":"Amount of Advance received",
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "csamt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "camt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "samt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "iamt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "rt":{
+                                 "$ref":"#/definitions/nonEmptyRate"
+                              }
+                           }
+                        }
+                     }
+                  },
+                  "required":[
+                     "flag",
+                     "sply_ty"
+                  ]
+               }
+            ]
+         }
+      },
+      "txpd":{
+         "type":"array",
+         "items":{
+            "anyOf":[
+               {
+                  "type":"object",
+                  "additionalProperties":false,
+                  "properties":{
+                     "pos":{
+                        "description":"Recipient state code",
+                        "$ref":"#/definitions/state_cd"
+                     },
+                     "sply_ty":{
+                        "description":"Supply Type of invoice",
+                        "type":"string",
+                        "maxLength":5,
+                        "enum":[
+                           "INTER",
+                           "INTRA"
+                        ]
+                     },
+                     "itms":{
+                        "minLength":1,
+                        "type":"array",
+                        "description":"Item Details",
+                        "items":{
+                           "type":"object",
+                           "additionalProperties":false,
+                           "properties":{
+                              "ad_amt":{
+                                 "description":"Amount of Advance received",
+                                 "minLength":1,
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "csamt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "camt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "samt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "iamt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "rt":{
+                                 "description":"rate",
+											"type":"number",
+											"multipleOf":0.01,
+											"minimum":0,
+											"maximum":999.99
+                              }
+                           },
+                           "required":[
+                              "ad_amt",
+                              "rt"
+                           ]
+                        }
+                     }
+                  },
+                  "required":[
+                     "sply_ty",
+                     "itms"
+                  ]
+               },
+               {
+                  "type":"object",
+                  "additionalProperties":false,
+                  "properties":{
+                     "chksum":{
+                        "description":"Checksum Value",
+                        "$ref":"#/definitions/chksum"
+                     },
+                     "flag":{
+                        "description":"tax payer action",
+                        "type":"string",
+                        "enum":[
+                           "D"
+                        ]
+                     },
+                     "pos":{
+                        "description":"Recipient state code",
+                        "$ref":"#/definitions/state_cd"
+                     },
+                     "sply_ty":{
+                        "description":"Supply Type of invoice",
+                        "type":"string",
+                        "maxLength":5,
+                        "enum":[
+                           "INTER",
+                           "INTRA"
+                        ]
+                     },
+                     "itms":{
+                        "minLength":1,
+                        "type":"array",
+                        "description":"Item Details",
+                        "items":{
+                           "type":"object",
+                           "additionalProperties":false,
+                           "properties":{
+                              "ad_amt":{
+                                 "description":"Amount of Advance received",
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "csamt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "camt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "samt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "iamt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "rt":{
+                                 "description":"rate",
+											"type":"number",
+											"multipleOf":0.01,
+											"minimum":0,
+											"maximum":999.99
+                              }
+                           }
+                        }
+                     }
+                  },
+                  "required":[
+                     "flag",
+                     "sply_ty"
+                  ]
+               }
+            ]
+         }
+      },
+	  "txpda":{
+         "type":"array",
+         "items":{
+            "anyOf":[
+               {
+                  "type":"object",
+                  "additionalProperties":false,
+                  "properties":{
+                     "chksum":{
+                        "description":"Checksum Value",
+                        "$ref":"#/definitions/chksum"
+                     },
+                     "flag":{
+                        "description":"tax payer action",
+                        "$ref":"#/definitions/flag"
+                     },
+                     "pos":{
+                        "description":"Recipient state code",
+                        "$ref":"#/definitions/state_cd"
+                     },
+                     "omon":{
+                        "description":"Original Month",
+                        "type":"string",
+                        "minLength":1,
+                        "pattern":"^((0[1-9]|1[012])((19|20)\\d\\d))$"
+                     },
+                     "sply_ty":{
+                        "description":"Supply Type of invoice",
+                        "type":"string",
+                        "maxLength":8,
+                        "enum":[
+                           "INTER",
+                           "INTRA"
+                        ]
+                     },
+                     "itms":{
+                        "minLength":1,
+                        "type":"array",
+                        "description":"Item Details",
+                        "items":{
+                           "type":"object",
+                           "additionalProperties":false,
+                           "properties":{
+                              "ad_amt":{
+                                 "description":"Amount of Advance received",
+                                 "minLength":1,
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "csamt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "camt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "samt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "iamt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "rt":{
+                                 "$ref":"#/definitions/nonEmptyRate"
+                              }
+                           },
+                           "required":[
+                              "ad_amt",
+                              "rt"
+                           ]
+                        }
+                     }
+                  },
+                  "required":[
+                     "sply_ty",
+                     "itms"
+                  ]
+               },
+               {
+                  "type":"object",
+                  "additionalProperties":false,
+                  "properties":{
+                     "chksum":{
+                        "description":"Checksum Value",
+                        "$ref":"#/definitions/chksum"
+                     },
+                     "flag":{
+                        "description":"tax payer action",
+                        "type":"string",
+                        "enum":[
+                           "D"
+                        ]
+                     },
+                     "pos":{
+                        "description":"Recipient state code",
+                        "$ref":"#/definitions/state_cd"
+                     },
+                     "sply_ty":{
+                        "description":"Supply Type of invoice",
+                        "type":"string",
+                        "maxLength":8,
+                        "enum":[
+                           "INTER",
+                           "INTRA"
+                        ]
+                     },
+                     "itms":{
+                        "minLength":1,
+                        "type":"array",
+                        "description":"Item Details",
+                        "items":{
+                           "type":"object",
+                           "additionalProperties":false,
+                           "properties":{
+                              "ad_amt":{
+                                 "description":"Amount of Advance received",
+                                 "minLength":1,
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "csamt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "camt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "samt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "iamt":{
+                                 "$ref":"#/definitions/nonEmptyCost"
+                              },
+                              "rt":{
+                                 "$ref":"#/definitions/nonEmptyRate"
+                              }
+                           }
+                        }
+                     }
+                  },
+                  "required":[
+                     "flag",
+                     "sply_ty"
+                  ]
+               }
+            ]
+         }
+      },
+      "hsn":{
+         "type":"object",
+         "anyOf":[
+            {
+			"additionalProperties": false,
+               "properties":{
+                   "data":{
+                     "type":"array",
+                     "items":{
+                        "type":"object",
+						"additionalProperties": false,
+                        "properties":{
+                           "num":{
+                              "description":"Serial no",
+                              "type":"integer",
+                              "minimum":1
+                           },
+                           "hsn_sc":{
+                              "description":"HSN or SAC of Goods or Services as per Invoice line items",
+                              "maxLength":10,
+                              "minLength":1,
+                              "type":"string",
+                              "pattern":"^[a-zA-Z0-9]+$"
+                           },
+                           "val":{
+                              "description":"Supplier Invoice Value",
+                              "type":"number",
+                              "multipleOf":0.01,
+                              "maximum":999999999999999.99
+                           },
+                           "txval":{
+                              "description":"Taxable value of Goods or Service as per invoice",
+                              "minLength":1,
+                              "$ref":"#/definitions/txval"
+                           },
+                           "iamt":{
+                              "description":"IGST Amount as per invoice",
+                              "$ref":"#/definitions/nonEmptyNil"
+                           },
+                           "camt":{
+                              "description":"CGST Amount as per invoice",
+                              "$ref":"#/definitions/nonEmptyNil"
+                           },
+                           "samt":{
+                              "description":"SGST Amount as per invoice",
+                              "$ref":"#/definitions/nonEmptyNil"
+                           },
+                           "csamt":{
+                              "description":"Cess Amount as per invoice",
+                              "$ref":"#/definitions/nonEmptyNil"
+                           },
+                           "desc":{
+                              "description":"Description of goods sold",
+                              "minLength":1,
+                              "maxLength":30,
+                              "type":"string"
+                           },
+                           "uqc":{
+                              "description":"UQC (Unit of Measure) of goods sold",
+                              "minLength":1,
+                              "maxLength":30,
+                              "pattern":"^[a-zA-Z]*$",
+                              "type":"string"
+                           },
+                           "qty":{
+                              "description":"Quantity of goods sold",
+                              "multipleOf":0.01,
+                              "maximum":999999999999999.99,
+							  "minimum":0,
+                              "type":"number"
+                           }
+                        },
+                        "required":[
+                           "hsn_sc",
+                           "uqc",
+                           "qty",
+                           "val",
+						   "num",
+                           "txval"
+                        ]
+                     }
+                  }
+               },
+               "required":[
+                  "data"
+               ]
+            },
+            {
+			"additionalProperties": false,
+               "properties":{
+                  "data":{
+                     "type":"array",
+                     "items":{
+                        "type":"object",
+						"additionalProperties": false,
+                        "properties":{
+                           "num":{
+                              "description":"Serial no",
+                              "type":"integer",
+                              "minimum":1
+                           },
+                           "hsn_sc":{
+                              "description":"HSN or SAC of Goods or Services as per Invoice line items",
+                              "maxLength":10,
+                              "minLength":1,
+                              "type":"string",
+                              "pattern":"^[a-zA-Z0-9]+$"
+                           },
+                           "val":{
+                              "description":"Supplier Invoice Value",
+                              "type":"number",
+                              "multipleOf":0.01,
+                              "maximum":999999999999999.99,
+							  "minimum":0
+                           },
+                           "txval":{
+                              "description":"Taxable value of Goods or Service as per invoice",
+                              "$ref":"#/definitions/txval"
+                           },
+                           "iamt":{
+                              "description":"IGST Amount as per invoice",
+                              "$ref":"#/definitions/nonEmptyNil"
+                           },
+                           "camt":{
+                              "description":"CGST Amount as per invoice",
+                              "$ref":"#/definitions/nonEmptyNil"
+                           },
+                           "samt":{
+                              "description":"SGST Amount as per invoice",
+                              "$ref":"#/definitions/nonEmptyNil"
+                           },
+                           "csamt":{
+                              "description":"Cess Amount as per invoice",
+                              "$ref":"#/definitions/nonEmptyNil"
+                           },
+                           "desc":{
+                              "description":"Description of goods sold",
+                              "minLength":1,
+                              "maxLength":30,
+                              "type":"string"
+                           },
+                           "uqc":{
+                              "description":"UQC (Unit of Measure) of goods sold",
+                              "minLength":1,
+                              "maxLength":30,
+                              "pattern":"^[a-zA-Z]*$",
+                              "type":"string"
+                           },
+                           "qty":{
+                              "description":"Quantity of goods sold",
+                              "multipleOf":0.01,
+                              "maximum":999999999999999.99,
+							  "minimum":0,
+                              "type":"number"
+                           }
+                        },
+                        "required":[
+                           "desc",
+                           "uqc",
+                           "qty",
+                           "val",
+						   "num",
+                           "txval"
+                        ]
+                     }
+                  }
+               },
+               "required":[
+                  "data"
+               ]
+            },
+            {
+			"additionalProperties": false,
+               "properties":{
+                  "flag":{
+                     "description":"tax payer action",
+                     "type":"string",
+                     "enum":[
+                        "D"
+                     ]
+                  },
+                  "chksum":{
+                     "description":"Checksum Value",
+                     "$ref":"#/definitions/chksum"
+                  },
+                  "data":{
+                     "type":"array",
+                     "items":{
+                        "type":"object",
+						"additionalProperties": false,
+                        "properties":{
+                           "num":{
+                              "description":"Serial no",
+                              "type":"integer",
+                              "minimum":1
+                           },
+                           "hsn_sc":{
+                              "description":"HSN or SAC of Goods or Services as per Invoice line items",
+                              "maxLength":10,
+                              "minLength":1,
+                              "type":"string",
+                              "pattern":"^[a-zA-Z0-9]+$"
+                           },
+                           "val":{
+                              "description":"Supplier Invoice Value",
+                              "type":"number",
+                              "multipleOf":0.01,
+                              "maximum":999999999999999.99,
+							  "minimum":0
+                           },
+                           "txval":{
+                              "description":"Taxable value of Goods or Service as per invoice",
+                              "$ref":"#/definitions/txval"
+                           },
+                           "iamt":{
+                              "description":"IGST Amount as per invoice",
+                              "$ref":"#/definitions/nonEmptyNil"
+                           },
+                           "camt":{
+                              "description":"CGST Amount as per invoice",
+                              "$ref":"#/definitions/nonEmptyNil"
+                           },
+                           "samt":{
+                              "description":"SGST Amount as per invoice",
+                              "$ref":"#/definitions/nonEmptyNil"
+                           },
+                           "csamt":{
+                              "description":"Cess Amount as per invoice",
+                              "$ref":"#/definitions/nonEmptyNil"
+                           },
+                           "desc":{
+                              "description":"Description of goods sold",
+                              "minLength":1,
+                              "maxLength":30,
+                              "type":"string"
+                           },
+                           "uqc":{
+                              "description":"UQC (Unit of Measure) of goods sold",
+                              "minLength":1,
+                              "maxLength":30,
+                              "pattern":"^[a-zA-Z]*$",
+                              "type":"string"
+                           },
+                           "qty":{
+                              "description":"Quantity of goods sold",
+                              "minLength":1,
+                              "maximum":999999999999999.99,
+							  "minimum":0,
+                              "multipleOf":0.001,
+                              "type":"number"
+                           }
+                        }
+                     }
+                  }
+               },
+               "required":[
+                  "flag"
+               ]
+            }
+         ]
+      },
+      "doc_issue":{
+         "type":"object",
+         "anyOf":[
+            {
+			"additionalProperties": false,
+               "properties":{
+                  "doc_det":{
+                     "type":"array",
+                     "items":{
+                        "type":"object",
+						"additionalProperties": false,
+                        "properties":{
+                           "doc_num":{
+                              "description":"Document Number",
+                              "type":"integer",
+							  "$ref":"#/definitions/doc_num"                             
+                           },
+                           "doc_typ":{
+                              "description":"Nature of document",
+                              "type":"string",
+                              "minLength":1
+                           },
+                           "docs":{
+                              "type":"array",
+                              "items":{
+                                 "type":"object",
+								 "additionalProperties": false,
+                                 "properties":{
+                                    "cancel":{
+										"description":"Cancelled Amount",
+										"type":"integer",
+										"minimum":0,
+										"maximum":9999999999
+									},
+                                    "from":{
+                                       "$ref":"#/definitions/inum"
+                                    },
+                                    "net_issue":{
+                                       "type":"integer",
+                                       "minimum":0,
+                                       "maximum":9999999999
+                                    },
+                                    "num":{
+                                       "description":"Serial no",
+                                       "type":"integer",
+                                       "minimum":1
+                                    },
+                                    "to":{
+                                       "$ref":"#/definitions/inum"
+                                    },
+                                  "totnum":{
+										"description":"Total no",
+										"type":"integer",
+										"minimum":0,
+										"maximum":9999999999
+                                    }
+                                 },
+                                 "required":[
+                                    "num",
+                                    "to",
+                                    "totnum",
+                                    "from",
+                                    "net_issue",
+                                    "cancel"
+                                 ]
+                              }
+                           }
+                        },
+                        "required":[
+                           "docs",
+                           "doc_num"
+                        ]
+                     }
+                  }
+               },
+               "required":[
+                  "doc_det"
+               ]
+            },
+            {
+			"additionalProperties": false,
+               "properties":{
+                  "chksum":{
+                     "description":"Checksum Value",
+                     "$ref":"#/definitions/chksum"
+                  },
+                  "flag":{
+                     "description":"tax payer action",
+                     "type":"string",
+                     "enum":[
+                        "D"
+                     ]
+                  },
+                  "doc_det":{
+                     "type":"array",
+                     "items":{
+                        "type":"object",
+						"additionalProperties": false,
+                        "properties":{
+                           "doc_num":{
+                              "description":"Document Number",
+                              "type":"integer",
+                              "$ref":"#/definitions/doc_num"
+                           },
+                           "doc_typ":{
+                              "description":"Nature of document",
+                              "type":"string",
+                              "minLength":1
+                           },
+                           "docs":{
+                              "type":"array",
+                              "items":{
+                                 "type":"object",
+								 "additionalProperties": false,
+                                 "properties":{
+                                    "cancel":{
+										"description":"Cancelled Amount",
+										"type":"integer",
+										"minimum":0,
+										"maximum":9999999999
+									},
+                                    "from":{
+                                       "$ref":"#/definitions/inum"
+                                    },
+                                    "net_issue":{
+                                       "type":"integer",
+                                       "minimum":0,
+                                       "maximum":9999999999
+                                    },
+                                    "num":{
+                                       "description":"Serial no",
+                                       "type":"integer",
+                                       "minimum":1
+                                    },
+                                    "to":{
+                                       "$ref":"#/definitions/inum"
+                                    },
+                                    "totnum":{
+										"description":"Total no",
+										"type":"integer",
+										"minimum":0,
+										"maximum":9999999999
+                                    }
+                                 }
+                              }
+                           }
+                        }
+                     }
+                  }
+               },
+               "required":[
+                  "flag"
+               ]
+            }
+         ]
+      }
+   },
+   "required":[
+      "gstin",
+      "fp"
+   ],
+   "definitions":{
+      "nonEmptyString":{
+         "type":"string",
+         "pattern":"^[a-zA-Z0-9]*$",
+         "minLength":1,
+		 "maxLength":6
+      },
+      "nonEmptyCost":{
+         "type":"number",
+         "multipleOf":0.01,
+         "maximum":99999999999.99,
+         "minimum":0
+      },
+	   "txval":{
+         "type":"number",
+         "multipleOf":0.01,
+         "maximum":9999999999999.99,
+         "minimum":0
+      },
+      "nonEmptyNil":{
+         "type":"number",
+         "multipleOf":0.01,
+         "maximum":99999999999.99
+      },
+      "nonEmptyRate":{
+         "type":"number",
+         "multipleOf":0.01,
+         "maximum":999.9,
+         "minimum":0
+      },
+      "totalValue":{
+         "type":"number",
+         "multipleOf":0.01,
+         "maximum":999999999999999.99,
+         "minimum":0
+      },
+      "nonEmptydate":{
+         "type":"string",
+         "minLength":1,
+         "pattern":"^((0[1-9]|[12][0-9]|3[01])[-](0[1-9]|1[012])[-]((19|20)\\d\\d))$"
+      },
+      "gstin":{
+         "type":"string",
+         "maxLength":15,
+         "minLength":15,
+         "pattern":"[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9A-Za-z]{1}[Zz1-9A-Ja-j]{1}[0-9a-zA-Z]{1}"
+      },
+      "ctin":{
+         "anyOf":[
+            {
+               "type":"string",
+               "maxLength":15,
+               "minLength":15,
+               "pattern":"[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9A-Za-z]{1}[Zz1-9A-Ja-j]{1}[0-9a-zA-Z]{1}"
+            },
+            {
+               "type":"string",
+               "maxLength":15,
+               "minLength":15,
+               "pattern":"[0-9]{4}[A-Z]{3}[0-9]{5}[UO]{1}[N][A-Z0-9]{1}"
+            }
+         ]
+      },
+      "etin":{
+         "type":"string",
+         "maxLength":15,
+         "minLength":15,
+         "pattern":"[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9A-Za-z]{1}[C]{1}[0-9a-zA-Z]{1}"
+      },
+      "etinEmptyChck":{
+         "type":"string",
+         "maxLength":0,
+         "minLength":0
+      },
+      "chksum":{
+         "type":"string",
+         "pattern":"^[a-zA-Z0-9]+$",
+         "minLength":1
+      },
+      "inum":{
+         "type":"string",
+         "maxLength":16,
+         "minLength":1,
+         "pattern":"^[a-zA-Z0-9-/]+$"
+      },
+      "state_cd":{
+         "type":"string",
+         "pattern":"^(3[0-7]|[12][0-9]|0[1-9]|97)$",
+         "maxLength":2,
+         "minLength":2
+      },
+      "flag":{
+         "type":"string",
+         "enum":[
+            "N",
+            "M",
+            "A",
+            "R"
+         ]
+      },
+      "ntty":{
+         "type":"string",
+         "enum":[
+            "C",
+            "D",
+            "R"
+         ]
+      },
+      "hsn_supply_typ":{
+         "type":"string",
+         "enum":[
+            "INTRB2B",
+            "INTRAB2B",
+            "INTRB2CL",
+            "INTRAB2CL"
+         ]
+      },
+      "status":{
+         "type":"string",
+         "enum":[
+            "A",
+            "R",
+            "P",
+            "N",
+            "S"
+         ]
+      },
+      "boolean":{
+         "type":"string",
+         "enum":[
+            "Y",
+            "N"
+         ]
+      },
+	  "doc_num":{
+         "type":"integer",
+         "minimum" :1,
+		 "maximum":12
+      }
+   }
+}

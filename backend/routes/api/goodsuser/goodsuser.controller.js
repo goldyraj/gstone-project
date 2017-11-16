@@ -56,7 +56,7 @@ const onError = (error) => {
    sortfiled={ date: -1 } 
 }
 var option={
-    select:'hsn_code description unit gstin dealer_type rate',
+    select:'hsn_code description unit gstin dealer_type rate type',
     sort:sortfiled, 
     offset:offset,
     limit:req.query.limit

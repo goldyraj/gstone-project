@@ -44,7 +44,7 @@ import { FaqsComponent } from './faqs/faqs.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { ContactComponent } from './contact/contact.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
-import {PreventLoggedInAccess} from './PreventLoggedInAccess';
+import { PreventLoggedInAccess } from './PreventLoggedInAccess';
 import { GstupdateDetailComponent } from './gstupdate-detail/gstupdate-detail.component';
 import { AdminInternalUpdateInnerpageComponent } from './admin-internal-update-innerpage/admin-internal-update-innerpage.component';
 
@@ -63,7 +63,7 @@ const routes: Routes = [
       { path: 'videos', component: VideoslinkComponent },
       // { path: 'newinvoice', component: AadNewInvoiceComponent },
       { path: 'admin-login', component: AdminLoginComponent },
-      { path: 'other', component: OtherpageComponent },
+      
       { path: 'about-us', component: AboutUsComponent },
       { path: 'privacy-policy', component: PrivacyPolicyComponent },
       { path: 'user-hsn', component: UserHsnCodeComponent },
@@ -87,12 +87,13 @@ const routes: Routes = [
       { path: 'gstr', component: Gstr1Component },
       { path: 'edit', component: EditComponent },
       { path: 'summarypage', component: SummaryComponent },
+      { path: 'other', component: OtherpageComponent },
+      { path: 'addbos', component: AddbosComponent },
       { path: 'exportinv', component: ExportinvoiceComponent },
       { path: 'amendment', component: NewamendmentComponent },
       { path: 'update', component: GstupdateComponent },
       { path: 'notification', component: UserGovNotificationComponent },
       { path: 'videos', component: VideoslinkComponent }
-      
     ]
   },
 
@@ -104,12 +105,12 @@ const routes: Routes = [
       { path: 'admin_hsn_code', component: AdminHsnCodeComponent, canActivate: [PreventLoggedInAccess] },
       { path: 'admin_gov_notification', component: AdminGovNotificationComponent, canActivate: [PreventLoggedInAccess] },
       { path: 'admin-internal-updates', component: AdminInternalUpdatesComponent, canActivate: [PreventLoggedInAccess] },
-      { path: 'admin-gstone-videos', component: AdminGstoneVideosComponent , canActivate: [PreventLoggedInAccess]},
-      { path: 'admin-about-us', component: AdminAboutUsComponent , canActivate: [PreventLoggedInAccess]},
-      { path: 'admin-privacy-policy', component: AdminPrivacyPolicyComponent , canActivate: [PreventLoggedInAccess]},
+      { path: 'admin-gstone-videos', component: AdminGstoneVideosComponent, canActivate: [PreventLoggedInAccess] },
+      { path: 'admin-about-us', component: AdminAboutUsComponent, canActivate: [PreventLoggedInAccess] },
+      { path: 'admin-privacy-policy', component: AdminPrivacyPolicyComponent, canActivate: [PreventLoggedInAccess] },
       { path: 'admin-contact-us', component: AdminContactUsComponent, canActivate: [PreventLoggedInAccess] },
-      { path: 'admin-faqs', component: AdminFaqsComponent , canActivate: [PreventLoggedInAccess]},
-      {path:'admin-internal-updates-edit',component:AdminInternalUpdateInnerpageComponent}
+      { path: 'admin-faqs', component: AdminFaqsComponent, canActivate: [PreventLoggedInAccess] },
+      { path: 'admin-internal-updates-edit', component: AdminInternalUpdateInnerpageComponent }
     ]
 
   }

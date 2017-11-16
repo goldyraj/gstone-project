@@ -17,9 +17,7 @@ export class UserDashboardComponent implements OnInit {
 
   @ViewChild('closeCsv') closeCsv: ElementRef;
   @ViewChild('closeChoose') closeChoose: ElementRef;
-  @ViewChild('downloadCsvFileControl') downloadCsvFileControl: ElementRef;
-  @ViewChild('closeBtn') closeBtn: ElementRef;
-  @ViewChild('clearInputFile') clearInputFile:ElementRef;
+  @ViewChild('uploadCsvFileControl') uploadCsvFileControl: ElementRef;
   filename;
   ifSuccess: boolean;
   isDownloadSuccessful: boolean;
@@ -31,7 +29,7 @@ export class UserDashboardComponent implements OnInit {
   selectedDealerStateNew = "0";
   jsonString;
   // constructor() { }
-  
+  @ViewChild('closeBtn') closeBtn: ElementRef;
   modelHide = '';
   url = "";
   cutomer = {};
@@ -78,6 +76,10 @@ export class UserDashboardComponent implements OnInit {
       branch_name: new FormControl('', [<any>Validators.required]),
       state: new FormControl('Select State'),
       selectedDealer: new FormControl('Select Dealer')
+      // address: new FormGroup({
+      //   street: new FormControl('', <any>Validators.required),
+      //   postcode: new FormControl('8000')
+      // })
     });
   }
 
@@ -149,7 +151,7 @@ export class UserDashboardComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/branch/index?token=' + this.access_token + '&page=' + this.pager.currentPage + '&limit=' + 10, options)
+    this.http.get('http://localhost:3000/api/branch/index?token=' + this.access_token + '&page=' + this.pager.currentPage + '&limit=' + 5, options)
       .subscribe(
       response => {
 
@@ -244,7 +246,7 @@ export class UserDashboardComponent implements OnInit {
         this.closeModal();
         this.closeCsv.nativeElement.click();
         this.closeChoose.nativeElement.click();
-        this.clearInputFile.nativeElement.value = "";
+        this.uploadCsvFileControl.nativeElement.value = "";
         this.ifSuccess = true;
         this.getBranches(this.pager.currentPage);
         // alert(response.json().message);
@@ -268,7 +270,7 @@ export class UserDashboardComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/branch/index?token=' + this.access_token+"&limit="+1000, options)
+    this.http.get('http://localhost:3000/api/branch/index?token=' + this.access_token, options)
       .subscribe(
       response => {
         exportedList = response.json().docs;
@@ -284,12 +286,6 @@ export class UserDashboardComponent implements OnInit {
 
   closeDownloadModal() {
     this.isDownloadSuccessful = false;
-  }
-
-  clearCSVForm()
-  {
-    this.clearInputFile.nativeElement.value = "";
-    this.ifSuccess=false;
   }
 
   resetForm() {

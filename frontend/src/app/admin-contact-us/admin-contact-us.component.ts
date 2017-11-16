@@ -73,7 +73,9 @@ export class AdminContactUsComponent implements OnInit {
       console.log("CONTACTS_LIST", this.notificationList);
       this.pager.pageSize = data.json().limit;
       this.pager.totalItems = data.json().total;
+      this.backupNotificationList=this.notificationList;
       this.setPage();
+      this.backupNotificationPager=this.pager;
     });
   }
 
@@ -142,9 +144,9 @@ export class AdminContactUsComponent implements OnInit {
         this.notificationList = data.json().docs;
         this.pager.pageSize = data.json().limit;
         this.pager.totalItems = data.json().total;
-        this.backupNotificationList=this.notificationList;
+        
         this.setPage();
-        this.backupNotificationPager=this.pager;
+        
       });
     }
     else {

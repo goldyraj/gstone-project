@@ -60,11 +60,18 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let item of stateList;let i = index;">
-                <!-- <tr *ngFor="let item of stateList | stateFilter:searchString; let i = index;"> -->
+              <tr *ngFor="let item of dataList;let i = index;">
+                <!-- <tr *ngFor="let item of dataList | stateFilter:searchString; let i = index;"> -->
                 <td align="center">{{pager.pageSize * (pager.currentPage-1)+i+1}}</td>
-                <td align="center">{{item.name}}</td>
-                <td align="center">{{item.code}}</td>
+                <td align="center">{{item.username}}</td>
+                <td align="center">{{item.email}}</td>
+                <td align="center">{{item.gstin}}</td>
+                <td align="center">{{item.pan_no}}</td>
+                <td align="center">{{item.contact}}</td>
+                <td align="center">{{item.address}}</td>
+                <td align="center">{{item.city}}</td>
+                <td align="center">{{item.state}}</td>
+
                 <td align="center">
                   <a data-toggle="modal" data-target=".bs-goods-lg-edit">
                     <button class="fa fa-edit btn btn-primary btn-sm" title="Edit" (click)="editStateRecords(item)"></button>
@@ -78,9 +85,9 @@
           </table>
 
 
-          <ul class="pagination btn-sm" *ngIf="stateList?.length > 1">
+          <ul class="pagination btn-sm" *ngIf="dataList?.length > 1">
             <li [ngClass]="{disabled:pager.currentPage === 1}">
-              <a *ngIf="pager.currentPage > 1" (click)="getStateList(pager.currentPage - 1)">Previous</a>
+              <a *ngIf="pager.currentPage > 1" (click)="getDataList(pager.currentPage - 1)">Previous</a>
             </li>
 
             <li [ngClass]="{disabled:pager.currentPage === 1}">
@@ -88,37 +95,16 @@
             </li>
 
             <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
-              <a (click)="getStateList(page)">{{page}}</a>
+              <a (click)="getDataList(page)">{{page}}</a>
             </li>
 
             <li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
-              <a *ngIf="pager.currentPage < pager.endPage" (click)="getStateList(pager.currentPage + 1)">Next</a>
+              <a *ngIf="pager.currentPage < pager.endPage" (click)="getDataList(pager.currentPage + 1)">Next</a>
             </li>
             <li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
               <a *ngIf="pager.currentPage == pager.endPage">Next</a>
             </li>
           </ul>
-
-          <!-- <ul class="pagination btn-sm" *ngIf="stateList?.length > 1">
-            <li [ngClass]="{disabled:pager.currentPage === 1}">
-              <a *ngIf="pager.currentPage > 1" (click)="setPage(pager.currentPage - 1)">Previous</a>
-            </li>
-
-            <li [ngClass]="{disabled:pager.currentPage === 1}">
-              <a *ngIf="pager.currentPage ==1">Previous</a>
-            </li>
-
-            <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
-              <a (click)="setPage(page)">{{page}}</a>
-            </li>
-
-            <li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
-              <a *ngIf="pager.currentPage < pager.endPage" (click)="setPage(pager.currentPage + 1)">Next</a>
-            </li>
-            <li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
-              <a *ngIf="pager.currentPage == pager.endPage">Next</a>
-            </li>
-          </ul> -->
 
         </div>
       </div>

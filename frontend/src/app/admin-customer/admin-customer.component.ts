@@ -51,10 +51,10 @@ export class AdminCustomerComponent implements OnInit {
 
   onLoad() {
     this.pager.currentPage = 1;
-    this.getCustomersList(1);
+    this.getDataList(1);
   }
 
-  getCustomersList(page: number) {
+  getDataList(page: number) {
     console.log("getALLHSNCODELIST");
     let response: any;
     let myHeaders = new Headers({ 'Content-Type': 'application/json' });

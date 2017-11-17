@@ -114,7 +114,7 @@ exports.update=(req,res)=>{
             message: error.message
         })
     }
-      Goods.findOneByUsername(title)          
+      Goodsuser.findOneByUsername(title)          
          .then(respond)
          .catch(onError)
 }

@@ -113,7 +113,7 @@ exports.update=(req,res)=>{
             message: error.message
         })
     }
-      Branch.findOneByUsername(title)          
+      Branch.findOneByUsername(branch_name)          
          .then(respond)
          .catch(onError)
 }

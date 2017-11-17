@@ -70,6 +70,9 @@ import { GstupdateDetailComponent } from './gstupdate-detail/gstupdate-detail.co
 import { CharOnlyDirective } from './Directives/char-only.directive';
 import { NumbersOnlyDirective } from './Directives/numbers-only.directive';
 import { AdminInternalUpdateInnerpageComponent } from './admin-internal-update-innerpage/admin-internal-update-innerpage.component';
+import { AdminUserComponent } from './admin-user/admin-user.component';
+import { AdminCustomerComponent } from './admin-customer/admin-customer.component';
+import { AdminVendorComponent } from './admin-vendor/admin-vendor.component';
 
 @NgModule({
   declarations: [
@@ -129,7 +132,10 @@ import { AdminInternalUpdateInnerpageComponent } from './admin-internal-update-i
     GstupdateDetailComponent,
     CharOnlyDirective,
     NumbersOnlyDirective,
-    AdminInternalUpdateInnerpageComponent
+    AdminInternalUpdateInnerpageComponent,
+    AdminUserComponent,
+    AdminCustomerComponent,
+    AdminVendorComponent
     //DatepickerModule
   ],
   imports: [

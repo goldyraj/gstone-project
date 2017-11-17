@@ -101,6 +101,7 @@ const routes: Routes = [
     path: 'admin', component: AdminDashboardComponent,
     children: [
       { path: 'dashboard', component: AdminHomeComponent, canActivate: [PreventLoggedInAccess] },
+      { path: 'dashboard', component: AdminHomeComponent, canActivate: [PreventLoggedInAccess] },
       { path: 'admin-state', component: AdminStateComponent, canActivate: [PreventLoggedInAccess] },
       { path: 'admin_hsn_code', component: AdminHsnCodeComponent, canActivate: [PreventLoggedInAccess] },
       { path: 'admin_gov_notification', component: AdminGovNotificationComponent, canActivate: [PreventLoggedInAccess] },

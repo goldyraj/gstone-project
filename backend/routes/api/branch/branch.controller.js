@@ -24,7 +24,10 @@ var query={};
 req.query.limit=parseInt(req.query.limit);
 if(req.query.search && req.query.search.length>0){
     console.log(query={name:req.query.search})
-    query={name:req.query.search}
+ query={name:new RegExp(req.query.search,'i')}
+}
+if(req.decoded.type===req.app.get('usertype')){
+   query={userid:req.decoded._id}
 }
 if(!req.query.limit ||isNaN(req.query.limit) ){
     req.query.limit=5;
@@ -136,7 +139,7 @@ var myCallback=usingItNow(req.decoded)
         if(branch) {
             throw new Error('Branch Name exists')
         } else {
-            return Branch.create(name,pan_no,gstin,dealer_type,branch_name,contact,email,address,city,state)
+            return Branch.create(name,pan_no,gstin,dealer_type,branch_name,contact,email,address,city,state,req.decoded._id)
         }
     }
     // count the number of the user
@@ -149,6 +152,7 @@ var myCallback=usingItNow(req.decoded)
     // assign admin if count is 1
    
  const respond = () => {
+
         res.json({
             message: 'Branch Successfully Save'
         
@@ -157,9 +161,11 @@ var myCallback=usingItNow(req.decoded)
     }
 
     // run when there is an error (username exists)
+
     const onError = (error) => {
+         console.log(error.message.index)
         res.status(409).json({
-            messages: error.message
+            messages: "Pan Number allready exites "
         })
     }
 
@@ -185,6 +191,9 @@ var myCallback=usingItNow(req.decoded)
             message: 'you are not an authorise'
         }) 
     }
+      for (var i = 0; i <myobj.length; i++) {
+       myobj[i].userid=req.decoded._id; 
+     }
  var multirecord = function () {
       return new Branch.insertMany(myobj, function(err, res) {})
   }
@@ -206,6 +215,30 @@ var myCallback=usingItNow(req.decoded)
 }
 
 exports.apipost=(req,res,next)=>{
+
+  // var promise =Branch.hello()
+  // console.log(promise)
+ Branch.find({}).then(function(err, result) {
+    if (err) throw err;
+ 
+    res.result= result;
+  })
+var s ={};
+process.on('unhandledRejection', (reason, p) => {
+  console.log('Unhandled Rejection at: Promise', p);
+   s=p;
+  // application specific logging, throwing an error, or other logic here
+});
+ var s=JSON.stringify(res.result)
+
+ console.log(s)
+  res.json(
+         s
+        )
+  // promise.then({
+  //    console.log('list')
+  // })
+ 
 //     var upload = multer({
 //     storage: storage,
 //     // limits: { fileSize: 1048576, files: 1 } // limit file size to 1048576 bytes or 1 MB

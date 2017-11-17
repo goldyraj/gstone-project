@@ -23,7 +23,7 @@ var query={};
     }
 req.query.limit=parseInt(req.query.limit);
 if(req.query.search && req.query.search.length>0){    
-    query={name:req.query.search}
+   query={name:new RegExp(req.query.search,'i')}
 }
 if(!req.query.limit ||isNaN(req.query.limit) ){
     req.query.limit=5;

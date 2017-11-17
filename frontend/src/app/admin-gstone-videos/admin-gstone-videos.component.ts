@@ -23,6 +23,10 @@ export class AdminGstoneVideosComponent implements OnInit {
   notiRowData;
   rowDataIndex = "";
   pager: any = {};
+  backupVideoPager:any={};
+  backupVideoList=[];
+  apiMessage;
+  apiResult=0;
   pagedItems: any[];
   access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
 
@@ -39,12 +43,12 @@ export class AdminGstoneVideosComponent implements OnInit {
 
   ngOnInit() {
     this.gstVideosForm = new FormGroup({
-      title: new FormControl('', [<any>Validators.required]),
+      title: new FormControl('',[Validators.required,Validators.pattern(".*\\S.*"),Validators.pattern('^[a-zA-Z \-\']+')]),
       description: new FormControl('', [<any>Validators.required]),
       link: new FormControl('', [<any>Validators.required])
     });
     this.editGstVideosForm = new FormGroup({
-      title: new FormControl('', [<any>Validators.required]),
+      title: new FormControl('',[Validators.required,Validators.pattern(".*\\S.*"),Validators.pattern('^[a-zA-Z \-\']+')]),
       description: new FormControl('', [<any>Validators.required]),
       link: new FormControl('', [<any>Validators.required])
     });
@@ -71,8 +75,9 @@ export class AdminGstoneVideosComponent implements OnInit {
       this.videosList = data.json().docs;
       this.pager.pageSize = data.json().limit;
       this.pager.totalItems = data.json().total;
+      this.backupVideoList=this.videosList;
       this.setPage();
-
+      this.backupVideoPager=this.pager;
     });
   }
 
@@ -109,13 +114,14 @@ export class AdminGstoneVideosComponent implements OnInit {
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeModal();
+          this.apiResult=1;
           // alert(response.json().message);
           // this.TotalPages=this.TotalPages+1;
           this.getVideosList(this.pager.currentPage);
-          this.submitted=false;
-          this.gstVideosForm.reset();
         },
         error => {
+          this.apiResult=-1;
+          this.apiMessage=error.json().message;
           console.log("error", error.message);
           console.log(error.text());
         }
@@ -123,6 +129,8 @@ export class AdminGstoneVideosComponent implements OnInit {
     }
   }
   editVideosRecord(data) {
+    this.apiMessage;
+    this.apiResult=0;
     this.rowDataIndex = data._id;
     var temp;
     if (data) {
@@ -163,10 +171,13 @@ export class AdminGstoneVideosComponent implements OnInit {
           console.log("suceessfull data", response.json().message);
           this.closeEditModal();
           // alert(response.json().message);
+          this.apiResult=1;
           this.getVideosList(this.pager.currentPage);
           this.submittedEdit = false;
         },
         error => {
+          this.apiResult=-1;
+          this.apiMessage=error.json().message;
           console.log("error", error.message);
           console.log(error.text());
         }
@@ -221,6 +232,25 @@ export class AdminGstoneVideosComponent implements OnInit {
 
   resetForm()
   {
+    this.submitted=false;
     this.gstVideosForm.reset();
+  }
+
+  searchKeyword(searchString) {
+    console.log("SEARCH_HIT");
+
+    if (searchString) {
+      this.http.get('http://localhost:3000/api/vedio/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
+        this.videosList = data.json().docs;
+        this.pager.pageSize = data.json().limit;
+        this.pager.totalItems = data.json().total;
+        this.setPage();
+      });
+    }
+    else {
+      console.log("SEARCH_EMPTY");
+      this.videosList = this.backupVideoList;
+      this.pager=this.backupVideoPager;
+    }
   }
 }

@@ -18,12 +18,16 @@ export class AdminInternalUpdatesComponent implements OnInit {
   @ViewChild('closeBtn3') closeBtn3: ElementRef;
 
   chapterArray=[];
+  backupInternalPager:any={};
+  backupInternalList=[];
   articleArray=[];
   secondDropDownArray=[];
   internalUpdateList = [];
   StateVal = {};
   url = "";
   notiRowData;
+  apiMessage;
+  apiResult=0;
   rowDataIndex = "";
   // pager object
   pager: any = {};
@@ -32,6 +36,7 @@ export class AdminInternalUpdatesComponent implements OnInit {
   pagedItems: any[];
   selectUpdateType;
   selectChapterArticle;
+  
   public internalUpdateForm: FormGroup; // our model driven form
   public editInternalUpdate: FormGroup; // our model driven form
   public submitted: boolean; // keep track on whether form is submitted
@@ -48,16 +53,16 @@ export class AdminInternalUpdatesComponent implements OnInit {
 
   ngOnInit() {
     this.internalUpdateForm = new FormGroup({
-      selectUpdateType:new FormControl("Select Update Type"),
-      selectChapterArticle:new FormControl("Select Chapter/Article"),
+      selectUpdateType:new FormControl("0"),
+      selectChapterArticle:new FormControl("0"),
       title: new FormControl('', [<any>Validators.required]),
       details: new FormControl('', [<any>Validators.required]),
       link: new FormControl('', [<any>Validators.required])
     });
 
     this.editInternalUpdate = new FormGroup({
-      selectUpdateType:new FormControl("Select Update Type"),
-      selectChapterArticle:new FormControl("Select Chapter/Article"),
+      selectUpdateType:new FormControl("0"),
+      selectChapterArticle:new FormControl("0"),
       title: new FormControl('', [<any>Validators.required]),
       details: new FormControl('', [<any>Validators.required]),
       link: new FormControl('', [<any>Validators.required]),
@@ -82,8 +87,9 @@ export class AdminInternalUpdatesComponent implements OnInit {
       this.internalUpdateList = data.json().docs;
       this.pager.pageSize = data.json().limit;
       this.pager.totalItems=data.json().total;
+      this.backupInternalList=this.internalUpdateList;
       this.setPage();
-
+      this.backupInternalPager=this.pager;
     });
   }
 
@@ -105,14 +111,14 @@ export class AdminInternalUpdatesComponent implements OnInit {
     this.StateVal = this.internalUpdateForm.value;
     console.log("form valuse", this.StateVal);
 
-    if (isValid == true) {
+    if (isValid == true && this.editInternalUpdate.controls.selectUpdateType.value!="0" &&  this.editInternalUpdate.controls.selectChapterArticle.value!="0") {
       const headers = new Headers();
 
       headers.append('Content-Type', 'application/json');
       // headers.append('x-access-token', access_token);
       var chapterParam;
       var articleParam;
-      if(this.internalUpdateForm.value.selectedType==="chapter")
+      if(this.internalUpdateForm.value.selectUpdateType==="chapter")
       {
         chapterParam=this.internalUpdateForm.value.selectChapterArticle;
       }
@@ -127,7 +133,7 @@ export class AdminInternalUpdatesComponent implements OnInit {
         "details": this.internalUpdateForm.value.details,
         "link": this.internalUpdateForm.value.link,
         "date": "13/11/2017",
-        "type":this.internalUpdateForm.value.selectedType,
+        "type":this.internalUpdateForm.value.selectUpdateType,
         "chapter":chapterParam,
         "article":articleParam
       };
@@ -138,10 +144,13 @@ export class AdminInternalUpdatesComponent implements OnInit {
           console.log("suceessfull data", response.json().message);
           this.closeModal();
           this.internalUpdateForm.reset();
-          this.submitted=false;
+          this.apiResult=1;
+          this.apiMessage=response.json().message;
           this.getInternalUpdateList(this.pager.currentPage);
         },
         error => {
+          this.apiResult=-1;
+          this.apiMessage=error.json().message;
           console.log("error", error.message);
           console.log(error.text());
         }
@@ -150,6 +159,9 @@ export class AdminInternalUpdatesComponent implements OnInit {
   }
 
   editInternalRecord(data) {
+    this.apiMessage="";
+    this.apiResult=0;
+    this.submittedEdit = false;
     this.rowDataIndex = data._id;
     var temp;
     if (data) {
@@ -166,8 +178,8 @@ export class AdminInternalUpdatesComponent implements OnInit {
       {
         this.secondDropDownArray=this.articleArray;
       }
-      this.editInternalUpdate.get("selectUpdateType").setValue(data.selectUpdateType);
-      this.editInternalUpdate.get("selectChapterArticle").setValue(data.selectChapterArticle);
+      this.editInternalUpdate.get("selectUpdateType").setValue(data.type);
+      
       this.selectUpdateType=data.type;
       if(data.article!=null)
       {
@@ -192,20 +204,20 @@ export class AdminInternalUpdatesComponent implements OnInit {
     this.StateVal = this.editInternalUpdate.value;
     console.log("form valuse", this.StateVal);
 
-    if (isValid == true) {
+    if (isValid == true && this.editInternalUpdate.controls.selectUpdateType.value!="0" &&  this.editInternalUpdate.controls.selectChapterArticle.value!="0") {
 
       const headers = new Headers();
 
       headers.append('Content-Type', 'application/json');
       var chapterParam;
       var articleParam;
-      if(this.internalUpdateForm.value.selectedType==="chapter")
+      if(this.editInternalUpdate.value.selectUpdateType==="chapter")
       {
-        chapterParam=this.internalUpdateForm.value.selectChapterArticle;
+        chapterParam=this.editInternalUpdate.value.selectChapterArticle;
       }
       else
       {
-        articleParam=this.internalUpdateForm.value.selectChapterArticle;
+        articleParam=this.editInternalUpdate.value.selectChapterArticle;
       }
       
       const requestOptions = new RequestOptions({ headers: headers });
@@ -215,7 +227,7 @@ export class AdminInternalUpdatesComponent implements OnInit {
         "title": this.editInternalUpdate.value.title,
         "details": this.editInternalUpdate.value.details,
         "link": this.editInternalUpdate.value.link,
-        "type":this.internalUpdateForm.value.selectedType,
+        "type":this.editInternalUpdate.value.selectUpdateType,
         "chapter":chapterParam,
         "article":articleParam
       };
@@ -226,18 +238,22 @@ export class AdminInternalUpdatesComponent implements OnInit {
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeEditModal();
-          this.submittedEdit = false;
+          this.apiResult=1;
           this.getInternalUpdateList(this.pager.currentPage);
+          this.apiMessage=response.json().message;
         },
         error => {
+          this.apiResult=-1;
           console.log("error", error.message);
           console.log(error.text());
+          this.apiMessage= error.json().message;
         }
         );
     }
   }
 
-  deleteInternalRecord(data) {
+  recordToBeDeleted(data) {
+    this.submittedEdit = false;
     this.rowDataIndex = data._id;
     this.notiRowData = data;
   }
@@ -278,6 +294,9 @@ export class AdminInternalUpdatesComponent implements OnInit {
 
   resetForm()
   {
+    this.apiMessage="";
+    this.apiResult=0;
+    this.submitted=false;
     this.internalUpdateForm.reset();
     this.internalUpdateForm.get('selectUpdateType').setValue('0');
     this.internalUpdateForm.get('selectChapterArticle').setValue('0');
@@ -285,7 +304,7 @@ export class AdminInternalUpdatesComponent implements OnInit {
 
   setupChapterArray()
   {
-    for(var i=0;i<=5;i++)
+    for(var i=1;i<=5;i++)
     {
       this.chapterArray.push("Chapter "+i);
     }
@@ -294,29 +313,53 @@ export class AdminInternalUpdatesComponent implements OnInit {
 
   setupArticleArray()
   {
-    for(var i=0;i<=5;i++)
+    for(var i=1;i<=5;i++)
     {
       this.articleArray.push("Article "+i);
     }
   }
 
-  onSelectType(selectedType)
+  onSelectType(selectUpdateType)
   {
-    console.log("OnModelChange",selectedType);
-    if(selectedType=='0')
+    console.log("OnModelChange",selectUpdateType);
+    if(selectUpdateType=='0')
     {
       return;
     }
-    if(selectedType==="Chapter")
+    if(selectUpdateType==="chapter")
     {
       this.secondDropDownArray=this.chapterArray;
       
     }
-    else if(selectedType==="Article")
+    else if(selectUpdateType==="article")
     {
       this.secondDropDownArray=this.articleArray;
     }
 
     console.log("SELECTED",this.secondDropDownArray);
+  }
+
+  editInNewWindow(item)
+  {
+    
+  }
+
+  searchKeyword(searchString) {
+    console.log("SEARCH_HIT");
+
+    if (searchString) {
+      this.http.get('http://localhost:3000/api/internal/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
+        this.internalUpdateList = data.json().docs;
+        this.pager.pageSize = data.json().limit;
+        this.pager.totalItems = data.json().total;
+        this.setPage();
+        console.log("URL_DATA",this.internalUpdateList);
+      });
+    }
+    else {
+      console.log("SEARCH_EMPTY");
+      this.internalUpdateList = this.backupInternalList;
+      this.pager=this.backupInternalPager;
+    }
   }
 }

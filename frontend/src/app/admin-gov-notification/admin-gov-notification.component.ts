@@ -25,6 +25,8 @@ export class AdminGovNotificationComponent implements OnInit {
   rowDataIndex = "";
   // pager object
   pager: any = {};
+  backupNotificationPager:any={};
+  backupNotificationList=[];
 
   // paged items
   pagedItems: any[];
@@ -44,14 +46,15 @@ export class AdminGovNotificationComponent implements OnInit {
 
   ngOnInit() {
     this.govNotiForm = new FormGroup({
-      title: new FormControl('', [<any>Validators.required]),
+      title: new FormControl('',[Validators.required,Validators.pattern(".*\\S.*"),Validators.pattern('^[a-zA-Z \-\']+')]),
       description: new FormControl('', [<any>Validators.required]),
-      link: new FormControl('', [<any>Validators.required])
+      link: new FormControl('',[Validators.required,Validators.pattern(".*\\S.*")])
     });
+
     this.editGovNotiForm = new FormGroup({
-      title: new FormControl('', [<any>Validators.required]),
-      description: new FormControl('', [<any>Validators.required]),
-      link: new FormControl('', [<any>Validators.required])
+      title: new FormControl('',[Validators.required,Validators.pattern(".*\\S.*"),Validators.pattern('^[a-zA-Z \-\']+')]),
+      description: new FormControl('',[Validators.required,Validators.pattern(".*\\S.*")]),
+      link: new FormControl('',[Validators.required,Validators.pattern(".*\\S.*")])
     });
 
     var context=this;
@@ -71,11 +74,14 @@ export class AdminGovNotificationComponent implements OnInit {
       this.notificationList = data.json().docs;
       this.pager.pageSize = data.json().limit;
       this.pager.totalItems=data.json().total;
+      this.backupNotificationList=this.notificationList;
       this.setPage();
+      this.backupNotificationPager=this.pager;
     });
   }
 
   editNotificationRecord(data) {
+    this.submittedEdit = false;
     this.rowDataIndex = data._id;
     var temp;
     if (data) {
@@ -115,7 +121,7 @@ export class AdminGovNotificationComponent implements OnInit {
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeEditModal();
-          this.submittedEdit = false;
+          
           this.getNotificationList(this.pager.currentPage);
           // alert(response.json().message);
         },
@@ -128,6 +134,7 @@ export class AdminGovNotificationComponent implements OnInit {
   }
 
   deleteNotiRecord(data) {
+    this.submittedEdit = false;
     this.rowDataIndex = data._id;
     this.notiRowData = data;
   }
@@ -141,13 +148,13 @@ export class AdminGovNotificationComponent implements OnInit {
     // headers.append('x-access-token', access_token);
     const requestOptions = new RequestOptions({ headers: headers });
 
-    this.url = "http://localhost:3000/api/notification/delete/" + this.notiRowData._id+"?token="+this.access_token;
+    this.url = "http://localhost:3000/api/notification/delete/" + this.notiRowData._id;
     return this.http.delete(this.url, requestOptions)
       .subscribe(
       response => {
         console.log("suceessfull data", response.json().message);
         this.closeDeleteModal();
-        this.submittedEdit = false;
+        this.getNotificationList(this.pager.currentPage);
         // alert(response.json().message);
       },
       error => {
@@ -183,7 +190,8 @@ export class AdminGovNotificationComponent implements OnInit {
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeModal();
-          this.submitted = false;
+          this.getNotificationList(this.pager.currentPage);
+          
         },
         error => {
           console.log("error", error.message);
@@ -216,7 +224,27 @@ export class AdminGovNotificationComponent implements OnInit {
 
   resetForm()
   {
+    this.submitted=false;
+    this.submittedEdit=false;
     this.govNotiForm.reset();
+  }
+
+  searchKeyword(searchString) {
+    console.log("SEARCH_HIT");
+
+    if (searchString) {
+      this.http.get('http://localhost:3000/api/notification/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
+        this.notificationList = data.json().docs;
+        this.pager.pageSize = data.json().limit;
+        this.pager.totalItems = data.json().total;
+        this.setPage();
+      });
+    }
+    else {
+      console.log("SEARCH_EMPTY");
+      this.notificationList = this.backupNotificationList;
+      this.pager=this.backupNotificationPager;
+    }
   }
 
 }

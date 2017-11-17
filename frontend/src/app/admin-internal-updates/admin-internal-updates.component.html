@@ -32,9 +32,9 @@
 
       <div class="col-md-4 col-xs-12">
         <div class="input-group section-bottom-20">
-          <input type="text" [(ngModel)]="searchString" placeholder="Title" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
+          <input type="text" [(ngModel)]="searchString"  (input)="searchKeyword($event.target.value)" placeholder="Search Title" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
           <div class="input-group-addon">
-            <i class="fa fa-search"></i>
+            <i class="fa fa-search"  (click)="searchKeyword(searchString)"></i>
           </div>
         </div>
       </div>
@@ -47,19 +47,22 @@
           <table class="table table-condensed  table-hover table-bordered">
             <thead>
               <tr>
-                <th width="2%">#</th>
+                <th width="2%">S. No.</th>
+                <th width="5%">Category</th>
                 <th width="20%">Title</th>
                 <th width="15%">Details</th>
                 <th width="10%">Link</th>
-                <th width="14%" class="text-center">Action</th>
+
+                <th width="10%" class="text-center">Action</th>
               </tr>
             </thead>
             <tbody>
 
 
-              <!-- <tr *ngFor="let item of internalUpdateList ;let i = index;"> -->
-              <tr *ngFor="let item of internalUpdateList | updateFilter:searchString  ;let i = index;">
+              <tr *ngFor="let item of internalUpdateList ;let i = index;">
+              <!-- <tr *ngFor="let item of internalUpdateList | updateFilter:searchString  ;let i = index;"> -->
                   <td align="center">{{pager.pageSize * (pager.currentPage-1)+i+1}}</td>
+                  <td align="center">{{item.type}}</td>
                 <td align="center">{{item.title}}</td>
                 <td align="center">
                   <a target="_blank">{{item.details}}</a>
@@ -70,9 +73,10 @@
                 <td align="center">
                   <a data-toggle="modal" data-target=".bs-user-lg-edit">
                     <button class="fa fa-edit btn btn-primary btn-sm" title="Edit" (click)="editInternalRecord(item)"></button>
+                    <!-- <button class="fa fa-edit btn btn-primary btn-sm" title="Edit" (click)="editInNewWindow(item)"></button> -->
                   </a>
                   <a href="" data-toggle="modal" data-target=".bs-delete-sm">
-                    <i class="fa fa-trash btn btn-danger btn-sm" (click)="deleteInternalRecord(item)" title="Delete"></i>
+                    <i class="fa fa-trash btn btn-danger btn-sm" (click)="recordToBeDeleted(item)" title="Delete"></i>
                   </a>
                 </td>
               </tr>
@@ -101,20 +105,6 @@
               <a [class.hide]="pager.currentPage < pager.endPage">Next</a>
             </li>
           </ul>
-
-          <!-- <ul class="pagination btn-sm">
-            <li [ngClass]="{disabled:pager.currentPage === 1}">
-              <a (click)="getInternalUpdateList(pager.currentPage - 1)">Previous</a>
-            </li>
-
-            <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
-              <a (click)="getInternalUpdateList(page)">{{page}}</a>
-            </li>
-
-            <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-              <a (click)="getInternalUpdateList(pager.currentPage + 1)">Next</a>
-            </li>
-          </ul> -->
         </div>
 
       </div>
@@ -146,34 +136,34 @@
               <form [formGroup]="internalUpdateForm" novalidate (ngSubmit)="addInternalUpdate(internalUpdateForm.valid)">
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <select class="form-control" formControlName="selectUpdateType" required (ngModelChange)="onSelectType($event)">
-                    <option selected="0" value="0">Select Update Type</option>
+                  <select class="form-control" formControlName="selectUpdateType" required (ngModelChange)="onSelectType($event)" >
+                    <option value="0">Select Update Type</option>
                     <option value="chapter">Chapter</option>
                     <option value="article">Article</option>
                   </select>
-                  <small *ngIf="internalUpdateForm.controls.selectUpdateType=='0' && submitted">
+                  <small *ngIf="internalUpdateForm.controls.selectUpdateType.value=='0' && submitted">
                     Select Update Type !
                   </small>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <select class="form-control" formControlName="selectChapterArticle" required>
-                    <option value="0" selected="0">Select Chapter/Article</option>
+                  <select class="form-control" formControlName="selectChapterArticle" required > 
+                    <option value="0" >Select Chapter/Article</option>
                     <option *ngFor="let item of secondDropDownArray" value="{{item}}">{{item}}</option>
                   </select>
-                  <small *ngIf="editInternalUpdate.controls.selectChapterArticle=='0' && submitted">
+                  <small *ngIf="internalUpdateForm.controls.selectChapterArticle.value=='0'  && submitted">
                     Select Chapter/Article !
                   </small>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="Title" formControlName="title" name="title" id="title">
+                  <input type="text" class="form-control" maxlength="50" placeholder="Title" formControlName="title" name="title" id="title">
                   <small [hidden]="internalUpdateForm.controls.title.valid || (internalUpdateForm.controls.title.pristine && !submitted)">
                     Title is required .
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <textarea rows="5" type="text" class="form-control" placeholder="Details" formControlName="details" name="details"></textarea>
+                  <textarea rows="5" type="text" class="form-control" maxlength="5000" placeholder="Details" formControlName="details" name="details"></textarea>
                   <small [hidden]="internalUpdateForm.controls.details.valid || (internalUpdateForm.controls.details.pristine && !submitted)">
                     Details is required .
                   </small>
@@ -190,6 +180,10 @@
                   <button type="submit" class="btn btn-primary">Save</button>
                   <button type="button" class="btn btn-success pull-right" data-dismiss="modal">Cancel</button>
                 </div>
+
+                <small *ngIf="apiResult==-1 || apiResult==1">
+                  {{apiMessage}}
+                </small>
               </form>
             </div>
           </div>
@@ -217,33 +211,33 @@
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <select class="form-control" formControlName="selectUpdateType" required (ngModelChange)="onSelectType($event)" [(ngModel)]="selectUpdateType">
-                    <option selected="0" value="0">Select Update Type</option>
+                    <option value="0">Select Update Type</option>
                     <option value="chapter">Chapter</option>
                     <option value="article">Article</option>
                   </select>
-                  <small *ngIf="editInternalUpdate.controls.selectUpdateType=='0' && submitted">
+                  <small *ngIf="editInternalUpdate.controls.selectUpdateType.value=='0' && submitted">
                     Select Update Type !
                   </small>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <select class="form-control" formControlName="selectChapterArticle" required [(ngModel)]="selectChapterArticle">
-                    <option value="0" selected="0">Select Chapter/Article</option>
+                    <option value="0" >Select Chapter/Article</option>
                     <option *ngFor="let item of secondDropDownArray" value="{{item}}">{{item}}</option>
                   </select>
-                  <small *ngIf="editInternalUpdate.controls.selectChapterArticle=='0' && submitted">
+                  <small *ngIf="editInternalUpdate.controls.selectChapterArticle.value=='0' && submitted">
                     Select Chapter/Article !
                   </small>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="Title" formControlName="title" name="title" id="title">
+                  <input type="text" class="form-control" maxlength="50" placeholder="Title" formControlName="title" name="title" id="title">
                   <small [hidden]="editInternalUpdate.controls.title.valid || (editInternalUpdate.controls.title.pristine && !submitted)">
                     Title is required .
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <textarea rows="10" cols="50" type="text" class="form-control" placeholder="Details" formControlName="details" name="details"></textarea>
+                  <textarea rows="10" cols="50" type="text" maxlength="5000" class="form-control" placeholder="Details" formControlName="details" name="details"></textarea>
                   <small [hidden]="editInternalUpdate.controls.details.valid || (editInternalUpdate.controls.details.pristine && !submitted)">
                     Details is required .
                   </small>
@@ -254,19 +248,6 @@
                     Link is required .
                   </small>
                 </div>
-
-                <!-- <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <select class="form-control" formControlName="status" required>
-                    <option selected="selected" value=""> --- Salect Status Type ---</option>
-                    <option value="Approved"> Approved </option>
-                    <option value="Pending">Pending</option>
-                    <option value="Denied">Denied</option>
-                  </select>
-                  <small [hidden]="editInternalUpdate.controls.status.valid || (editInternalUpdate.controls.status.pristine && !submitted)">
-                    Status is required .
-                  </small>
-                </div> -->
-
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <!-- <input type="button" class="btn btn-primary" value="Add Notifications"> -->

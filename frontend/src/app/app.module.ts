@@ -66,6 +66,10 @@ import { hsnSerCodePipe } from './user-hsn-code/hsnSerCode.pipe';
 import { PreventLoggedInAccess } from './PreventLoggedInAccess';
 import { AuthService } from './auth.service';
 import { videosPipe } from './admin-gstone-videos/videos.pipe';
+import { GstupdateDetailComponent } from './gstupdate-detail/gstupdate-detail.component';
+import { CharOnlyDirective } from './Directives/char-only.directive';
+import { NumbersOnlyDirective } from './Directives/numbers-only.directive';
+import { AdminInternalUpdateInnerpageComponent } from './admin-internal-update-innerpage/admin-internal-update-innerpage.component';
 
 @NgModule({
   declarations: [
@@ -121,11 +125,14 @@ import { videosPipe } from './admin-gstone-videos/videos.pipe';
     FaqsComponent,
     AboutUsComponent,
     ContactComponent,
-    UserDashboardComponent
+    UserDashboardComponent,
+    GstupdateDetailComponent,
+    CharOnlyDirective,
+    NumbersOnlyDirective,
+    AdminInternalUpdateInnerpageComponent
     //DatepickerModule
   ],
   imports: [
-
     ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,

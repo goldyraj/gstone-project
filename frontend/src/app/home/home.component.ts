@@ -12,6 +12,7 @@ import { RouterModule, Routes, Router } from '@angular/router';
 export class HomeComponent implements OnInit {
   @ViewChild('closeBtn') closeBtn: ElementRef;
   @ViewChild('button2') button2: ElementRef;
+  @ViewChild('loginForm') loginForm: ElementRef;
   // model: any = {};
 
   notificationList = [];
@@ -19,9 +20,9 @@ export class HomeComponent implements OnInit {
   internalUpdateList = [];
   videosList = [];
   StateVal = {};
-  url = "";
+  url = '';
   notiRowData;
-  rowDataIndex = "";
+  rowDataIndex = '';
   Paging = {
     page: 1,
     limit: 2
@@ -31,26 +32,27 @@ export class HomeComponent implements OnInit {
   currentPage: number;
   loading = false;
   modelHide = '';
-  access_token = "";
+  access_token = '';
   userDetails = [];
   public userIsLogged: boolean;
   public errorType: boolean;
   reg = {};
-  errorMsg = "";
-  selectedState = "";
+  errorMsg = '';
+  selectedState = '';
   selectedCountry = [];
   venderList = [];
   public myForm: FormGroup; // our model driven form
   public LoginForm: FormGroup; // our model driven form
   public submitted: boolean; // keep track on whether form is submitted
+  public LoginSubmitted: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
   constructor(public http: Http, private router: Router, private _fb: FormBuilder) {
     // this.getNotificationList();
     // this.getVideosList();
     // this.getInternalUpdateList();
     this.getStateList();
-    this.access_token = localStorage.getItem("user_token");
-    console.log("user token", this.access_token);
+    this.access_token = localStorage.getItem('user_token');
+    console.log('user token', this.access_token);
     this.checkAuth();
   }
 
@@ -61,18 +63,19 @@ export class HomeComponent implements OnInit {
     this.selectedState = $event.target.value;
   }
   ngOnInit() {
-    
+
     this.myForm = new FormGroup({
-      name: new FormControl('', [<any>Validators.required]),
-      contact: new FormControl('', [<any>Validators.required, <any>Validators.minLength(10)]),
-      pan_no: new FormControl('', [<any>Validators.required, <any>Validators.minLength(10)]),
-      email: new FormControl('', [<any>Validators.required]),
-      gstin: new FormControl('', [<any>Validators.required]),
-      address: new FormControl('', [<any>Validators.required]),
-      city: new FormControl('', [<any>Validators.required]),
+      name: new FormControl('asd', [Validators.required, Validators.pattern('.*\\S.*')]),
+      contact: new FormControl('9713270396', [<any>Validators.required, <any>Validators.minLength(10)]),
+      pan_no: new FormControl('YHSDS2345E', [<any>Validators.required, <any>Validators.minLength(10)]),
+      email: new FormControl('asdg@adsf.ocm', [<any>Validators.required]),
+      gstin: new FormControl('asdf', [<any>Validators.required, Validators.pattern('.*\\S.*')]),
+      address: new FormControl('asdf', [<any>Validators.required, Validators.pattern('.*\\S.*')]),
+      city: new FormControl('asdf', [<any>Validators.required, Validators.pattern('.*\\S.*')]),
       userType: new FormControl('', [<any>Validators.required]),
-      password: new FormControl('', [<any>Validators.required, <any>Validators.minLength(5)]),
-      confirm_paasword: new FormControl('', [<any>Validators.required, <any>Validators.minLength(5)]),
+      password: new FormControl('asdfgh', [<any>Validators.required, <any>Validators.minLength(5)]),
+      confirm_paasword: new FormControl('asdfhh', [<any>Validators.required, <any>Validators.minLength(5)]),
+      state: new FormControl('madhya pradesh', [<any>Validators.required]),
 
     });
     this.LoginForm = new FormGroup({
@@ -84,7 +87,7 @@ export class HomeComponent implements OnInit {
   }
 
   login(username: string, Paasword: string) {
-    console.log("Hello Log in Module is ready!!");
+    console.log('Hello Log in Module is ready!!');
     console.log(username, Paasword);
   }
 
@@ -94,51 +97,15 @@ export class HomeComponent implements OnInit {
     this.http.get('http://localhost:3000/api/auth/check?token=' + this.access_token).subscribe(data => {
       this.userDetails = data.json().info;
       this.userIsLogged = data.json().success;
-      console.log("State  PArse", this.userDetails);
-      console.log("userIsLogged", this.userIsLogged);
+      console.log('State  PArse', this.userDetails);
+      console.log('userIsLogged', this.userIsLogged);
     }, error => {
-      console.log("error", error.message);
+      console.log('error', error.message);
       this.userIsLogged = error.json().success;
       console.log(error.text());
     });
   }
 
-  // getVideosList() {
-  //   console.log('list called');
-  //   this.http.get('http://localhost:3000/api/home/vedio').subscribe(data => {
-  //     this.videosList = data.json().docs;
-  //     this.TotalPages = data.json().total;
-  //     this.pageSize = this.Paging.limit;
-  //     this.currentPage = this.Paging.page;
-  //     console.log("pagecount", )
-  //     console.log("State  PArse", this.videosList);
-  //     console.log("TotalPages", this.TotalPages);
-  //   });
-  // }
-  // getNotificationList() {
-  //   console.log('list called');
-  //   this.http.get('http://localhost:3000/api/home/notification').subscribe(data => {
-  //     this.notificationList = data.json().docs;
-  //     this.TotalPages = data.json().total;
-  //     this.pageSize = this.Paging.limit;
-  //     this.currentPage = this.Paging.page;
-  //     console.log("pagecount", )
-  //     console.log("State  PArse", this.notificationList);
-  //     console.log("TotalPages", this.TotalPages);
-  //   });
-  // }
-  // getInternalUpdateList() {
-  //   console.log('list called');
-  //   this.http.get('http://localhost:3000/api/home/internal').subscribe(data => {
-  //     this.internalUpdateList = data.json().docs;
-  //     this.TotalPages = data.json().total;
-  //     this.pageSize = this.Paging.limit;
-  //     this.currentPage = this.Paging.page;
-  //     console.log("pagecount", )
-  //     console.log("State  PArse", this.internalUpdateList);
-  //     console.log("TotalPages", this.TotalPages);
-  //   });
-  // }
 
   getStateList() {
     console.log('list called');
@@ -147,64 +114,57 @@ export class HomeComponent implements OnInit {
       this.TotalPages = data.json().total;
       this.pageSize = this.Paging.limit;
       this.currentPage = this.Paging.page;
-      console.log("pagecount", )
-      console.log("getStateList", this.stateList);
-      console.log("TotalPages", this.TotalPages);
+      console.log('getStateList', this.stateList);
+      console.log('TotalPages', this.TotalPages);
     });
   }
 
-  // submitForm(form: any): void {
-  //   console.log('Form Data: ');
-  //   console.log(form);
-  //   let body = form;
-  //   this.http.post('http://localhost:3000/api/auth/login', body)
-  //     .subscribe(
-  //     response => {
-  //       localStorage.setItem('user_token', response.json().token);
-  //       // localStorage.setItem('user_name', response.json().token);
-
-  //       //this.router.navigate(['home']);
-  //       // this.errorType = true; 
-  //       // this.errorMsg = response.json().message;
-  //       console.log(response.json().message);
-  //       // alert("Log in Successfully!");
-  //       // console.log(response);
-  //       this.button2.nativeElement.click();
-
-  //       this.router.navigate(['/user']);
-  //     },
-  //     error => {
-  //       // alert(error.text());
-  //       console.log(error.text());
-  //       this.errorType = false; 
-  //       this.errorMsg = error.json().message;
-  //       // alert(error.json().message);
-  //     }
-  //     );
-  // }
 
   submitForm(isValid: boolean) {
-    this.submitted = true; // set form submit to true
+    this.LoginSubmitted = true; // set form submit to true
     console.log(isValid);
-    console.log("hi form module is called from page");
+    console.log('hi form module is called from page');
     this.StateVal = this.LoginForm.value;
-    console.log("form valuse", this.StateVal);
+    console.log('form valuse', this.StateVal);
 
-    if (isValid == true) {
+    if (isValid === true) {
 
       const body = {
-        "username": this.LoginForm.value.email,
-        "password": this.LoginForm.value.password
+        'username': this.LoginForm.value.email,
+        'password': this.LoginForm.value.password
       };
-      this.url = "http://localhost:3000/api/auth/login";
+      this.url = 'http://localhost:3000/api/auth/login';
       return this.http.post(this.url, body)
         .subscribe(
         response => {
-          localStorage.setItem('user_token', response.json().token);
-          
-          console.log(response.json().message);
-          this.button2.nativeElement.click();
-          this.router.navigate(['/user']);
+          // localStorage.setItem('user_token', response.json().token);
+          this.http.get('http://localhost:3000/api/auth/check?token=' + response.json().token).subscribe(data => {
+            this.userDetails = data.json().info;
+            this.userIsLogged = data.json().success;
+            console.log(response.json().message);
+
+            if (this.userDetails['admin'] === true) {
+              this.button2.nativeElement.click();
+              this.router.navigate(['/admin/dashboard']);
+              localStorage.setItem('admin_token', response.json().token);
+            } else {
+              this.button2.nativeElement.click();
+              this.router.navigate(['/user']);
+              localStorage.setItem('user_token', response.json().token);
+            }
+            // this.router.navigate(['/user']);
+            console.log('State  PArse', this.userDetails);
+            console.log('userIsLogged', this.userIsLogged);
+            console.log('type', this.userDetails['type']);
+            this.LoginSubmitted = false;
+          }, error => {
+            console.log('error', error.message);
+            this.userIsLogged = error.json().success;
+            console.log(error.text());
+          });
+          // console.log(response.json().message);
+          // this.button2.nativeElement.click();
+          // this.router.navigate(['/user']);
         },
         error => {
           console.log(error.text());
@@ -218,7 +178,7 @@ export class HomeComponent implements OnInit {
   }
 
   logout() {
-    console.log("logged out");
+    console.log('logged out');
     localStorage.clear();
     window.location.reload();
     this.router.navigate(['/home']);
@@ -227,41 +187,57 @@ export class HomeComponent implements OnInit {
   saveReg(isValid: boolean) {
     this.submitted = true; // set form submit to true
     console.log(isValid);
-    console.log("form val", this.myForm.value.name);
+    console.log('form val', this.myForm.value.name);
     this.reg = this.myForm.value;
-    console.log("form valuse", this.reg);
-    if (isValid == true) {
+    console.log('form valuse', this.reg);
+    if (isValid === true) {
       const headers = new Headers();
       headers.append('Content-Type', 'application/json');
       const requestOptions = new RequestOptions({ headers: headers });
       const body = {
-        "name": this.myForm.value.name,
-        "username": this.myForm.value.email,
-        "password": this.myForm.value.password,
-        "pan_no": this.myForm.value.pan_no,
-        "gstin": this.myForm.value.gstin,
-        "city": this.myForm.value.city,
-        "contact": this.myForm.value.contact,
-        "email": this.myForm.value.email,
-        "address": this.myForm.value.address,
-        "state": this.selectedState,
-        "type": "agentuser"
-        // "type": this.myForm.value.userType
+        'name': this.myForm.value.name,
+        'username': this.myForm.value.email,
+        'password': this.myForm.value.password,
+        'pan_no': this.myForm.value.pan_no,
+        'gstin': this.myForm.value.gstin,
+        'city': this.myForm.value.city,
+        'contact': this.myForm.value.contact,
+        'email': this.myForm.value.email,
+        'address': this.myForm.value.address,
+        'state': "madhya pradesh",
+        'type': 'agentuser'
+        // 'type': this.myForm.value.userType
       };
 
 
-      this.url = "http://localhost:3000/api/auth/register";
+      this.url = 'http://localhost:3000/api/auth/register';
       return this.http.post(this.url, body, requestOptions)
         .subscribe(
         response => {
-          console.log("suceessfull data", response.json().message);
+          console.log('suceessfull data', response.json().message);
           this.closeModal();
           this.myForm.reset();
+          this.submitted = false;
+          this.saveTodos(true);
+          this.errorMsg = response.json().message;
+          this.loginForm.nativeElement.click();
         },
         error => {
-          console.log("error", error.message);
+          // console.log('error', error.message);
           console.log(error.text());
-          this.errorMsg = error.json().message;
+          console.log('real error msg', error.json().message);
+          const errorval = error.json().message;
+          console.log('real error msg : ', errorval.substr(56, 9));
+          if (errorval.substr(56, 9) === 'contact_1') {
+            this.errorMsg = 'Contact No is already register.';
+          } else if (errorval.substr(56, 8) === 'pan_no_1') {
+            this.errorMsg = 'Pan No is already register.';
+          } else {
+            this.errorMsg = 'Email id is already register.';
+          }
+          console.log('error msg', this.errorMsg);
+          this.saveTodos(false);
+          // this.errorMsg = error.json().message;
         }
         );
     }
@@ -269,14 +245,23 @@ export class HomeComponent implements OnInit {
 
   selectType(data) {
     if (data) {
-      console.log("DATA", data);
-      this.myForm.get("userType").setValue(data);
+      console.log('DATA', data);
+      this.myForm.get('userType').setValue(data);
     }
     this.notiRowData = data;
-    console.log("tpe", this.notiRowData);
+    console.log('tpe', this.notiRowData);
   }
   private closeModal(): void {
     this.closeBtn.nativeElement.click();
+  }
+  saveTodos(val) {
+    // show box msg
+    this.errorType = val;
+    // wait 3 Seconds and hide
+    setTimeout(function () {
+      this.errorType = null;
+      console.log(this.errorType);
+    }.bind(this), 3000);
   }
 
 }

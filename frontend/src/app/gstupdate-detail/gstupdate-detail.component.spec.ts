@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AdminPrivacyPolicyComponent } from './admin-privacy-policy.component';
+import { GstupdateDetailComponent } from './gstupdate-detail.component';
 
-describe('AdminPrivacyPolicyComponent', () => {
-  let component: AdminPrivacyPolicyComponent;
-  let fixture: ComponentFixture<AdminPrivacyPolicyComponent>;
+describe('GstupdateDetailComponent', () => {
+  let component: GstupdateDetailComponent;
+  let fixture: ComponentFixture<GstupdateDetailComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdminPrivacyPolicyComponent ]
+      declarations: [ GstupdateDetailComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdminPrivacyPolicyComponent);
+    fixture = TestBed.createComponent(GstupdateDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

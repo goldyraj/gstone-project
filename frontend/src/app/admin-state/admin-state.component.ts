@@ -5,20 +5,23 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { PagerService } from '../service/pager.service';
 import * as _ from 'underscore';
 import { RouterModule, Routes, Router } from '@angular/router';
-import {PreventLoggedInAccess} from '../PreventLoggedInAccess';
+import { PreventLoggedInAccess } from '../PreventLoggedInAccess';
+import { NumberValidatorsService } from "../number-validators.service";
+import { NgZone } from '@angular/core';
 
 @Component({
   selector: 'app-admin-state',
   templateUrl: './admin-state.component.html',
   styleUrls: ['./admin-state.component.css'],
-  providers: [PagerService,PreventLoggedInAccess]
+  providers: [PagerService, PreventLoggedInAccess, NumberValidatorsService]
 })
 export class AdminStateComponent implements OnInit {
 
   @ViewChild('closeBtn') closeBtn: ElementRef;
   @ViewChild('closeBtn2') closeBtn2: ElementRef;
   @ViewChild('closeBtn3') closeBtn3: ElementRef;
-  
+
+  backupStateList;
   modelHide = '';
   url = "";
   StateVal = {};
@@ -31,7 +34,9 @@ export class AdminStateComponent implements OnInit {
 
   // pager object
   pager: any = {};
-  sortBy="created_at";
+  savePagerStatus: any = {};
+  searchedStringPager: any = {};
+  sortBy = "created_at";
 
   // paged items
   pagedItems: any[];
@@ -54,12 +59,13 @@ export class AdminStateComponent implements OnInit {
   public events: any[] = []; // use later to display form changes
   public stateRowData;
   access_token = "";
-  constructor(private _fb: FormBuilder, private http: Http, private pagerService: PagerService,public router:Router) {
+  pagedSearchedItems;
+
+  constructor(private _fb: FormBuilder, private http: Http, private pagerService: PagerService, public router: Router, private zone: NgZone) {
     // this.currentPage=1;
   }
 
-  onLoad()
-  {
+  onLoad() {
 
     this.access_token = localStorage.getItem("admin_token");
     console.log("admin token", this.access_token);
@@ -67,26 +73,27 @@ export class AdminStateComponent implements OnInit {
     // this.setPage(this.pager.currentPage);
     this.getStateList(this.pager.currentPage);
     console.log("cusntor call");
-    
+
   }
 
   ngOnInit() {
     // we will initialize our form model here
     this.person.country = this.countries.filter(c => c.id === this.person.country.id)[0];
     this.myForm = new FormGroup({
-      statename: new FormControl('', [<any>Validators.required]),
-      statecode: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
+      // statename: new FormControl('', [Validators.pattern('[A-Za-z]{3}')]),
+      statename: new FormControl('', [Validators.required, Validators.pattern(".*\\S.*"), Validators.pattern('^[a-zA-Z \-\']+')]),
+      statecode: new FormControl(0, [Validators.required, , NumberValidatorsService.min(0)]),
       country: new FormControl('Select Status', [])
     });
 
     this.myFormEdit = new FormGroup({
-      statename: new FormControl('', [<any>Validators.required]),
-      statecode: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
+      statename: new FormControl('', [Validators.required, Validators.pattern(".*\\S.*"), Validators.pattern('^[a-zA-Z \-\']+')]),
+      statecode: new FormControl(0, [Validators.required, , NumberValidatorsService.min(0)]),
       country: new FormControl('Select Status', [])
     });
 
-    var context=this;
-    if (localStorage.getItem('admin_token')!=null) {
+    var context = this;
+    if (localStorage.getItem('admin_token') != null) {
       context.onLoad();
     }
     else {
@@ -114,7 +121,7 @@ export class AdminStateComponent implements OnInit {
         "code": this.myForm.value.statecode
       };
       this.stateList.push(body);
-      this.url = "http://localhost:3000/api/state/create?token="+this.access_token;
+      this.url = "http://localhost:3000/api/state/create?token=" + this.access_token;
       return this.http.post(this.url, body, requestOptions)
         .subscribe(
         response => {
@@ -122,9 +129,7 @@ export class AdminStateComponent implements OnInit {
           this.closeModal();
           // alert(response.json().message);
           this.getStateList(this.pager.currentPage);
-          this.myForm.reset();
-          this.myForm.get("country").setValue("Select Status");
-          this.submitted = false;
+
         },
         error => {
           console.log("error", error.message);
@@ -142,8 +147,10 @@ export class AdminStateComponent implements OnInit {
       // this.pager.TotalPages = data.json().total;
       this.pager.pageSize = data.json().limit;
       this.pager.totalItems = data.json().total;
+      this.backupStateList = this.stateList;
       this.setPage();
-      console.log("State  PArse", this.stateList);
+      this.savePagerStatus = this.pager;
+      console.log("DATA_API", this.stateList);
     });
   }
 
@@ -153,6 +160,7 @@ export class AdminStateComponent implements OnInit {
     }
 
     this.pager = this.pagerService.getPager(this.pager.totalItems, this.pager.currentPage, this.pager.pageSize);
+
     console.log("pager", this.pager);
     // this.getStateList();
     this.pagedItems = this.stateList;
@@ -166,14 +174,13 @@ export class AdminStateComponent implements OnInit {
     this.closeBtn2.nativeElement.click();
   }
 
-  private closeDeleteModal()
-  {
+  private closeDeleteModal() {
     this.closeBtn3.nativeElement.click();
   }
 
   editStateRecords(data) {
     var temp;
-    
+    this.submitted = false;
     if (data) {
       console.log("DATA", data);
 
@@ -198,27 +205,27 @@ export class AdminStateComponent implements OnInit {
       headers.append('Content-Type', 'application/json');
       // headers.append('x-access-token', access_token);
       const requestOptions = new RequestOptions({ headers: headers });
-      console.log("ID",this.stateRowData._id);
+      console.log("ID", this.stateRowData._id);
       const body = {
         "_id": this.stateRowData._id,
         "name": this.myFormEdit.value.statename,
         "code": this.myFormEdit.value.statecode
       };
 
-      this.url = "http://localhost:3000/api/state/update?token="+this.access_token;
+      this.url = "http://localhost:3000/api/state/update?token=" + this.access_token;
       return this.http.put(this.url, body, requestOptions)
         .subscribe(
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeEditModal();
           this.getStateList(this.pager.currentPage);
-          this.submitted = false;
+
         },
         error => {
           // this.closeEditModal();
           console.log("error", error.message);
           console.log(error.text());
-          alert(error.text());
+          // alert(error.text());
         }
         );
     }
@@ -232,15 +239,12 @@ export class AdminStateComponent implements OnInit {
     const requestOptions = new RequestOptions({ headers: headers });
     console.log("_ID___", this.stateRowData._id);
 
-    this.url = "http://localhost:3000/api/state/delete/" + this.stateRowData._id+"?token="+this.access_token;
+    this.url = "http://localhost:3000/api/state/delete/" + this.stateRowData._id;
     return this.http.delete(this.url, requestOptions)
       .subscribe(
       response => {
         console.log("suceessfull data", response.json().message);
         this.closeDeleteModal();
-
-        // this.hsnCodeData.push(body);
-        // alert(response.json().message);
         this.getStateList(this.pager.currentPage);
       },
       error => {
@@ -254,8 +258,45 @@ export class AdminStateComponent implements OnInit {
     this.stateRowData = item;
   }
 
-  resetForm()
-  {
+  resetForm() {
     this.myForm.reset();
+    this.myForm.get("country").setValue("Select Status");
+    this.submitted = false;
   }
+
+  searchKeyword(searchString) {
+    console.log("SEARCH_HIT");
+    console.log("REAL_LIST", this.stateList);
+    console.log("BACKUP_LIST", this.backupStateList);
+
+    if (searchString) {
+      this.http.get('http://localhost:3000/api/state/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
+        this.stateList = data.json().docs;
+        this.pager.pageSize = data.json().limit;
+        this.pager.totalItems = data.json().total;
+        this.setPage();
+        console.log("State  PArse", this.stateList);
+      });
+    }
+    else {
+      console.log("SEARCH_EMPTY");
+      this.stateList = this.backupStateList;
+      this.pager=this.savePagerStatus;
+      console.log("PAGER_CURRENT",this.pager);
+      console.log("BACKUP_PAGER",this.savePagerStatus);
+    }
+  }
+
+
+
+  // setSearchedStringPager()
+  // {
+  //   if (this.searchedStringPager.currentPage < 1 || this.searchedStringPager.currentPage > this.searchedStringPager.TotalPages) {
+  //     return;
+  //   }
+
+  //   this.searchedStringPager = this.pagerService.getPager(this.searchedStringPager.totalItems, this.searchedStringPager.currentPage, this.searchedStringPager.pageSize);
+  //   console.log("pager", this.searchedStringPager);
+  //   this.pagedSearchedItems = this.searchedStringDataList;
+  // }
 }

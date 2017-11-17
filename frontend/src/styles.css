@@ -1050,6 +1050,10 @@ span {
 .admintext{ font-size: 16px!important; font-weight: bold; padding-top: 10px;}
 .navuser{ margin-top: 12px;}
 .text-primary{font-size: 25px;vertical-align:middle; padding-top: 5px;}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6a724c67c2958cdd922fd653ad6ff2030175e71f
 .navbar-default .navbar-nav>li>a{ color: #ffffff!important;}
 .gstlogout{ color: #ffffff; cursor: pointer; padding: 20px;}
 .gstlogout i{margin-top: 15px;}

@@ -23,12 +23,14 @@ var myCallback=usingItNow(req.decoded)
         }) 
     }
 req.query.limit=parseInt(req.query.limit);
-if(req.query.search && req.query.search.length>0){    
+if(req.query.search && req.query.search.length>0){  
+   query={title:new RegExp(req.query.search,'i')}  
     if(req.query.type && req.query.type.length>0){  
-   if(req.query.type=="chapter"){
-     query={chapter:req.query.search}
+   if(req.query.type=="chapter"){ 
+      query={chapter:new RegExp(req.query.search,'i')}
  }else{
-    query={article:req.query.search}
+   query={article:new RegExp(req.query.search,'i')}
+ 
  }
 }
 }
@@ -65,6 +67,24 @@ var option={
 Internal.paginate(query,option).then( intenal=>res.json(intenal)
         )
     .catch(onError);
+}
+/* 
+    GET /api/user/view
+*/
+exports.view=(req,res)=>{
+   //console.log(req.params.id);
+Internal.findById(req.params.id, function (err, internal) { 
+
+if(err){
+    return res.status(403).json({
+            message: 'NO data found '
+        }) 
+}else{
+     return res.json({
+          internal
+        }) 
+}
+ } );
 }
 /* 
     GET /api/user/list
@@ -184,8 +204,6 @@ exports.delete=(req,res)=>{
 }else{
     res.json({'message':'Internal is Successfully deleted'})  
 }
-
-
   // we have deleted the user
    
 });

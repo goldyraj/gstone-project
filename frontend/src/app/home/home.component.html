@@ -39,7 +39,7 @@
 									<a class="page-scroll" routerLink="contact">CONTACT US</a>
 								</li>
 								<li *ngIf="userIsLogged == false">
-									<a class="page-scroll" href="#" data-toggle="modal" data-target=".bs-login-sm">LOGIN</a>
+									<a class="page-scroll" href="#" data-toggle="modal" data-target=".bs-login-sm" #loginForm>LOGIN</a>
 								</li>
 								<!-- <li *ngIf="userIsLogged == true">
 									<a class="page-scroll" (click)="logout()">LOGOUT</a>
@@ -74,7 +74,7 @@
 												<a routerLink="/user">
 													<i class="fa fa-user"></i> Profile</a>
 											</li>
-											
+
 											<li>
 												<a (click)="logout()">
 													<i class="fa fa-key"></i> Logout</a>
@@ -120,7 +120,7 @@
 				</button>
 				<!--<h4 class="modal-title modal-text"> REGISTRATION</h4>-->
 			</div>
-			<div class="modal-body">
+			<div class="modal-body section-top-10">
 				<div class="service-section">
 					<div class="row section-bottom-20">
 						<div class="col-md-1 col-sm-1"></div>
@@ -171,7 +171,7 @@
 	</div>
 </div>
 
-<div class="modal fade bs-REGISTRATION2-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+<div class="modal fade bs-REGISTRATION2-lg" tabindex="-1"  role="dialog" aria-labelledby="myLargeModalLabel">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -188,6 +188,12 @@
 						<div class="col-md-1 col-sm-1"></div>
 						<div class="col-md-10 col-sm-10">
 							<form [formGroup]="myForm" novalidate (ngSubmit)="saveReg(myForm.valid)">
+								<div class="alert alert-success" *ngIf="errorType == true">
+									{{errorMsg }}
+								</div>
+								<div class="alert alert-danger" *ngIf="errorType == false">
+										{{errorMsg }}
+								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="name" placeholder="Name">
 									<small [hidden]="myForm.controls.name.valid || (myForm.controls.name.pristine && !submitted)">
@@ -196,7 +202,7 @@
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="contact" placeholder="Contact No." pattern="^(?:(?:\+|0{0,2})91(\s*[\ -]\s*)?|[0]?)?[789]\d{9}|(\d[ -]?){10}\d$">
-									
+
 									<small [hidden]="myForm.controls.contact.valid || (myForm.controls.contact.pristine && !submitted)">
 										<span style="color:red" [hidden]="myForm.controls.contact.valid">Contact no is required.</span>
 										<b [hidden]="myForm.controls.contact.pristine">characters not allowed.</b>
@@ -251,11 +257,14 @@
 									</small>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<select class="form-control" (input)="onInput($event)">
+									<select class="form-control" (input)="onInput($event)" formControlName="state">
 										<option value="" selected="selected"> -- Select State -- </option>
 										<option *ngFor="let item of stateList" value=" {{item.name}}">{{item.name}}</option>
 									</select>
-									
+									<small *ngIf="myForm.controls.state.value ==='' && submitted">
+										Please select state !
+									</small>
+
 								</div>
 
 
@@ -274,7 +283,7 @@
 	</div>
 </div>
 
-<div class="modal fade bs-login-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+<div class="modal fade bs-login-sm" tabindex="-1" role="dialog"  aria-labelledby="mySmallModalLabel">
 	<div class="modal-dialog modal-sm" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -288,11 +297,20 @@
 			<div class="modal-body">
 				<div class="service-section">
 					<div class="row">
+						<!-- <div class="alert alert-success" *ngIf="errorType == true">
+							Contact has been send successfully
+						</div> -->
 						<form [formGroup]="LoginForm" novalidate (ngSubmit)="submitForm(LoginForm.valid)">
 							<div class="col-md-12 col-sm-12 col-xs-12">
+								<div class="col-md-12 alert alert-danger" *ngIf="errorType == false">
+									<strong>Sorry!</strong>{{errorMsg}}
+								</div>
+								<div class="col-md-12 alert alert-success" *ngIf="errorType == true">
+									{{errorMsg}}
+								</div>
 								<div class=" col-md-12 col-sm-12 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="email" placeholder="Email Id" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
-									<small [hidden]="LoginForm.controls.email.valid || (LoginForm.controls.email.pristine && !submitted)">
+									<small [hidden]="LoginForm.controls.email.valid || (LoginForm.controls.email.pristine && !LoginSubmitted)">
 										<span style="color:red" [hidden]="LoginForm.controls.email.valid">Email is required </span>
 										<b [hidden]="LoginForm.controls.email.pristine">joe@abc.com</b>
 									</small>
@@ -301,7 +319,7 @@
 								<div class=" col-md-12 col-sm-12 col-xs-12 form-group">
 
 									<input type="password" class="form-control" formControlName="password" placeholder="Password">
-									<small [hidden]="LoginForm.controls.password.valid || (LoginForm.controls.password.pristine && !submitted)">
+									<small [hidden]="LoginForm.controls.password.valid || (LoginForm.controls.password.pristine && !LoginSubmitted)">
 										Password is required .
 									</small>
 								</div>
@@ -311,9 +329,7 @@
 								<!-- <small *ngIf="errorType == true">
 									{{errorMsg}}
 								</small> -->
-								<small *ngIf="errorType == false">
-									{{errorMsg}}
-								</small>
+
 							</div>
 						</form>
 

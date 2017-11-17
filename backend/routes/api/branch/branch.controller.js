@@ -7,7 +7,7 @@ if(req.type=="agentuser"||req.type=="admin"){
 }
 
 };
-
+var events = require('events');
 /* 
     GET /api/branch/index
 */
@@ -218,23 +218,77 @@ exports.apipost=(req,res,next)=>{
 
   // var promise =Branch.hello()
   // console.log(promise)
- Branch.find({}).then(function(err, result) {
-    if (err) throw err;
- 
-    res.result= result;
-  })
-var s ={};
-process.on('unhandledRejection', (reason, p) => {
-  console.log('Unhandled Rejection at: Promise', p);
-   s=p;
-  // application specific logging, throwing an error, or other logic here
-});
- var s=JSON.stringify(res.result)
+  let s ;
 
- console.log(s)
-  res.json(
-         s
+// Create an eventEmitter object
+var eventEmitter = new events.EventEmitter();
+eventEmitter.once('foo', () => console.log('a'));
+eventEmitter.prependOnceListener('foo', () => Branch.find({}, function(err, response) {
+  if (err) {
+    console.log(err);
+    return err
+  } else {
+   
+   console.log('response step 2')
+    res.data=response;
+  s=response;
+ // next();
+ 
+    res.json(
+   s
         )
+  }
+}));
+eventEmitter.emit('foo');
+// Create an event handler as follows
+var connectHandler = function connected() {
+  console.log(' step 1');
+
+
+ 
+   // Fire the data_received event 
+   eventEmitter.emit('data_received');
+}
+
+// Bind the connection event with the handler
+eventEmitter.on('connection',() => {
+  console.log('A');
+});
+ 
+// Bind the data_received event with the anonymous function
+eventEmitter.on('data_received', function(){
+   console.log('data received succesfully. step 3');
+});
+
+// Fire the connection event 
+eventEmitter.emit('connection');
+
+console.log("Program Ended. step 4");
+ console.log('RETURN RESULT => step 5',s) 
+      //console.log('FUNCTION ',res);
+
+//   var resultdata = function(respon) {
+//     s=respon;
+//     console.log('FUNCTION ',respon);
+//            return respon;
+// }
+// // var result= function callback(response){
+// //   return response
+ 
+// console.log('ssss Result Data =>',resultdata)
+// console.log('RETURN RESULT =>',s)
+// process.on('unhandledRejection', (reason, p) => {
+//  // console.log('Unhandled Rejection at: Promise', p);
+//    s=p;
+//   // application specific logging, throwing an error, or other logic here
+// });
+
+//  //var s=JSON.stringify(res)
+
+//  console.log(branch)
+//   res.json(
+//          s
+//         )
   // promise.then({
   //    console.log('list')
   // })

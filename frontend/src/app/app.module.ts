@@ -70,7 +70,6 @@ import { GstupdateDetailComponent } from './gstupdate-detail/gstupdate-detail.co
 import { CharOnlyDirective } from './Directives/char-only.directive';
 import { NumbersOnlyDirective } from './Directives/numbers-only.directive';
 import { AdminInternalUpdateInnerpageComponent } from './admin-internal-update-innerpage/admin-internal-update-innerpage.component';
-import {ToasterModule, ToasterService} from 'angular2-toaster';
 import { AdminUserComponent } from './admin-user/admin-user.component';
 import { AdminCustomerComponent } from './admin-customer/admin-customer.component';
 import { AdminVendorComponent } from './admin-vendor/admin-vendor.component';
@@ -140,7 +139,6 @@ import { AdminVendorComponent } from './admin-vendor/admin-vendor.component';
     //DatepickerModule
   ],
   imports: [
-    ToasterModule,
     ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,

@@ -127,13 +127,13 @@
 								</div>
 
 								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
-									<select class="form-control" (input)="onInput($event)">
+									<select class="form-control" (input)="onInput($event)" formControlName="state">
 										<option value="" selected="selected"> -- Select State -- </option>
 										<option *ngFor="let item of stateList" value=" {{item.name}}">{{item.name}}</option>
 									</select>
-									<!-- <small *ngIf="myForm.controls.state.value=='Select State' && submitted">
+									<small *ngIf="myForm.controls.state.value ==='' && !submitted">
 										Please select state !
-									</small> -->
+									</small>
 								</div>
 
 								<div class="col-md-12 col-sm-12 col-xs-12 form-group" align="center">

@@ -1,340 +1,255 @@
-<div class="container">
-	<div class="row">
-		<div class="col-md-3 navbar-header-gst">
-			<div class="navbar-brand">
-				<a href="index.html">
-					<h2 class="gst_logo">GST</h2>
-				</a>
-			</div>
+<section class="content-header">
+	<h1>&nbsp; </h1>
+	<ol class="breadcrumb">
+	  <li>
+		<a routerLink="dashboard">
+		  <i class="fa fa-dashboard"></i> Home</a>
+	  </li>
+	  <li class="active">Branches</li>
+	</ol>
+  </section>
+  
+  <!-- Main content -->
+  <section class="content">
+	<div class="box box-info">
+	  <div class="row">
+  
+		<div class="col-md-8 col-xs-12">
+		  <div class="box-header">
+			<h3 class="text-blue">Branches List</h3>
+		  </div>
 		</div>
-		<div class="col-md-6">
+  
+		<div class="col-md-4 col-xs-12">
+		  <div class="text-right">
+			<!-- <input type="button" class="btn btn-primary" value="Import CSV"> -->
+  
+			<input type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-user-lg" value="Add New" (click)="resetForm()">
+		  </div>
 		</div>
-		<div class="col-md-3">
-			<div class="user_profile">
-				<label>Contact Mail</label>
-				<div class="btn-group pull-right" role="group">
-					<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						User email
-						<span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu">
-						<li>
-							<a href="#">
-								<i class="fa fa-user"></i> Profile</a>
-						</li>
-						<li>
-							<a href="#">
-								<i class="fa fa-cog"></i> Setting</a>
-						</li>
-						<li>
-							<a href="#">
-								<i class="fa fa-key"></i> Logout</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-
-<header class="main-header">
-	<div class="container-fluid">
-		<div class="row">
-			<!-- Navigation  navbar-static-top -->
-			<nav class="navbar navbar-inverse">
-				<div class="container navbar-header-gst">
-					<div class="navbar-header page-scroll">
-						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-							<span class="sr-only">Toggle navigation</span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-						</button>
-					</div>
-
-					<!-- Collect the nav links, forms, and other content for toggling -->
-					<div class="collapse navbar-collapse navbar-ex1-collapse">
-						<ul class="nav navbar-nav">
-							<!-- Hidden li included to remove active class from about link when scrolled up past about section -->
-							<li>
-								<a class="page-scroll" href="#">User Name
-									<span> GSTIN No</span>
-								</a>
-							</li>
-							<li>
-								<a class="page-scroll" href="user">Dashboard</a>
-							</li>
-							<li>
-								<a class="page-scroll" href="workreturns">Returns</a>
-							</li>
-							<li>
-								<a class="page-scroll" href="notification">Notification </a>
-							</li>
-							<li>
-								<a class="page-scroll" href="update">Updates </a>
-							</li>
-							<li>
-								<a class="page-scroll" href="videos">Videos </a>
-							</li>
-						</ul>
-					</div>
-					<!-- /.navbar-collapse -->
-				</div>
-			</nav>
-		</div>
-	</div>
-</header>
-
-
-<div class="clearfix"></div>
-
-<div class="container">
-	<div class="row">
-		<div class="col-xs-6 col-sm-3">
-			<h3 class="text-primary">
-				<b>Branch List</b>
-			</h3>
-		</div>
-
-		<div class="col-xs-6 col-sm-3 placeholder"> </div>
-		<div class="col-xs-6 col-sm-3 placeholder"> </div>
-
-		<div class="col-xs-6 col-sm-3 placeholder">
-			<a href="#" data-toggle="modal" data-target=".bs-GSTIN-lg">
-				<input type="button" class="btn btn-success pull-right" value="Add New Branch">
-			</a>
-		</div>
-
+  
 		<div class="clearfix"></div>
-
-		<!-- User Page Table -->
-
-		<!-- User Page Table End -->
-
-		<div class="col-md-8 col-sm-12">
-
-			<div class="well">
-				<div class="row">
-
-					<div class="col-md-12 col-sm-12 col-xs-12">
-						<table class="col-md-12 col-sm-12 col-xs-12 form-group invoice">
-							<!-- <thead>
-								<tr>
-									<th>Branch Name</th>
-									<th>GSTIN</th>
-									<th></th>
-								</tr>
-							</thead> -->
-
-							<ng-template ngFor let-item [ngForOf]="branchesList">
-								<tbody>
-									<tr class="header" (ngModel)="item">
-										<td align="center">{{item.branchName}}</td>
-										<td align="center">GSTIN: {{item.gstin}}</td>
-										<td align="center">
-
-											<div class="col-xs-6 col-sm-3 placeholder">
-												<button routerLink="/edit" class="btn btn-success">Edit </button>
-											</div>
-										</td>
-									</tr>
-								</tbody>
-							</ng-template>
-
-						</table>
-
-
-
-					</div>
-				</div>
+  
+		<div class="col-md-3 col-xs-12">
+		  <div class="input-group section-bottom-20">
+			<input type="text" placeholder="Search Name" (input)="searchKeyword($event.target.value)" (ngModel)="searchString" class="form-control"
+			  data-inputmask="'alias': 'ip'" data-mask>
+			<div class="input-group-addon">
+			  <i class="fa fa-search" (click)="searchKeyword(searchString)">
+			  </i>
 			</div>
-			<!-- Modified Table -->
+		  </div>
 		</div>
-
+  
+		<div class="col-lg-12 col-xs-12">
+		  
+		  <div class="table-responsive no-padding scroll">
+			<table class="table table-condensed  table-hover table-bordered">
+			  <thead>
+				<tr>
+				  <th width="4%">S.No.</th>
+				  <th width="15%">Name</th>
+				  <th width="10%">Email</th>
+				  <th width="10%">GSTIN</th>
+				  <th width="10%">Pan No.</th>
+				  <th width="10%">Contact</th>
+				  <th width="15%">Address</th>
+				  <th width="10%">City</th>
+				  <th width="8%">State</th>
+				  <th width="8%" class="text-center">Action</th>
+				</tr>
+			  </thead>
+			  <tbody>
+				<tr *ngFor="let item of stateList;let i = index;">
+				  <!-- <tr *ngFor="let item of stateList | stateFilter:searchString; let i = index;"> -->
+				  <td align="center">{{pager.pageSize * (pager.currentPage-1)+i+1}}</td>
+				  <td align="center">{{item.name}}</td>
+				  <td align="center">{{item.code}}</td>
+				  <td align="center">
+					<a data-toggle="modal" data-target=".bs-goods-lg-edit">
+					  <button class="fa fa-edit btn btn-primary btn-sm" title="Edit" (click)="editStateRecords(item)"></button>
+					</a>
+					<a href="" data-toggle="modal" data-target=".bs-delete-sm">
+					  <button class="fa fa-trash btn btn-danger btn-sm" title="Delete" (click)="recordToDelete(item)"></button>
+					</a>
+				  </td>
+				</tr>
+			  </tbody>
+			</table>
+  
+  
+			<ul class="pagination btn-sm" *ngIf="stateList?.length > 1">
+			  <li [ngClass]="{disabled:pager.currentPage === 1}">
+				<a *ngIf="pager.currentPage > 1" (click)="getStateList(pager.currentPage - 1)">Previous</a>
+			  </li>
+  
+			  <li [ngClass]="{disabled:pager.currentPage === 1}">
+				<a *ngIf="pager.currentPage ==1">Previous</a>
+			  </li>
+  
+			  <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+				<a (click)="getStateList(page)">{{page}}</a>
+			  </li>
+  
+			  <li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
+				<a *ngIf="pager.currentPage < pager.endPage" (click)="getStateList(pager.currentPage + 1)">Next</a>
+			  </li>
+			  <li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
+				<a *ngIf="pager.currentPage == pager.endPage">Next</a>
+			  </li>
+			</ul>
+  
+			<!-- <ul class="pagination btn-sm" *ngIf="stateList?.length > 1">
+			  <li [ngClass]="{disabled:pager.currentPage === 1}">
+				<a *ngIf="pager.currentPage > 1" (click)="setPage(pager.currentPage - 1)">Previous</a>
+			  </li>
+  
+			  <li [ngClass]="{disabled:pager.currentPage === 1}">
+				<a *ngIf="pager.currentPage ==1">Previous</a>
+			  </li>
+  
+			  <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+				<a (click)="setPage(page)">{{page}}</a>
+			  </li>
+  
+			  <li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
+				<a *ngIf="pager.currentPage < pager.endPage" (click)="setPage(pager.currentPage + 1)">Next</a>
+			  </li>
+			  <li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
+				<a *ngIf="pager.currentPage == pager.endPage">Next</a>
+			  </li>
+			</ul> -->
+  
+		  </div>
+		</div>
+	  </div>
+  
 	</div>
-
-	<!-- Modal -->
-
-	<div class="modal fade bs-GSTIN-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-			<div class="modal-dialog modal-lg" role="document">
-				<div class="modal-content section-form">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" #closeBtn aria-label="Close">
-							<span class="modal-text" aria-hidden="true">X</span>
-						</button>
-						<h4 class="modal-title modal-text" align="center">
-							<b> Add New GSTIN</b>
-						</h4>
-					</div>
-					<div class="modal-body">
-						<div class="service-section">
-							<div class="row">
-								<div class="col-md-1 col-sm-1"></div>
-								<div class="col-md-10 col-sm-10">
-									<form [formGroup]="myForm" novalidate (ngSubmit)="save( myForm.valid)">
-										<!-- <form [formGroup]="myForm" novalidate (ngSubmit)="save()"> -->
-		
-										<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-											<input type="text" class="form-control" formControlName="name" placeholder="Name" required>
-											<small [hidden]="myForm.controls.name.valid || (myForm.controls.name.pristine && !submitted)">
-												Name is required (minimum 5 characters).
-											</small>
-										</div>
-										<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-											<input type="text" class="form-control" formControlName="contact" placeholder="Contact No.">
-											<small [hidden]="myForm.controls.contact.valid || (myForm.controls.contact.pristine && !submitted)">
-												Contact is required (minimum 5 characters).
-											</small>
-										</div>
-										<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-											<input type="text" class="form-control" formControlName="pan_no" placeholder="PAN No." pattern="[A-Za-z]{5}\d{4}[A-Za-z]{1}">
-											<small [hidden]="myForm.controls.pan_no.valid || (myForm.controls.pan_no.pristine && !submitted)">
-												<span style="color:red" [hidden]="myForm.controls.pan_no.valid">Pan No is required.</span>
-												<b [hidden]="myForm.controls.pan_no.pristine">YHSDS2345E</b>
-											</small>
-										</div>
-										<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-											<input type="text" class="form-control" formControlName="email" placeholder="Email Id" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
-											<small [hidden]="myForm.controls.email.valid || (myForm.controls.email.pristine && !submitted)">
-												<span style="color:red" [hidden]="myForm.controls.email.valid">Email is required </span>
-												<b [hidden]="myForm.controls.email.pristine">joe@abc.com</b>
-											</small>
-		
-										</div>
-										<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-											<input type="text" class="form-control" formControlName="gstin" placeholder="GSTIN" name="gstin" id="gstin">
-											<small [hidden]="myForm.controls.gstin.valid || (myForm.controls.gstin.pristine && !submitted)">
-												GSTIN is required (minimum 5 characters).
-											</small>
-										</div>
-										<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-											<input type="text" class="form-control" formControlName="address" placeholder="Address" name="address" id="address">
-											<small [hidden]="myForm.controls.address.valid || (myForm.controls.address.pristine && !submitted)">
-												Address is required (minimum 5 characters).
-											</small>
-										</div>
-										<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-											<select class="form-control">
-												<option value="" selected="selected"> -- Dealer Type -- </option>
-												<option value="">Dealer Jabalpur</option>
-												<option value="">Dealer Bhopal</option>
-												<option value="">Dealer Raipur</option>
-											</select>
-										</div>
-										<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-											<input type="text" class="form-control" placeholder="City" formControlName="city" name="city" id="city">
-											<small [hidden]="myForm.controls.city.valid || (myForm.controls.city.pristine && !submitted)">
-												City is required (minimum 5 characters).
-											</small>
-										</div>
-										<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-											<input type="text" class="form-control" formControlName="branch_name" placeholder="Branch Name" name="branch_name" id="branch_name">
-											<small [hidden]="myForm.controls.branch_name.valid || (myForm.controls.branch_name.pristine && !submitted)">
-												Branch Name is required (minimum 5 characters).
-											</small>
-										</div>
-										<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-											<select class="form-control">
-												<option value="" selected="selected"> -- Select State -- </option>
-												<option value="">Jabalpur</option>
-												<option value="">Bhopal</option>
-												<option value="">Raipur</option>
-											</select>
-										</div>
-										<div class="col-md-12 col-sm-12 col-xs-12 form-group" align="center">
-											<button type="submit" class="btn btn-primary">Create</button>
-											<!-- <button type="submit" class="btn btn-primary" data-dismiss="modal" (click)="save(myForm.valid)">Create</button> -->
-											<!-- <input type="submit" class="btn btn-primary" data-dismiss="modal" value="Create"> -->
-		
-											<button type="button" class="btn btn-primary" data-dismiss="modal" value="Cancel">
-												Cancel
-											</button>
-											<!-- <input type="button" class="btn btn-primary" data-dismiss="modal" value="Cancel"> -->
-										</div>
-									</form>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+  </section>
+  <!-- /.content -->
+  
+  <!-- User Form Start -->
+  
+  <div class="modal fade bs-user-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+	<div class="modal-dialog modal-sm" role="document">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <button type="button" class="close" data-dismiss="modal" #closeBtn aria-label="Close">
+			<span class="modal-text" aria-hidden="true">X</span>
+		  </button>
+		  <h4 class="modal-title modal-text"> Add State</h4>
 		</div>
-
-	<!-- Modal -->
-
-	<div class="modal fade bs-GSTIN-lg-edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-		<div class="modal-dialog modal-lg" role="document">
-			<div class="modal-content section-form">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span class="modal-text" aria-hidden="true">X</span>
-					</button>
-					<h4 class="modal-title modal-text" align="center">
-						<b>Edit</b>
-					</h4>
-				</div>
-				<div class="modal-body">
-					<div class="service-section">
-						<div class="row">
-							<div class="col-md-1 col-sm-1"></div>
-							<div class="col-md-10 col-sm-10">
-
-								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<input [value]="publicBranchData.name" type="text" class="form-control" placeholder="Name" name="name" id="name" required>
-								</div>
-								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<input [value]="publicBranchData.contact" type="text" class="form-control" placeholder="Contact No." name="contact" id="contact"
-									 required>
-								</div>
-								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<input [value]="publicBranchData.panNo" type="text" class="form-control" placeholder="PAN No." name="pan_no" id="pan_no"
-									 required>
-								</div>
-								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<input [value]="publicBranchData.email" type="text" class="form-control" placeholder="Email Id" name="email" id="email" required>
-								</div>
-								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<input [value]="publicBranchData.gstin" type="text" class="form-control" placeholder="GSTIN" name="gstin" id="gstin" required>
-								</div>
-								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<input [value]="publicBranchData.address" type="text" class="form-control" placeholder="Address" name="address" id="address"
-									 required>
-								</div>
-								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<input [value]="publicBranchData.city" type="text" class="form-control" placeholder="City" name="city" id="city" required>
-								</div>
-								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<select class="form-control" [(ngModel)]="selectedDealerStateEdit">
-										<option value="0" selected="selected"> -- Select State -- </option>
-										<option value="Jabalpur">Jabalpur</option>
-										<option value="Bhopal">Bhopal</option>
-										<option value="Raipur">Raipur</option>
-									</select>
-								</div>
-								<div class="col-md-12 col-sm-12 col-xs-12 form-group" align="center">
-									<input type="button" class="btn btn-primary" data-dismiss="modal" value="Save">
-
-									<input type="button" class="btn btn-primary" data-dismiss="modal" value="Cancel">
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+		<div class="modal-body">
+		  <div class="service-section">
+			<div class="row">
+			  <div class="col-md-12 col-sm-12">
+				<form [formGroup]="myForm" novalidate (ngSubmit)="saveState(myForm.valid)">
+  
+				  <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+					<input type="text" maxlength="30" class="form-control" formControlName="statename" placeholder="State Name" name="statename"
+					  id="statename" required>
+					<small [hidden]="myForm.controls.statename.valid || (myForm.controls.statename.pristine && !submitted)">
+					  State Name is required !
+					</small>
+				  </div>
+				  <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+					<input type="text" OnlyNumber="true" maxlength="5" class="form-control" formControlName="statecode" placeholder="State Code"
+					  name="statecode" required>
+					<small *ngIf="(myForm.controls.statecode.value <= 0 || !myForm.controls.statecode.valid)  && submitted">
+					  State Code is required !
+					</small>
+				  </div>
+  
+				  <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+					<button type="submit" class="btn btn-primary">Add State</button>
+					<button type="button" class="btn btn-success pull-right" data-dismiss="modal">Cancel</button>
+				  </div>
+				</form>
+			  </div>
 			</div>
+		  </div>
 		</div>
+	  </div>
 	</div>
-
-	<!-- Footer Start -->
-<footer class="unicod-footer bg-style">
-		
-			<div class="container-fluid unicod-copyright">
-				<div class="row">
-					<div class="col-md-6 col-md-offset-3 text-center">
-						<div class="Copyright">
-							<p>Copyright 2017, GST. All Rights Reserved </p>
-						</div>
-					</div>
-				</div>
+  </div>
+  <!-- User Form end -->
+  
+  <div class="modal fade bs-goods-lg-edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+	<div class="modal-dialog modal-sm" role="document">
+	  <div class="modal-content section-form">
+		<div class="modal-header">
+		  <button type="button" class="close" data-dismiss="modal" #closeBtn2 aria-label="Close">
+			<span class="modal-text" aria-hidden="true">X</span>
+		  </button>
+		  <h4 class="modal-title modal-text" align="center">
+			<b>Edit State</b>
+		  </h4>
+		</div>
+		<div class="modal-body">
+		  <div class="service-section">
+			<div class="row">
+			  <div class="col-md-1 col-sm-1"></div>
+			  <div class="col-md-10 col-sm-10">
+				<form [formGroup]="myFormEdit" novalidate (ngSubmit)="updateState(myFormEdit.valid)">
+  
+				  <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+					<input type="text" maxlength="30" class="form-control" formControlName="statename" placeholder="State Name" name="statename"
+					  id="statename" required>
+					<small [hidden]="myFormEdit.controls.statename.valid || (myFormEdit.controls.statename.pristine && !submitted)">
+					  State Name is required !
+					</small>
+				  </div>
+				  <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+					<input type="text" OnlyNumber="true" maxlength="5" class="form-control" formControlName="statecode" placeholder="State Code"
+					  name="statecode" required>
+					<small *ngIf="myForm.controls.statecode.valid  && submitted">
+					  State Code is required !
+					</small>
+				  </div>
+  
+				  <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+					<button type="submit" class="btn btn-primary">Update</button>
+					<button type="button" class="btn btn-success pull-right" data-dismiss="modal">Cancel</button>
+				  </div>
+				</form>
+			  </div>
 			</div>
-		</footer>
+		  </div>
+		</div>
+	  </div>
+	</div>
+  </div>
+  
+  <!-- Edit Modal -->
+  
+  <!-- delete Start -->
+  
+  <div class="modal fade bs-delete-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog modal-sm" role="document">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <button type="button" class="close" data-dismiss="modal" #closeBtn3 aria-label="Close">
+			<span class="modal-text" aria-hidden="true">X</span>
+		  </button>
+		</div>
+		<div class="modal-body">
+		  <div class="service-section">
+			<div class="row">
+			  <div class="col-md-12 col-sm-12 col-xs-12">
+				<div class="col-md-12 col-sm-12 col-xs-12 text-center">
+				  <h4 class="text-blue">Sure, you want to delete ?
+					<br>
+					<br>
+				  </h4>
+				</div>
+				<div class="text-center">
+				  <input type="button" class="btn btn-success" (click)="deleteRecord()" value="Yes"> &nbsp; &nbsp;
+				  <input type="button" class="btn btn-primary" data-dismiss="modal" value="No">
+				</div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</div>
+  </div>

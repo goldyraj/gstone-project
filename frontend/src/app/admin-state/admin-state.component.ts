@@ -193,17 +193,12 @@ export class AdminStateComponent implements OnInit {
   }
 
   updateState(isValid: boolean) {
-
-    console.log("EDIITITITT");
     this.submitted = true; // set form submit to true
-    console.log(isValid);
 
-    // if (isValid == true && this.myFormEdit.value.selectedstateDropdown!='Select State') {
     if (isValid == true) {
       const headers = new Headers();
 
       headers.append('Content-Type', 'application/json');
-      // headers.append('x-access-token', access_token);
       const requestOptions = new RequestOptions({ headers: headers });
       console.log("ID", this.stateRowData._id);
       const body = {
@@ -222,10 +217,8 @@ export class AdminStateComponent implements OnInit {
 
         },
         error => {
-          // this.closeEditModal();
           console.log("error", error.message);
           console.log(error.text());
-          // alert(error.text());
         }
         );
     }
@@ -286,17 +279,4 @@ export class AdminStateComponent implements OnInit {
       console.log("BACKUP_PAGER",this.savePagerStatus);
     }
   }
-
-
-
-  // setSearchedStringPager()
-  // {
-  //   if (this.searchedStringPager.currentPage < 1 || this.searchedStringPager.currentPage > this.searchedStringPager.TotalPages) {
-  //     return;
-  //   }
-
-  //   this.searchedStringPager = this.pagerService.getPager(this.searchedStringPager.totalItems, this.searchedStringPager.currentPage, this.searchedStringPager.pageSize);
-  //   console.log("pager", this.searchedStringPager);
-  //   this.pagedSearchedItems = this.searchedStringDataList;
-  // }
 }

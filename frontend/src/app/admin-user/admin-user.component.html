@@ -2,7 +2,7 @@
   <h1>&nbsp; </h1>
   <ol class="breadcrumb">
     <li>
-      <a href="index.html">
+      <a >
         <i class="fa fa-dashboard"></i> Home</a>
     </li>
     <li class="active">Users List</li>
@@ -21,11 +21,11 @@
       </div>
 
       <div class="col-md-4 col-xs-12">
-        <div class="text-right">
-          <!-- <input type="button" class="btn btn-primary" value="Import CSV"> -->
+        <!-- <div class="text-right">
+          <input type="button" class="btn btn-primary" value="Import CSV">
 
           <input type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-user-lg" value="Add New" (click)="resetForm()">
-        </div>
+        </div> -->
       </div>
 
       <div class="clearfix"></div>
@@ -43,45 +43,51 @@
 
       <div class="col-lg-12 col-xs-12">
 
-        <!-- /.box-header -->
-
-        <div class="table-responsive no-padding">
+        <div class="table-responsive no-padding scroll">
           <table class="table table-condensed  table-hover table-bordered">
             <thead>
               <tr>
-                <th width="2%">S. No.</th>
-                <th width="20%">State Name</th>
-                <th width="20%">Code</th>
-                <!-- <th width="12%">Status</th> -->
-                <th width="14%" class="text-center">Action</th>
+                <th width="8%">S. No.</th>
+                <th width="15%">Name</th>
+                <th width="10%">Email</th>
+                <th width="10%">GSTIN</th>
+                <th width="10%">PAN No.</th>
+                <th width="10%">Contact</th>
+                <th width="15%">Address</th>
+                <th width="10%">City</th>
+                <th width="8%">State</th>
+                <th width="4%" class="text-center">Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let item of stateList;let i = index;">
-                <!-- <tr *ngFor="let item of stateList | stateFilter:searchString; let i = index;"> -->
+              <tr *ngFor="let item of dataList;let i = index;">
+                <!-- <tr *ngFor="let item of dataList | stateFilter:searchString; let i = index;"> -->
                 <td align="center">{{pager.pageSize * (pager.currentPage-1)+i+1}}</td>
-                <td align="center">{{item.name}}</td>
-                <td align="center">{{item.code}}</td>
+                <td align="center">{{item.username}}</td>
+                <td align="center">{{item.email}}</td>
+                <td align="center">{{item.gstin}}</td>
+                <td align="center">{{item.pan_no}}</td>
+                <td align="center">{{item.contact}}</td>
+                <td align="center">{{item.address}}</td>
+                <td align="center">{{item.city}}</td>
+                <td align="center">{{item.state}}</td>
 
-                <!-- <td align="center">
-                        <span class="label label-warning">Pending</span>
-                      </td> -->
                 <td align="center">
-                  <a data-toggle="modal" data-target=".bs-goods-lg-edit">
-                    <button class="fa fa-edit btn btn-primary btn-sm" title="Edit" (click)="editStateRecords(item)"></button>
+                  <a data-toggle="modal" data-target=".bs-edit-modal-lg">
+                    <button class="fa fa-edit btn btn-primary btn-sm" title="Edit" (click)="editRecords(item)"></button>
                   </a>
-                  <a href="" data-toggle="modal" data-target=".bs-delete-sm">
+                  <!-- <a href="" data-toggle="modal" data-target=".bs-delete-sm">
                     <button class="fa fa-trash btn btn-danger btn-sm" title="Delete" (click)="recordToDelete(item)"></button>
-                  </a>
+                  </a> -->
                 </td>
               </tr>
             </tbody>
           </table>
 
 
-          <ul class="pagination btn-sm" *ngIf="stateList?.length > 1">
+          <ul class="pagination btn-sm" *ngIf="dataList?.length > 1">
             <li [ngClass]="{disabled:pager.currentPage === 1}">
-              <a *ngIf="pager.currentPage > 1" (click)="getStateList(pager.currentPage - 1)">Previous</a>
+              <a *ngIf="pager.currentPage > 1" (click)="getDataList(pager.currentPage - 1)">Previous</a>
             </li>
 
             <li [ngClass]="{disabled:pager.currentPage === 1}">
@@ -89,40 +95,20 @@
             </li>
 
             <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
-              <a (click)="getStateList(page)">{{page}}</a>
+              <a (click)="getDataList(page)">{{page}}</a>
             </li>
 
             <li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
-              <a *ngIf="pager.currentPage < pager.endPage" (click)="getStateList(pager.currentPage + 1)">Next</a>
+              <a *ngIf="pager.currentPage < pager.endPage" (click)="getDataList(pager.currentPage + 1)">Next</a>
             </li>
             <li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
               <a *ngIf="pager.currentPage == pager.endPage">Next</a>
             </li>
           </ul>
 
-          <!-- <ul class="pagination btn-sm" *ngIf="stateList?.length > 1">
-            <li [ngClass]="{disabled:pager.currentPage === 1}">
-              <a *ngIf="pager.currentPage > 1" (click)="setPage(pager.currentPage - 1)">Previous</a>
-            </li>
-
-            <li [ngClass]="{disabled:pager.currentPage === 1}">
-              <a *ngIf="pager.currentPage ==1">Previous</a>
-            </li>
-
-            <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
-              <a (click)="setPage(page)">{{page}}</a>
-            </li>
-
-            <li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
-              <a *ngIf="pager.currentPage < pager.endPage" (click)="setPage(pager.currentPage + 1)">Next</a>
-            </li>
-            <li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
-              <a *ngIf="pager.currentPage == pager.endPage">Next</a>
-            </li>
-          </ul> -->
-
         </div>
       </div>
+
     </div>
 
   </div>
@@ -131,94 +117,116 @@
 
 <!-- User Form Start -->
 
-<div class="modal fade bs-user-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-  <div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" #closeBtn aria-label="Close">
-          <span class="modal-text" aria-hidden="true">X</span>
-        </button>
-        <h4 class="modal-title modal-text"> Add State</h4>
-      </div>
-      <div class="modal-body">
-        <div class="service-section">
-          <div class="row">
-            <div class="col-md-12 col-sm-12">
-              <form [formGroup]="myForm" novalidate (ngSubmit)="saveState(myForm.valid)">
+<div class="modal fade bs-edit-modal-lg" tabindex="-1"  role="dialog" aria-labelledby="myLargeModalLabel">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" #closeBtn aria-label="Close">
+					<span class="modal-text" aria-hidden="true">X</span>
+				</button>
+				<h4 class="modal-title modal-text text-center">
+					<b>Update</b>
+				</h4>
+			</div>
+			<div class="modal-body">
+				<div class="service-section">
+					<div class="row">
+						<div class="col-md-1 col-sm-1"></div>
+						<div class="col-md-10 col-sm-10">
+							<form [formGroup]="myForm" novalidate (ngSubmit)="update(myForm.valid)">
+								<div class="alert alert-success" *ngIf="errorType == true">
+									{{errorMsg }}
+								</div>
+								<div class="alert alert-danger" *ngIf="errorType == false">
+										{{errorMsg }}
+								</div>
+								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+									<input type="text" class="form-control" formControlName="username" placeholder="Name">
+									<small [hidden]="myForm.controls.username.valid || (myForm.controls.username.pristine && !submitted)">
+										Name is required
+									</small>
+								</div>
+								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+									<input type="text" class="form-control" formControlName="contact" placeholder="Contact No." pattern="^(?:(?:\+|0{0,2})91(\s*[\ -]\s*)?|[0]?)?[789]\d{9}|(\d[ -]?){10}\d$">
 
-                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" maxlength="30" class="form-control" formControlName="statename" placeholder="State Name" name="statename"
-                    id="statename" required>
-                  <small [hidden]="myForm.controls.statename.valid || (myForm.controls.statename.pristine && !submitted)">
-                    State Name is required !
-                  </small>
-                </div>
-                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" OnlyNumber="true" maxlength="5" class="form-control" formControlName="statecode" placeholder="State Code"
-                    name="statecode" required>
-                  <small *ngIf="(myForm.controls.statecode.value <= 0 || !myForm.controls.statecode.valid)  && submitted">
-                    State Code is required !
-                  </small>
-                </div>
+									<small [hidden]="myForm.controls.contact.valid || (myForm.controls.contact.pristine && !submitted)">
+										<span style="color:red" [hidden]="myForm.controls.contact.valid">Contact no is required.</span>
+										<b [hidden]="myForm.controls.contact.pristine">characters not allowed.</b>
+									</small>
+								</div>
+								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+									<input type="text" class="form-control" formControlName="pan_no" placeholder="PAN No." pattern="[A-Za-z]{5}\d{4}[A-Za-z]{1}">
+									<small [hidden]="myForm.controls.pan_no.valid || (myForm.controls.pan_no.pristine && !submitted)">
+										<span style="color:red" [hidden]="myForm.controls.pan_no.valid">Pan No is required.</span>
+										<b [hidden]="myForm.controls.pan_no.pristine">YHSDS2345E</b>
+									</small>
+								</div>
+								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+									<input type="text" class="form-control" formControlName="email" placeholder="Email Id" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
+									<small [hidden]="myForm.controls.email.valid || (myForm.controls.email.pristine && !submitted)">
+										<span style="color:red" [hidden]="myForm.controls.email.valid">Email is required </span>
+										<b [hidden]="myForm.controls.email.pristine">joe@abc.com</b>
+									</small>
 
-                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <button type="submit" class="btn btn-primary">Add State</button>
-                  <button type="button" class="btn btn-success pull-right" data-dismiss="modal">Cancel</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- User Form end -->
+								</div>
+								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+									<input type="text" class="form-control" formControlName="gstin" placeholder="GSTIN" name="gstin" id="gstin">
+									<small [hidden]="myForm.controls.gstin.valid || (myForm.controls.gstin.pristine && !submitted)">
+										GSTIN is required .
+									</small>
+								</div>
+								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+									<input type="text" class="form-control" formControlName="address" placeholder="Address" name="address" id="address">
+									<small [hidden]="myForm.controls.address.valid || (myForm.controls.address.pristine && !submitted)">
+										Address is required .
+									</small>
+								</div>
+<!-- 
+								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+									<input type="password" class="form-control" formControlName="password" placeholder="Paasword" name="paasword" id="paasword"
+									 required>
+									<small [hidden]="myForm.controls.password.valid || (myForm.controls.password.pristine && !submitted)">
+										Password is required (minimum 5 characters).
+									</small>
+								</div>
+								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+									<input type="password" class="form-control" formControlName="confirm_paasword" placeholder="Confirm Paasword" name="confirm_paasword"
+									 id="confirm_paasword" required>
+									<small [hidden]="myForm.controls.confirm_paasword.valid || (myForm.controls.confirm_paasword.pristine && !submitted)">
+										Password is required (minimum 5 characters).
+									</small>
+								</div> -->
+								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+									<input type="text" class="form-control" placeholder="City" formControlName="city" name="city" id="city">
+									<small [hidden]="myForm.controls.city.valid || (myForm.controls.city.pristine && !submitted)">
+										City is required.
+									</small>
+								</div>
+								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+									<select class="form-control" (input)="onInput($event)" formControlName="state">
+										<option value="" selected="selected"> -- Select State -- </option>
+										<option *ngFor="let item of stateDropDownList" value=" {{item.name}}">{{item.name}}</option>
+									</select>
+									<small *ngIf="myForm.controls.state.value ==='' && submitted">
+										Please select state !
+									</small>
 
-<div class="modal fade bs-goods-lg-edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-  <div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content section-form">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" #closeBtn2 aria-label="Close">
-          <span class="modal-text" aria-hidden="true">X</span>
-        </button>
-        <h4 class="modal-title modal-text" align="center">
-          <b>Edit State</b>
-        </h4>
-      </div>
-      <div class="modal-body">
-        <div class="service-section">
-          <div class="row">
-            <div class="col-md-1 col-sm-1"></div>
-            <div class="col-md-10 col-sm-10">
-              <form [formGroup]="myFormEdit" novalidate (ngSubmit)="updateState(myFormEdit.valid)">
+								</div>
 
-                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" maxlength="30" class="form-control" formControlName="statename" placeholder="State Name" name="statename"
-                    id="statename" required>
-                  <small [hidden]="myFormEdit.controls.statename.valid || (myFormEdit.controls.statename.pristine && !submitted)">
-                    State Name is required !
-                  </small>
-                </div>
-                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" OnlyNumber="true" maxlength="5" class="form-control" formControlName="statecode" placeholder="State Code"
-                    name="statecode" required>
-                  <small *ngIf="myForm.controls.statecode.valid  && submitted">
-                    State Code is required !
-                  </small>
-                </div>
 
-                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <button type="submit" class="btn btn-primary">Update</button>
-                  <button type="button" class="btn btn-success pull-right" data-dismiss="modal">Cancel</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
+									<button type="submit" class="btn btn-success">Save</button>
+									<button type="button" class="btn btn-primary pull-right" data-dismiss="modal" value="Cancel">
+										Cancel
+									</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <!-- Edit Modal -->
@@ -229,7 +237,7 @@
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" #closeBtn3 aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" #closeBtn2 aria-label="Close">
           <span class="modal-text" aria-hidden="true">X</span>
         </button>
       </div>

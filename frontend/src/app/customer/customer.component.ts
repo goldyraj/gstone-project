@@ -51,6 +51,7 @@ export class CustomerComponent implements OnInit {
   // paged items
   pagedItems: any[];
   access_token;
+  errorMsg;
 
   constructor(private _fb: FormBuilder, private http: Http, public excelServiceService: ExcelServiceService, public pagerService: PagerService) {
     this.access_token = localStorage.getItem("user_token");
@@ -326,13 +327,35 @@ export class CustomerComponent implements OnInit {
     return this.http.post(this.url, body, requestOptions)
       .subscribe(
       response => {
+        
         console.log("suceessfull data", response.json().message);
-        this.closeModal();
-        this.closeCsv.nativeElement.click();
-        this.closeChoose.nativeElement.click();
-        this.clearInputFile.nativeElement.value = "";
-        this.ifSuccess = true;
-        this.getCustomerList(this.pager.currentPage);
+       
+        var errorval;
+
+        if(response.json().error)
+        {
+          this.ifSuccess=false;
+          errorval = response.json().error;
+          if (errorval.substr(56, 9) === 'contact_1') {
+            this.errorMsg = 'Contact No is already register.';
+          } else if (errorval.substr(56, 8) === 'pan_no_1') {
+            this.errorMsg = 'Pan No is already register.';
+          } else {
+            this.errorMsg = 'Email id is already register.';
+          }
+        }
+        else
+        {
+          this.errorMsg="";
+          this.closeModal();
+          this.closeCsv.nativeElement.click();
+          this.closeChoose.nativeElement.click();
+          this.clearInputFile.nativeElement.value = "";
+          this.ifSuccess = true;
+          this.getCustomerList(this.pager.currentPage);  
+        }
+
+        console.log(response.json());
         // alert(response.json().message);
       },
       error => {

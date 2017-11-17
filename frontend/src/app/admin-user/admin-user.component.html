@@ -223,6 +223,16 @@
                   </small>
                 </div>
 
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                  <select class="form-control" formControlName="userType">
+                    <option value="" selected="selected">Select User Type</option>
+                    <option *ngFor="let item of userTypeList" value="{{item}}">{{item}}</option>
+                  </select>
+                  <small *ngIf="myForm.controls.userType.value ==='' && submitted">
+                    Please select user type !
+                  </small>
+                </div>
+
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group" align="center">
                   <button type="submit" class="btn btn-primary">Save</button>
                   <button type="button" class="btn btn-primary" data-dismiss="modal" value="Cancel">

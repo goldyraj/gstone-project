@@ -33,6 +33,7 @@ export class AdminUserComponent implements OnInit {
   apiMessage;
   apiResult;
   rowData;
+  userTypeList=[];
 
   @ViewChild('closeBtn') closeBtn:ElementRef;
   @ViewChild('closeBtn2') closeBtn2:ElementRef;
@@ -51,7 +52,7 @@ export class AdminUserComponent implements OnInit {
       gstin: new FormControl('', [<any>Validators.required, Validators.pattern('.*\\S.*')]),
       address: new FormControl('', [<any>Validators.required, Validators.pattern('.*\\S.*')]),
       city: new FormControl('', [<any>Validators.required, Validators.pattern('.*\\S.*')]),
-      // userType: new FormControl('', [<any>Validators.required]),
+      userType: new FormControl('', [<any>Validators.required]),
       // password: new FormControl('', [<any>Validators.required, <any>Validators.minLength(5)]),
       // confirm_paasword: new FormControl('', [<any>Validators.required, <any>Validators.minLength(5)]),
       state: new FormControl('', [<any>Validators.required]),
@@ -73,8 +74,14 @@ export class AdminUserComponent implements OnInit {
     this.pager.currentPage=1;
     this.getDataList(1);
     this.prepareStateDropdown();
+    this.prepareUserType();
   }
 
+  prepareUserType()
+  {
+    this.userTypeList.push('Admin');
+    this.userTypeList.push('User Agent');
+  }
 
   getDataList(page:number) {
 

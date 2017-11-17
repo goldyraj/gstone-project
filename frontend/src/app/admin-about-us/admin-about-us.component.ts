@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
+import { RouterModule, Routes, Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-about-us',
@@ -17,7 +18,6 @@ export class AdminAboutUsComponent implements OnInit {
   StateVal = {};
   url = "";
   notiRowData;
-  rowDataIndex = "";
   access_token;
   public editAbout: FormGroup; // our model driven form
   public submitted: boolean; // keep track on whether form is submitted
@@ -25,7 +25,8 @@ export class AdminAboutUsComponent implements OnInit {
   public events: any[] = []; // use later to display form changes
   pager: any = {};
   pagedItems: any[];
-  constructor(private _fb: FormBuilder, private http: Http) {
+  updateAboutUs;
+  constructor(private _fb: FormBuilder, private http: Http,public Router:Router) {
     this.access_token = localStorage.getItem("admin_token");
     this.getAboutUsList();
   }
@@ -34,61 +35,109 @@ export class AdminAboutUsComponent implements OnInit {
     this.editAbout = new FormGroup({
       discription: new FormControl('', [<any>Validators.required]),
     });
+
+    var context=this;
+    if (localStorage.getItem('admin_token')) {
+      
+    }
+    else {
+      context.Router.navigate(['/admin-login']);
+    }
+
   }
   getAboutUsList() {
     console.log('list called');
     this.http.get('http://localhost:3000/api/about/list?token='+this.access_token).subscribe(data => {
+      
       this.aboutUs = data.json().about[0];
+      console.log("DATA", this.aboutUs);
       this.aboutUs_ID = data.json().about[0]._id;
-
-      console.log("State  PArse", this.aboutUs);
+      if(this.aboutUs_ID != "undefined")
+      {
+        this.updateAboutUs=true;
+      }
+      else
+      {
+        this.updateAboutUs=false;
+      }
+      
     });
   }
 
   editAboutRecord(data) {
-    this.rowDataIndex = data._id;
+    this.submittedEdit = false;
+    
     var temp;
-    if (data) {
+    if (this.updateAboutUs) {
       console.log("DATA", data);
       this.editAbout.get("discription").setValue(data.discription);
+      this.notiRowData = data;
     }
-    this.notiRowData = data;
+    
   }
 
   updateAbout(isValid: boolean) {
     this.submittedEdit = true; // set form submit to true
-    console.log(isValid);
-    console.log("hi form module is called from page");
-    this.StateVal = this.editAbout.value;
-    console.log("form valuse", this.StateVal, this.notiRowData._id);
 
-    if (isValid == true) {
-      const headers = new Headers();
-
-      headers.append('Content-Type', 'application/json');
-      // headers.append('x-access-token', access_token);
-      const requestOptions = new RequestOptions({ headers: headers });
-
-      const body = {
-        "_id": this.notiRowData._id,
-        "discription": this.editAbout.value.discription,
-      };
-      console.log("body",body);
-
-      this.url = "http://localhost:3000/api/about/update?token="+this.access_token;
-      return this.http.put(this.url, body, requestOptions)
-        .subscribe(
-        response => {
-          console.log("suceessfull data", response.json().message);
-          this.closeEditModal();
-          this.submittedEdit = false;
-          this.getAboutUsList();
-        },
-        error => {
-          console.log("error", error.message);
-          console.log(error.text());
-        }
-        );
+    if (isValid == true) 
+    {
+      if(this.updateAboutUs)
+      {
+        const headers = new Headers();
+  
+        headers.append('Content-Type', 'application/json');
+        // headers.append('x-access-token', access_token);
+        const requestOptions = new RequestOptions({ headers: headers });
+  
+        const body = {
+          "_id": this.notiRowData._id,
+          "discription": this.editAbout.value.discription,
+        };
+        console.log("body",body);
+  
+        this.url = "http://localhost:3000/api/about/update?token="+this.access_token;
+        return this.http.put(this.url, body, requestOptions)
+          .subscribe(
+          response => {
+            console.log("suceessfull data", response.json().message);
+            this.closeEditModal();
+            this.submittedEdit = false;
+            this.getAboutUsList();
+          },
+          error => {
+            console.log("error", error.message);
+            console.log(error.text());
+          }
+          );
+      }
+      else
+      {
+        const headers = new Headers();
+  
+        headers.append('Content-Type', 'application/json');
+        // headers.append('x-access-token', access_token);
+        const requestOptions = new RequestOptions({ headers: headers });
+  
+        const body = {
+          "discription": this.editAbout.value.discription
+        };
+        console.log("body",body);
+  
+        this.url = "http://localhost:3000/api/about/create?token="+this.access_token;
+        return this.http.post(this.url, body, requestOptions)
+          .subscribe(
+          response => {
+            console.log("suceessfull data", response.json().message);
+            this.closeEditModal();
+            
+            this.getAboutUsList();
+          },
+          error => {
+            console.log("error", error.message);
+            console.log(error.text());
+          }
+          );
+      }
     }
   }
 

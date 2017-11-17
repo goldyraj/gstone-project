@@ -8,7 +8,7 @@ var mongoosePaginate = require('mongoose-paginate');
 const Privacy= new Schema({
    
   discription: { type: String, trim: true },
-   created_at:  { type: Date},
+   created_at:  { type: Date,default: Date.now},
   updated_at:  { type: Date}
   
 })

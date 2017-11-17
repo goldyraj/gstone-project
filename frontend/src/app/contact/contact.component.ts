@@ -14,6 +14,7 @@ export class ContactComponent implements OnInit {
   contact = [];
   url = "";
   errorMsg = "";
+  alertType = "";
   public errorType: boolean;
   public submitted: boolean; // keep track on whether form is submitted
   constructor(private _fb: FormBuilder, private http: Http) { }
@@ -24,15 +25,12 @@ export class ContactComponent implements OnInit {
       email: new FormControl('', [<any>Validators.required]),
       contact: new FormControl('', [<any>Validators.required, <any>Validators.minLength(10)]),
       company: new FormControl('', [<any>Validators.required]),
-      remarks: new FormControl('', [<any>Validators.required])
+      remarks: new FormControl('')
     });
     this.url = "";
     this.errorMsg = "";
   }
-  onLoad() {
-    this.contactForm.value.name = "";
 
-  }
 
   sendContact(isValid: boolean) {
     this.submitted = true; // set form submit to true
@@ -60,19 +58,38 @@ export class ContactComponent implements OnInit {
         .subscribe(
         response => {
           console.log("suceessfull data", response.json().message);
-          this.errorType = true;
+
+          // this.errorType = true;
+          // setTimeout(function () {
+          //   // this.edited = false;
+          //   this.errorType = true;
+          //   console.log(this.errorType);
+          // }.bind(this), 3000);
+          this.saveTodos(true);
           this.errorMsg = response.json().message;
-          this.onLoad();
+          this.contactForm.reset();
+          this.submitted = false;
         },
         error => {
           // alert(error.message);
           console.log("error", error.message);
           console.log(error.text());
-          this.errorType = true;
+          // this.errorType = false;
+          this.saveTodos(false);
           this.errorMsg = error.json().message;
         }
         );
     }
+  }
+
+  saveTodos(val) {
+    //show box msg
+    this.errorType = val;
+    //wait 3 Seconds and hide
+    setTimeout(function () {
+      this.errorType = null;
+      console.log(this.errorType);
+    }.bind(this), 3000);
   }
 
 }

@@ -1,4 +1,5 @@
 const Internal = require('../../../models/internal')
+var fs=require('fs');
 
   var usingItNow = function(req) {
 if(req.type=="agentuser"||req.type=="admin"){
@@ -22,12 +23,14 @@ var myCallback=usingItNow(req.decoded)
         }) 
     }
 req.query.limit=parseInt(req.query.limit);
-if(req.query.search && req.query.search.length>0){    
+if(req.query.search && req.query.search.length>0){  
+   query={title:new RegExp(req.query.search,'i')}  
     if(req.query.type && req.query.type.length>0){  
-   if(req.query.type=="chapter"){
-     query={chapter:req.query.search}
+   if(req.query.type=="chapter"){ 
+      query={chapter:new RegExp(req.query.search,'i')}
  }else{
-    query={article:req.query.search}
+   query={article:new RegExp(req.query.search,'i')}
+ 
  }
 }
 }
@@ -53,7 +56,7 @@ const onError = (error) => {
     if(req.query.sortBy && req.query.sortBy.length>0){    
     sortfiled=req.query.sortBy
 }else{
-   sortfiled={ date: -1 } 
+   sortfiled={ created_at: -1 } 
 }
 var option={
     select:'title details link chapter article date status type',
@@ -64,6 +67,24 @@ var option={
 Internal.paginate(query,option).then( intenal=>res.json(intenal)
         )
     .catch(onError);
+}
+/* 
+    GET /api/user/view
+*/
+exports.view=(req,res)=>{
+   //console.log(req.params.id);
+Internal.findById(req.params.id, function (err, internal) { 
+
+if(err){
+    return res.status(403).json({
+            message: 'NO data found '
+        }) 
+}else{
+     return res.json({
+          internal
+        }) 
+}
+ } );
 }
 /* 
     GET /api/user/list
@@ -142,8 +163,9 @@ var myCallback=usingItNow(req.decoded)
     POST /api/State/upadate
 */
 exports.update=(req,res)=>{
-        const {_id, title , details ,link , date,chapter,article } = req.body
+        const {_id, title , details ,link , date,chapter,article,type } = req.body
      //=========Authrise function
+     console.log(req.decoded)
 var myCallback=usingItNow(req.decoded)
  if(myCallback) {
    return res.status(403).json({
@@ -182,8 +204,6 @@ exports.delete=(req,res)=>{
 }else{
     res.json({'message':'Internal is Successfully deleted'})  
 }
-
-
   // we have deleted the user
    
 });

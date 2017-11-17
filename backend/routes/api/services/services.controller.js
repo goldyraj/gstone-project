@@ -25,7 +25,18 @@ var query={};
 req.query.limit=parseInt(req.query.limit);
 if(req.query.search && req.query.search.length>0){
     console.log(query={description:req.query.search})
-    query={description:req.query.search}
+           if(req.query.type && req.query.type.length>0){  
+   if(req.query.type=="des"){ 
+      query={description:new RegExp(req.query.search,'i')}
+ }
+}else{
+   query={hsn_code:new RegExp(req.query.search,'i')}
+ 
+ }
+}
+// USer Id 
+if(req.decoded.type===req.app.get('usertype')){
+   query={userid:req.decoded._id}
 }
 if(!req.query.limit ||isNaN(req.query.limit) ){
     req.query.limit=5;
@@ -49,7 +60,7 @@ const onError = (error) => {
     if(req.query.sortBy && req.query.sortBy.length>0){    
     sortfiled=req.query.sortBy
 }else{
-   sortfiled={ date: -1 } 
+   sortfiled={ created_at: -1 } 
 }
 var option={
     select:'hsn_code description cgst sgst igst condition',
@@ -69,15 +80,15 @@ Services.paginate(query,option).then(services=>
 
 exports.list = (req, res) => {
     // refuse if not an admin
-  var myCallback=usingItNow(req.decoded)
- if(myCallback) {
-   return res.status(403).json({
-            message: 'you are not an authorise'
-        }) 
-    }
- services.find({}).exec()
+ //  var myCallback=usingItNow(req.decoded)
+ // if(myCallback) {
+ //   return res.status(403).json({
+ //            message: 'you are not an authorise'
+ //        }) 
+ //    }
+ Services.find({}).exec()
     .then(
-        goods=> {
+        services=> {
             res.json({services})
         }
     )
@@ -131,7 +142,7 @@ exports.create = (req, res) => {
         if(services) {
             throw new Error('Goods Name exists')
         } else {
-            return Services.create(  description, hsn_code,cgst,sgst,igst,condition )
+            return Services.create(  description, hsn_code,cgst,sgst,igst,condition,req.decoded._id )
         }
     }
     // count the number of the user
@@ -169,9 +180,6 @@ exports.create = (req, res) => {
     POST /api/user/uploadfile
 */
 exports.uploadfile=(req,res)=>{
-
-
-
 var myobj= req.body.data
 //=========Authrise function
  var myCallback=usingItNow(req.decoded)
@@ -180,7 +188,9 @@ var myobj= req.body.data
             message: 'you are not an authorise'
         }) 
     }
-    
+    for (var i = 0; i <myobj.length; i++) {
+       myobj[i].userid=req.decoded._id; 
+     }
  var multirecord = function () {
       return new Services.insertMany(myobj, function(err, res) {})
   }
@@ -204,7 +214,7 @@ var myobj= req.body.data
 }
 exports.delete=(req,res)=>{
   
-  Goods.findByIdAndRemove(req.params.id, function(err) {
+  Services.findByIdAndRemove(req.params.id, function(err) {
   if (err){ 
     res.json({'invoice':err})
 }else{

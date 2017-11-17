@@ -7,7 +7,7 @@ if(req.type=="agentuser"||req.type=="admin"){
 }
 
 };
-
+var events = require('events');
 /* 
     GET /api/branch/index
 */
@@ -24,7 +24,10 @@ var query={};
 req.query.limit=parseInt(req.query.limit);
 if(req.query.search && req.query.search.length>0){
     console.log(query={name:req.query.search})
-    query={name:req.query.search}
+ query={name:new RegExp(req.query.search,'i')}
+}
+if(req.decoded.type===req.app.get('usertype')){
+   query={userid:req.decoded._id}
 }
 if(!req.query.limit ||isNaN(req.query.limit) ){
     req.query.limit=5;
@@ -48,7 +51,7 @@ const onError = (error) => {
     if(req.query.sortBy && req.query.sortBy.length>0){    
     sortfiled=req.query.sortBy
 }else{
-   sortfiled={ date: -1 } 
+   sortfiled={ created_at: -1 } 
 }
 var option={
     select:'name pan_no gstin gstin dealer_type contact branch_name email address city state  created_at',
@@ -110,7 +113,7 @@ exports.update=(req,res)=>{
             message: error.message
         })
     }
-      Branch.findOneByUsername(title)          
+      Branch.findOneByUsername(branch_name)          
          .then(respond)
          .catch(onError)
 }
@@ -136,7 +139,7 @@ var myCallback=usingItNow(req.decoded)
         if(branch) {
             throw new Error('Branch Name exists')
         } else {
-            return Branch.create(name,pan_no,gstin,dealer_type,branch_name,contact,email,address,city,state)
+            return Branch.create(name,pan_no,gstin,dealer_type,branch_name,contact,email,address,city,state,req.decoded._id)
         }
     }
     // count the number of the user
@@ -149,6 +152,7 @@ var myCallback=usingItNow(req.decoded)
     // assign admin if count is 1
    
  const respond = () => {
+
         res.json({
             message: 'Branch Successfully Save'
         
@@ -157,9 +161,11 @@ var myCallback=usingItNow(req.decoded)
     }
 
     // run when there is an error (username exists)
+
     const onError = (error) => {
+         console.log(error.message.index)
         res.status(409).json({
-            messages: error.message
+            messages: "Pan Number allready exites "
         })
     }
 
@@ -185,6 +191,9 @@ var myCallback=usingItNow(req.decoded)
             message: 'you are not an authorise'
         }) 
     }
+      for (var i = 0; i <myobj.length; i++) {
+       myobj[i].userid=req.decoded._id; 
+     }
  var multirecord = function () {
       return new Branch.insertMany(myobj, function(err, res) {})
   }
@@ -206,6 +215,83 @@ var myCallback=usingItNow(req.decoded)
 }
 
 exports.apipost=(req,res,next)=>{
+
+  // var promise =Branch.hello()
+  // console.log(promise)
+  let s ;
+
+// Create an eventEmitter object
+var eventEmitter = new events.EventEmitter();
+eventEmitter.once('foo', () => console.log('a'));
+eventEmitter.prependOnceListener('foo', () => Branch.find({}, function(err, response) {
+  if (err) {
+    console.log(err);
+    return err
+  } else {
+   
+   console.log('response step 2')
+    res.data=response;
+  s=response;
+ // next();
+ 
+    res.json(
+   s )
+  }
+}));
+eventEmitter.emit('foo');
+// Create an event handler as follows
+var connectHandler = function connected() {
+  console.log(' step 1');
+
+
+ 
+   // Fire the data_received event 
+   eventEmitter.emit('data_received');
+}
+
+// Bind the connection event with the handler
+eventEmitter.on('connection',() => {
+  console.log('A');
+});
+ 
+// Bind the data_received event with the anonymous function
+eventEmitter.on('data_received', function(){
+   console.log('data received succesfully. step 3');
+});
+
+// Fire the connection event 
+eventEmitter.emit('connection');
+
+console.log("Program Ended. step 4");
+ console.log('RETURN RESULT => step 5',s) 
+      //console.log('FUNCTION ',res);
+
+//   var resultdata = function(respon) {
+//     s=respon;
+//     console.log('FUNCTION ',respon);
+//            return respon;
+// }
+// // var result= function callback(response){
+// //   return response
+ 
+// console.log('ssss Result Data =>',resultdata)
+// console.log('RETURN RESULT =>',s)
+// process.on('unhandledRejection', (reason, p) => {
+//  // console.log('Unhandled Rejection at: Promise', p);
+//    s=p;
+//   // application specific logging, throwing an error, or other logic here
+// });
+
+//  //var s=JSON.stringify(res)
+
+//  console.log(branch)
+//   res.json(
+//          s
+//         )
+  // promise.then({
+  //    console.log('list')
+  // })
+ 
 //     var upload = multer({
 //     storage: storage,
 //     // limits: { fileSize: 1048576, files: 1 } // limit file size to 1048576 bytes or 1 MB

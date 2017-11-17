@@ -44,36 +44,13 @@ import { FaqsComponent } from './faqs/faqs.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { ContactComponent } from './contact/contact.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
-import {PreventLoggedInAccess} from './PreventLoggedInAccess';
+import { PreventLoggedInAccess } from './PreventLoggedInAccess';
+import { GstupdateDetailComponent } from './gstupdate-detail/gstupdate-detail.component';
+import { AdminInternalUpdateInnerpageComponent } from './admin-internal-update-innerpage/admin-internal-update-innerpage.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  // { path: '/**', component: HomeComponent  },
-  // { path: '/**', redirectTo: ['MycmpnameCmp'] },
-  // { path: 'home', component: HomeComponent },
-  // { path: 'Register', component: RegistrationComponent },
-  // { path: 'user', component: UserComponent },
-  // { path: 'client', component: ClientComponent },
-  // { path: 'customer', component: CustomerComponent },
-  // { path: 'update', component: GstupdateComponent },
-  // { path: 'videos', component: VideoslinkComponent },
-  // { path: 'gstr', component: Gstr1Component },
-  // { path: 'edit', component: EditComponent },
-  // { path: 'workreturns', component: WorkreturnsComponent },
-  // { path: 'goods', component: GoodservicesComponent },
-  // { path: 'vendor', component: VendorComponent },
-  //{ path: 'newinvoice', component: AadNewInvoiceComponent },
-  // { path: 'editinvoice', component: EditinvoiceComponent },
-  // { path: 'summarypage', component: SummaryComponent },
-  // { path: 'newinvoice', component: AddnewinvoiceComponent },
-  // { path: 'addbos', component: AddbosComponent },
-  // { path: 'exportinv', component: ExportinvoiceComponent },
-  // { path: 'amendment', component: NewamendmentComponent },
-  // { path: 'other', component: OtherpageComponent },
   { path: 'admin-login', component: AdminLoginComponent },
-  
-  // { path: 'gst-update', component: GstupdateComponent },
-  // { path: 'user-videos', component: VideoslinkComponent },
   {
     path: 'home', component: HomeComponent,
     children: [
@@ -82,10 +59,11 @@ const routes: Routes = [
       // { path: 'DealerType', component: DealerTypeComponent },
       { path: 'update', component: GstupdateComponent },
       { path: 'notification', component: UserGovNotificationComponent },
+      { path: 'update-details/:id', component: GstupdateDetailComponent },
       { path: 'videos', component: VideoslinkComponent },
       // { path: 'newinvoice', component: AadNewInvoiceComponent },
       { path: 'admin-login', component: AdminLoginComponent },
-      { path: 'other', component: OtherpageComponent },
+      
       { path: 'about-us', component: AboutUsComponent },
       { path: 'privacy-policy', component: PrivacyPolicyComponent },
       { path: 'user-hsn', component: UserHsnCodeComponent },
@@ -109,13 +87,13 @@ const routes: Routes = [
       { path: 'gstr', component: Gstr1Component },
       { path: 'edit', component: EditComponent },
       { path: 'summarypage', component: SummaryComponent },
+      { path: 'other', component: OtherpageComponent },
       { path: 'addbos', component: AddbosComponent },
       { path: 'exportinv', component: ExportinvoiceComponent },
       { path: 'amendment', component: NewamendmentComponent },
       { path: 'update', component: GstupdateComponent },
       { path: 'notification', component: UserGovNotificationComponent },
       { path: 'videos', component: VideoslinkComponent }
-      
     ]
   },
 
@@ -123,15 +101,17 @@ const routes: Routes = [
     path: 'admin', component: AdminDashboardComponent,
     children: [
       { path: 'dashboard', component: AdminHomeComponent, canActivate: [PreventLoggedInAccess] },
+      { path: 'dashboard', component: AdminHomeComponent, canActivate: [PreventLoggedInAccess] },
       { path: 'admin-state', component: AdminStateComponent, canActivate: [PreventLoggedInAccess] },
       { path: 'admin_hsn_code', component: AdminHsnCodeComponent, canActivate: [PreventLoggedInAccess] },
       { path: 'admin_gov_notification', component: AdminGovNotificationComponent, canActivate: [PreventLoggedInAccess] },
       { path: 'admin-internal-updates', component: AdminInternalUpdatesComponent, canActivate: [PreventLoggedInAccess] },
-      { path: 'admin-gstone-videos', component: AdminGstoneVideosComponent , canActivate: [PreventLoggedInAccess]},
-      { path: 'admin-about-us', component: AdminAboutUsComponent , canActivate: [PreventLoggedInAccess]},
-      { path: 'admin-privacy-policy', component: AdminPrivacyPolicyComponent , canActivate: [PreventLoggedInAccess]},
+      { path: 'admin-gstone-videos', component: AdminGstoneVideosComponent, canActivate: [PreventLoggedInAccess] },
+      { path: 'admin-about-us', component: AdminAboutUsComponent, canActivate: [PreventLoggedInAccess] },
+      { path: 'admin-privacy-policy', component: AdminPrivacyPolicyComponent, canActivate: [PreventLoggedInAccess] },
       { path: 'admin-contact-us', component: AdminContactUsComponent, canActivate: [PreventLoggedInAccess] },
-      { path: 'admin-faqs', component: AdminFaqsComponent , canActivate: [PreventLoggedInAccess]},
+      { path: 'admin-faqs', component: AdminFaqsComponent, canActivate: [PreventLoggedInAccess] },
+      { path: 'admin-internal-updates-edit', component: AdminInternalUpdateInnerpageComponent }
     ]
 
   }

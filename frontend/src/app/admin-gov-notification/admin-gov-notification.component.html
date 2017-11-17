@@ -26,7 +26,7 @@
         <div class="text-right">
           <!-- <input type="button" class="btn btn-primary" value="Import CSV"> -->
 
-          <input type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-user-lg" value="Add New">
+          <input type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-user-lg" value="Add New" (click)="resetForm()">
         </div>
       </div>
 
@@ -35,18 +35,12 @@
 
       <div class="col-md-3 col-xs-12">
         <div class="input-group section-bottom-20">
-          <input type="text" placeholder="Title" [(ngModel)]="searchString" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
+          <input type="text" placeholder="Search Title" (input)="searchKeyword($event.target.value)" [(ngModel)]="searchString" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
           <div class="input-group-addon">
-            <i class="fa fa-search"></i>
+            <i class="fa fa-search" (click)="searchKeyword(searchString)"></i>
           </div>
         </div>
       </div>
-      <!-- <div class="col-md-3 col-xs-12">
-              <input type="text" class="form-control">
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <input type="text" class="form-control">
-            </div> -->
 
       <div class="col-lg-12 col-xs-12">
 
@@ -55,7 +49,7 @@
           <table class="table table-condensed  table-hover table-bordered">
             <thead>
               <tr>
-                <th width="2%">#</th>
+                <th width="2%">S. No.</th>
                 <th width="20%">Title</th>
                 <th width="15%">Description</th>
                 <!-- <th width="6%">Date</th> -->
@@ -64,9 +58,9 @@
               </tr>
             </thead>
             <tbody>
-              <!-- <tr *ngFor="let item of notificationList ;let i = index;"> -->
-              <tr *ngFor="let item of notificationList | notifyFilter:searchString ;let i = index;">
-                <td align="center">{{pager.pageSize * (pager.currentPage-1)+i+1}}</td>
+              <tr *ngFor="let item of notificationList ;let i = index;">
+              <!-- <tr *ngFor="let item of notificationList | notifyFilter:searchString ;let i = index;"> -->
+                  <td align="center">{{pager.pageSize * (pager.currentPage-1)+i+1}}</td>
                 <td align="center">{{item.title}}</td>
                 <td align="center">
                   <a href="{{item.link}}" target="_blank">{{item.description}}</a>
@@ -93,7 +87,7 @@
             </tbody>
           </table>
 
-          <ul class="pagination btn-sm">
+          <ul class="pagination btn-sm" *ngIf="notificationList?.length > 1">
             <li [ngClass]="{disabled:pager.currentPage === 1}">
               <a *ngIf="pager.currentPage > 1" (click)="getNotificationList(pager.currentPage - 1)">Previous</a>
             </li>
@@ -141,21 +135,21 @@
             <div class="col-md-12 col-sm-12">
               <form [formGroup]="govNotiForm" novalidate (ngSubmit)="saveNotification(govNotiForm.valid)">
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="Title" formControlName="title" name="title" id="title">
+                  <input type="text" maxlength="30" class="form-control" placeholder="Title" formControlName="title" name="title" id="title">
                   <small [hidden]="govNotiForm.controls.title.valid || (govNotiForm.controls.title.pristine && !submitted)">
-                    Question is required .
+                    Title is required !
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="Description" formControlName="description" name="description">
+                  <textarea type="text" maxlength="5000" class="form-control" placeholder="Description" formControlName="description" name="description"></textarea>
                   <small [hidden]="govNotiForm.controls.description.valid || (govNotiForm.controls.description.pristine && !submitted)">
-                    Question is required .
+                    Description is required .
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="Link" formControlName="link" name="statecode" required>
+                  <input type="text" class="form-control" placeholder="Link( PDF File)" formControlName="link" name="statecode" required>
                   <small [hidden]="govNotiForm.controls.link.valid || (govNotiForm.controls.link.pristine && !submitted)">
-                    Question is required .
+                    Link is required .
                   </small>
                 </div>
 
@@ -188,21 +182,21 @@
             <div class="col-md-12 col-sm-12">
               <form [formGroup]="editGovNotiForm" novalidate (ngSubmit)="updateNotification(editGovNotiForm.valid)">
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="Title" formControlName="title" name="title" id="title">
+                  <input type="text" maxlength="30" class="form-control" placeholder="Title" formControlName="title" name="title" id="title">
                   <small [hidden]="editGovNotiForm.controls.title.valid || (editGovNotiForm.controls.title.pristine && !submitted)">
-                    Question is required .
+                    Title is required .
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="List" formControlName="description" name="description">
+                  <textarea type="text" maxlength="5000" class="form-control" placeholder="Description" formControlName="description" name="description"></textarea>
                   <small [hidden]="editGovNotiForm.controls.description.valid || (editGovNotiForm.controls.description.pristine && !submitted)">
-                    Question is required .
+                    Description is required .
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="Link" formControlName="link" name="statecode" required>
+                  <input type="text" class="form-control" placeholder="Link( PDF File)" formControlName="link" name="statecode" required>
                   <small [hidden]="editGovNotiForm.controls.link.valid || (editGovNotiForm.controls.link.pristine && !submitted)">
-                    Question is required .
+                    Link is required .
                   </small>
                 </div>
 

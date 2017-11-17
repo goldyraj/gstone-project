@@ -23,8 +23,11 @@ var query={};
 console.log(req.query.limit);
 req.query.limit=parseInt(req.query.limit);
 if(req.query.search && req.query.search.length>0){
-    console.log(query={name:req.query.search})
+    //console.log(query={name:req.query.search})
     query={name:req.query.search}
+}
+if(req.decoded.type===req.app.get('usertype')){
+   query={userid:req.decoded._id}
 }
 if(!req.query.limit ||isNaN(req.query.limit) ){
     req.query.limit=5;
@@ -48,7 +51,7 @@ const onError = (error) => {
     if(req.query.sortBy && req.query.sortBy.length>0){    
     sortfiled=req.query.sortBy
 }else{
-   sortfiled={ date: -1 } 
+   sortfiled={ created_at: -1 } 
 }
 var option={
     select:'name pan_no gstin city contact email address state',
@@ -98,7 +101,7 @@ exports.create = (req, res) => {
         if(vendor) {
             throw new Error('Vendor Name exists')
         } else {
-            return Vendor.create(name,pan_no,gstin,city,contact,email,address,state)
+            return Vendor.create(name,pan_no,gstin,city,contact,email,address,state,req.decoded._id)
         }
     }
     // count the number of the user
@@ -142,7 +145,7 @@ exports.update=(req,res)=>{
     }
         const {_id,name,pan_no,gstin,city,contact,email,address,state} = req.body
      
-         Vendor.findOneAndUpdate({_id:_id}, {$set:{name:name,pan_no:pan_no,gstin:gstin,contact:contact,email:email,address:address,state:state}}, {new: true}, function(err, doc){
+         Vendor.findOneAndUpdate({_id:_id}, {$set:{name:name,pan_no:pan_no,gstin:gstin,contact:contact,city:city,email:email,address:address,state:state}}, {new: true}, function(err, doc){
     if(err){
         console.log("Something wrong when updating data!");
     }
@@ -174,11 +177,13 @@ exports.uploadfile=(req,res)=>{
     }
 
 var myobj= req.body.data
-//let msg ='Success updating admin2!';
+ for (var i = 0; i <myobj.length; i++) {
+  myobj[i].userid=req.decoded._id; 
+  }
+
  var multirecord = function () {
       return new Vendor.insertMany(myobj, function(err, res) {})
   }
-
   // function calling work 
    var multi_record = multirecord();
   multi_record.then(function () {
@@ -186,22 +191,21 @@ var myobj= req.body.data
           message:"upload Successfully Save"
         })
   }).catch(function (e) {
-    var error=  e.message
+    //var error=  JSON.parse(e.message)
+
      res.json({
           error
         })
      
   });
 
-    
-   
 }
 /*
     POST /api/vendor/delete
 */
 exports.delete=(req,res)=>{
     
-       console.log('format',req.baseUrl)
+
   Vendor.findByIdAndRemove(req.params.id, function(err) {
   if (err){ 
     res.json({'invoice':err})

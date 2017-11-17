@@ -10,78 +10,186 @@
             )
           </p>
           <p>Goods which are not specified in table below have IGST tax rate of 18%. </p>
-          <div class="row section-top-30">
-            <div class="col-md-4 col-xs-12">
-              <div class="input-group">
-                <input type="text" class="form-control" [(ngModel)]="codeValue" placeholder="HNS Code">
-                <div class="input-group-addon">
-                  <i class="fa fa-search"></i>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4 col-xs-12">
-              <div class="input-group">
-                <input type="text" class="form-control" [(ngModel)]="searchString" placeholder="Description">
-                <div class="input-group-addon">
-                  <i class="fa fa-search"></i>
-                </div>
-              </div>
-            </div>
-            <!-- <div class="col-md-4 col-xs-12">
-                <div class="input-group">
-                  <input type="text" class="form-control" placeholder="">
-                  <div class="input-group-addon">
-                    <i class="fa fa-search"></i>
-                  </div>
-                </div>
-              </div> -->
-            <div class="col-md-4 col-xs-12">
-              <div class="input-group">
-                <input type="button" class="btn btn-primary" value="clear">
-              </div>
-            </div>
-          </div>
+
         </div>
 
       </div>
 
+      <div class="col-lg-12 col-xs-12">
+        <div class="nav-tabs-custom">
+          <ul class="nav nav-tabs">
+            <li class="active">
+              <a href="#Goods" data-toggle="tab">Goods</a>
+            </li>
+            <li>
+              <a href="#Services" data-toggle="tab">Services</a>
+            </li>
+          </ul>
+          <div class="tab-content">
+            <div class="active tab-pane section-top-20" id="Goods">
+              <!-- Post -->
+              <div class="section-bottom-10">
+
+                <div class="col-md-4 col-xs-12">
+                  <div class="input-group">
+                    <input type="text" class="form-control" [(ngModel)]="codeValue" placeholder="HNS Code">
+                    <div class="input-group-addon">
+                      <i class="fa fa-search"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 col-xs-12">
+                  <div class="input-group">
+                    <input type="text" class="form-control" [(ngModel)]="searchString" placeholder="Description">
+                    <div class="input-group-addon">
+                      <i class="fa fa-search"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- <div class="col-md-4 col-xs-12">
+                  <div class="input-group">
+                    <input type="button" class="btn btn-primary" value="clear">
+                  </div>
+                </div> -->
+              </div>
+
+              <div class="clearfix"></div>
+              <div class="scroll section-top-20">
+                <div class="alert alert-danger" *ngIf="isGoodsList == true">
+                  <strong>Sorry!</strong> Goods list not prepare yet.
+                </div>
+                <table class="table table-condensed  table-hover table-bordered" *ngIf="isGoodsList == false">
+                  <thead>
+                    <tr>
+                      <th width="5%">#</th>
+                      <th width="10%">HSN Code</th>
+                      <th width="50%">Description</th>
+                      <th width="10%">CGST</th>
+                      <th width="10%">SGST</th>
+                      <th width="10%">IGST</th>
+                      <!-- <th width="12%">Status</th> -->
+                      <!-- <th width="25%" class="text-center">Action</th> -->
+                    </tr>
+                  </thead>
+
+                  <tr *ngFor="let item of goodsData | hsnCodeFilter:searchString |hsnDescFilter:codeValue   ; let i = index;">
+                    <!-- <td align="center">{{ hsnCodeData.indexOf(item) }}</td> -->
+                    <td align="center">{{i+1}}</td>
+                    <!-- <td align="center">{{pager.pageSize * (pager.currentPage-1)+i+1}}</td> -->
+                    <td align="center">{{ item.hsn_code }}</td>
+                    <td align="center">{{item.description}}</td>
+                    <td align="center">{{item.cgst}}</td>
+                    <td align="center">{{item.sgst}}</td>
+                    <td align="center">{{item.igst}}</td>
+
+                  </tr>
+
+                </table>
+              </div>
+              <!-- /.post -->
+            </div>
+            <!-- /.tab-pane -->
+
+            <div class="tab-pane section-top-20" id="Services">
+              <div class="section-bottom-10">
+
+                <!-- <div class="col-md-4 col-xs-12">
+                  <div class="input-group">
+                    <input type="text" class="form-control" [(ngModel)]="codeSerValue" placeholder="HNS Code">
+                    <div class="input-group-addon">
+                      <i class="fa fa-search"></i>
+                    </div>
+                  </div>
+                </div> -->
+                <div class="col-md-4 col-xs-12">
+                  <div class="input-group">
+                    <!-- <input type="text" class="form-control" [(ngModel)]="searchDescString" placeholder="Description"> -->
+                    <input type="text" class="form-control" [(ngModel)]="searchDescString" placeholder="HNS Code">
+                    <div class="input-group-addon">
+                      <i class="fa fa-search"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- <div class="col-md-4 col-xs-12">
+                  <div class="input-group">
+                    <input type="button" class="btn btn-primary" value="clear">
+                  </div>
+                </div> -->
+              </div>
+
+              <div class="clearfix"></div>
+              <div class="scroll section-top-20">
+                <div class="alert alert-danger" *ngIf="isServiceList == true">
+                  <strong>Sorry!</strong> Services list not prepare yet.
+                </div>
+                <table class="table table-condensed  table-hover table-bordered" *ngIf="isServiceList == false">
+                  <thead>
+                    <tr>
+                      <th width="5%">#</th>
+                      <th width="10%">HSN Code</th>
+                      <th width="50%">Description</th>
+                      <th width="10%">CGST</th>
+                      <th width="10%">SGST</th>
+                      <th width="10%">IGST</th>
+                      <!-- <th width="12%">Status</th> -->
+                      <!-- <th width="25%" class="text-center">Action</th> -->
+                    </tr>
+                  </thead>
+
+                  <!-- <ng-template ngFor let-item [ngForOf]="hsnCodeData"> -->
+                  <tr *ngFor="let item of servicesData  |hsnSerCodeFilter: searchDescString  ; let i = index;">
+                    <!-- <td align="center">{{ hsnCodeData.indexOf(item) }}</td> -->
+                    <td align="center">{{i+1}}</td>
+                    <td align="center">{{ item.hsn_code }}</td>
+                    <td align="center">{{item.description}}</td>
+                    <td align="center">{{item.cgst}}</td>
+                    <td align="center">{{item.sgst}}</td>
+                    <td align="center">{{item.igst}}</td>
+
+                    <!-- 
+                    <td align="center">
+                      <a href="" data-toggle="modal" data-target=".bs-goodsFormEdit-lg">
+                        <button class="fa fa-edit btn btn-warning btn-sm" title="Update" (click)="editHSNRecord(item)"></button>
+                      </a>
+                      <a href="" data-toggle="modal" data-target=".bs-delete-sm">
+                        <button class="fa fa-trash btn btn-danger btn-sm" title="Delete" (click)="recordToBeDeleted(item)"></button>
+                      </a>
+                    </td> -->
+                  </tr>
+
+                </table>
+              </div>
+            </div>
+            <!-- /.tab-pane -->
+          </div>
+          <!-- /.tab-content -->
+        </div>
+      </div>
       <div class="col-md-12 col-sm-12">
-      <div class="table-responsive no-padding">
+        <div class="table-responsive no-padding">
+          <!-- 
+          <table class="table table-condensed  table-hover table-bordered">
+            <thead>
+              <tr>
+                <th width="5%">#</th>
+                <th width="25%">HSN Code</th>
+                <th width="50%">Description</th>
+                <th width="20%">Rate</th>
+              </tr>
+            </thead>
 
-        <table class="table table-condensed  table-hover table-bordered">
-          <thead>
-            <tr>
-              <th width="5%">#</th>
-              <th width="25%">HSN Code</th>
-              <th width="50%">Description</th>
-              <th width="20%">Rate</th>
-              <!-- <th width="12%">Status</th> -->
-              <!-- <th width="25%" class="text-center">Action</th> -->
+            <tr *ngFor="let item of hsnCodeData | hsnCodeFilter:searchString |hsnCodeFilter:codeValue   ; let i = index;">
+              <td align="center">{{ hsnCodeData.indexOf(item) }}</td>
+              <td align="center">{{ item.code }}</td>
+              <td align="center">{{item.description}}</td>
+              <td align="center">{{item.rate}}</td>
+
+
             </tr>
-          </thead>
 
-          <!-- <ng-template ngFor let-item [ngForOf]="hsnCodeData"> -->
-          <tr *ngFor="let item of hsnCodeData | hsnCodeFilter:searchString |hsnCodeFilter:codeValue   ; let i = index;">
-            <!-- <tbody>
-              <tr class="header" (ngModel)="item"> -->
-                <td align="center">{{ hsnCodeData.indexOf(item) }}</td>
-                <td align="center">{{ item.code }}</td>
-                <td align="center">{{item.description}}</td>
-                <td align="center">{{item.rate}}</td>
-
-
-                <!-- <td align="center">
-                    <i class="fa fa-eye btn btn-primary btn-sm" title="View"></i>
-                    <a href="" data-toggle="modal" data-target=".bs-user-lg-edit">
-                      <button class="fa fa-edit btn btn-warning btn-sm" title="Update" (click)="editHSNRecord(item,hsnCodeData.indexOf(item))"></button>
-                    </a>
-                    <a href="" data-toggle="modal" data-target=".bs-delete-sm">
-                      <button class="fa fa-trash btn btn-danger btn-sm" title="Delete" (click)="recordToBeDeleted(item)"></button>
-                    </a>
-                  </td> -->
-          </tr>
-
-        </table>
+          </table> -->
         </div>
         <!-- TABLE -->
 

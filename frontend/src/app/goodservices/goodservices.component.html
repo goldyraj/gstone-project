@@ -1,5 +1,5 @@
-
-<div class="clearfix"></div>
+<div class="clearfix">
+</div>
 <div class="container">
 	<div class="row">
 		<div class="col-xs-6 col-sm-3">
@@ -29,57 +29,171 @@
 		<div class="clearfix"></div>
 
 
-		<div class="col-md-12 col-sm-12 section-top-20 section-bottom-30">
-
-			<div class="table-responsive no-padding">
-				<table class="table table-condensed  table-hover table-bordered">
-					<thead>
-						<tr>
-							<th width="5%">#</th>
-							<th width="30%">Description</th>
-							<th width="20%">HSN Code</th>
-							<th width="15%">Unit</th>
-							<th width="15%">Rate</th>
-							<th width="15%" class="text-center">Action</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr *ngFor="let item of goodsAndServicesDataList;let i = index;">
-							<td align="center">{{i+1}}</td>
-							<td align="center">{{item.description}}</td>
-							<td align="center">{{item.hsn_code}}</td>
-							<td align="center">{{item.unit}}</td>
-							<td align="center">{{item.rate}}</td>
-							<td align="center">
-								<a data-toggle="modal" data-target=".bs-goods-lg-edit">
-									<button class="fa fa-edit btn btn-primary btn-sm" title="Edit" (click)="editGoodsServicesRecord(item)"></button>
-								</a>
-								<a href="" data-toggle="modal" data-target=".bs-delete-sm">
-									<button class="fa fa-trash btn btn-danger btn-sm" title="Delete" (click)="recordToDelete(item)"></button>
-								</a>
-							</td>
-						</tr>
-
-					</tbody>
-				</table>
-
-
-				<ul class="pagination btn-sm">
-					<li [ngClass]="{disabled:pager.currentPage === 1}">
-						<a (click)="getStategetGoodsAndServicesListList(pager.currentPage - 1)">Previous</a>
+		<div class="col-lg-12 col-xs-12">
+			<div class="nav-tabs-custom">
+				<ul class="nav nav-tabs">
+					<li class="active">
+						<a href="#Goods" data-toggle="tab">Goods</a>
 					</li>
-
-					<li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
-						<a (click)="getGoodsAndServicesList(page)">{{page}}</a>
-					</li>
-
-					<li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-						<a (click)="getGoodsAndServicesList(pager.currentPage + 1)">Next</a>
+					<li>
+						<a href="#Services" data-toggle="tab">Services</a>
 					</li>
 				</ul>
+				<div class="tab-content">
+					<div class="active tab-pane section-top-20" id="Goods">
+						<!-- Post -->
+						<div class="section-bottom-10">
+
+							<div class="col-md-4 col-xs-12">
+								<div class="input-group">
+									<input type="text" class="form-control" [(ngModel)]="codeValue" placeholder="HNS Code">
+									<div class="input-group-addon">
+										<i class="fa fa-search"></i>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4 col-xs-12">
+								<div class="input-group">
+									<input type="text" class="form-control" [(ngModel)]="searchString" placeholder="Description">
+									<div class="input-group-addon">
+										<i class="fa fa-search"></i>
+									</div>
+								</div>
+							</div>
+
+							<!-- <div class="col-md-4 col-xs-12">
+						  <div class="input-group">
+							<input type="button" class="btn btn-primary" value="clear">
+						  </div>
+						</div> -->
+						</div>
+
+						<div class="clearfix"></div>
+						<div class="scroll section-top-20">
+							<div class="alert alert-danger" *ngIf="isGoodsList == true">
+								<strong>Sorry!</strong> Goods list not prepare yet.
+							</div>
+							<table class="table table-condensed  table-hover table-bordered" *ngIf="isGoodsList == false">
+								<thead>
+									<tr>
+										<th width="5%">#</th>
+										<th width="10%">HSN Code</th>
+										<th width="50%">Description</th>
+										<th width="10%">CGST</th>
+										<th width="10%">SGST</th>
+										<th width="10%">IGST</th>
+										<!-- <th width="12%">Status</th> -->
+										<!-- <th width="25%" class="text-center">Action</th> -->
+									</tr>
+								</thead>
+								<!-- 
+						<tr *ngFor="let item of hsnCodeData | hsnCodeFilter:searchString |hsnCodeFilter:codeValue   ; let i = index;">
+						  
+						  <td align="center">{{ hsnCodeData.indexOf(item) }}</td>
+						  <td align="center">{{ item.code }}</td>
+						  <td align="center">{{item.description}}</td>
+						  <td align="center">{{item.rate}}</td>
+						</tr> -->
+								<tr *ngFor="let item of goodsData | hsnCodeFilter:searchString |hsnDescFilter:codeValue   ; let i = index;">
+									<!-- <td align="center">{{ hsnCodeData.indexOf(item) }}</td> -->
+									<td align="center">{{i+1}}</td>
+									<!-- <td align="center">{{pager.pageSize * (pager.currentPage-1)+i+1}}</td> -->
+									<td align="center">{{ item.hsn_code }}</td>
+									<td align="center">{{item.description}}</td>
+									<td align="center">{{item.cgst}}</td>
+									<td align="center">{{item.sgst}}</td>
+									<td align="center">{{item.igst}}</td>
+
+									<!-- <td align="center">
+							  <a href="" data-toggle="modal" data-target=".bs-goodsFormEdit-lg">
+								<button class="fa fa-edit btn btn-warning btn-sm" title="Update" (click)="editHSNRecord(item)"></button>
+							  </a>
+							  <a href="" data-toggle="modal" data-target=".bs-delete-sm">
+								<button class="fa fa-trash btn btn-danger btn-sm" title="Delete" (click)="recordToBeDeleted(item)"></button>
+							  </a>
+							</td> -->
+								</tr>
+
+							</table>
+						</div>
+						<!-- /.post -->
+					</div>
+					<!-- /.tab-pane -->
+
+					<div class="tab-pane section-top-20" id="Services">
+						<div class="section-bottom-10">
+
+							<div class="col-md-4 col-xs-12">
+								<div class="input-group">
+									<input type="text" class="form-control" [(ngModel)]="codeSerValue" placeholder="HNS Code">
+									<div class="input-group-addon">
+										<i class="fa fa-search"></i>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4 col-xs-12">
+								<div class="input-group">
+									<input type="text" class="form-control" [(ngModel)]="searchDescString" placeholder="Description">
+									<div class="input-group-addon">
+										<i class="fa fa-search"></i>
+									</div>
+								</div>
+							</div>
+
+							<!-- <div class="col-md-4 col-xs-12">
+						  <div class="input-group">
+							<input type="button" class="btn btn-primary" value="clear">
+						  </div>
+						</div> -->
+						</div>
+
+						<div class="clearfix"></div>
+						<div class="scroll section-top-20">
+							<div class="alert alert-danger" *ngIf="isServiceList == true">
+								<strong>Sorry!</strong> Services list not prepare yet.
+							</div>
+							<table class="table table-condensed  table-hover table-bordered" *ngIf="isServiceList == false">
+								<thead>
+									<tr>
+										<th width="5%">#</th>
+										<th width="10%">HSN Code</th>
+										<th width="50%">Description</th>
+										<th width="10%">CGST</th>
+										<th width="10%">SGST</th>
+										<th width="10%">IGST</th>
+										<!-- <th width="12%">Status</th> -->
+										<!-- <th width="25%" class="text-center">Action</th> -->
+									</tr>
+								</thead>
+
+								<!-- <ng-template ngFor let-item [ngForOf]="hsnCodeData"> -->
+								<tr *ngFor="let item of servicesData  | hsnSerDescFilter:codeSerValue | hsnSerCodeFilter: searchDescString ; let i = index;">
+									<!-- <td align="center">{{ hsnCodeData.indexOf(item) }}</td> -->
+									<td align="center">{{i+1}}</td>
+									<td align="center">{{ item.hsn_code }}</td>
+									<td align="center">{{item.description}}</td>
+									<td align="center">{{item.cgst}}</td>
+									<td align="center">{{item.sgst}}</td>
+									<td align="center">{{item.igst}}</td>
+
+									<!-- 
+							<td align="center">
+							  <a href="" data-toggle="modal" data-target=".bs-goodsFormEdit-lg">
+								<button class="fa fa-edit btn btn-warning btn-sm" title="Update" (click)="editHSNRecord(item)"></button>
+							  </a>
+							  <a href="" data-toggle="modal" data-target=".bs-delete-sm">
+								<button class="fa fa-trash btn btn-danger btn-sm" title="Delete" (click)="recordToBeDeleted(item)"></button>
+							  </a>
+							</td> -->
+								</tr>
+
+							</table>
+						</div>
+					</div>
+					<!-- /.tab-pane -->
+				</div>
+				<!-- /.tab-content -->
 			</div>
-
-
 		</div>
 	</div>
 </div>
@@ -101,45 +215,64 @@
 					<div class="row">
 						<div class="col-md-12 col-sm-12">
 							<form [formGroup]="addNewGoodsForm" novalidate (ngSubmit)="saveGoodsAndServices(addNewGoodsForm.valid)">
+
 								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
-									<textarea type="text" class="form-control" formControlName="description" placeholder="Description" required></textarea>
-									<small [hidden]="addNewGoodsForm.controls.description.valid || (addNewGoodsForm.controls.description.pristine && !submitted)">
-										Description is required !
+									<select formControlName="selectCategory" class="form-control" required>
+										<option value="Select Category">Select Category</option>
+										<option value="Goods">Goods</option>
+										<option value="Services">Services</option>
+									</select>
+									<small *ngIf="goodsForm.controls.selectCategory=='Select Category' && submitted">
+										Select Category !
 									</small>
 								</div>
+
 								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
-									<input type="text" class="form-control" formControlName="hsn_code" placeholder="HSN Code">
-									<small [hidden]="addNewGoodsForm.controls.hsn_code.valid || (addNewGoodsForm.controls.hsn_code.pristine && !submitted)">
+									<input type="number" maxlength="15" min="1" class="form-control" placeholder="HSN Code" name="hsn_code" id="hsn_code" required
+									 formControlName="hsn_code">
+									<small *ngIf="goodsForm.controls.hsn_code.errors && submitted">
 										HSN Code is required !
 									</small>
 								</div>
 
+								<!-- Description -->
+
 								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
-									<select class="form-control" formControlName="rate" required>
-										<option value="Select Rate" nam="Select Rate" selected="selected">Select Rate</option>
-										<option value="0.1%">0.1%</option>
-										<option value="0.5%">0.5%</option>
-										<option value="3%">3%</option>
-										<option value="5%">5%</option>
-										<option value="12%">12%</option>
-										<option value="18%">18%</option>
-										<option value="28%">28%</option>
-									</select>
-									<small *ngIf="addNewGoodsForm.controls.rate.value=='Select Rate' && submitted">
-										Please select rate !
+									<textarea rows="4" type="text" maxlength="500" class="form-control" placeholder="Description" name="description" id="description"
+									 required formControlName="description"></textarea>
+									<small [hidden]="goodsForm.controls.description.valid || (goodsForm.controls.description.pristine && !submitted)">
+										Description is required !
+									</small>
+								</div>
+
+
+								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
+									<input type="number" step="0.01" min="0" maxlength="5" class="form-control" placeholder="CGST" name="cgst" required formControlName="cgst">
+									<small *ngIf="goodsForm.controls.cgst.errors && submitted">
+										CGST is required !
 									</small>
 								</div>
 
 								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
-									<select class="form-control" formControlName="unit" required>
-										<option value="Select Unit" name="Select Unit" selected="selected">Select Unit</option>
-										<option value="Kilogram">Kilogram</option>
-										<option value="Gram">Gram</option>
-										<option value="Meter">Meter</option>
-									</select>
-									<small *ngIf="addNewGoodsForm.controls.unit.value=='Select Unit' && submitted">
-										Please select unit !
+									<input type="number" step="0.01" min="0" maxlength="5" class="form-control" placeholder="SGST" name="sgst" required formControlName="sgst">
+									<small *ngIf="goodsForm.controls.sgst.errors && submitted">
+										SGST is required !
 									</small>
+								</div>
+
+								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
+									<input type="number" step="0.01" min="0" maxlength="5" class="form-control" placeholder="IGST" name="statecode" required
+									 formControlName="igst">
+									<small *ngIf="goodsForm.controls.igst.errors  && submitted">
+										IGST is required !
+									</small>
+								</div>
+
+								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
+									<textarea rows="3" type="text" class="form-control" placeholder="Condition" name="comment" formControlName="comment"></textarea>
+									<!-- <small [hidden]="goodsForm.controls.comment.valid || (goodsForm.controls.comment.pristine && !submitted)">
+										  Condition is required !
+										</small> -->
 								</div>
 
 								<div class="col-md-12 col-sm-12 col-xs-12 form-group" align="center">
@@ -163,7 +296,7 @@
 
 <!-- Edit Modal -->
 
-<div class="modal fade bs-goods-lg-edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+<!-- <div class="modal fade bs-goods-lg-edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
 	<div class="modal-dialog modal-md" role="document">
 		<div class="modal-content section-form">
 			<div class="modal-header">
@@ -233,7 +366,7 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div> -->
 
 <!-- Edit Modal -->
 

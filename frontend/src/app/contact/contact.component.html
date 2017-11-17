@@ -23,13 +23,19 @@
                             </div>
                         </div>
                         <div class="row">
+                            <div class="alert alert-success" *ngIf="errorType == true">
+                                Contact has been send successfully
+                            </div>
+                            <div class="alert alert-danger" *ngIf="errorType == false">
+                                Contact not send please re-try.
+                            </div>
                             <form [formGroup]="contactForm" novalidate (ngSubmit)="sendContact(contactForm.valid)">
 
 
                                 <div class="col-sm-6 form-group">
                                     <input type="text" class="form-control" formControlName="name" placeholder="Name">
                                     <small [hidden]="contactForm.controls.name.valid || (contactForm.controls.name.pristine && !submitted)">
-                                        Name is required (minimum 5 characters).
+                                        Name is required .
                                     </small>
                                 </div>
                                 <div class="col-sm-6 form-group">
@@ -40,7 +46,7 @@
                                     </small>
                                 </div>
                                 <div class="col-sm-6 form-group">
-                                    <input type="text" class="form-control" formControlName="contact" placeholder="Phone No" pattern="^(?:(?:\+|0{0,2})91(\s*[\ -]\s*)?|[0]?)?[789]\d{9}|(\d[ -]?){10}\d$">
+                                    <input type="text" class="form-control" formControlName="contact" maxlength="10" placeholder="Phone No" pattern="^(?:(?:\+|0{0,2})91(\s*[\ -]\s*)?|[0]?)?[789]\d{9}|(\d[ -]?){10}\d$">
                                     <small [hidden]="contactForm.controls.contact.valid || (contactForm.controls.contact.pristine && !submitted)">
                                         <span style="color:red" [hidden]="contactForm.controls.contact.valid">Contact no is required.</span>
                                         <b [hidden]="contactForm.controls.contact.pristine">Characters not allowed.</b>
@@ -54,19 +60,17 @@
                                 </div>
                                 <div class="col-sm-12 form-group">
                                     <textarea class="form-control" rows="5" formControlName="remarks" placeholder="Remark"></textarea>
-                                    <small [hidden]="contactForm.controls.remarks.valid || (contactForm.controls.remarks.pristine && !submitted)">
-                                        Remarks is required.
-                                    </small>
+                                    
                                 </div>
                                 <div class="col-sm-12 form-group">
                                     <button class="btn btn-primary unicod-btn-green" type="submit">Send</button>
                                 </div>
-                                <small *ngIf="errorType == true && submitted">
+                                <!-- <small *ngIf="errorType == true && submitted">
                                     Contact has been send successfully.
                                 </small>
                                 <small *ngIf="errorType == false && submitted">
                                     Contact not send.
-                                </small>
+                                </small> -->
                             </form>
                         </div>
                     </form>

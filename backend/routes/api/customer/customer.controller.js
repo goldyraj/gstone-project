@@ -23,7 +23,13 @@ var query={};
 req.query.limit=parseInt(req.query.limit);
 if(req.query.search && req.query.search.length>0){
     console.log(query={name:req.query.search})
-    query={name:req.query.search}
+    query={name:new RegExp(req.query.search,'i')}
+   // query={state:new RegExp(req.query.search,'i')}
+
+}
+// USer Id 
+if(req.decoded.type===req.app.get('usertype')){
+   query={userid:req.decoded._id}
 }
 if(!req.query.limit ||isNaN(req.query.limit) ){
     req.query.limit=5;
@@ -46,12 +52,14 @@ const onError = (error) => {
            var sortfiled={};
     if(req.query.sortBy && req.query.sortBy.length>0){    
     sortfiled=req.query.sortBy
+    console.log('send')
 }else{
-   sortfiled={ date: -1 } 
+  console.log('NOT send')
+   sortfiled={ created_at: -1 } 
 }
 var option={
     select:'name pan_no gstin city contact email address state created_at',
-    sort:sortfiled, 
+    sort:sortfiled , 
     offset:offset,
     limit:req.query.limit
 };
@@ -94,9 +102,9 @@ var myCallback=usingItNow(req.decoded)
           //  debug('User %o', user);
    
         if(custormer) {
-            throw new Error('Customer Name exists')
+            throw new Error('Customer gstin Allready exists')
         } else {
-            return Customer.create(name,pan_no,gstin,city,contact,email,address,state)
+            return Customer.create(name,pan_no,gstin,city,contact,email,address,state,req.decoded._id)
         }
     }
     // count the number of the Customer
@@ -114,11 +122,11 @@ var myCallback=usingItNow(req.decoded)
     // run when there is an error (username exists)
     const onError = (error) => {
         res.status(409).json({
-            message: error.message
+          message: 'Customer pan number Allready exists'
         })
     }
     // check Customer Name duplication
-    Customer.findOneByUsername(name)
+    Customer.findOneByUsername(gstin)
     .then(create)
     .then(count)   
     .then(respond)
@@ -136,7 +144,7 @@ exports.update=(req,res)=>{
     }
         const {_id,name,pan_no,gstin,city,contact,email,address,state} = req.body
         var updated_at=  Date.now();
-         Customer.findOneAndUpdate({_id:_id}, {$set:{name:name,pan_no:pan_no,gstin:gstin,contact:contact,email:email,address:address,state:state,updated_at:updated_at}}, {new: true}, function(err, doc){
+         Customer.findOneAndUpdate({_id:_id}, {$set:{name:name,pan_no:pan_no,city:city,gstin:gstin,contact:contact,email:email,address:address,state:state,updated_at:updated_at}}, {new: true}, function(err, doc){
     if(err){
         console.log("Something wrong when updating data!");
     }
@@ -169,7 +177,9 @@ var myCallback=usingItNow(req.decoded)
             message: 'you are not an authorise'
         }) 
     }
-
+     for (var i = 0; i <myobj.length; i++) {
+       myobj[i].userid=req.decoded._id; 
+     }
  var multirecord = function () {
       return new Customer.insertMany(myobj, function(err, res) {})
   }

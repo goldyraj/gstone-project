@@ -27,7 +27,8 @@ var query={};
 req.query.limit=parseInt(req.query.limit);
 if(req.query.search && req.query.search.length>0){
     console.log(query={description:req.query.search})
-    query={description:req.query.search}
+   query={description:new RegExp(req.query.search,'i')}
+      
 }
 if(!req.query.limit ||isNaN(req.query.limit) ){
     req.query.limit=20;
@@ -51,7 +52,7 @@ const onError = (error) => {
     if(req.query.sortBy && req.query.sortBy.length>0){    
     sortfiled=req.query.sortBy
 }else{
-   sortfiled={ date: -1 } 
+   sortfiled={ created_at: -1 } 
 }
 var option={
     select:'description code rate status',

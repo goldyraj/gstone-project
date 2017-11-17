@@ -26,7 +26,7 @@
         <div class="text-right">
           <!-- <input type="button" class="btn btn-primary" value="Import CSV"> -->
 
-          <input type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-user-lg" value="Add New">
+          <input type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-user-lg" value="Add New" (click)="resetForm()">
         </div>
       </div>
 
@@ -34,9 +34,9 @@
 
       <div class="col-md-3 col-xs-12">
         <div class="input-group section-bottom-20">
-          <input type="text" placeholder="Title" [(ngModel)]="searchString" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
+          <input type="text" placeholder="Search Title"  (input)="searchKeyword($event.target.value)" [(ngModel)]="searchString" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
           <div class="input-group-addon">
-            <i class="fa fa-search"></i>
+            <i class="fa fa-search" (click)="searchKeyword(searchString)"></i>
           </div>
         </div>
       </div>
@@ -57,8 +57,8 @@
             </thead>
             <tbody>
 
-              <!-- <tr *ngFor="let item of videosList ;let i = index;"> -->
-              <tr *ngFor="let item of videosList | videosFilter:searchString   ;let i = index;">
+              <tr *ngFor="let item of videosList ;let i = index;">
+              <!-- <tr *ngFor="let item of videosList | videosFilter:searchString   ;let i = index;"> -->
                 <td align="center">{{pager.pageSize * (pager.currentPage-1)+i+1}}</td>
                 <td align="center">{{item.title}}</td>
                 <td align="center">
@@ -83,7 +83,7 @@
           </table>
 
 
-          <ul class="pagination btn-sm">
+          <ul class="pagination btn-sm" *ngIf="videosList?.length > 1">
             <li [ngClass]="{disabled:pager.currentPage === 1}">
               <a *ngIf="pager.currentPage > 1" (click)="getVideosList(pager.currentPage - 1)">Previous</a>
             </li>
@@ -133,21 +133,21 @@
             <div class="col-md-12 col-sm-12">
               <form [formGroup]="gstVideosForm" novalidate (ngSubmit)="saveGstVideos(gstVideosForm.valid)">
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="Title" formControlName="title" name="title" id="title">
+                  <input type="text" maxlength="50" class="form-control" placeholder="Title" formControlName="title" name="title" id="title">
                   <small [hidden]="gstVideosForm.controls.title.valid || (gstVideosForm.controls.title.pristine && !submitted)">
-                    Question is required .
+                    Title is required .
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="Description" formControlName="description" name="description">
+                  <input type="text" maxlength="5000" class="form-control" placeholder="Description" formControlName="description" name="description">
                   <small [hidden]="gstVideosForm.controls.description.valid || (gstVideosForm.controls.description.pristine && !submitted)">
-                    Question is required .
+                    Description is required .
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <input type="text" class="form-control" placeholder="Link" formControlName="link" name="statecode" required>
                   <small [hidden]="gstVideosForm.controls.link.valid || (gstVideosForm.controls.link.pristine && !submitted)">
-                    Question is required .
+                    Link is required .
                   </small>
                 </div>
 
@@ -157,6 +157,13 @@
                   <button type="submit" class="btn btn-primary">Add Videos</button>
                   <button type="button" class="btn btn-success pull-right" data-dismiss="modal">Cancel</button>
                 </div>
+
+                <div class="text-center">
+                  <small *ngIf="apiResult==-1 || apiResult==1">
+                    {{apiMessage}}
+                  </small>
+                </div>
+
               </form>
             </div>
           </div>
@@ -181,21 +188,21 @@
             <div class="col-md-12 col-sm-12">
               <form [formGroup]="editGstVideosForm" novalidate (ngSubmit)="updateVideos(editGstVideosForm.valid)">
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="Title" formControlName="title" name="title" id="title">
+                  <input type="text" maxlength="50"  class="form-control" placeholder="Title" formControlName="title" name="title" id="title">
                   <small [hidden]="editGstVideosForm.controls.title.valid || (editGstVideosForm.controls.title.pristine && !submitted)">
-                    Question is required .
+                    Title is required .
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="Description" formControlName="description" name="description">
+                  <input type="text" maxlength="5000"  class="form-control" placeholder="Description" formControlName="description" name="description">
                   <small [hidden]="editGstVideosForm.controls.description.valid || (editGstVideosForm.controls.description.pristine && !submitted)">
-                    Question is required .
+                    Description is required .
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <input type="text" class="form-control" placeholder="Link" formControlName="link" name="statecode" required>
                   <small [hidden]="editGstVideosForm.controls.link.valid || (editGstVideosForm.controls.link.pristine && !submitted)">
-                    Question is required .
+                    Link is required .
                   </small>
                 </div>
 
@@ -204,6 +211,12 @@
                   <!-- <input type="button" class="btn btn-primary" value="Add Notifications"> -->
                   <button type="submit" class="btn btn-primary">Update</button>
                   <button type="button" class="btn btn-success pull-right" data-dismiss="modal">Cancel</button>
+                </div>
+
+                <div class="text-center">
+                  <small *ngIf="apiResult==-1 || apiResult==1">
+                    {{apiMessage}}
+                  </small>
                 </div>
               </form>
             </div>

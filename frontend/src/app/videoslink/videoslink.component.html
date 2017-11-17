@@ -1,44 +1,45 @@
-
-	<!-- pricing Section -->
-	
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12">
-					<div class="unicod-section-title-one">
-						<h2 class="comon-color">VIDEOS LINK </h2>
-						<div class="collor-bottom-one"></div>
-						<p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form,
-							by injected humour, or randomised words which don't look even slightly believable.</p>
-					</div>
+<!-- pricing Section -->
+<section class="unicod-section unicod-pricing-fild  section-top-20">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="unicod-section-title-one">
+					<h2 class="comon-color">VIDEOS LINK </h2>
+					<div class="collor-bottom-one"></div>
+					<p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form,
+						by injected humour, or randomised words which don't look even slightly believable.</p>
 				</div>
-				<div class="col-md-12 col-sm-12 section-bottom-30">
-				
-							<table class="table table-condensed table-bordered">
-								<thead>
-									<tr>
-										<th width="6%">S. No</th>
-										<th width="15%">Title</th>
-										<th width="50%">Description </th>
-										<th width="15%">Category</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr *ngFor="let item of videosList   ;let i = index;">
-										<td align="center"> {{pageSize * (currentPage-1)+i+1}}.</td>
-										<td>{{item.title}}</td>
-										<td>
-											<a href="{{item.link}}">{{item.description}}</a>
-										</td>
-										<td><iframe width="190" height="110" src="https://www.youtube.com/embed/uiwuoYxv-4I" frameborder="0" allowfullscreen></iframe></td>
-										
-									</tr>
-				
-								</tbody>
-							</table>
-				
-						</div>
+			</div>
+			<div class="col-md-12 col-sm-12 section-bottom-30 scroll">
 
-				<!-- <div class="col-md-8 col-sm-6">
+				<table class="table table-condensed table-bordered">
+					<thead>
+						<tr>
+							<th width="6%">S. No</th>
+							<th width="15%">Title</th>
+							<th width="50%">Description </th>
+							<th width="15%">Video Link</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let item of videosList   ;let i = index;">
+							<td align="center"> {{pageSize * (currentPage-1)+i+1}}.</td>
+							<td>{{item.title}}</td>
+							<td>
+								<a href="{{item.link}}" target="_blank">{{item.description}}</a>
+							</td>
+							<td>
+								<iframe width="190" height="110" src="https://www.youtube.com/embed/uiwuoYxv-4I" frameborder="0" allowfullscreen></iframe>
+							</td>
+
+						</tr>
+
+					</tbody>
+				</table>
+
+			</div>
+
+			<!-- <div class="col-md-8 col-sm-6">
 					<div class="pricing-tabile">
 
 						<ul class="tabile">
@@ -64,7 +65,7 @@
 					</div>
 				</div> -->
 
-				<!-- <div class="col-md-4 col-sm-6">
+			<!-- <div class="col-md-4 col-sm-6">
 					<div class="well">
 						<ul class="tabile">
 							<li>You are now using GST Software</li>
@@ -76,97 +77,98 @@
 						</ul>
 					</div>
 				</div> -->
-			</div>
-		</div>
-	
-
-
-
-
-	<!-- After REGISTRATION Form Start -->
-
-	<div class="modal fade bs-REGISTRATION2-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-		<div class="modal-dialog modal-md" role="document">
-			<div class="modal-content">
-				<!-- <iframe width="100%" height="360" src="https://www.youtube.com/embed/qrC8Lhl82Ms" frameborder="0" allowfullscreen></iframe> -->
-			</div>
 		</div>
 	</div>
-	<!-- After REGISTRATION Form end -->
+</section>
 
-	<!-- Login Start -->
 
-	<div class="modal fade bs-login-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-		<div class="modal-dialog modal-sm" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span class="modal-text" aria-hidden="true">X</span>
-					</button>
-					<h4 class="modal-title modal-text"> LOGIN</h4>
-				</div>
-				<div class="modal-body">
-					<div class="service-section">
-						<div class="row">
-							<form action="" enctype="multipart/form-data">
-								<div class="col-md-12 col-sm-12 col-xs-12">
-									<div class="col-md-12 col-sm-12 col-xs-12 form-group">
-										<input type="text" class="form-control" placeholder="Email Id" name="email" id="email" required>
-									</div>
 
-									<div class="col-md-12 col-sm-12 col-xs-12 form-group">
-										<input type="password" class="form-control" placeholder="Paasword" name="paasword" id="paasword" required>
-									</div>
 
-									<div class="col-md-12 col-sm-12 col-xs-12 form-group text-center">
-										<a href="branch_list.html">
-											<input type="button" class="btn btn-success btn-block" value="Log In">
-										</a>
-									</div>
+
+<!-- After REGISTRATION Form Start -->
+
+<div class="modal fade bs-REGISTRATION2-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+	<div class="modal-dialog modal-md" role="document">
+		<div class="modal-content">
+			<!-- <iframe width="100%" height="360" src="https://www.youtube.com/embed/qrC8Lhl82Ms" frameborder="0" allowfullscreen></iframe> -->
+		</div>
+	</div>
+</div>
+<!-- After REGISTRATION Form end -->
+
+<!-- Login Start -->
+
+<div class="modal fade bs-login-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span class="modal-text" aria-hidden="true">X</span>
+				</button>
+				<h4 class="modal-title modal-text"> LOGIN</h4>
+			</div>
+			<div class="modal-body">
+				<div class="service-section">
+					<div class="row">
+						<form action="" enctype="multipart/form-data">
+							<div class="col-md-12 col-sm-12 col-xs-12">
+								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
+									<input type="text" class="form-control" placeholder="Email Id" name="email" id="email" required>
 								</div>
-							</form>
-						</div>
 
-						<button type="button" class="btn btn-link pull-left" data-dismiss="modal" data-toggle="modal" data-target=".bs-REGISTRATION2-lg">Create Account</button>
-						<button type="button" class="btn btn-link" data-dismiss="modal" data-toggle="modal" data-target=".bs-ForgotPassword-sm">Forgot Password</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- login end Start -->
-	<!-- Login Start -->
-
-	<div class="modal fade bs-ForgotPassword-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-		<div class="modal-dialog modal-sm" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span class="modal-text" aria-hidden="true">X</span>
-					</button>
-					<h4 class="modal-title modal-text"> Forgot Password</h4>
-				</div>
-				<div class="modal-body">
-					<div class="service-section">
-						<div class="row">
-							<form action="user.html" enctype="multipart/form-data">
-								<div class="col-md-12 col-sm-12 col-xs-12">
-									<div class="col-md-12 col-sm-12 col-xs-12 form-group">
-										<input type="text" class="form-control" placeholder="Email Id" name="email" id="email" required>
-									</div>
-
-									<div class="form-group  text-center">
-										<input type="button" class="btn btn-primary" value="Forgot Password">
-									</div>
+								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
+									<input type="password" class="form-control" placeholder="Paasword" name="paasword" id="paasword" required>
 								</div>
-							</form>
-						</div>
 
+								<div class="col-md-12 col-sm-12 col-xs-12 form-group text-center">
+									<a href="branch_list.html">
+										<input type="button" class="btn btn-success btn-block" value="Log In">
+									</a>
+								</div>
+							</div>
+						</form>
 					</div>
+
+					<button type="button" class="btn btn-link pull-left" data-dismiss="modal" data-toggle="modal" data-target=".bs-REGISTRATION2-lg">Create Account</button>
+					<button type="button" class="btn btn-link" data-dismiss="modal" data-toggle="modal" data-target=".bs-ForgotPassword-sm">Forgot Password</button>
 				</div>
 			</div>
 		</div>
 	</div>
+</div>
 
-	<!-- login end Start -->
+<!-- login end Start -->
+<!-- Login Start -->
+
+<div class="modal fade bs-ForgotPassword-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span class="modal-text" aria-hidden="true">X</span>
+				</button>
+				<h4 class="modal-title modal-text"> Forgot Password</h4>
+			</div>
+			<div class="modal-body">
+				<div class="service-section">
+					<div class="row">
+						<form action="user.html" enctype="multipart/form-data">
+							<div class="col-md-12 col-sm-12 col-xs-12">
+								<div class="col-md-12 col-sm-12 col-xs-12 form-group">
+									<input type="text" class="form-control" placeholder="Email Id" name="email" id="email" required>
+								</div>
+
+								<div class="form-group  text-center">
+									<input type="button" class="btn btn-primary" value="Forgot Password">
+								</div>
+							</div>
+						</form>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- login end Start -->

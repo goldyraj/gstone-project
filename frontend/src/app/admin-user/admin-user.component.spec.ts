@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AdminHsnCodeComponent } from './admin-hsn-code.component';
+import { AdminUserComponent } from './admin-user.component';
 
-describe('AdminHsnCodeComponent', () => {
-  let component: AdminHsnCodeComponent;
-  let fixture: ComponentFixture<AdminHsnCodeComponent>;
+describe('AdminUserComponent', () => {
+  let component: AdminUserComponent;
+  let fixture: ComponentFixture<AdminUserComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdminHsnCodeComponent ]
+      declarations: [ AdminUserComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdminHsnCodeComponent);
+    fixture = TestBed.createComponent(AdminUserComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

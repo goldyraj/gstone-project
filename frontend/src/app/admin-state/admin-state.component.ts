@@ -5,20 +5,23 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { PagerService } from '../service/pager.service';
 import * as _ from 'underscore';
 import { RouterModule, Routes, Router } from '@angular/router';
-import {PreventLoggedInAccess} from '../PreventLoggedInAccess';
+import { PreventLoggedInAccess } from '../PreventLoggedInAccess';
+import { NumberValidatorsService } from "../number-validators.service";
+import { NgZone } from '@angular/core';
 
 @Component({
   selector: 'app-admin-state',
   templateUrl: './admin-state.component.html',
   styleUrls: ['./admin-state.component.css'],
-  providers: [PagerService,PreventLoggedInAccess]
+  providers: [PagerService, PreventLoggedInAccess, NumberValidatorsService]
 })
 export class AdminStateComponent implements OnInit {
 
   @ViewChild('closeBtn') closeBtn: ElementRef;
   @ViewChild('closeBtn2') closeBtn2: ElementRef;
   @ViewChild('closeBtn3') closeBtn3: ElementRef;
-  
+
+  backupStateList;
   modelHide = '';
   url = "";
   StateVal = {};
@@ -31,7 +34,9 @@ export class AdminStateComponent implements OnInit {
 
   // pager object
   pager: any = {};
-  sortBy="created_at";
+  savePagerStatus: any = {};
+  searchedStringPager: any = {};
+  sortBy = "created_at";
 
   // paged items
   pagedItems: any[];
@@ -54,12 +59,13 @@ export class AdminStateComponent implements OnInit {
   public events: any[] = []; // use later to display form changes
   public stateRowData;
   access_token = "";
-  constructor(private _fb: FormBuilder, private http: Http, private pagerService: PagerService,public router:Router) {
+  pagedSearchedItems;
+
+  constructor(private _fb: FormBuilder, private http: Http, private pagerService: PagerService, public router: Router, private zone: NgZone) {
     // this.currentPage=1;
   }
 
-  onLoad()
-  {
+  onLoad() {
 
     this.access_token = localStorage.getItem("admin_token");
     console.log("admin token", this.access_token);
@@ -67,26 +73,27 @@ export class AdminStateComponent implements OnInit {
     // this.setPage(this.pager.currentPage);
     this.getStateList(this.pager.currentPage);
     console.log("cusntor call");
-    
+
   }
 
   ngOnInit() {
     // we will initialize our form model here
     this.person.country = this.countries.filter(c => c.id === this.person.country.id)[0];
     this.myForm = new FormGroup({
-      statename: new FormControl('', [<any>Validators.required]),
-      statecode: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
+      // statename: new FormControl('', [Validators.pattern('[A-Za-z]{3}')]),
+      statename: new FormControl('', [Validators.required, Validators.pattern(".*\\S.*"), Validators.pattern('^[a-zA-Z \-\']+')]),
+      statecode: new FormControl(0, [Validators.required, , NumberValidatorsService.min(0)]),
       country: new FormControl('Select Status', [])
     });
 
     this.myFormEdit = new FormGroup({
-      statename: new FormControl('', [<any>Validators.required]),
-      statecode: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
+      statename: new FormControl('', [Validators.required, Validators.pattern(".*\\S.*"), Validators.pattern('^[a-zA-Z \-\']+')]),
+      statecode: new FormControl(0, [Validators.required, , NumberValidatorsService.min(0)]),
       country: new FormControl('Select Status', [])
     });
 
-    var context=this;
-    if (localStorage.getItem('admin_token')!=null) {
+    var context = this;
+    if (localStorage.getItem('admin_token') != null) {
       context.onLoad();
     }
     else {
@@ -114,7 +121,7 @@ export class AdminStateComponent implements OnInit {
         "code": this.myForm.value.statecode
       };
       this.stateList.push(body);
-      this.url = "http://localhost:3000/api/state/create?token="+this.access_token;
+      this.url = "http://localhost:3000/api/state/create?token=" + this.access_token;
       return this.http.post(this.url, body, requestOptions)
         .subscribe(
         response => {
@@ -122,9 +129,7 @@ export class AdminStateComponent implements OnInit {
           this.closeModal();
           // alert(response.json().message);
           this.getStateList(this.pager.currentPage);
-          this.myForm.reset();
-          this.myForm.get("country").setValue("Select Status");
-          this.submitted = false;
+
         },
         error => {
           console.log("error", error.message);
@@ -137,13 +142,15 @@ export class AdminStateComponent implements OnInit {
 
   getStateList(page: number) {
     this.pager.currentPage = page;
-    this.http.get('http://localhost:3000/api/state/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + this.pager.currentPage+"&sortBy="+this.sortBy).subscribe(data => {
+    this.http.get('http://localhost:3000/api/state/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + this.pager.currentPage).subscribe(data => {
       this.stateList = data.json().docs;
       // this.pager.TotalPages = data.json().total;
       this.pager.pageSize = data.json().limit;
       this.pager.totalItems = data.json().total;
+      this.backupStateList = this.stateList;
       this.setPage();
-      console.log("State  PArse", this.stateList);
+      this.savePagerStatus = this.pager;
+      console.log("DATA_API", this.stateList);
     });
   }
 
@@ -152,7 +159,8 @@ export class AdminStateComponent implements OnInit {
       return;
     }
 
-    this.pager = this.getPager(this.pager.totalItems, this.pager.currentPage, this.pager.pageSize);
+    this.pager = this.pagerService.getPager(this.pager.totalItems, this.pager.currentPage, this.pager.pageSize);
+
     console.log("pager", this.pager);
     // this.getStateList();
     this.pagedItems = this.stateList;
@@ -166,14 +174,13 @@ export class AdminStateComponent implements OnInit {
     this.closeBtn2.nativeElement.click();
   }
 
-  private closeDeleteModal()
-  {
+  private closeDeleteModal() {
     this.closeBtn3.nativeElement.click();
   }
 
   editStateRecords(data) {
     var temp;
-    
+    this.submitted = false;
     if (data) {
       console.log("DATA", data);
 
@@ -198,74 +205,30 @@ export class AdminStateComponent implements OnInit {
       headers.append('Content-Type', 'application/json');
       // headers.append('x-access-token', access_token);
       const requestOptions = new RequestOptions({ headers: headers });
-      console.log("ID",this.stateRowData._id);
+      console.log("ID", this.stateRowData._id);
       const body = {
         "_id": this.stateRowData._id,
         "name": this.myFormEdit.value.statename,
         "code": this.myFormEdit.value.statecode
       };
 
-      this.url = "http://localhost:3000/api/state/update?token="+this.access_token;
+      this.url = "http://localhost:3000/api/state/update?token=" + this.access_token;
       return this.http.put(this.url, body, requestOptions)
         .subscribe(
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeEditModal();
           this.getStateList(this.pager.currentPage);
-          this.submitted = false;
+
         },
         error => {
           // this.closeEditModal();
           console.log("error", error.message);
           console.log(error.text());
-          alert(error.text());
+          // alert(error.text());
         }
         );
     }
-  }
-
-  getPager(totalItems: number, currentPage: number = 1, pageSize: number) {
-    // calculate total pages
-    let totalPages = Math.ceil(totalItems / pageSize);
-
-    let startPage: number, endPage: number;
-    if (totalPages <= 10) {
-      // less than 10 total pages so show all
-      startPage = 1;
-      endPage = totalPages;
-    } else {
-      // more than 10 total pages so calculate start and end pages
-      if (currentPage <= 6) {
-        startPage = 1;
-        endPage = 10;
-      } else if (currentPage + 4 >= totalPages) {
-        startPage = totalPages - 9;
-        endPage = totalPages;
-      } else {
-        startPage = currentPage - 5;
-        endPage = currentPage + 4;
-      }
-    }
-
-    // calculate start and end item indexes
-    let startIndex = (currentPage - 1) * pageSize;
-    let endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
-
-    // create an array of pages to ng-repeat in the pager control
-    let pages = _.range(startPage, endPage + 1);
-
-    // return object with all pager properties required by the view
-    return {
-      totalItems: totalItems,
-      currentPage: currentPage,
-      pageSize: pageSize,
-      totalPages: totalPages,
-      startPage: startPage,
-      endPage: endPage,
-      startIndex: startIndex,
-      endIndex: endIndex,
-      pages: pages
-    };
   }
 
   deleteRecord() {
@@ -282,9 +245,6 @@ export class AdminStateComponent implements OnInit {
       response => {
         console.log("suceessfull data", response.json().message);
         this.closeDeleteModal();
-
-        // this.hsnCodeData.push(body);
-        // alert(response.json().message);
         this.getStateList(this.pager.currentPage);
       },
       error => {
@@ -297,4 +257,46 @@ export class AdminStateComponent implements OnInit {
   recordToDelete(item) {
     this.stateRowData = item;
   }
+
+  resetForm() {
+    this.myForm.reset();
+    this.myForm.get("country").setValue("Select Status");
+    this.submitted = false;
+  }
+
+  searchKeyword(searchString) {
+    console.log("SEARCH_HIT");
+    console.log("REAL_LIST", this.stateList);
+    console.log("BACKUP_LIST", this.backupStateList);
+
+    if (searchString) {
+      this.http.get('http://localhost:3000/api/state/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
+        this.stateList = data.json().docs;
+        this.pager.pageSize = data.json().limit;
+        this.pager.totalItems = data.json().total;
+        this.setPage();
+        console.log("State  PArse", this.stateList);
+      });
+    }
+    else {
+      console.log("SEARCH_EMPTY");
+      this.stateList = this.backupStateList;
+      this.pager=this.savePagerStatus;
+      console.log("PAGER_CURRENT",this.pager);
+      console.log("BACKUP_PAGER",this.savePagerStatus);
+    }
+  }
+
+
+
+  // setSearchedStringPager()
+  // {
+  //   if (this.searchedStringPager.currentPage < 1 || this.searchedStringPager.currentPage > this.searchedStringPager.TotalPages) {
+  //     return;
+  //   }
+
+  //   this.searchedStringPager = this.pagerService.getPager(this.searchedStringPager.totalItems, this.searchedStringPager.currentPage, this.searchedStringPager.pageSize);
+  //   console.log("pager", this.searchedStringPager);
+  //   this.pagedSearchedItems = this.searchedStringDataList;
+  // }
 }

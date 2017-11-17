@@ -5,6 +5,7 @@ import{ExcelServiceService} from '../excel-service.service';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
+import { RouterModule, Routes, Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-gov-notification',
@@ -24,6 +25,8 @@ export class AdminGovNotificationComponent implements OnInit {
   rowDataIndex = "";
   // pager object
   pager: any = {};
+  backupNotificationPager:any={};
+  backupNotificationList=[];
 
   // paged items
   pagedItems: any[];
@@ -35,7 +38,7 @@ export class AdminGovNotificationComponent implements OnInit {
   public events: any[] = []; // use later to display form changes
   access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
 
-  constructor(private _fb: FormBuilder, private http: Http,public ExcelServiceService:ExcelServiceService,public PagerService:PagerService) {
+  constructor(private _fb: FormBuilder, private http: Http,public ExcelServiceService:ExcelServiceService,public PagerService:PagerService,public Router:Router) {
     this.pager.currentPage=1;
     this.access_token = localStorage.getItem("admin_token");
     this.getNotificationList(this.pager.currentPage);
@@ -43,29 +46,42 @@ export class AdminGovNotificationComponent implements OnInit {
 
   ngOnInit() {
     this.govNotiForm = new FormGroup({
-      title: new FormControl('', [<any>Validators.required]),
+      title: new FormControl('',[Validators.required,Validators.pattern(".*\\S.*"),Validators.pattern('^[a-zA-Z \-\']+')]),
       description: new FormControl('', [<any>Validators.required]),
-      link: new FormControl('', [<any>Validators.required])
+      link: new FormControl('',[Validators.required,Validators.pattern(".*\\S.*")])
     });
+
     this.editGovNotiForm = new FormGroup({
-      title: new FormControl('', [<any>Validators.required]),
-      description: new FormControl('', [<any>Validators.required]),
-      link: new FormControl('', [<any>Validators.required])
+      title: new FormControl('',[Validators.required,Validators.pattern(".*\\S.*"),Validators.pattern('^[a-zA-Z \-\']+')]),
+      description: new FormControl('',[Validators.required,Validators.pattern(".*\\S.*")]),
+      link: new FormControl('',[Validators.required,Validators.pattern(".*\\S.*")])
     });
+
+    var context=this;
+    if (localStorage.getItem('admin_token')) {
+      
+    }
+    else {
+      context.Router.navigate(['/admin-login']);
+    }
+
   }
 
   getNotificationList(page: number) {
     this.pager.currentPage=page;
     console.log('list called');
-    this.http.get('http://localhost:3000/api/notification/index?token='+this.access_token+'&limit='+5 + '&page=' + this.pager.currentPage + '&sortBy=created_at&search=').subscribe(data => {
+    this.http.get('http://localhost:3000/api/notification/index?token='+this.access_token+'&limit='+10 + '&page=' + this.pager.currentPage).subscribe(data => {
       this.notificationList = data.json().docs;
       this.pager.pageSize = data.json().limit;
       this.pager.totalItems=data.json().total;
+      this.backupNotificationList=this.notificationList;
       this.setPage();
+      this.backupNotificationPager=this.pager;
     });
   }
 
   editNotificationRecord(data) {
+    this.submittedEdit = false;
     this.rowDataIndex = data._id;
     var temp;
     if (data) {
@@ -105,7 +121,7 @@ export class AdminGovNotificationComponent implements OnInit {
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeEditModal();
-          this.submittedEdit = false;
+          
           this.getNotificationList(this.pager.currentPage);
           // alert(response.json().message);
         },
@@ -118,6 +134,7 @@ export class AdminGovNotificationComponent implements OnInit {
   }
 
   deleteNotiRecord(data) {
+    this.submittedEdit = false;
     this.rowDataIndex = data._id;
     this.notiRowData = data;
   }
@@ -137,7 +154,7 @@ export class AdminGovNotificationComponent implements OnInit {
       response => {
         console.log("suceessfull data", response.json().message);
         this.closeDeleteModal();
-        this.submittedEdit = false;
+        this.getNotificationList(this.pager.currentPage);
         // alert(response.json().message);
       },
       error => {
@@ -173,7 +190,8 @@ export class AdminGovNotificationComponent implements OnInit {
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeModal();
-          this.submitted = false;
+          this.getNotificationList(this.pager.currentPage);
+          
         },
         error => {
           console.log("error", error.message);
@@ -202,6 +220,31 @@ export class AdminGovNotificationComponent implements OnInit {
     console.log("pager", this.pager);
     // this.getStateList();
     this.pagedItems = this.notificationList;
+  }
+
+  resetForm()
+  {
+    this.submitted=false;
+    this.submittedEdit=false;
+    this.govNotiForm.reset();
+  }
+
+  searchKeyword(searchString) {
+    console.log("SEARCH_HIT");
+
+    if (searchString) {
+      this.http.get('http://localhost:3000/api/notification/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
+        this.notificationList = data.json().docs;
+        this.pager.pageSize = data.json().limit;
+        this.pager.totalItems = data.json().total;
+        this.setPage();
+      });
+    }
+    else {
+      console.log("SEARCH_EMPTY");
+      this.notificationList = this.backupNotificationList;
+      this.pager=this.backupNotificationPager;
+    }
   }
 
 }

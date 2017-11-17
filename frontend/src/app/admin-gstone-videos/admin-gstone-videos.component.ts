@@ -3,11 +3,14 @@ import * as _ from 'underscore'
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
+import { PagerService } from '../service/pager.service';
+import { RouterModule, Routes, Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-gstone-videos',
   templateUrl: './admin-gstone-videos.component.html',
-  styleUrls: ['./admin-gstone-videos.component.css']
+  styleUrls: ['./admin-gstone-videos.component.css'],
+  providers:[PagerService]
 })
 export class AdminGstoneVideosComponent implements OnInit {
   @ViewChild('closeBtn') closeBtn: ElementRef;
@@ -20,6 +23,10 @@ export class AdminGstoneVideosComponent implements OnInit {
   notiRowData;
   rowDataIndex = "";
   pager: any = {};
+  backupVideoPager:any={};
+  backupVideoList=[];
+  apiMessage;
+  apiResult=0;
   pagedItems: any[];
   access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
 
@@ -28,7 +35,7 @@ export class AdminGstoneVideosComponent implements OnInit {
   public submitted: boolean; // keep track on whether form is submitted
   public submittedEdit: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
-  constructor(private _fb: FormBuilder, private http: Http) {
+  constructor(private _fb: FormBuilder, private http: Http,private PagerService:PagerService,public router:Router) {
     this.pager.currentPage = 1;
     this.access_token = localStorage.getItem("admin_token");
     this.getVideosList(this.pager.currentPage);
@@ -36,26 +43,41 @@ export class AdminGstoneVideosComponent implements OnInit {
 
   ngOnInit() {
     this.gstVideosForm = new FormGroup({
-      title: new FormControl('', [<any>Validators.required]),
+      title: new FormControl('',[Validators.required,Validators.pattern(".*\\S.*"),Validators.pattern('^[a-zA-Z \-\']+')]),
       description: new FormControl('', [<any>Validators.required]),
       link: new FormControl('', [<any>Validators.required])
     });
     this.editGstVideosForm = new FormGroup({
-      title: new FormControl('', [<any>Validators.required]),
+      title: new FormControl('',[Validators.required,Validators.pattern(".*\\S.*"),Validators.pattern('^[a-zA-Z \-\']+')]),
       description: new FormControl('', [<any>Validators.required]),
       link: new FormControl('', [<any>Validators.required])
     });
+
+    var context = this;
+    if (localStorage.getItem('admin_token')) {
+      context.onLoad();
+    }
+    else {
+      context.router.navigate(['/admin-login']);
+    }
+
+  }
+
+  onLoad()
+  {
+
   }
 
   getVideosList(page:number) {
     this.pager.currentPage = page;
     console.log('list called');
-    this.http.get('http://localhost:3000/api/vedio/index?token='+this.access_token+'&limit=' + 5 + '&page=' + this.pager.currentPage + '&sortBy=created_at&search=').subscribe(data => {
+    this.http.get('http://localhost:3000/api/vedio/index?token='+this.access_token+'&limit=' + 10 + '&page=' + this.pager.currentPage).subscribe(data => {
       this.videosList = data.json().docs;
       this.pager.pageSize = data.json().limit;
       this.pager.totalItems = data.json().total;
+      this.backupVideoList=this.videosList;
       this.setPage();
-
+      this.backupVideoPager=this.pager;
     });
   }
 
@@ -64,72 +86,11 @@ export class AdminGstoneVideosComponent implements OnInit {
       return;
     }
 
-    this.pager = this.getPager(this.pager.totalItems, this.pager.currentPage, this.pager.pageSize);
+    this.pager = this.PagerService.getPager(this.pager.totalItems, this.pager.currentPage, this.pager.pageSize);
     console.log("pager", this.pager);
     // this.getStateList();
     this.pagedItems = this.videosList;
   }
-
-  getPager(totalItems: number, currentPage: number = 1, pageSize: number) {
-    // calculate total pages
-    let totalPages = Math.ceil(totalItems / pageSize);
-
-    let startPage: number, endPage: number;
-    if (totalPages <= 10) {
-      // less than 10 total pages so show all
-      startPage = 1;
-      endPage = totalPages;
-    } else {
-      // more than 10 total pages so calculate start and end pages
-      if (currentPage <= 6) {
-        startPage = 1;
-        endPage = 10;
-      } else if (currentPage + 4 >= totalPages) {
-        startPage = totalPages - 9;
-        endPage = totalPages;
-      } else {
-        startPage = currentPage - 5;
-        endPage = currentPage + 4;
-      }
-    }
-
-    // calculate start and end item indexes
-    let startIndex = (currentPage - 1) * pageSize;
-    let endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
-
-    // create an array of pages to ng-repeat in the pager control
-    let pages = _.range(startPage, endPage + 1);
-
-    // return object with all pager properties required by the view
-    return {
-      totalItems: totalItems,
-      currentPage: currentPage,
-      pageSize: pageSize,
-      totalPages: totalPages,
-      startPage: startPage,
-      endPage: endPage,
-      startIndex: startIndex,
-      endIndex: endIndex,
-      pages: pages
-    };
-  }
-
-  // nextPage() {
-  //   console.log("paging");
-  //   if (this.Paging.page < this.TotalPages) {
-  //     this.Paging.page++;
-  //     this.getVideosList();
-  //   }
-  // }
-
-  // previousPage() {
-  //   console.log("paging");
-  //   if (this.Paging.page > 1) {
-  //     this.Paging.page--;
-  //     this.getVideosList();
-  //   }
-  // }
-
 
   saveGstVideos(isValid: boolean) {
     this.submitted = true; // set form submit to true
@@ -153,13 +114,14 @@ export class AdminGstoneVideosComponent implements OnInit {
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeModal();
+          this.apiResult=1;
           // alert(response.json().message);
           // this.TotalPages=this.TotalPages+1;
           this.getVideosList(this.pager.currentPage);
-          this.submitted=false;
-          this.gstVideosForm.reset();
         },
         error => {
+          this.apiResult=-1;
+          this.apiMessage=error.json().message;
           console.log("error", error.message);
           console.log(error.text());
         }
@@ -167,6 +129,8 @@ export class AdminGstoneVideosComponent implements OnInit {
     }
   }
   editVideosRecord(data) {
+    this.apiMessage;
+    this.apiResult=0;
     this.rowDataIndex = data._id;
     var temp;
     if (data) {
@@ -207,10 +171,13 @@ export class AdminGstoneVideosComponent implements OnInit {
           console.log("suceessfull data", response.json().message);
           this.closeEditModal();
           // alert(response.json().message);
+          this.apiResult=1;
           this.getVideosList(this.pager.currentPage);
           this.submittedEdit = false;
         },
         error => {
+          this.apiResult=-1;
+          this.apiMessage=error.json().message;
           console.log("error", error.message);
           console.log(error.text());
         }
@@ -261,5 +228,29 @@ export class AdminGstoneVideosComponent implements OnInit {
   }
   private closeDeleteModal(): void {
     this.closeBtn3.nativeElement.click();
+  }
+
+  resetForm()
+  {
+    this.submitted=false;
+    this.gstVideosForm.reset();
+  }
+
+  searchKeyword(searchString) {
+    console.log("SEARCH_HIT");
+
+    if (searchString) {
+      this.http.get('http://localhost:3000/api/vedio/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
+        this.videosList = data.json().docs;
+        this.pager.pageSize = data.json().limit;
+        this.pager.totalItems = data.json().total;
+        this.setPage();
+      });
+    }
+    else {
+      console.log("SEARCH_EMPTY");
+      this.videosList = this.backupVideoList;
+      this.pager=this.backupVideoPager;
+    }
   }
 }

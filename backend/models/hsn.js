@@ -11,7 +11,7 @@ const Hsn = new Schema({
     code: { type: String, unique: true },
     rate:String,
     status:String,
-     created_at:  { type: Date},
+     created_at:  { type: Date,default: Date.now},
   updated_at:  { type: Date}
   
 })

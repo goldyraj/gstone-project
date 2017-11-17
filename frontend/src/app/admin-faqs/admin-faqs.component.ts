@@ -2,11 +2,14 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
+import { RouterModule, Routes, Router } from '@angular/router';
+import { PagerService } from '../service/pager.service';
 
 @Component({
   selector: 'app-admin-faqs',
   templateUrl: './admin-faqs.component.html',
-  styleUrls: ['./admin-faqs.component.css']
+  styleUrls: ['./admin-faqs.component.css'],
+  providers: [PagerService]
 })
 export class AdminFaqsComponent implements OnInit {
   @ViewChild('closeBtn') closeBtn: ElementRef;
@@ -17,12 +20,10 @@ export class AdminFaqsComponent implements OnInit {
   url = "";
   faqsRowData;
   rowDataIndex = "";
-  Paging = {
-    page: 1,
-    limit: 2
-  };
-  TotalPages: number;
-  pageSize: number;
+
+  apiMessage;
+  apiResult = 0;
+
   access_token;
   currentPage: number;
   public FaqForm: FormGroup; // our model driven form
@@ -30,9 +31,15 @@ export class AdminFaqsComponent implements OnInit {
   public submitted: boolean; // keep track on whether form is submitted
   public submittedEdit: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
-  constructor(private _fb: FormBuilder, private http: Http) {
+  pager: any = {};
+
+  // paged items
+  pagedItems: any[];
+
+  constructor(private _fb: FormBuilder, private http: Http, public Router: Router, public PagerService: PagerService) {
     this.access_token = localStorage.getItem("admin_token");
-    this.getFaqsList();
+    this.pager.currentPage=1;
+    this.getFaqsList(1);
   }
 
   ngOnInit() {
@@ -44,14 +51,20 @@ export class AdminFaqsComponent implements OnInit {
       question: new FormControl('', [<any>Validators.required]),
       answer: new FormControl('', [<any>Validators.required])
     });
+
+    var context = this;
+    if (localStorage.getItem('admin_token')) {
+
+    }
+    else {
+      context.Router.navigate(['/admin-login']);
+    }
+
   }
 
   saveFaqs(isValid: boolean) {
     this.submitted = true; // set form submit to true
     console.log(isValid);
-    console.log("hi form module is called from page");
-    this.StateVal = this.FaqForm.value;
-    console.log("form valuse", this.StateVal);
 
     if (isValid == true) {
 
@@ -64,13 +77,13 @@ export class AdminFaqsComponent implements OnInit {
         "question": this.FaqForm.value.question,
         "answer": this.FaqForm.value.answer
       };
-      this.url = "http://localhost:3000/api/faq/create?token="+this.access_token;
+      this.url = "http://localhost:3000/api/faq/create?token=" + this.access_token;
       return this.http.post(this.url, body, requestOptions)
         .subscribe(
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeModal();
-          this.getFaqsList();
+          this.getFaqsList(this.pager.currentPage);
         },
         error => {
           console.log("error", error.message);
@@ -80,23 +93,36 @@ export class AdminFaqsComponent implements OnInit {
     }
   }
 
-  getFaqsList() {
+  getFaqsList(page:number) {
+    this.pager.currentPage=page;
     console.log('list called');
-    this.http.get('http://localhost:3000/api/faq/index?token='+this.access_token+'&limit=' + this.Paging.limit + '&page=' + this.Paging.page + '&sortBy=title&search=').subscribe(data => {
+    this.http.get('http://localhost:3000/api/faq/index?token=' + this.access_token + '&limit=' + 10 + '&page=' +page).subscribe(data => {
       this.faqsList = data.json().docs;
-      this.TotalPages = data.json().total;
-      this.pageSize = this.Paging.limit;
-      this.currentPage = this.Paging.page;
-      console.log("pagecount", )
-      console.log("State  PArse", this.faqsList);
-      console.log("TotalPages", this.TotalPages);
+      this.pager.pageSize = data.json().limit;
+      this.pager.totalItems = data.json().total;
+      this.setPage();
     });
   }
 
+  setPage() {
+    if (this.pager.currentPage < 1 || this.pager.currentPage > this.pager.TotalPages) {
+      return;
+    }
+
+    this.pager = this.PagerService.getPager(this.pager.totalItems, this.pager.currentPage, this.pager.pageSize);
+    console.log("pager", this.pager);
+    // this.getStateList();
+    this.pagedItems = this.faqsList;
+  }
+
   editFaqsRecord(data) {
+    this.submittedEdit = false;
+    this.apiResult = 0;
+    this.apiMessage = "";
     this.rowDataIndex = data._id;
     var temp;
     if (data) {
+
       console.log("DATA", data);
       this.FaqFormEdit.get("question").setValue(data.question);
       this.FaqFormEdit.get("answer").setValue(data.answer);
@@ -105,6 +131,7 @@ export class AdminFaqsComponent implements OnInit {
   }
 
   deleteFaqsRecord(data) {
+    this.submittedEdit = false;
     this.rowDataIndex = data._id;
     this.faqsRowData = data;
   }
@@ -112,7 +139,6 @@ export class AdminFaqsComponent implements OnInit {
   updateFaqs(isValid: boolean) {
     this.submittedEdit = true; // set form submit to true
     console.log(isValid);
-    console.log("hi form module is called from page");
 
     // if (isValid == true && this.FaqForm.value.selectedstateDropdown!='Select State') {
     if (isValid == true) {
@@ -130,20 +156,22 @@ export class AdminFaqsComponent implements OnInit {
         "answer": this.FaqFormEdit.value.answer,
       };
 
-      this.url = "http://localhost:3000/api/faq/update?token="+this.access_token;
+      this.url = "http://localhost:3000/api/faq/update?token=" + this.access_token;
       return this.http.put(this.url, body, requestOptions)
         .subscribe(
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeEditModal();
-          this.submittedEdit = false;
+          this.apiResult = 1;
           // this.faqsList[this.rowDataIndex] = body;
           // alert(response.json().message);
-          this.getFaqsList();
+          this.getFaqsList(this.pager.currentPage);
         },
         error => {
           console.log("error", error.message);
           console.log(error.text());
+          this.apiResult = -1;
+          this.apiMessage = error.json().message;
         }
         );
     }
@@ -156,37 +184,21 @@ export class AdminFaqsComponent implements OnInit {
     // headers.append('x-access-token', access_token);
     const requestOptions = new RequestOptions({ headers: headers });
 
-    this.url = "http://localhost:3000/api/faq/delete/" + this.faqsRowData._id;
-    return this.http.delete(this.url,  requestOptions)
+    this.url = "http://localhost:3000/api/faq/delete/" + this.faqsRowData._id + "?token=" + this.access_token;
+    return this.http.delete(this.url, requestOptions)
       .subscribe(
       response => {
         console.log("suceessfull data", response.json().message);
         this.closeDeleteModal();
-        this.submittedEdit = false;
+
         // alert(response.json().message);
-        this.getFaqsList();
+        this.getFaqsList(this.pager.currentPage);
       },
       error => {
         console.log("error", error.message);
         console.log(error.text());
       }
       );
-  }
-
-  nextPage() {
-    console.log("paging");
-    if (this.Paging.page < this.TotalPages) {
-      this.Paging.page++;
-      this.getFaqsList();
-    }
-  }
-
-  previousPage() {
-    console.log("paging");
-    if (this.Paging.page > 1) {
-      this.Paging.page--;
-      this.getFaqsList();
-    }
   }
 
   private closeModal(): void {
@@ -197,5 +209,12 @@ export class AdminFaqsComponent implements OnInit {
   }
   private closeDeleteModal(): void {
     this.closeBtn3.nativeElement.click();
+  }
+
+  resetForm() {
+    this.apiResult = 0;
+    this.apiMessage = "";
+    this.submitted = false;
+    this.FaqForm.reset();
   }
 }

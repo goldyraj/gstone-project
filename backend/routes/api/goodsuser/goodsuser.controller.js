@@ -24,9 +24,10 @@ var query={};
 req.query.limit=parseInt(req.query.limit);
 if(req.query.search && req.query.search.length>0){
    // console.log(query={description:req.query.search})
-    query={description:req.query.search}
+    query={description:new RegExp(req.query.search,'i')}
+     //   query={description:req.query.search}
 }
-//======== check user admin or nor and fillter record =========
+//======== check user admin or not and fillter record =========
 if(req.decoded.type===req.app.get('usertype')){
    query={userid:req.decoded._id}
 }
@@ -55,7 +56,7 @@ const onError = (error) => {
    sortfiled={ date: -1 } 
 }
 var option={
-    select:'hsn_code description unit gstin dealer_type rate',
+    select:'hsn_code description unit gstin dealer_type rate type',
     sort:sortfiled, 
     offset:offset,
     limit:req.query.limit
@@ -113,12 +114,12 @@ exports.update=(req,res)=>{
             message: error.message
         })
     }
-      Goods.findOneByUsername(title)          
+      Goodsuser.findOneByUsername(title)          
          .then(respond)
          .catch(onError)
 }
 exports.create = (req, res) => {
-    const {description, hsn_code,unit,rate } = req.body
+    const {description, hsn_code,unit,rate,type } = req.body
     let newUser = null
  var myCallback=usingItNow(req.decoded)
  if(myCallback) {
@@ -133,7 +134,7 @@ exports.create = (req, res) => {
         if(goodsuser) {
             throw new Error('Goods User Name exists')
         } else {
-            return Goodsuser.create(  description, hsn_code,unit,rate ,req.decoded._id)
+            return Goodsuser.create(  description, hsn_code,unit,rate ,type,req.decoded._id)
         }
     }
     // count the number of the user
@@ -176,12 +177,15 @@ exports.uploadfile=(req,res)=>{
 
 var myobj= req.body.data
 //=========Authrise function
-if(!req.decoded.admin||!req.decoded.type===req.app.get('usertype')) {
+ var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
    return res.status(403).json({
             message: 'you are not an authorise'
         }) 
     }
-    
+     for (var i = 0; i <myobj.length; i++) {
+       myobj[i].userid=req.decoded._id; 
+     }
  var multirecord = function () {
       return new Goods.insertMany(myobj, function(err, res) {})
   }
@@ -210,10 +214,7 @@ exports.delete=(req,res)=>{
     res.json({'invoice':err})
 }else{
     res.json({'message':'HSN is Successfully deleted'})  
-}
-
-
-  // we have deleted the user
+}  // we have deleted the user
    
 });
 }

@@ -20,8 +20,9 @@ export class CustomerComponent implements OnInit {
   @ViewChild('closeInnerExportModal') closeInnerExportModal:ElementRef;
   @ViewChild('closeImportExport') closeImportExport:ElementRef;
   @ViewChild('closeImportModal') closeImportModal:ElementRef;
+  @ViewChild('clearInputFile') clearInputFile:ElementRef;
   isDownloadSuccessful:boolean;
-  ifSuccess:boolean;
+  
   @ViewChild('closeChoose') closeChoose: ElementRef;
   @ViewChild('closeCsv') closeCsv:ElementRef;
   jsonString;
@@ -43,13 +44,14 @@ export class CustomerComponent implements OnInit {
   customerRowData;
   stateDropdown = Array();
   selectedState = "";
-
+  ifSuccess=false;
   // pager object
   pager: any = {};
   custRowData;
   // paged items
   pagedItems: any[];
   access_token;
+  errorMsg;
 
   constructor(private _fb: FormBuilder, private http: Http, public excelServiceService: ExcelServiceService, public pagerService: PagerService) {
     this.access_token = localStorage.getItem("user_token");
@@ -77,7 +79,7 @@ export class CustomerComponent implements OnInit {
       gstin: new FormControl('', [<any>Validators.required]),
       address: new FormControl('', [<any>Validators.required]),
       city: new FormControl('', [<any>Validators.required]),
-      selectedstateDropdown: new FormControl('-1')
+      state: new FormControl('Select State')
     });
 
     this.myFormEdit = new FormGroup({
@@ -88,7 +90,7 @@ export class CustomerComponent implements OnInit {
       gstin: new FormControl('', [<any>Validators.required]),
       address: new FormControl('', [<any>Validators.required]),
       city: new FormControl('', [<any>Validators.required]),
-      selectedstateDropdown: new FormControl('Select State')
+      state: new FormControl('Select State')
     });
   }
 
@@ -126,7 +128,7 @@ export class CustomerComponent implements OnInit {
           // this.custList.push(body);
           // alert(response.json().message);
           this.myForm.reset();
-          this.myForm.get("selectedstateDropdown").setValue("Select State");
+          // this.myForm.get("selectedstateDropdown").setValue("Select State");
           this.submitted = false;
           this.getCustomerList(this.pager.currentPage);
           this.customerRowData = null;
@@ -260,7 +262,7 @@ export class CustomerComponent implements OnInit {
         "city": this.myFormEdit.value.city,
         "email": this.myFormEdit.value.email,
         "address": this.myFormEdit.value.address,
-        "state": this.myFormEdit.value.selectedstateDropdown,
+        "state": this.selectedState,
         "contact": this.myFormEdit.value.contact
       };
       console.log("body",body);
@@ -320,17 +322,40 @@ export class CustomerComponent implements OnInit {
 
     console.log("CSV_DATA", body);
 
-    this.url = "http://localhost:3000/api/vendor/uploadFile?token=" + this.access_token;
+    this.url = "http://localhost:3000/api/customer/uploadFile?token=" + this.access_token;
 
     return this.http.post(this.url, body, requestOptions)
       .subscribe(
       response => {
+        
         console.log("suceessfull data", response.json().message);
-        this.closeModal();
-        this.closeCsv.nativeElement.click();
-        this.closeChoose.nativeElement.click();
-        this.ifSuccess = true;
-        this.getCustomerList(this.pager.currentPage);
+       
+        var errorval;
+
+        if(response.json().error)
+        {
+          this.ifSuccess=false;
+          errorval = response.json().error;
+          if (errorval.substr(56, 9) === 'contact_1') {
+            this.errorMsg = 'Contact No is already register.';
+          } else if (errorval.substr(56, 8) === 'pan_no_1') {
+            this.errorMsg = 'Pan No is already register.';
+          } else {
+            this.errorMsg = 'Email id is already register.';
+          }
+        }
+        else
+        {
+          this.errorMsg="";
+          this.closeModal();
+          this.closeCsv.nativeElement.click();
+          this.closeChoose.nativeElement.click();
+          this.clearInputFile.nativeElement.value = "";
+          this.ifSuccess = true;
+          this.getCustomerList(this.pager.currentPage);  
+        }
+
+        console.log(response.json());
         // alert(response.json().message);
       },
       error => {
@@ -352,12 +377,12 @@ export class CustomerComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/vendor/index?token='+this.access_token, options)
+    this.http.get('http://localhost:3000/api/customer/index?token=' + this.access_token+"&limit="+1000, options)
       .subscribe(
       response => {
         exportedList = response.json().docs;
-        this.excelServiceService.exportAsExcelFile(exportedList,String(this.excelServiceService.getCurrentDateAndTime()));
-        this.isDownloadSuccessful=true;
+        this.excelServiceService.exportAsExcelFile(exportedList, String(this.excelServiceService.getCurrentDateAndTime()));
+        this.isDownloadSuccessful = true;
       },
       error => {
         // alert(error.text());
@@ -366,9 +391,8 @@ export class CustomerComponent implements OnInit {
       );
   }
 
-  closeDownloadModal()
-  {
-    this.isDownloadSuccessful=false;
+  closeDownloadModal() {
+    this.isDownloadSuccessful = false;
   }
 
   resetForm()
@@ -386,4 +410,11 @@ export class CustomerComponent implements OnInit {
     // this.getStateList();
     this.pagedItems = this.custList;
   }
+
+  clearCSVForm()
+  {
+    this.clearInputFile.nativeElement.value = "";
+    this.ifSuccess=false;
+  }
+  
 }

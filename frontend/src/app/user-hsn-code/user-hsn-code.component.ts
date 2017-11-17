@@ -19,6 +19,8 @@ export class UserHsnCodeComponent implements OnInit {
   @ViewChild('closeCsv') closeCsv: ElementRef;
 
   public addStateForm: FormGroup; // our model driven form
+  public isGoodsList: boolean ; // keep track on whether form is submitted
+  public isServiceList: boolean ; // keep track on whether form is submitted
   public submitted: boolean = false; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
 
@@ -115,7 +117,14 @@ export class UserHsnCodeComponent implements OnInit {
 
         this.servicesData = response.json().services;
         this.servicesPager.pageSize = response.json().limit;
+        let isList = this.servicesData.length;
         this.servicesPager.totalItems = response.json().total;
+        if (isList === 0) {
+          this.isServiceList = true;
+          // console.log("")
+        } else {
+          this.isServiceList = false;
+        }
 
       },
       error => {
@@ -144,10 +153,16 @@ export class UserHsnCodeComponent implements OnInit {
       response => {
         console.log("BRANCH_LIST_API_RESPONSE", response.json());
         console.log("BRANCH_LIST_API_RESPONSE_2", response.json().docs);
-
         this.goodsData = response.json().goods;
+        let isList = this.goodsData.length;
         this.goodsPager.pageSize = response.json().limit;
         this.goodsPager.totalItems = response.json().total;
+        if (isList === 0) {
+          this.isGoodsList = true;
+          // console.log("")
+        } else {
+          this.isGoodsList = false;
+        }
 
       },
       error => {

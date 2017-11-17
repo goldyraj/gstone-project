@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AdminBranchComponent } from './admin-branch.component';
+import { GstupdateDetailComponent } from './gstupdate-detail.component';
 
-describe('AdminBranchComponent', () => {
-  let component: AdminBranchComponent;
-  let fixture: ComponentFixture<AdminBranchComponent>;
+describe('GstupdateDetailComponent', () => {
+  let component: GstupdateDetailComponent;
+  let fixture: ComponentFixture<GstupdateDetailComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdminBranchComponent ]
+      declarations: [ GstupdateDetailComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdminBranchComponent);
+    fixture = TestBed.createComponent(GstupdateDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

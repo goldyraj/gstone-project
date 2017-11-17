@@ -1,5 +1,10 @@
 <!-- Content Wrapper. Contains page content -->
 <!-- Content Header (Page header) -->
+
+<!-- <link href="node_modules/ng2-toastr/bundles/ng2-toastr.min.css" rel="stylesheet" />
+<script src="node_modules/ng2-toastr/bundles/ng2-toastr.min.js"></script> -->
+<!-- <link rel="stylesheet" type="text/css" href="/node_modules/angular2-toaster/toaster.css" /> -->
+
 <section class="content-header">
   <h1>&nbsp; </h1>
   <ol class="breadcrumb">
@@ -55,18 +60,18 @@
 
               <div class="col-md-4 col-xs-12">
                 <div class="input-group section-bottom-20">
-                  <input type="text" [(ngModel)]="codeValue" placeholder="HSN Code" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
+                  <input type="text" (input)="searchGoodsKeyword($event.target.value)" (ngModel)="codeValue" placeholder="Search HSN/SAC Code" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
                   <div class="input-group-addon">
-                    <i class="fa fa-search"></i>
+                    <i class="fa fa-search" (click)="searchGoodsKeyword(codeValue)"></i>
                   </div>
                 </div>
               </div>
               <div class="col-md-4 col-xs-12">
                 <div class="input-group section-bottom-20">
-                  <input type="text" [(ngModel)]="searchString" placeholder="Description" class="form-control" data-inputmask="'alias': 'ip'"
+                  <input type="text" (input)="searchGoodsKeyword($event.target.value)" (ngModel)="searchString"  placeholder="Search Description" class="form-control" data-inputmask="'alias': 'ip'"
                     data-mask>
                   <div class="input-group-addon">
-                    <i class="fa fa-search"></i>
+                    <i class="fa fa-search" (click)="searchGoodsKeyword(searchString)"></i>
                   </div>
                 </div>
               </div>
@@ -81,14 +86,16 @@
                   <table class="table table-condensed  table-hover table-bordered">
                     <thead>
                       <tr>
-                        <th width="5%">#</th>
-                        <th width="15%">HSN Code</th>
-                        <th width="43%">Description</th>
+                        <th width="5%">S. No.</th>
+                        <th width="12%">HSN Code</th>
+                        <th width="35%">Description</th>
                         <th width="8%">CGST</th>
                         <th width="8%">SGST</th>
                         <th width="8%">IGST</th>
+                        <th width="8%">CESS</th>
+                        <th width="8%">Condition</th>
                         <!-- <th width="12%">Status</th> -->
-                        <th width="12%" class="text-center">Action</th>
+                        <th width="15%" class="text-center">Action</th>
                       </tr>
                     </thead>
 
@@ -97,19 +104,22 @@
                     <tbody>
                       <!-- <tr class="header" (ngModel)="item"> -->
                       <!-- <tr *ngFor="let item of hsnCodeData | updateFilter:searchString  ;let i = index;"> -->
-                      <tr *ngFor="let item of goodsData | hsnCodeFilter:searchString |hsnCodeFilter:codeValue   ; let i = index;">
+                      <!-- <tr *ngFor="let item of goodsData | hsnCodeFilter:codeValue |hsnDescFilter:searchString   ; let i = index;"> -->
                         <!-- <td align="center">{{ hsnCodeData.indexOf(item) }}</td> -->
+                        <tr *ngFor="let item of goodsData; let i = index;">
                         <td align="center">{{goodsPager.pageSize * (goodsPager.currentPage-1)+i+1}}</td>
                         <td align="center">{{ item.hsn_code }}</td>
                         <td align="center">{{item.description}}</td>
                         <td align="center">{{item.cgst}}</td>
                         <td align="center">{{item.sgst}}</td>
                         <td align="center">{{item.igst}}</td>
+                        <td align="center">{{item.igst}}</td>
+                        <td align="center">{{item.condition}}</td>
 
                         <td align="center">
                           <!-- <i class="fa fa-eye btn btn-primary btn-sm" title="View"></i> -->
                           <a data-toggle="modal" data-target=".bs-goodsFormEdit-lg">
-                            <button class="fa fa-edit btn btn-warning btn-sm" title="Update" (click)="editHSNRecord(item)"></button>
+                            <button class="fa fa-edit btn btn-primary btn-sm" title="Update" (click)="editHSNRecord(item)"></button>
                           </a>
                           <a data-toggle="modal" data-target=".bs-delete-sm">
                             <button class="fa fa-trash btn btn-danger btn-sm" title="Delete" (click)="recordToBeDeleted(item)"></button>
@@ -158,17 +168,19 @@
 
               <div class="col-md-4 col-xs-12">
                 <div class="input-group section-bottom-20">
-                  <input type="text" placeholder="HSN Code" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
+                  <input type="text" placeholder="Search HSN/SAC Code" (input)="searchServicesKeyword($event.target.value)" [(ngModel)]="codeSerValue" class="form-control" data-inputmask="'alias': 'ip'"
+                    data-mask>
                   <div class="input-group-addon">
-                    <i class="fa fa-search"></i>
+                    <i class="fa fa-search" (click)="searchServicesKeyword(codeSerValue)"></i>
                   </div>
                 </div>
               </div>
               <div class="col-md-4 col-xs-12">
                 <div class="input-group section-bottom-20">
-                  <input type="text" placeholder="Description" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
+                  <input type="text" placeholder="Search Description" (input)="searchServicesKeyword($event.target.value)" [(ngModel)]="searchDescString" class="form-control"
+                    data-inputmask="'alias': 'ip'" data-mask>
                   <div class="input-group-addon">
-                    <i class="fa fa-search"></i>
+                    <i class="fa fa-search" (click)="searchServicesKeyword(searchString)"></i>
                   </div>
                 </div>
               </div>
@@ -182,14 +194,15 @@
                   <table class="table table-condensed  table-hover table-bordered">
                     <thead>
                       <tr>
-                        <th width="5%">#</th>
-                        <th width="15%">SAC Code</th>
-                        <th width="43%">Description</th>
+                        <th width="5%">S. No.</th>
+                        <th width="12%">SAC Code</th>
+                        <th width="35%">Description</th>
                         <th width="8%">CGST</th>
                         <th width="8%">SGST</th>
                         <th width="8%">IGST</th>
+                        <th width="8%">Condition</th>
                         <!-- <th width="12%">Status</th> -->
-                        <th width="12%" class="text-center">Action</th>
+                        <th width="15%" class="text-center">Action</th>
                       </tr>
                     </thead>
 
@@ -198,7 +211,7 @@
                     <tbody>
                       <!-- <tr class="header" (ngModel)="item"> -->
                       <!-- <tr *ngFor="let item of hsnCodeData | updateFilter:searchString  ;let i = index;"> -->
-                      <tr *ngFor="let item of servicesData ; let i = index;">
+                      <tr *ngFor="let item of servicesData  ; let i = index;">
                         <!-- <td align="center">{{ hsnCodeData.indexOf(item) }}</td> -->
                         <!-- <td align="center">{{servicesPager.pageSize * (servicesPager.currentPage-1)+servicesData.indexOf(item)+1}}</td> -->
                         <td align="center">{{servicesPager.pageSize * (servicesPager.currentPage-1)+i+1}}</td>
@@ -207,12 +220,12 @@
                         <td align="center">{{item.cgst}}</td>
                         <td align="center">{{item.sgst}}</td>
                         <td align="center">{{item.igst}}</td>
-
+                        <td algin="center">{{item.condition}}</td>
 
                         <td align="center">
                           <!-- <i class="fa fa-eye btn btn-primary btn-sm" title="View"></i> -->
                           <a data-toggle="modal" data-target=".bs-goodsFormEdit-lg">
-                            <button class="fa fa-edit btn btn-warning btn-sm" title="Update" (click)="editHSNRecord(item)"></button>
+                            <button class="fa fa-edit btn btn-primary btn-sm" title="Update" (click)="editHSNRecord(item)"></button>
                           </a>
                           <a data-toggle="modal" data-target=".bs-delete-sm">
                             <button class="fa fa-trash btn btn-danger btn-sm" title="Delete" (click)="recordToBeDeleted(item)"></button>
@@ -260,13 +273,6 @@
         </div>
       </div>
 
-
-
-
-      <!-- -->
-
-
-
     </div>
   </div>
 
@@ -304,17 +310,18 @@
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="HSN Code" name="hsn_code" id="hsn_code" required formControlName="hsn_code">
-                  <small [hidden]="goodsForm.controls.hsn_code.valid || (goodsForm.controls.hsn_code.pristine && !submitted)">
-                    HSN Code is required (minimum 2 characters).
+                  <input type="text" OnlyNumber="true" maxlength="10" class="form-control" placeholder="HSN Code" name="hsn_code" id="hsn_code" required
+                    formControlName="hsn_code">
+                  <small *ngIf="goodsForm.controls.hsn_code.valid && submitted">
+                    HSN Code is required !
                   </small>
                 </div>
 
                 <!-- Description -->
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <textarea rows="4" type="text" class="form-control" placeholder="Description" name="description" id="description" required
-                    formControlName="description"></textarea>
+                  <textarea rows="4" type="text" maxlength="5000" class="form-control" placeholder="Description" name="description" id="description"
+                    required formControlName="description"></textarea>
                   <small [hidden]="goodsForm.controls.description.valid || (goodsForm.controls.description.pristine && !submitted)">
                     Description is required !
                   </small>
@@ -324,28 +331,29 @@
 
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" maxlength="2" class="form-control" placeholder="CGST" name="cgst" required formControlName="cgst">
-                  <small [hidden]="goodsForm.controls.cgst.valid || (goodsForm.controls.cgst.pristine && !submitted)">
-                    Rate is required (minimum 2 characters).
+                  <input type="text" OnlyNumber="true" maxlength="5" class="form-control" placeholder="CGST" name="cgst" required formControlName="cgst">
+                  <small *ngIf="goodsForm.controls.cgst.valid && submitted">
+                    CGST is required !
                   </small>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" maxlength="2" class="form-control" placeholder="SGST" name="sgst" required formControlName="sgst">
-                  <small [hidden]="goodsForm.controls.sgst.valid || (goodsForm.controls.sgst.pristine && !submitted)">
-                    Rate is required (minimum 2 characters).
+                  <input type="text" OnlyNumber="true" maxlength="5" class="form-control" placeholder="SGST" name="sgst" required formControlName="sgst">
+                  <small *ngIf="goodsForm.controls.sgst.valid && submitted">
+                    SGST is required !
                   </small>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" maxlength="2" class="form-control" placeholder="IGST" name="statecode" required formControlName="igst">
-                  <small [hidden]="goodsForm.controls.igst.valid || (goodsForm.controls.igst.pristine && !submitted)">
-                    IGST is required (minimum 2 characters).
+                  <input type="text" OnlyNumber="true" maxlength="5" class="form-control" placeholder="IGST" name="statecode" required
+                    formControlName="igst">
+                  <small *ngIf="goodsForm.controls.igst.valid  && submitted">
+                    IGST is required !
                   </small>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <textarea rows="3" type="text" class="form-control" placeholder="Condition" name="comment" required formControlName="comment"></textarea>
+                  <textarea rows="3" type="text" class="form-control" placeholder="Condition" name="comment" formControlName="comment"></textarea>
                   <!-- <small [hidden]="goodsForm.controls.comment.valid || (goodsForm.controls.comment.pristine && !submitted)">
                     Condition is required !
                   </small> -->
@@ -371,7 +379,7 @@
   <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" #closeBtn aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" #closeEditModal aria-label="Close">
           <span class="modal-text" aria-hidden="true">X</span>
         </button>
         <h4 class="modal-title modal-text">Edit</h4>
@@ -394,17 +402,17 @@
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" class="form-control" placeholder="HSN Code" name="statename" id="statename" required formControlName="hsn_code">
-                  <small [hidden]="goodsFormEdit.controls.hsn_code.valid || (goodsFormEdit.controls.hsn_code.pristine && !submitted)">
-                    HSN Code is required (minimum 2 characters).
+                  <input type="text" OnlyNumber="true" maxlength="10" class="form-control" placeholder="HSN Code" name="statename" id="statename" required formControlName="hsn_code">
+                  <small *ngIf="goodsFormEdit.controls.hsn_code.valid && submitted">
+                    HSN Code is required !
                   </small>
                 </div>
 
                 <!-- Description -->
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <textarea rows="4" type="text" class="form-control" placeholder="Description" name="description" id="description" required
-                    formControlName="description"></textarea>
+                  <textarea rows="4" maxlength="5000" type="text" class="form-control" placeholder="Description" name="description" id="description"
+                    required formControlName="description"></textarea>
                   <small [hidden]="goodsFormEdit.controls.description.valid || (goodsFormEdit.controls.description.pristine && !submitted)">
                     Description is required !
                   </small>
@@ -414,31 +422,28 @@
 
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" maxlength="2" class="form-control" placeholder="CGST" name="cgst" required formControlName="cgst">
-                  <small [hidden]="goodsFormEdit.controls.cgst.valid || (goodsFormEdit.controls.cgst.pristine && !submitted)">
-                    Rate is required (minimum 2 characters).
+                  <input type="text" OnlyNumber="true" maxlength="5" class="form-control" placeholder="CGST" name="cgst" required formControlName="cgst">
+                  <small *ngIf="goodsFormEdit.controls.cgst.valid  && submitted">
+                    CGST is required !
                   </small>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" maxlength="2" class="form-control" placeholder="SGST" name="sgst" required formControlName="sgst">
-                  <small [hidden]="goodsFormEdit.controls.sgst.valid || (goodsFormEdit.controls.sgst.pristine && !submitted)">
-                    Rate is required (minimum 2 characters).
+                  <input type="text" OnlyNumber="true" maxlength="5" class="form-control" placeholder="SGST" name="sgst" required formControlName="sgst">
+                  <small *ngIf="goodsFormEdit.controls.sgst.valid && submitted">
+                    SGST is required !
                   </small>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <input type="text" maxlength="2" class="form-control" placeholder="IGST" name="statecode" required formControlName="igst">
-                  <small [hidden]="goodsFormEdit.controls.igst.valid || (goodsFormEdit.controls.igst.pristine && !submitted)">
-                    IGST is required (minimum 2 characters).
+                  <input type="text" OnlyNumber="true" maxlength="5" class="form-control" placeholder="IGST" name="statecode" required formControlName="igst">
+                  <small *ngIf="goodsFormEdit.controls.igst.valid  && submitted">
+                    IGST is required !
                   </small>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <textarea rows="3" type="text" class="form-control" placeholder="Condition" name="comment" required formControlName="comment"></textarea>
-                  <!-- <small [hidden]="goodsFormEdit.controls.comment.valid || (goodsFormEdit.controls.comment.pristine && !submitted)">
-                      Condition is required !
-                    </small> -->
+                  <textarea rows="3" maxlength="1000" type="text" class="form-control" placeholder="Condition" name="comment" formControlName="comment"></textarea>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
@@ -453,22 +458,6 @@
     </div>
   </div>
 </div>
-
-<!-- Goods Edit Form End -->
-
-
-<!-- Services Add Form -->
-
-
-<!-- Services End Add Form -->
-
-
-<!-- Services Edit Form Start -->
-
-
-<!-- sErvices Edit Form End -->
-
-<!-- delete Start -->
 
 <div class="modal fade bs-delete-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
   <div class="modal-dialog modal-sm" role="document">
@@ -520,10 +509,10 @@
           <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12 text-center section-top-10 section-bottom-40">
               <a data-toggle="modal" data-target=".bs-Import-sm">
-                <input type="button" class="btn btn-success" data-dismiss="modal" value="Import Excel/CSV">
+                <input type="button" class="btn btn-success" data-dismiss="modal" value="Import Excel/CSV" (click)="resteCSVForm()">
               </a> &nbsp; &nbsp; &nbsp;
               <a data-toggle="modal" data-target=".bs-Export-sm">
-                <input type="button" class="btn btn-primary" data-dismiss="modal" value="Export Excel/CSV ">
+                <input type="button" class="btn btn-primary" data-dismiss="modal" value="Export Excel/CSV " (click)="resteCSVForm()">
               </a>
             </div>
           </div>
@@ -553,13 +542,14 @@
 
               <div class="col-md-5 col-sm-5 col-xs-12 col-md-offset-1">
                 <!-- <input type="file" value=""> -->
-                <input class="btn btn-success" type="file" (change)="onCSVFilePicked($event.target.files)" accept=".csv,.xlsx">
+                <input #clearInputFile class="btn btn-success" type="file" (change)="onCSVFilePicked($event.target.files)" accept=".csv,.xlsx">
               </div>
               <div class="col-md-4 col-sm-4 col-xs-12 col-md-offset-1">
                 <input type="button" class="btn btn-primary" value="Upload" (click)="uploadCsvFileToServer()">
               </div>
             </div>
-            <p *ngIf="ifSuccess==true" class="text-info text-center">Successfully file uploaded</p>
+            <p *ngIf="ifSuccess==1" class="text-info text-center">Success !</p>
+            <p *ngIf="ifSuccess==-1" class="text-info text-center">Failed !</p>
           </div>
           <div align="center">
             <input type="button" class="btn btn-success" data-dismiss="modal" value="Close">

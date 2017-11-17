@@ -25,7 +25,18 @@ var query={};
 req.query.limit=parseInt(req.query.limit);
 if(req.query.search && req.query.search.length>0){
     console.log(query={description:req.query.search})
-    query={description:req.query.search}
+           if(req.query.type && req.query.type.length>0){  
+   if(req.query.type=="des"){ 
+      query={description:new RegExp(req.query.search,'i')}
+ }
+}else{
+   query={hsn_code:new RegExp(req.query.search,'i')}
+ 
+ }
+}
+// USer Id 
+if(req.decoded.type===req.app.get('usertype')){
+   query={userid:req.decoded._id}
 }
 if(!req.query.limit ||isNaN(req.query.limit) ){
     req.query.limit=5;
@@ -131,7 +142,7 @@ exports.create = (req, res) => {
         if(services) {
             throw new Error('Goods Name exists')
         } else {
-            return Services.create(  description, hsn_code,cgst,sgst,igst,condition )
+            return Services.create(  description, hsn_code,cgst,sgst,igst,condition,req.decoded._id )
         }
     }
     // count the number of the user
@@ -177,7 +188,9 @@ var myobj= req.body.data
             message: 'you are not an authorise'
         }) 
     }
-    
+    for (var i = 0; i <myobj.length; i++) {
+       myobj[i].userid=req.decoded._id; 
+     }
  var multirecord = function () {
       return new Services.insertMany(myobj, function(err, res) {})
   }
@@ -201,7 +214,7 @@ var myobj= req.body.data
 }
 exports.delete=(req,res)=>{
   
-  Goods.findByIdAndRemove(req.params.id, function(err) {
+  Services.findByIdAndRemove(req.params.id, function(err) {
   if (err){ 
     res.json({'invoice':err})
 }else{

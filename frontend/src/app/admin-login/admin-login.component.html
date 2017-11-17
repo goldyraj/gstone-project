@@ -52,6 +52,11 @@
             <b>Success !</b>
           </span>
         </small>
+        <small *ngIf="loginSuccess===-2 && submitted">
+          <span class="text-center" style="color:red">
+            <b>Sorry, you are not authorized !</b>
+          </span>
+        </small>
       </form>
 
       <!-- /.social-auth-links -->

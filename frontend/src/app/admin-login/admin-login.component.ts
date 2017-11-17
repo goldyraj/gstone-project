@@ -45,12 +45,18 @@ export class AdminLoginComponent implements OnInit {
       return this.http.post(this.url, body)
         .subscribe(
         response => {
-          console.log("token", response.json().token);
-          localStorage.setItem('admin_token', response.json().token);
-          this.loginSuccess=1;
-          this.router.navigateByUrl('/admin/dashboard', { skipLocationChange: true });
-          this.submitted=false;
-          // this.closeModal();
+          if(response.json().token!=null)
+          {
+            console.log("token", );
+            localStorage.setItem('admin_token', response.json().token);
+            this.loginSuccess=1;
+            this.router.navigate(['/admin/dashboard']);
+            this.submitted=false;
+          }
+          else
+          {
+            this.loginSuccess=-2;  
+          }
         },
         error => {
           this.loginSuccess=-1;

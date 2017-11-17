@@ -23,8 +23,11 @@ var query={};
 console.log(req.query.limit);
 req.query.limit=parseInt(req.query.limit);
 if(req.query.search && req.query.search.length>0){
-    console.log(query={name:req.query.search})
+    //console.log(query={name:req.query.search})
     query={name:req.query.search}
+}
+if(req.decoded.type===req.app.get('usertype')){
+   query={userid:req.decoded._id}
 }
 if(!req.query.limit ||isNaN(req.query.limit) ){
     req.query.limit=5;
@@ -98,7 +101,7 @@ exports.create = (req, res) => {
         if(vendor) {
             throw new Error('Vendor Name exists')
         } else {
-            return Vendor.create(name,pan_no,gstin,city,contact,email,address,state)
+            return Vendor.create(name,pan_no,gstin,city,contact,email,address,state,req.decoded._id)
         }
     }
     // count the number of the user
@@ -174,11 +177,13 @@ exports.uploadfile=(req,res)=>{
     }
 
 var myobj= req.body.data
-//let msg ='Success updating admin2!';
+ for (var i = 0; i <myobj.length; i++) {
+  myobj[i].userid=req.decoded._id; 
+  }
+
  var multirecord = function () {
       return new Vendor.insertMany(myobj, function(err, res) {})
   }
-
   // function calling work 
    var multi_record = multirecord();
   multi_record.then(function () {
@@ -186,22 +191,21 @@ var myobj= req.body.data
           message:"upload Successfully Save"
         })
   }).catch(function (e) {
-    var error=  e.message
+    //var error=  JSON.parse(e.message)
+
      res.json({
           error
         })
      
   });
 
-    
-   
 }
 /*
     POST /api/vendor/delete
 */
 exports.delete=(req,res)=>{
     
-       console.log('format',req.baseUrl)
+
   Vendor.findByIdAndRemove(req.params.id, function(err) {
   if (err){ 
     res.json({'invoice':err})

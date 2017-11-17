@@ -6,37 +6,41 @@ import * as _ from 'underscore';
 import { PagerService } from '../service/pager.service';
 import { ExcelServiceService } from '../excel-service.service';
 import { RouterModule, Routes, Router } from '@angular/router';
+import { NumberValidatorsService } from "../number-validators.service";
 
 @Component({
   selector: 'app-admin-hsn-code',
   templateUrl: './admin-hsn-code.component.html',
   styleUrls: ['./admin-hsn-code.component.css'],
-  providers: [PagerService, ExcelServiceService]
+  providers: [PagerService, ExcelServiceService,NumberValidatorsService]
 })
 export class AdminHsnCodeComponent implements OnInit {
-
-  @ViewChild('closeChoose') closeChoose: ElementRef;
-  @ViewChild('closeCsv') closeCsv: ElementRef;
 
   public addStateForm: FormGroup; // our model driven form
   public submitted: boolean = false; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
-
-  public ifSuccess: boolean = false;
+  backupGoodsDataList;
+  backupServicesDataList;
+  public ifSuccess: number = 0;
   goodsData = Array();
   servicesData = Array();
   hsnRowData;
   hsnCodeSubmitData = {};
+  goodsKeyWord;
+  servicesKeyWord;
   modelHide = '';
   public selectedStatusType;
   url = "";
+  backupGoodsPager:any={};
+  backupServicesPager:any={};
   selectedStatusTypeDrop;
   public hsn_code_status = "0";
   public statusDropDown = Array();
   rowIndexToModify;
   goodsForm: FormGroup;
   goodsFormEdit: FormGroup;
-  sortBy = "created_at";
+  // sortBy = "created_at";
+  sortBy = "hsn_code";
   jsonString;
   access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
   goodsPager: any = {};
@@ -45,6 +49,9 @@ export class AdminHsnCodeComponent implements OnInit {
   servicesPagedItems: any = [];
   @ViewChild('closeBtn') closeBtn: ElementRef;
   @ViewChild('closeEditModal') closeEditModal: ElementRef;
+  @ViewChild('closeChoose') closeChoose: ElementRef;
+  @ViewChild('closeCsv') closeCsv: ElementRef;
+  @ViewChild('clearInputFile') clearInputFile:ElementRef;
   public selectCategory;
   public isDownloadSuccessful;
   isGoodsSelected = true;
@@ -56,21 +63,21 @@ export class AdminHsnCodeComponent implements OnInit {
   ngOnInit() {
 
     this.goodsForm = new FormGroup({
-      hsn_code: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      cgst: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      sgst: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      igst: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      description: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
+      hsn_code: new FormControl(0, [Validators.required,, NumberValidatorsService.min(0)]),
+      cgst: new FormControl(0,[Validators.required,, NumberValidatorsService.min(0)]),
+      sgst: new FormControl(0,[Validators.required,, NumberValidatorsService.min(0)]),
+      igst: new FormControl(0,[Validators.required,, NumberValidatorsService.min(0)]),
+      description: new FormControl('',[Validators.required,Validators.pattern(".*\\S.*")]),
       selectCategory: new FormControl('Select Category'),
       comment: new FormControl()
     });
 
     this.goodsFormEdit = new FormGroup({
-      hsn_code: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      cgst: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      sgst: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      igst: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      description: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
+      hsn_code: new FormControl(0, [Validators.required,, NumberValidatorsService.min(0)]),
+      cgst: new FormControl(0,[Validators.required,, NumberValidatorsService.min(0)]),
+      sgst: new FormControl(0,[Validators.required,, NumberValidatorsService.min(0)]),
+      igst: new FormControl(0,[Validators.required,, NumberValidatorsService.min(0)]),
+      description: new FormControl('',[Validators.required,Validators.pattern(".*\\S.*")]),
       selectCategory: new FormControl('Select Category'),
       comment: new FormControl()
     });
@@ -112,6 +119,7 @@ export class AdminHsnCodeComponent implements OnInit {
   }
 
   onCSVFilePicked(files: FileList) {
+    
     console.log(files);
     if (files && files.length > 0) {
       let file: File = files.item(0);
@@ -155,19 +163,22 @@ export class AdminHsnCodeComponent implements OnInit {
       .subscribe(
       response => {
         console.log("suceessfull data", response.json().message);
-        this.closeModal();
-        this.closeCsv.nativeElement.click();
-        this.closeChoose.nativeElement.click();
-        this.ifSuccess = true;
+        // this.closeModal();
+        // this.closeCsv.nativeElement.click();
+        // this.closeChoose.nativeElement.click();
+        this.ifSuccess = 1;
+        this.clearInputFile.nativeElement.value="";
         if (this.isGoodsSelected) {
           this.getAllGoods(this.goodsPager.currentPage);
         }
         else {
           this.getAllServices(this.servicesPager.currentPage);
         }
+        
         // alert(response.json().message);
       },
       error => {
+        this.ifSuccess = -1;
         console.log("error", error.message);
         console.log(error.text());
       }
@@ -210,10 +221,10 @@ export class AdminHsnCodeComponent implements OnInit {
         response => {
           console.log("suceessfull data", response.json().message);
           this.closeModal();
-          this.submitted = false;
+          
           // this.hsnCodeData.push(body);
           // alert(response.json().message);
-          this.goodsForm.reset();
+          // this.goodsForm.reset();
           if (this.isGoodsSelected) {
             this.getAllGoods(this.goodsPager.currentPage);
           }
@@ -236,6 +247,7 @@ export class AdminHsnCodeComponent implements OnInit {
     console.log(isValid);
 
     if (isValid == true) {
+      this.submitted=false;
       // if (isValid == true) {
       const headers = new Headers();
 
@@ -266,7 +278,7 @@ export class AdminHsnCodeComponent implements OnInit {
         .subscribe(
         response => {
           this.closeEditModl();
-          this.submitted = false;
+          
           if (this.isGoodsSelected) {
             this.getAllGoods(this.goodsPager.currentPage);
           }
@@ -285,13 +297,21 @@ export class AdminHsnCodeComponent implements OnInit {
   editHSNRecord(data) {
 
     var temp;
-
+    // this.submitted=false;
     this.goodsFormEdit.get("sgst").setValue(data.sgst);
     this.goodsFormEdit.get("igst").setValue(data.igst);
     this.goodsFormEdit.get("cgst").setValue(data.cgst);
     this.goodsFormEdit.get("description").setValue(data.description);
     this.goodsFormEdit.get("hsn_code").setValue(data.hsn_code);
-    this.goodsFormEdit.get("selectCategory").setValue(data.selectCategory);
+    if(this.isGoodsSelected)
+    {
+      this.goodsFormEdit.get("selectCategory").setValue("Goods");
+    }
+    else
+    {
+      this.goodsFormEdit.get("selectCategory").setValue("Services");
+    }
+    
     this.selectCategory=data.selectCategory;
     this.hsnRowData = data;
   }
@@ -310,10 +330,10 @@ export class AdminHsnCodeComponent implements OnInit {
     console.log("_ID___", this.hsnRowData._id);
 
     if (this.isGoodsSelected) {
-      this.url = "http://localhost:3000/api/goods/delete/" + this.hsnRowData._id + "?token=" + this.access_token;
+      this.url = "http://localhost:3000/api/goods/delete/" + this.hsnRowData._id ;
     }
     else {
-      this.url = "http://localhost:3000/api/services/delete/" + this.hsnRowData._id + "?token=" + this.access_token;
+      this.url = "http://localhost:3000/api/services/delete/" + this.hsnRowData._id ;
     }
 
     return this.http.delete(this.url, requestOptions)
@@ -357,8 +377,9 @@ export class AdminHsnCodeComponent implements OnInit {
         this.servicesData = response.json().docs;
         this.servicesPager.pageSize = response.json().limit;
         this.servicesPager.totalItems = response.json().total;
+        this.backupServicesDataList=this.servicesData;
         this.setServicesPagination();
-
+        this.backupServicesPager=this.servicesPager;
       },
       error => {
         // alert(error.text());
@@ -381,7 +402,7 @@ export class AdminHsnCodeComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/goods/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + page, options)
+    this.http.get('http://localhost:3000/api/goods/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + page+"&sortBy="+this.sortBy, options)
       .subscribe(
       response => {
         console.log("BRANCH_LIST_API_RESPONSE", response.json());
@@ -390,8 +411,9 @@ export class AdminHsnCodeComponent implements OnInit {
         this.goodsData = response.json().docs;
         this.goodsPager.pageSize = response.json().limit;
         this.goodsPager.totalItems = response.json().total;
+        this.backupGoodsDataList = this.goodsData;
         this.setGoodsPagination();
-
+        this.backupGoodsPager = this.goodsPager;
       },
       error => {
         // alert(error.text());
@@ -402,10 +424,18 @@ export class AdminHsnCodeComponent implements OnInit {
 
   getList(isGoods: boolean) {
     this.isGoodsSelected = isGoods;
-    if (isGoods) {
+    if (isGoods && this.backupGoodsDataList==null) {
       this.getAllGoods(this.goodsPager.currentPage);
     }
-    else {
+    else if(isGoods && this.backupGoodsDataList)
+    {
+      this.searchGoodsKeyword(this.goodsKeyWord);
+    }
+    else if(!isGoods && this.backupServicesDataList)
+    {
+      this.searchServicesKeyword(this.servicesKeyWord);
+    }
+    else{
       this.getAllServices(this.servicesPager.currentPage);
     }
   }
@@ -474,6 +504,53 @@ export class AdminHsnCodeComponent implements OnInit {
 
   resetForm()
   {
+    this.submitted = false;
     this.goodsForm.reset();
+    this.goodsForm.get("selectCategory").setValue("Select Category");
+  }
+
+  resteCSVForm()
+  {
+    this.clearInputFile.nativeElement.value="";
+    this.ifSuccess=0;
+  }
+
+  searchGoodsKeyword(searchString) {
+    console.log("SEARCH_HIT");
+    this.goodsKeyWord=searchString;
+
+    if (searchString) {
+      this.http.get('http://localhost:3000/api/goods/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
+        this.goodsData = data.json().docs;
+        this.goodsPager.pageSize = data.json().limit;
+        this.goodsPager.totalItems = data.json().total;
+        this.setGoodsPagination();
+        console.log("State  PArse", this.goodsData);
+      });
+    }
+    else {
+      console.log("SEARCH_EMPTY");
+      this.goodsData = this.backupGoodsDataList;
+      this.goodsPager=this.backupGoodsPager;
+    }
+  }
+
+  searchServicesKeyword(searchString) {
+    console.log("SEARCH_HIT");
+    this.servicesKeyWord=searchString;
+    if (searchString) {
+      this.http.get('http://localhost:3000/api/services/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
+        this.servicesData = data.json().docs;
+        this.servicesPager.pageSize = data.json().limit;
+        this.servicesPager.totalItems = data.json().total;
+        this.setServicesPagination();
+        console.log("State  PArse", this.goodsData);
+      });
+    }
+    else {
+      console.log("SEARCH_EMPTY");
+      this.servicesData = this.backupServicesDataList;
+      this.servicesPager=this.backupGoodsPager;
+    }
   }
 }

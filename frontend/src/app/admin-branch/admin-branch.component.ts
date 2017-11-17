@@ -1,90 +1,200 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-// import {DatePickerComponent} from 'ng2-bootstrap/datepicker';
-// import { DatePickerOptions, DateModel } from 'ng2-datepicker';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
-// import { HttpClientModule, HttpClient, HttpHeaders } from '@angular/common/http';
+import * as _ from 'underscore';
+import { PagerService } from '../service/pager.service';
+import { ExcelServiceService } from '../excel-service.service';
+import { RouterModule, Routes, Router } from '@angular/router';
+import { NumberValidatorsService } from "../number-validators.service";
 
 @Component({
   selector: 'app-admin-branch',
   templateUrl: './admin-branch.component.html',
   styleUrls: ['./admin-branch.component.css'],
+  providers:[PagerService]
 })
 export class AdminBranchComponent implements OnInit {
-
-
-  headers: Headers;
-  branchesList: Array<{ name: string, contact: string, panNo: string, email: string, gstin: string, address: string, selectedDealer: string, city: string, branchName: string, state: string }> = [];
-  isEditingClicked: boolean;
-  publicBranchData;
-  selectedDealerStateEdit = "0";
-  selectedDealerStateNew = "0";
-  // constructor() { }
-  @ViewChild('closeBtn') closeBtn: ElementRef;
-  modelHide = '';
-  url = "";
-  cutomer = {};
-  public myForm: FormGroup; // our model driven form
+  pager: any = {};
+  searchedStringPager: any = {};
+  sortBy = "created_at";
+  backupPager:any={};
+  // paged items
+  pagedItems: any[];
+  public myForm: FormGroup;
   public submitted: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
-  // private http: Http HttpClient,
-  constructor(private _fb: FormBuilder, private http: Http) { 
-    this.isEditingClicked = false;
-    this.getBranches();
-  } // form builder simplify form initialization
+  access_token = "";
+  pagedSearchedItems;
+  dataList;
+  backupdataList;
+  stateDropDownList=[];
+  apiMessage;
+  apiResult;
+  rowData;
+  userTypeList=[];
+  selectedState:string;
+  selectedUserType;
 
-  ngOnInit() {
-    // we will initialize our form model here
-    this.myForm = new FormGroup({
-      name: new FormControl('', [<any>Validators.required]),
-      contact: new FormControl('', [<any>Validators.required, <any>Validators.minLength(10)]),
-      pan_no: new FormControl('', [<any>Validators.required, <any>Validators.minLength(10)]),
-      email: new FormControl('', [<any>Validators.required]),
-      gstin: new FormControl('', [<any>Validators.required]),
-      address: new FormControl('', [<any>Validators.required]),
-      city: new FormControl('', [<any>Validators.required]),
-      branch_name: new FormControl('', [<any>Validators.required]),
-      // address: new FormGroup({
-      //   street: new FormControl('', <any>Validators.required),
-      //   postcode: new FormControl('8000')
-      // })
-    });
+  @ViewChild('closeBtn') closeBtn:ElementRef;
+  @ViewChild('closeBtn2') closeBtn2:ElementRef;
+  
+  constructor(public http: Http, private pagerService: PagerService, private router: Router) {
+
   }
 
+  ngOnInit() {
 
-  save(isValid: boolean) {
+    this.myForm = new FormGroup({
+      name: new FormControl('', [Validators.required, Validators.pattern('.*\\S.*')]),
+      contact: new FormControl('', [<any>Validators.required, <any>Validators.minLength(10),Validators.pattern('.*\\S.*')]),
+      pan_no: new FormControl('', [<any>Validators.required, <any>Validators.minLength(10),Validators.pattern('.*\\S.*')]),
+      email: new FormControl('', [<any>Validators.required,Validators.pattern('.*\\S.*')]),
+      gstin: new FormControl('', [<any>Validators.required, Validators.pattern('.*\\S.*')]),
+      address: new FormControl('', [<any>Validators.required, Validators.pattern('.*\\S.*')]),
+      city: new FormControl('', [<any>Validators.required, Validators.pattern('.*\\S.*')]),
+      userType: new FormControl('', [<any>Validators.required]),
+      // password: new FormControl('', [<any>Validators.required, <any>Validators.minLength(5)]),
+      // confirm_paasword: new FormControl('', [<any>Validators.required, <any>Validators.minLength(5)]),
+      state: new FormControl('', [<any>Validators.required]),
+
+    });
+
+    var context = this;
+    if (localStorage.getItem('admin_token')) {
+      context.onLoad();
+    }
+    else {
+      context.router.navigate(['/admin-login']);
+    }
+
+  }
+
+  onLoad() {
+    this.access_token=localStorage.getItem('admin_token');
+    this.pager.currentPage=1;
+    this.getDataList(1);
+    this.prepareStateDropdown();
+    this.prepareUserType();
+  }
+
+  prepareUserType()
+  {
+    this.userTypeList.push('Admin');
+    this.userTypeList.push('User Agent');
+  }
+
+  getDataList(page:number) {
+
+    let response: any;
+    let myHeaders = new Headers({ 'Content-Type': 'application/json' });
+    myHeaders.append('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization, x-access-token');
+    myHeaders.append('Access-Control-Allow-Methods', 'GET, OPTIONS, POST');
+    myHeaders.append('Access-Control-Allow-Origin', '*');
+    myHeaders.append('Access-Control-Allow-Credentials', 'true');
+
+    let options = new RequestOptions({ headers: myHeaders });
+
+    this.http.get('http://localhost:3000/api/branch/index?token=' + this.access_token + '&limit=' + 50 + '&page=' + page + "&sortBy=" + this.sortBy, options)
+      .subscribe(
+      response => {
+        this.dataList = response.json().docs;
+        this.pager.pageSize = response.json().limit;
+        this.pager.totalItems = response.json().total;
+        this.backupdataList = this.dataList;
+        this.setPage();
+        this.backupPager = this.pager;
+      },
+      error => {
+        console.log(error.text());
+      }
+      );
+  }
+
+  setPage() {
+    if (this.pager.currentPage < 1 || this.pager.currentPage > this.pager.TotalPages) {
+      return;
+    }
+
+    this.pager = this.pagerService.getPager(this.pager.totalItems, this.pager.currentPage, this.pager.pageSize);
+    this.pagedItems = this.dataList;
+  }
+
+  prepareStateDropdown()
+  {
+    let response: any;
+    let myHeaders = new Headers({ 'Content-Type': 'application/json' });
+    myHeaders.append('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization, x-access-token');
+    myHeaders.append('Access-Control-Allow-Methods', 'GET, OPTIONS, POST');
+    myHeaders.append('Access-Control-Allow-Origin', '*');
+    myHeaders.append('Access-Control-Allow-Credentials', 'true');
+
+    let options = new RequestOptions({ headers: myHeaders });
+
+    this.http.get('http://localhost:3000/api/state/list', options)
+      .subscribe(
+      response => {
+        this.stateDropDownList = response.json().state;
+        console.log("state",this.stateDropDownList);
+      },
+      error => {
+        console.log(error.text());
+      }
+      );
+  }
+
+  editRecords(data)
+  {
+    console.log("DATA",data);
+    this.apiMessage="";
+    this.apiResult=0;
+    this.submitted = false;
+  
+    if (data) {
+      this.myForm.get("name").setValue(data.name);
+      this.myForm.get("contact").setValue(data.contact);
+      this.myForm.get("pan_no").setValue(data.pan_no);
+      this.myForm.get("email").setValue(data.email);
+      this.myForm.get("gstin").setValue(data.gstin);
+      this.myForm.get("address").setValue(data.address);
+      this.myForm.get("city").setValue(data.city);
+      // this.myForm.get("state").setValue(data.state);
+    }
+    this.selectedState=data.state;
+    this.selectedState=this.selectedState.trim();
+    this.selectedUserType=data.userType;
+    this.rowData = data;
+  }
+
+  update(isValid: boolean) {
     this.submitted = true; // set form submit to true
-    console.log(isValid);
-    console.log("hi form module is called from page");
-    console.log("form val", this.myForm.value.name);
-    this.cutomer = this.myForm.value;
-    console.log("form valuse", this.cutomer);
 
     if (isValid == true) {
-     
-      var access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
       const headers = new Headers();
 
       headers.append('Content-Type', 'application/json');
-      headers.append('x-access-token', access_token);
       const requestOptions = new RequestOptions({ headers: headers });
+      console.log("ID", this.rowData._id);
       const body = {
+        "_id": this.rowData._id,
         "name": this.myForm.value.name,
-        "pan_no": this.myForm.value.pan_no,
-        "gstin": this.myForm.value.gstin,
-        "city": this.myForm.value.city,
         "contact": this.myForm.value.contact,
+        "pan_no": this.myForm.value.pan_no,
         "email": this.myForm.value.email,
+        "gstin": this.myForm.value.gstin,
         "address": this.myForm.value.address,
-        "state": "Madhya Pradesh"
+        "city": this.myForm.value.city,
+        "state": this.myForm.value.state,
+        "type":this.myForm.value.userType
       };
-      this.url = "http://localhost:3000/api/customer/create";
-      return this.http.post(this.url, body, requestOptions)
+
+      var url = "http://localhost:3000/api/branch/update?token=" + this.access_token;
+      return this.http.put(url, body, requestOptions)
         .subscribe(
         response => {
           console.log("suceessfull data", response.json().message);
-          this.closeModal();
+          this.closeEditModal();
+          this.getDataList(this.pager.currentPage);
         },
         error => {
           console.log("error", error.message);
@@ -93,39 +203,58 @@ export class AdminBranchComponent implements OnInit {
         );
     }
   }
-  private closeModal(): void {
+
+  private closeEditModal(): void {
     this.closeBtn.nativeElement.click();
   }
 
-  getBranches() {
-    var access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWY2ZjViMmI3N2VlNDE3OTQxMjcyNzYiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOmZhbHNlLCJpYXQiOjE1MDkzNTcwNzMsImV4cCI6MTUwOTk2MTg3MywiaXNzIjoidmVsb3BlcnQuY29tIiwic3ViIjoidXNlckluZm8ifQ._hAcH1LXddHTP1jdgaGqdKkeWU0eHux5K-iPxCRQ-14";
+  deleteRecord() {
+    const headers = new Headers();
 
-    let response: any;
-    let myHeaders = new Headers({ 'Content-Type': 'application/json' });
-    myHeaders.append('x-access-token', access_token);
-    myHeaders.append('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization, x-access-token');
-    myHeaders.append('Access-Control-Allow-Methods', 'GET, OPTIONS, POST');
-    myHeaders.append('Access-Control-Allow-Origin', '*');
-    // headers.append('Accept','charset=utf-8');
-    myHeaders.append('Access-Control-Allow-Credentials', 'true');
+    headers.append('Content-Type', 'application/json');
 
-    let options = new RequestOptions({ headers: myHeaders });
+    const requestOptions = new RequestOptions({ headers: headers });
 
-    this.http.get('http://localhost:3000/api/branch/index', options)
+    var url = "http://localhost:3000/api/branch/delete/" + this.rowData._id;
+    return this.http.delete(url, requestOptions)
       .subscribe(
       response => {
-        console.log("BRANCH_LIST_API_RESPONSE",response.json());
-        console.log("BRANCH_LIST_API_RESPONSE_2",response.json().docs);
-        for(let data of response.json().docs)
-        {
-          this.branchesList.push({ name: data.name, contact: data.contact, panNo: data.pan_no, email: data.email, gstin: data.gstin, address: data.address, selectedDealer: data.state, city: data.city, branchName: data.branch_name, state: data.state });
-        }
+        console.log("suceessfull data", response.json().message);
+        this.closeBtn2.nativeElement.click();
+        this.getDataList(this.pager.currentPage);
       },
       error => {
-        alert(error.text());
+        console.log("error", error.message);
         console.log(error.text());
       }
       );
+  }
+
+  recordToDelete(item) {
+    this.rowData = item;
+  }
+
+  resetForm() {
+    this.myForm.reset();
+    this.myForm.get("state").setValue("");
+    this.submitted = false;
+  }
+
+  searchKeyword(searchString) {
+
+    if (searchString) {
+      this.http.get('http://localhost:3000/api/branch/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
+        this.dataList = data.json().docs;
+        this.pager.pageSize = data.json().limit;
+        this.pager.totalItems = data.json().total;
+        this.setPage();
+      });
+    }
+    else {
+      console.log("SEARCH_EMPTY");
+      this.dataList = this.backupdataList;
+      this.pager=this.backupPager;
+    }
   }
 
 }

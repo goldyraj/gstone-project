@@ -11,7 +11,8 @@ import { NumberValidatorsService } from "../number-validators.service";
 @Component({
   selector: 'app-admin-customer',
   templateUrl: './admin-customer.component.html',
-  styleUrls: ['./admin-customer.component.css']
+  styleUrls: ['./admin-customer.component.css'],
+  providers:[PagerService]
 })
 export class AdminCustomerComponent implements OnInit {
 
@@ -33,6 +34,8 @@ export class AdminCustomerComponent implements OnInit {
   apiResult;
   rowData;
   userTypeList=[];
+  selectedState:string;
+  selectedUserType;
 
   @ViewChild('closeBtn') closeBtn:ElementRef;
   @ViewChild('closeBtn2') closeBtn2:ElementRef;
@@ -93,7 +96,7 @@ export class AdminCustomerComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/customer/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + page + "&sortBy=" + this.sortBy, options)
+    this.http.get('http://localhost:3000/api/customer/index?token=' + this.access_token + '&limit=' + 50 + '&page=' + page + "&sortBy=" + this.sortBy, options)
       .subscribe(
       response => {
         this.dataList = response.json().docs;
@@ -147,6 +150,7 @@ export class AdminCustomerComponent implements OnInit {
     this.apiMessage="";
     this.apiResult=0;
     this.submitted = false;
+    this.selectedState=data.state;
   
     if (data) {
       this.myForm.get("name").setValue(data.name);
@@ -156,8 +160,11 @@ export class AdminCustomerComponent implements OnInit {
       this.myForm.get("gstin").setValue(data.gstin);
       this.myForm.get("address").setValue(data.address);
       this.myForm.get("city").setValue(data.city);
-      this.myForm.get("state").setValue(data.state);
+      // this.myForm.get("state").setValue(data.state);
     }
+    
+    // this.selectedState=this.selectedState.trim();
+    this.selectedUserType=data.userType;
     this.rowData = data;
   }
 
@@ -179,7 +186,8 @@ export class AdminCustomerComponent implements OnInit {
         "gstin": this.myForm.value.gstin,
         "address": this.myForm.value.address,
         "city": this.myForm.value.city,
-        "state": this.myForm.value.state
+        "state": this.myForm.value.state,
+        "type":this.myForm.value.userType
       };
 
       var url = "http://localhost:3000/api/customer/update?token=" + this.access_token;

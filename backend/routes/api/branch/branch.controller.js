@@ -235,8 +235,7 @@ eventEmitter.prependOnceListener('foo', () => Branch.find({}, function(err, resp
  // next();
  
     res.json(
-   s
-        )
+   s )
   }
 }));
 eventEmitter.emit('foo');

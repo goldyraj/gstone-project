@@ -26,7 +26,8 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">User</span>
-                <span class="info-box-number">1,410</span>
+                <span *ngIf="usersCount?.length>0" class="info-box-number">{{usersCount.length}}</span>
+                <span *ngIf="usersCount?.length===0" class="info-box-number">0</span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -41,7 +42,7 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Customer</span>
-                <span class="info-box-number">410</span>
+                <span class="info-box-number">{{customersCount.length}}</span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -56,7 +57,7 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Branch</span>
-                <span class="info-box-number">13,648</span>
+                <span class="info-box-number">{{branchesCount.length}}</span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -71,7 +72,7 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Vendor</span>
-                <span class="info-box-number">93,139</span>
+                <span class="info-box-number">{{vendorsCount.length}}</span>
               </div>
               <!-- /.info-box-content -->
             </div>

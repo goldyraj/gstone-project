@@ -9,13 +9,15 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 })
 export class AdminDashboardComponent implements OnInit {
 
+  access_token;
+
   constructor(private router: Router,public http:Http) {
     
   }
 
   onLoad()
   {
-   
+    this.access_token=localStorage.getItem('admin_token');
   }
 
   ngOnInit() {
@@ -33,23 +35,7 @@ export class AdminDashboardComponent implements OnInit {
     this.router.navigate(['/admin-login']);
   }
 
-  getUsersCount() {
-
-  }
-
-  preventUrlNavigation() {
-
-  }
-
-  getVendorsCount()
-  {
-
-  }
-
-  getBranchesCount()
-  {
-
-  }
+  
 
   // getBranches(page: number) {
     

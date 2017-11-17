@@ -17,7 +17,9 @@ export class UserDashboardComponent implements OnInit {
 
   @ViewChild('closeCsv') closeCsv: ElementRef;
   @ViewChild('closeChoose') closeChoose: ElementRef;
-  @ViewChild('uploadCsvFileControl') uploadCsvFileControl: ElementRef;
+  // @ViewChild('uploadCsvFileControl') uploadCsvFileControl: ElementRef;
+  @ViewChild('clearInputFile') clearInputFile:ElementRef;
+  
   filename;
   ifSuccess: boolean;
   isDownloadSuccessful: boolean;
@@ -246,7 +248,7 @@ export class UserDashboardComponent implements OnInit {
         this.closeModal();
         this.closeCsv.nativeElement.click();
         this.closeChoose.nativeElement.click();
-        this.uploadCsvFileControl.nativeElement.value = "";
+        // this.uploadCsvFileControl.nativeElement.value = "";
         this.ifSuccess = true;
         this.getBranches(this.pager.currentPage);
         // alert(response.json().message);
@@ -290,5 +292,11 @@ export class UserDashboardComponent implements OnInit {
 
   resetForm() {
     this.myForm.reset();
+  }
+
+  clearCSVForm()
+  {
+    this.clearInputFile.nativeElement.value = "";
+    this.ifSuccess=false;
   }
 }

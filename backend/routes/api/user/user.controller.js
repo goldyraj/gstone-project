@@ -109,7 +109,7 @@ exports.update=(req,res)=>{
         })
     }
      var updated_at=  Date.now();
-         User.findOneAndUpdate({_id:_id}, {$set:{username:username,email:email,contact:contact,pan_no:pan_no,gstin:gstin,address:address,city:city,state:state,updated_at:updated_at}}, {new: true}, function(err, doc){
+         User.findOneAndUpdate({_id:_id}, {$set:{username:username,email:email,contact:contact,pan_no:pan_no,gstin:gstin,address:address,city:city,state:state,type:type,updated_at:updated_at}}, {new: true}, function(err, doc){
     if(err){
         console.log("Something wrong when updating data!");
     }

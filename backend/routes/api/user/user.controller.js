@@ -1,6 +1,56 @@
 const User = require('../../../models/user')
 const crypto = require('crypto')
 const config = require('../../../config')
+
+
+
+exports.index=(req,res)=>{
+
+var query={};
+//=========Authrise function
+    if(!req.decoded.admin) {
+        return res.status(403).json({
+            message: 'you are not an admin'
+        })
+    }
+req.query.limit=parseInt(req.query.limit);
+if(req.query.search && req.query.search.length>0){    
+   query={name:new RegExp(req.query.search,'i')}
+}
+if(!req.query.limit ||isNaN(req.query.limit) ){
+    req.query.limit=5;
+}
+if(!req.query.page||isNaN(req.query.page)||parseFloat(req.query.page)<1)
+{
+    req.query.page=1;
+}
+var offset=(req.query.page-1)*req.query.limit;
+User.count(query,function(err,count){
+    if(count>offset){
+        offset=0;
+    }
+});
+const onError = (error) => {
+        res.status(409).json({
+            message: error.message
+        })
+    }
+          var sortfiled={};
+    if(req.query.sortBy && req.query.sortBy.length>0){    
+    sortfiled=req.query.sortBy
+}else{
+   sortfiled={ created_at: -1 } 
+}
+var option={
+    select:'name username email contact pan_no gstin address city state type',
+    sort:sortfiled,
+    offset:offset,
+    limit:req.query.limit
+};
+User.paginate(query,option).then( user=>res.json(user)
+        )
+    .catch(onError);
+}
 /* 
     GET /api/user/list
 */

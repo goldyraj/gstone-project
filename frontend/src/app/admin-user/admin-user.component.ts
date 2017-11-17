@@ -94,10 +94,10 @@ export class AdminUserComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/user/list?token=' + this.access_token + '&limit=' + 10 + '&page=' + page + "&sortBy=" + this.sortBy, options)
+    this.http.get('http://localhost:3000/api/user/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + page + "&sortBy=" + this.sortBy, options)
       .subscribe(
       response => {
-        this.dataList = response.json().users;
+        this.dataList = response.json().docs;
         this.pager.pageSize = response.json().limit;
         this.pager.totalItems = response.json().total;
         this.backupdataList = this.dataList;

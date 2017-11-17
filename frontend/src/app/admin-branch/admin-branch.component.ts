@@ -190,7 +190,7 @@ export class AdminBranchComponent implements OnInit {
         "address": this.myForm.value.address,
         "city": this.myForm.value.city,
         "state": this.myForm.value.state,
-        "type":this.myForm.value.userType
+        "branch_name":this.myForm.value.branch_name
       };
 
       var url = "http://localhost:3000/api/branch/update?token=" + this.access_token;

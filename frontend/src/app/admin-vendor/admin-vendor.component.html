@@ -214,7 +214,7 @@
                 </div> -->
 
                 <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-                  <select class="form-control" formControlName="state" (ngModel)="selectedState">
+                  <select class="form-control" formControlName="state" [(ngModel)]="selectedState" required>
                     <option value="" selected="selected">Select State</option>
                     <option *ngFor="let item of stateDropDownList" value="{{item.name}}">{{item.name}}</option>
                   </select>
@@ -233,9 +233,9 @@
                   </small>
                 </div>
 
-                <div class="col-md-12 col-sm-12 col-xs-12 form-group" align="center">
-                  <button type="submit" class="btn btn-primary">Save</button>
-                  <button type="button" class="btn btn-primary" data-dismiss="modal" value="Cancel">
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <button type="submit" class="btn btn-success" >Save</button>
+                  <button type="button" class="btn btn-primary pull-right" data-dismiss="modal" value="Cancel">
                     Cancel
                   </button>
                 </div>

@@ -47,13 +47,15 @@ export class AdminBranchComponent implements OnInit {
 
     this.myForm = new FormGroup({
       name: new FormControl('', [Validators.required, Validators.pattern('.*\\S.*')]),
-      contact: new FormControl('', [<any>Validators.required, <any>Validators.minLength(10),Validators.pattern('.*\\S.*')]),
+      contact: new FormControl('', [<any>Validators.required, <any>Validators.minLength(10), Validators.pattern('.*\\S.*')]),
+      branch_name: new FormControl('', [Validators.required, Validators.pattern('.*\\S.*')]),
       pan_no: new FormControl('', [<any>Validators.required, <any>Validators.minLength(10),Validators.pattern('.*\\S.*')]),
       email: new FormControl('', [<any>Validators.required,Validators.pattern('.*\\S.*')]),
       gstin: new FormControl('', [<any>Validators.required, Validators.pattern('.*\\S.*')]),
       address: new FormControl('', [<any>Validators.required, Validators.pattern('.*\\S.*')]),
       city: new FormControl('', [<any>Validators.required, Validators.pattern('.*\\S.*')]),
-      userType: new FormControl('', [<any>Validators.required]),
+      // userType: new FormControl('', [<any>Validators.required]),
+      selectedDealer: new FormControl('Select Dealer',[Validators.required]),
       // password: new FormControl('', [<any>Validators.required, <any>Validators.minLength(5)]),
       // confirm_paasword: new FormControl('', [<any>Validators.required, <any>Validators.minLength(5)]),
       state: new FormControl('', [<any>Validators.required]),
@@ -158,6 +160,7 @@ export class AdminBranchComponent implements OnInit {
       this.myForm.get("gstin").setValue(data.gstin);
       this.myForm.get("address").setValue(data.address);
       this.myForm.get("city").setValue(data.city);
+      this.myForm.get("branch_name").setValue(data.branch_name);
       // this.myForm.get("state").setValue(data.state);
     }
     this.selectedState=data.state;
@@ -167,6 +170,8 @@ export class AdminBranchComponent implements OnInit {
   }
 
   update(isValid: boolean) {
+    console.log("FORM",isValid);
+
     this.submitted = true; // set form submit to true
 
     if (isValid == true) {

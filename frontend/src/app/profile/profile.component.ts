@@ -111,43 +111,42 @@ export class ProfileComponent implements OnInit {
     console.log("edited form data", this.editProfileForm.value);
 
     // if (isValid == true && this.myFormEdit.value.selectedstateDropdown!='Select State') {
-    // if (isValid == true) {
+    if (isValid == true) {
 
-    //   const headers = new Headers();
+      const headers = new Headers();
 
-    //   headers.append('Content-Type', 'application/json');
-    //   // headers.append('x-access-token', this.access_token);
-    //   const requestOptions = new RequestOptions({ headers: headers });
+      headers.append('Content-Type', 'application/json');
+      // headers.append('x-access-token', this.access_token);
+      const requestOptions = new RequestOptions({ headers: headers });
 
-    //   const body = {
-    //     "_id": this.venderRowData._id,
-    //     "name": this.myFormEdit.value.name,
-    //     "gstin": this.myFormEdit.value.gstin,
-    //     "address": this.myFormEdit.value.address,
-    //     "state": this.selectedState
-    //   };
-    //   console.log("body", body);
+      const body = {
+        "address": this.editProfileForm.value.address,
+        "city": this.editProfileForm.value.city,
+        "contact": this.editProfileForm.value.contact,
+        "name": this.editProfileForm.value.name,
+        "pan_no": this.editProfileForm.value.pan_no,
+        "state": this.editProfileForm.value.state,
+        "type": this.userDetail['type'],
+        "username": this.editProfileForm.value.user_name,
+        "email": this.editProfileForm.value.email,
+        "_id": this.userDetail['_id']
+      };
+      console.log("body", body);
 
-    //   this.url = "http://localhost:3000/api/vendor/update?token=" + this.access_token;
-    //   return this.http.put(this.url, body, requestOptions)
-    //     .subscribe(
-    //     response => {
-    //       console.log("suceessfull data", response.json().message);
-    //       this.closeEditModal();
-    //       this.submittedEdit = false;
-    //       this.getVenderList(this.pager.currentPage);
-    //       // this.hsnCodeData.push(body);
-
-    //       this.venderList[this.rowDataIndex] = body;
-    //       // alert(response.json().message);
-    //     },
-    //     error => {
-    //       // this.closeEditModal();
-    //       console.log("error", error.message);
-    //       console.log(error.text());
-    //     }
-    //     );
-    // }
+      this.url = "http://localhost:3000/api/user/profileupdate/?token=" + this.access_token;
+      return this.http.put(this.url, body, requestOptions)
+        .subscribe(
+        response => {
+          console.log("suceessfull data", response.json().message);
+          this.submittedEdit = false;
+        },
+        error => {
+          // this.closeEditModal();
+          console.log("error", error.message);
+          console.log(error.text());
+        }
+        );
+    }
   }
 
   saveTodos(val) {

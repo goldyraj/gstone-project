@@ -18,8 +18,8 @@ export class UserDashboardComponent implements OnInit {
   @ViewChild('closeCsv') closeCsv: ElementRef;
   @ViewChild('closeChoose') closeChoose: ElementRef;
   // @ViewChild('uploadCsvFileControl') uploadCsvFileControl: ElementRef;
-  @ViewChild('clearInputFile') clearInputFile:ElementRef;
-  
+  @ViewChild('clearInputFile') clearInputFile: ElementRef;
+
   filename;
   ifSuccess: boolean;
   isDownloadSuccessful: boolean;
@@ -46,6 +46,7 @@ export class UserDashboardComponent implements OnInit {
   access_token;
   // pager object
   pager: any = {};
+  userDetails = [];
   selectedState = '';
 
   // paged items
@@ -59,6 +60,7 @@ export class UserDashboardComponent implements OnInit {
     this.userName = localStorage.getItem('user_name');
     this.getBranches(1);
     this.getStateList();
+    this.checkAuth();
   } // form builder simplify form initialization
 
   ngOnInit() {
@@ -85,6 +87,21 @@ export class UserDashboardComponent implements OnInit {
     });
   }
 
+
+  checkAuth() {
+    console.log('auth called');
+    this.http.get('http://localhost:3000/api/auth/check?token=' + this.access_token).subscribe(data => {
+      this.userDetails = data.json().info;
+      // this.userIsLogged = data.json().success;
+      console.log('user details', this.userDetails);
+      localStorage.setItem('user_name', this.userDetails['username']);
+      // console.log('userIsLogged', this.userIsLogged);
+    }, error => {
+      console.log('error', error.message);
+      // this.userIsLogged = error.json().success;
+      console.log(error.text());
+    });
+  }
   onInput($event) {
     $event.preventDefault();
     console.log('selected: ' + $event.target.value);
@@ -247,10 +264,7 @@ export class UserDashboardComponent implements OnInit {
         console.log('suceessfull data', response.json().message);
         this.closeModal();
         this.closeCsv.nativeElement.click();
-        this.closeChoose.nativeElement.click();      
-
-        
-
+        this.closeChoose.nativeElement.click();
         // this.uploadCsvFileControl.nativeElement.value = '';
 
         this.ifSuccess = true;
@@ -298,9 +312,8 @@ export class UserDashboardComponent implements OnInit {
     this.myForm.reset();
   }
 
-  clearCSVForm()
-  {
+  clearCSVForm() {
     this.clearInputFile.nativeElement.value = "";
-    this.ifSuccess=false;
+    this.ifSuccess = false;
   }
 }

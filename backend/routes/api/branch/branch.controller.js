@@ -113,7 +113,7 @@ exports.update=(req,res)=>{
             message: error.message
         })
     }
-      Branch.findOneByUsername(title)          
+      Branch.findOneByUsername(branch_name)          
          .then(respond)
          .catch(onError)
 }
@@ -235,8 +235,7 @@ eventEmitter.prependOnceListener('foo', () => Branch.find({}, function(err, resp
  // next();
  
     res.json(
-   s
-        )
+   s )
   }
 }));
 eventEmitter.emit('foo');

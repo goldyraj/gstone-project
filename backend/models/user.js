@@ -5,7 +5,7 @@ const crypto = require('crypto')
 const config = require('../config')
 var debug = require('debug')('http') , http = require('http')
   , name = 'My App';
-  
+  var mongoosePaginate = require('mongoose-paginate');
 const User = new Schema({
      name: String,
     username: String,
@@ -78,5 +78,5 @@ User.methods.assignAdmin = function() {
     this.type = "admin"
     return this.save()
 }
-
+User.plugin(mongoosePaginate);
 module.exports = mongoose.model('User', User)

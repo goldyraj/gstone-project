@@ -5,7 +5,7 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { ExcelServiceService } from '../excel-service.service';
 import { PagerService } from '../service/pager.service';
 import { RouterModule, Routes, Router } from '@angular/router';
-import * as _ from 'underscore'
+import * as _ from 'underscore';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -17,23 +17,25 @@ export class UserDashboardComponent implements OnInit {
 
   @ViewChild('closeCsv') closeCsv: ElementRef;
   @ViewChild('closeChoose') closeChoose: ElementRef;
-  @ViewChild('uploadCsvFileControl') uploadCsvFileControl: ElementRef;
+  // @ViewChild('uploadCsvFileControl') uploadCsvFileControl: ElementRef;
+  @ViewChild('clearInputFile') clearInputFile:ElementRef;
+  
   filename;
   ifSuccess: boolean;
   isDownloadSuccessful: boolean;
   headers: Headers;
-  branchesList: Array<{ name: string, contact: string, panNo: string, email: string, gstin: string, address: string, selectedDealer: string, city: string, branchName: string, state: string }> = [];
+  branchesList = [];
   isEditingClicked: boolean;
   publicBranchData;
-  selectedDealerStateEdit = "0";
-  selectedDealerStateNew = "0";
+  selectedDealerStateEdit = '0';
+  selectedDealerStateNew = '0';
   jsonString;
   // constructor() { }
   @ViewChild('closeBtn') closeBtn: ElementRef;
   modelHide = '';
-  url = "";
+  url = '';
   cutomer = {};
-  errorMsg = "";
+  errorMsg = '';
   public errorType: boolean = false;
   stateList = [];
   public myForm: FormGroup; // our model driven form
@@ -44,7 +46,7 @@ export class UserDashboardComponent implements OnInit {
   access_token;
   // pager object
   pager: any = {};
-  selectedState = "";
+  selectedState = '';
 
   // paged items
   pagedItems: any[];
@@ -53,8 +55,8 @@ export class UserDashboardComponent implements OnInit {
   constructor(private _fb: FormBuilder, private http: Http, public excelServiceService: ExcelServiceService, public PagerService: PagerService, private router: Router) {
     this.isEditingClicked = false;
     this.pager.currentPage = 1;
-    this.access_token = localStorage.getItem("user_token");
-    this.userName = localStorage.getItem("user_name");
+    this.access_token = localStorage.getItem('user_token');
+    this.userName = localStorage.getItem('user_name');
     this.getBranches(1);
     this.getStateList();
   } // form builder simplify form initialization
@@ -74,8 +76,8 @@ export class UserDashboardComponent implements OnInit {
       address: new FormControl('', [<any>Validators.required]),
       city: new FormControl('', [<any>Validators.required]),
       branch_name: new FormControl('', [<any>Validators.required]),
-      state: new FormControl('Select State'),
-      selectedDealer: new FormControl('Select Dealer')
+      state: new FormControl(''),
+      selectedDealer: new FormControl('')
       // address: new FormGroup({
       //   street: new FormControl('', <any>Validators.required),
       //   postcode: new FormControl('8000')
@@ -92,41 +94,41 @@ export class UserDashboardComponent implements OnInit {
   save(isValid: boolean) {
     this.submitted = true; // set form submit to true
     console.log(isValid);
-    console.log("hi form module is called from page");
-    console.log("form val", this.myForm.value.name);
+    console.log('hi form module is called from page');
+    console.log('form val', this.myForm.value.name);
     this.cutomer = this.myForm.value;
-    console.log("form valuse", this.cutomer);
+    console.log('form valuse', this.cutomer);
 
     if (isValid == true) {
 
-      // var access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
+      // var access_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw';
       const headers = new Headers();
 
       headers.append('Content-Type', 'application/json');
       // headers.append('x-access-token', access_token);
       const requestOptions = new RequestOptions({ headers: headers });
       const body = {
-        "name": this.myForm.value.name,
-        "pan_no": this.myForm.value.pan_no,
-        "gstin": this.myForm.value.gstin,
-        "city": this.myForm.value.city,
-        "contact": this.myForm.value.contact,
-        "email": this.myForm.value.email,
-        "address": this.myForm.value.address,
-        "state": this.selectedState,
-        "branch_name": this.myForm.value.branch_name
+        'name': this.myForm.value.name,
+        'pan_no': this.myForm.value.pan_no,
+        'gstin': this.myForm.value.gstin,
+        'city': this.myForm.value.city,
+        'contact': this.myForm.value.contact,
+        'email': this.myForm.value.email,
+        'address': this.myForm.value.address,
+        'state': this.selectedState,
+        'branch_name': this.myForm.value.branch_name
       };
-      this.url = "http://localhost:3000/api/branch/create?token=" + this.access_token;
+      this.url = 'http://localhost:3000/api/branch/create?token=' + this.access_token;
       return this.http.post(this.url, body, requestOptions)
         .subscribe(
         response => {
-          console.log("suceessfull data", response.json().message);
+          console.log('suceessfull data', response.json().message);
           this.closeModal();
           // alert(response.json().message);
           this.getBranches(this.pager.currentPage)
         },
         error => {
-          console.log("error", error.message);
+          console.log('error', error.message);
           console.log(error.text());
           this.errorType = true;
           this.errorMsg = error.json().messages;
@@ -155,7 +157,7 @@ export class UserDashboardComponent implements OnInit {
       .subscribe(
       response => {
 
-        console.log("BRANCH_LIST_API_RESPONSE_2", response.json().docs);
+        console.log('BRANCH_LIST_API_RESPONSE_2', response.json().docs);
         this.branchesList = response.json().docs;
         this.pager.pageSize = response.json().limit;
         let isList = this.branchesList.length;
@@ -163,7 +165,7 @@ export class UserDashboardComponent implements OnInit {
         this.setPage();
         if (isList === 0) {
           this.isBranchList = true;
-          // console.log("")
+          // console.log('')
         } else {
           this.isBranchList = false;
         }
@@ -185,7 +187,7 @@ export class UserDashboardComponent implements OnInit {
     }
 
     this.pager = this.PagerService.getPager(this.pager.totalItems, this.pager.currentPage, this.pager.pageSize);
-    console.log("pager", this.pager);
+    console.log('pager', this.pager);
     // this.getStateList();
     this.pagedItems = this.branchesList;
   }
@@ -198,9 +200,9 @@ export class UserDashboardComponent implements OnInit {
       // this.TotalPages = data.json().total;
       // this.pageSize = this.Paging.limit;
       // this.currentPage = this.Paging.page;
-      console.log("pagecount", )
-      console.log("getStateList", this.stateList);
-      // console.log("TotalPages", this.TotalPages);
+      console.log('pagecount', )
+      console.log('getStateList', this.stateList);
+      // console.log('TotalPages', this.TotalPages);
     });
   }
 
@@ -232,27 +234,31 @@ export class UserDashboardComponent implements OnInit {
     headers.append('x-access-token', this.access_token);
     const requestOptions = new RequestOptions({ headers: headers });
     const body = {
-      "data": JSON.parse(this.jsonString)
+      'data': JSON.parse(this.jsonString)
     };
 
-    console.log("CSV_DATA", body);
+    console.log('CSV_DATA', body);
 
-    this.url = "http://localhost:3000/api/branch/uploadFile?token=" + this.access_token;
+    this.url = 'http://localhost:3000/api/branch/uploadFile?token=' + this.access_token;
 
     return this.http.post(this.url, body, requestOptions)
       .subscribe(
       response => {
-        console.log("suceessfull data", response.json().message);
+        console.log('suceessfull data', response.json().message);
         this.closeModal();
         this.closeCsv.nativeElement.click();
-        this.closeChoose.nativeElement.click();
-        this.uploadCsvFileControl.nativeElement.value = "";
+        this.closeChoose.nativeElement.click();      
+
+        
+
+        // this.uploadCsvFileControl.nativeElement.value = '';
+
         this.ifSuccess = true;
         this.getBranches(this.pager.currentPage);
         // alert(response.json().message);
       },
       error => {
-        console.log("error", error.message);
+        console.log('error', error.message);
         console.log(error.text());
       }
       );
@@ -290,5 +296,11 @@ export class UserDashboardComponent implements OnInit {
 
   resetForm() {
     this.myForm.reset();
+  }
+
+  clearCSVForm()
+  {
+    this.clearInputFile.nativeElement.value = "";
+    this.ifSuccess=false;
   }
 }

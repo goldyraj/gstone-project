@@ -2,31 +2,14 @@
 <div class="tabs">
 
   <div class="clearfix"></div>
+  <ul class="nav nav-pills">
+    <li role="presentation"><a routerLink="../summarypage">Summary</a></li>
+    <li role="presentation" class="active"><a routerLink="../gstr">Invoice Wise Detail</a></li>
+    <li role="presentation"><a routerLink="../other">Other</a></li>
+    <li role="presentation"><a routerLink="../">Submit</a></li>
+    <li role="presentation"><a routerLink="../">File</a></li>
+  </ul>
 
-  <div class="col-md-8 col-sm-8 col-xs-12 form-group">
-    <!-- <button class="btn btn-primary"> -->
-    <a routerLink="/summarypage"> Summary</a>&nbsp;&nbsp;&nbsp;
-    <!-- </button> -->
-    <!-- <button class="btn btn-primary">  -->
-    <a routerLink="/gstr">Invoice Wise Detail</a>&nbsp;&nbsp;&nbsp;
-    <!-- </button> -->
-    <!-- <button class="btn btn-primary"> -->
-    <!-- <a href="#">Export Invoice</a> &nbsp;&nbsp;&nbsp; -->
-    <!-- </button> -->
-    <!-- <button class="btn btn-primary">  -->
-    <a routerLink="/"> Other </a>&nbsp;&nbsp;&nbsp;
-    <!-- </button> -->
-    <!-- <button class="btn btn-primary">  -->
-    <a routerLink="/"> Submit </a>&nbsp;&nbsp;&nbsp;
-    <!-- </button> -->
-    <!-- <button class="btn btn-primary"> -->
-    <a routerLink="/">File </a>&nbsp;&nbsp;&nbsp;
-    <!-- </button> -->
-  </div>
-
-  <div class="col-md-4 col-sm-4 col-xs-12 form-group">
-
-  </div>
 
 </div>
 <div class="clearfix"></div>
@@ -37,37 +20,20 @@
 
 <div class="section-top-20 section-bottom-10 row">
 
-  <div class="col-md-6 col-xs-12">
+  <div class="col-md-6 col-xs-12  section-bottom-20">
     <h2 class="text-invoice">Create Invoice</h2>
   </div>
 
 
 
   <div class="col-md-6 col-xs-12 text-right">
-    <a href="newinvoice"><input type="button" class="btn btn-success pull-right" value="Save Data"></a> &nbsp; &nbsp;
+    <a routerLink="../newinvoice"><input type="button" class="btn btn-success" value="Save Data"></a> 
 
-    <!-- <a href="#"><input type="button" class="btn btn-success" value="Back"></a> -->
-    <button routerLink="/gstr" class="btn btn-success"> Back </button>
+     <a routerLink="../gstr"><input type="button" class="btn btn-success" value="Back"></a> 
+  
   </div>
 
   <div class="clearfix"> </div>
-
-  &nbsp;&nbsp;&nbsp;&nbsp;
-  <!-- <label class="radio-inline">
-					  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Normal_Invoice" checked="checked"> Normal Invoice
-					</label>
-										<label class="radio-inline">
-					  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="Reverse_Charge"> Reverse Charge
-					</label>
-										<label class="radio-inline">
-					  <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="E-commerce"> E-commerce
-					</label>
-										<label class="radio-inline">
-					  <input type="radio" name="inlineRadioOptions" id="inlineRadio4" value="Debit_Note"> Debit Note
-					</label>
-										<label class="radio-inline">
-					  <input type="radio" name="inlineRadioOptions" id="inlineRadio5" value="Credit_Note"> Credit Note
-          </label> -->
 
 
   <div class="radio">
@@ -89,7 +55,7 @@
   </div>
 
 </div>
-
+<div class="row">
 <div class="section-bottom-10 section-top-10">
   <div class="col-md-4 col-sm-4 col-xs-12 form-group">
     <label for="inputEmail3" class="col-sm-5 control-label">Name</label>
@@ -121,13 +87,6 @@
     <div class="col-sm-7">
       <select class="form-control">
                             <option *ngFor="let pl of place" [value]="pl"> {{pl}}</option>
-                            <!-- <option value="" selected="selected" > AP</option>
-                            <option value=""> BH</option>
-                            <option value=""> MH</option>
-                            <option value=""> MP</option>
-                            <option value=""> UK</option>
-                            <option value=""> UP</option>
-                            <option value=""> TN</option> -->
                           </select>
     </div>
   </div>
@@ -139,7 +98,7 @@
   </div>
 
 </div>
-
+</div>
 <div class="table-responsive gsttable">
   <table class="table table-condensed  table-hover table-bordered">
     <tr>

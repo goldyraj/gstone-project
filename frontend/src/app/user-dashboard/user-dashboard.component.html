@@ -80,25 +80,25 @@
 				</li>
 			</ul> -->
 			<ul class="pagination btn-sm" *ngIf="isBranchList == false">
-					<li [ngClass]="{disabled:pager.currentPage === 1}">
-					  <a *ngIf="pager.currentPage > 1" (click)="getBranches(pager.currentPage - 1)">Previous</a>
-					</li>
-		
-					<li [ngClass]="{disabled:pager.currentPage === 1}">
-					  <a *ngIf="pager.currentPage ==1">Previous</a>
-					</li>
-		
-					<li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
-					  <a (click)="getBranches(page)">{{page}}</a>
-					</li>
-		
-					<li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
-					  <a *ngIf="pager.currentPage < pager.endPage" (click)="getBranches(pager.currentPage + 1)">Next</a>
-					</li>
-					<li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
-					  <a *ngIf="pager.currentPage == pager.endPage">Next</a>
-					</li>
-				  </ul>
+				<li [ngClass]="{disabled:pager.currentPage === 1}">
+					<a *ngIf="pager.currentPage > 1" (click)="getBranches(pager.currentPage - 1)">Previous</a>
+				</li>
+
+				<li [ngClass]="{disabled:pager.currentPage === 1}">
+					<a *ngIf="pager.currentPage ==1">Previous</a>
+				</li>
+
+				<li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+					<a (click)="getBranches(page)">{{page}}</a>
+				</li>
+
+				<li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
+					<a *ngIf="pager.currentPage < pager.endPage" (click)="getBranches(pager.currentPage + 1)">Next</a>
+				</li>
+				<li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
+					<a *ngIf="pager.currentPage == pager.endPage">Next</a>
+				</li>
+			</ul>
 
 			<!-- -->
 
@@ -144,10 +144,10 @@
 				<div class="service-section">
 					<div class="row">
 						<div class="col-md-1 col-sm-1"></div>
-						
+
 						<div class="col-md-10 alert alert-danger" *ngIf="errorType == true">
-								<strong>Sorry!</strong>{{errorMsg}} 
-							</div>
+							<strong>Sorry!</strong>{{errorMsg}}
+						</div>
 						<div class="col-md-10 col-sm-10">
 							<form [formGroup]="myForm" novalidate (ngSubmit)="save( myForm.valid)">
 								<!-- <form [formGroup]="myForm" novalidate (ngSubmit)="save()"> -->
@@ -194,13 +194,13 @@
 
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
 									<select class="form-control" formControlName="selectedDealer" required>
-										<option value="-1" name="Select Dealer" selected="selected">Select Dealer</option>
-										<option value="0" name="Regular">Regular</option>
-										<option value="1" name="Composition">Composition</option>
-										<option value="2" name="ISD">ISD</option>
-										<option value="2" name="E-Commerce">E-Commerce</option>
+										<option value=""  selected="selected">--Select Dealer--</option>
+										<option value="Regular" >Regular</option>
+										<option value="Composition" >Composition</option>
+										<option value="ISD" >ISD</option>
+										<option value="E-Commerce" >E-Commerce</option>
 									</select>
-									<small *ngIf="myForm.controls.selectedDealer.value=='-1' && submitted">
+									<small *ngIf="myForm.controls.selectedDealer.value=== '' && submitted">
 										Please select dealer !
 									</small>
 								</div>
@@ -218,13 +218,13 @@
 									</small>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-									<select class="form-control" (input)="onInput($event)" >
+									<select class="form-control" (input)="onInput($event)" formControlName="state">
 										<option value="" selected="selected"> -- Select State -- </option>
 										<option *ngFor="let item of stateList" value="{{item.name}}">{{item.name}}</option>
 									</select>
-									<!-- <small *ngIf="!myForm.controls.selectedState.value && submitted">
+									<small *ngIf="myForm.controls.state.value ==='' && submitted">
 										Please select State !
-									</small> -->
+									</small>
 								</div>
 								<div class="col-md-12 col-sm-12 col-xs-12 form-group" align="center">
 									<button type="submit" class="btn btn-primary">Create</button>

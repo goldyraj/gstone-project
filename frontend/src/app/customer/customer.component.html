@@ -132,7 +132,7 @@
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="name" placeholder="Name" required>
 									<small [hidden]="myForm.controls.name.valid || (myForm.controls.name.pristine && !submitted)">
-										Name is required (minimum 5 characters).
+										Name is required .
 									</small>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
@@ -392,6 +392,7 @@
 							</div>
 						</div>
 						<p *ngIf="ifSuccess==true" class="text-info text-center">Successfully file uploaded</p>
+						<small *ngIf="errorMsg" class="text-info text-center">{{errorMsg}}</small>
 					</div>
 					<div align="center">
 						<input type="button" class="btn btn-success" data-dismiss="modal" value="Close">

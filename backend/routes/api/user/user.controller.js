@@ -1,6 +1,56 @@
 const User = require('../../../models/user')
 const crypto = require('crypto')
 const config = require('../../../config')
+
+
+
+exports.index=(req,res)=>{
+
+var query={};
+//=========Authrise function
+    if(!req.decoded.admin) {
+        return res.status(403).json({
+            message: 'you are not an admin'
+        })
+    }
+req.query.limit=parseInt(req.query.limit);
+if(req.query.search && req.query.search.length>0){    
+   query={name:new RegExp(req.query.search,'i')}
+}
+if(!req.query.limit ||isNaN(req.query.limit) ){
+    req.query.limit=5;
+}
+if(!req.query.page||isNaN(req.query.page)||parseFloat(req.query.page)<1)
+{
+    req.query.page=1;
+}
+var offset=(req.query.page-1)*req.query.limit;
+User.count(query,function(err,count){
+    if(count>offset){
+        offset=0;
+    }
+});
+const onError = (error) => {
+        res.status(409).json({
+            message: error.message
+        })
+    }
+          var sortfiled={};
+    if(req.query.sortBy && req.query.sortBy.length>0){    
+    sortfiled=req.query.sortBy
+}else{
+   sortfiled={ created_at: -1 } 
+}
+var option={
+    select:'name username email contact pan_no gstin address city state type',
+    sort:sortfiled,
+    offset:offset,
+    limit:req.query.limit
+};
+User.paginate(query,option).then( user=>res.json(user)
+        )
+    .catch(onError);
+}
 /* 
     GET /api/user/list
 */
@@ -47,6 +97,40 @@ exports.assignAdmin = (req, res) => {
     ).catch(
         (err) => { res.status(404).json({message: err.message})}
     )
+}
+/*
+    POST /api/user/update
+*/
+exports.update=(req,res)=>{
+        const {_id, name,username,email,contact,pan_no,gstin,address,city,state,type } = req.body
+    if(!req.decoded.admin) {
+        return res.status(403).json({
+            message: 'you are not an admin'
+        })
+    }
+     var updated_at=  Date.now();
+         User.findOneAndUpdate({_id:_id}, {$set:{name:name,username:username,email:email,contact:contact,pan_no:pan_no,gstin:gstin,address:address,city:city,state:state,type:type,updated_at:updated_at}}, {new: true}, function(err, doc){
+    if(err){
+        console.log("Something wrong when updating data!");
+    }
+    console.log(doc);
+});
+          const respond = () => {
+        res.json({
+            message: 'User Successfully Update'
+        
+ 
+        })
+    }
+    //    // run when there is an error (username exists)
+    const onError = (error) => {
+        res.status(409).json({
+            message: error.message
+        })
+    }
+      User.findOneByUsername(title)          
+         .then(respond)
+         .catch(onError)
 }
 /*
     POST /api/user/changepassword

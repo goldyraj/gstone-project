@@ -31,7 +31,7 @@ exports.delete=(req,res)=>{
 }else{
     res.json({'message':'invoice is Successfully deleted'})  
 }
-
+ 
   // we have deleted the user
    
 });

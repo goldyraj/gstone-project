@@ -247,7 +247,9 @@ export class UserDashboardComponent implements OnInit {
         console.log('suceessfull data', response.json().message);
         this.closeModal();
         this.closeCsv.nativeElement.click();
-        this.closeChoose.nativeElement.click();
+        this.closeChoose.nativeElement.click();      
+
+        
 
         // this.uploadCsvFileControl.nativeElement.value = '';
 

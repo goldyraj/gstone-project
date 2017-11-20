@@ -21,12 +21,14 @@ export class ProfileComponent implements OnInit {
   vender = [];
   url = "";
   errorMsg;
+  userDetail = [];
   public errorType: boolean;
 
 
   constructor(private _fb: FormBuilder, private http: Http, ) {
     this.access_token = localStorage.getItem("user_token");
     this.user_name = localStorage.getItem("user_name");
+    this.getUserList();
   }
 
   ngOnInit() {
@@ -74,6 +76,16 @@ export class ProfileComponent implements OnInit {
         );
     }
   }
+
+  getUserList() {
+    console.log('list called');
+    this.http.get('http://localhost:3000/api/auth/check?token=' + this.access_token).subscribe(data => {
+      this.userDetail = data.json().info;
+      console.log("userDetail", this.userDetail);
+    });
+  }
+
+
   saveTodos(val) {
     //show box msg
     this.errorType = val;

@@ -12,7 +12,6 @@ if(req.type=="agentuser"||req.type=="admin"){
     GET /api/vendor/index
 */
 exports.index=(req,res)=>{
-//console.log(req);
  var myCallback=usingItNow(req.decoded)
  if(myCallback) {
    return res.status(403).json({

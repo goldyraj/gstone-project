@@ -7,158 +7,106 @@ import { ExcelServiceService } from '../excel-service.service';
 import { RouterModule, Routes, Router } from '@angular/router';
 import * as _ from 'underscore';
 import { PagerService } from '../service/pager.service';
-import { NumberValidatorsService } from "../number-validators.service";
 
 @Component({
   selector: 'app-goodservices',
   templateUrl: './goodservices.component.html',
   styleUrls: ['./goodservices.component.css'],
-  providers: [PagerService,ExcelServiceService]
+  providers: [PagerService, ExcelServiceService]
 })
 export class GoodservicesComponent implements OnInit {
 
   @ViewChild('closeChoose') closeChoose: ElementRef;
   @ViewChild('closeCsv') closeCsv: ElementRef;
-
+  rowDataIndex;
+  GoodsRowData;
   public addStateForm: FormGroup; // our model driven form
-  public isGoodsList: boolean ; // keep track on whether form is submitted
-  public isServiceList: boolean ; // keep track on whether form is submitted
+  public isGoodsList: boolean; // keep track on whether form is submitted
   public submitted: boolean = false; // keep track on whether form is submitted
+  public editSubmitted: boolean = false; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
 
   public ifSuccess: boolean = false;
   goodsData = Array();
-  servicesData = Array();
-  hsnRowData;
-  hsnCodeSubmitData = {};
-  modelHide = '';
-  public selectedStatusType;
   url = "";
-  selectedStatusTypeDrop;
-  public hsn_code_status = "0";
-  public statusDropDown = Array();
-  rowIndexToModify;
+  pager: any = {};
+  Paging = {
+    page: 1,
+    limit: 2
+  };
+  pageSize: number;
+  currentPage: number;
   goodsForm: FormGroup;
   goodsFormEdit: FormGroup;
   sortBy = "created_at";
-  jsonString;
-  access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
-  goodsPager: any = {};
+  access_token = "";
   servicesPager: any = {};
-  goodsPagedItems: any = [];
-  servicesPagedItems: any = [];
+  pagedItems: any = [];
+  rateList = [];
+  unitList = [];
+  typeList = [];
   @ViewChild('closeBtn') closeBtn: ElementRef;
   @ViewChild('closeEditModal') closeEditModal: ElementRef;
-  public selectCategory;
-  public isDownloadSuccessful;
-  isGoodsSelected = true;
 
   constructor(private http: Http, private pagerService: PagerService, public excelServiceService: ExcelServiceService, private router: Router) {
-
+    this.access_token = localStorage.getItem("user_token");
+    console.log("user_token", this.access_token);
+    this.getGoodService(1);
   }
 
   ngOnInit() {
-
+    this.rateList = [
+      { "id": 1, "name": "0.1%" },
+      { "id": 2, "name": "0.2%" },
+      { "id": 3, "name": "3%" },
+      { "id": 4, "name": "5%" },
+      { "id": 5, "name": "12%" },
+      { "id": 6, "name": "18%" },
+      { "id": 7, "name": "28%" },
+    ];
+    this.unitList = [
+      { "id": 1, "name": "Kilogram" },
+      { "id": 2, "name": "Gram" },
+      { "id": 3, "name": "Meter" }
+    ];
+    this.typeList = [
+      { "id": 1, "name": "Goods" },
+      { "id": 2, "name": "Services" }
+    ];
+    console.log("rateList", this.rateList);
     this.goodsForm = new FormGroup({
-      hsn_code: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      cgst: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      sgst: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      igst: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      description: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      selectCategory: new FormControl('Select Category'),
-      comment: new FormControl()
+      description: new FormControl('', [<any>Validators.required, <any>Validators.maxLength(9)]),
+      hsn_code: new FormControl('', [<any>Validators.required, <any>Validators.maxLength(9)]),
+      unit: new FormControl(''),
+      rate: new FormControl(''),
+      type: new FormControl('')
     });
 
     this.goodsFormEdit = new FormGroup({
-      hsn_code: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      cgst: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      sgst: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      igst: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      description: new FormControl('', [<any>Validators.required, <any>Validators.minLength(2)]),
-      selectCategory: new FormControl('Select Category'),
-      comment: new FormControl()
+      description: new FormControl('', [<any>Validators.required, <any>Validators.maxLength(9)]),
+      hsn_code: new FormControl('', [<any>Validators.required, <any>Validators.maxLength(9)]),
+      unit: new FormControl(''),
+      rate: new FormControl(''),
+      type: new FormControl('')
     });
 
-    this.getAllGoods(this.goodsPager.currentPage);
-    this.getAllServices(this.goodsPager.currentPage);
-  }
-
-  onLoad() {
-    this.statusDropDown.push({ "code": 0, "desc": "Approved" });
-    this.statusDropDown.push({ "code": 1, "desc": "Pending" });
-    this.statusDropDown.push({ "code": 2, "desc": "Declined" });
-    this.selectedStatusType = "Select Status";
-    console.log("selectedStatusTypeCONSOLE", this.selectedStatusType);
-    this.goodsPager.currentPage = 1;
-    this.servicesPager.currentPage = 1;
-    this.access_token = localStorage.getItem("admin_token");
-
-    this.getAllGoods(this.goodsPager.currentPage);
-    this.getAllServices(this.servicesPager.currentPage);
 
   }
 
-  getAllServices(page: number) {
-    this.servicesPager.currentPage = page;
-    let response: any;
+
+
+  getGoodService(page: number) {
     let myHeaders = new Headers({ 'Content-Type': 'application/json' });
-    // myHeaders.append('x-access-token', this.access_token);
-    myHeaders.append('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization, x-access-token');
-    myHeaders.append('Access-Control-Allow-Methods', 'GET, OPTIONS, POST');
-    myHeaders.append('Access-Control-Allow-Origin', '*');
-    // headers.append('Accept','charset=utf-8');
-    myHeaders.append('Access-Control-Allow-Credentials', 'true');
-
     let options = new RequestOptions({ headers: myHeaders });
-
-    this.http.get('http://localhost:3000/api/services/list', options)
+    this.http.get('http://localhost:3000/api/goodsuser/index?token=' + this.access_token + '&limit=2&page=' + this.pager.currentPage, options)
       .subscribe(
       response => {
-        console.log("BRANCH_LIST_API_RESPONSE", response.json());
-        console.log("BRANCH_LIST_API_RESPONSE_2", response.json().services);
-
-        this.servicesData = response.json().services;
-        this.servicesPager.pageSize = response.json().limit;
-        let isList = this.servicesData.length;
-        this.servicesPager.totalItems = response.json().total;
-        if (isList === 0) {
-          this.isServiceList = true;
-          // console.log("")
-        } else {
-          this.isServiceList = false;
-        }
-
-      },
-      error => {
-        // alert(error.text());
-        console.log(error.text());
-      }
-      );
-  }
-
-  getAllGoods(page: number) {
-    this.goodsPager.currentPage = page;
-    console.log("getALLHSNCODELIST");
-    let response: any;
-    let myHeaders = new Headers({ 'Content-Type': 'application/json' });
-    // myHeaders.append('x-access-token', this.access_token);
-    myHeaders.append('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization, x-access-token');
-    myHeaders.append('Access-Control-Allow-Methods', 'GET, OPTIONS, POST');
-    myHeaders.append('Access-Control-Allow-Origin', '*');
-    // headers.append('Accept','charset=utf-8');
-    myHeaders.append('Access-Control-Allow-Credentials', 'true');
-
-    let options = new RequestOptions({ headers: myHeaders });
-
-    this.http.get('http://localhost:3000/api/goods/list', options)
-      .subscribe(
-      response => {
-        console.log("BRANCH_LIST_API_RESPONSE", response.json());
-        console.log("BRANCH_LIST_API_RESPONSE_2", response.json().docs);
-        this.goodsData = response.json().goods;
+        console.log("googservice list", response.json().docs);
+        this.goodsData = response.json().docs;
         let isList = this.goodsData.length;
-        this.goodsPager.pageSize = response.json().limit;
-        this.goodsPager.totalItems = response.json().total;
+        this.pager.pageSize = response.json().limit;
+        this.pageSize = this.Paging.limit;
+        this.currentPage = this.Paging.page;
         if (isList === 0) {
           this.isGoodsList = true;
           // console.log("")
@@ -172,6 +120,111 @@ export class GoodservicesComponent implements OnInit {
         console.log(error.text());
       }
       );
+  }
+
+  saveGoodUser(isValid: boolean) {
+    this.submitted = true; // set form submit to true
+    console.log(isValid);
+    console.log("form val", this.goodsForm.value);
+
+    if (isValid == true) {
+      const headers = new Headers();
+
+      headers.append('Content-Type', 'application/json');
+      headers.append('x-access-token', this.access_token);
+      const requestOptions = new RequestOptions({ headers: headers });
+      const body = {
+        "description": this.goodsForm.value.description,
+        "hsn_code": this.goodsForm.value.hsn_code,
+        "unit": this.goodsForm.value.unit,
+        "rate": this.goodsForm.value.rate,
+        "type": this.goodsForm.value.type
+      };
+
+      this.url = "http://localhost:3000/api/goodsuser/create?token=" + this.access_token;
+      return this.http.post(this.url, body, requestOptions)
+        .subscribe(
+        response => {
+          console.log("suceessfull data", response.json().message);
+          this.closeBtn.nativeElement.click();
+          // this.custList.push(body);
+          // alert(response.json().message);
+          this.goodsForm.reset();
+          // this.myForm.get("selectedstateDropdown").setValue("Select State");
+          this.submitted = false;
+          this.getGoodService(this.pager.currentPage);
+        },
+        error => {
+          // alert(error.message);
+          console.log("error", error.message);
+          console.log(error.text());
+        }
+        );
+    }
+  }
+
+  setPage() {
+    if (this.pager.currentPage < 1 || this.pager.currentPage > this.pager.TotalPages) {
+      return;
+    }
+
+    this.pager = this.pagerService.getPager(this.pager.totalItems, this.pager.currentPage, this.pager.pageSize);
+    console.log("pager", this.pager);
+    // this.getStateList();
+    this.pagedItems = this.goodsData;
+  }
+
+  editGoodsServicesRecord(data) {
+    this.rowDataIndex = data._id;
+    var temp;
+    if (data) {
+      console.log("DATA", data);
+
+      this.goodsFormEdit.get("description").setValue(data.description);
+      this.goodsFormEdit.get("hsn_code").setValue(data.hsn_code);
+      this.goodsFormEdit.get("unit").setValue(data.unit);
+      this.goodsFormEdit.get("rate").setValue(data.rate);
+      this.goodsFormEdit.get("type").setValue(data.type);
+    }
+
+    this.GoodsRowData = data;
+
+  }
+
+  updateGoodUser(isValid: boolean) {
+    this.editSubmitted = true; // set form submit to true
+    console.log(isValid);
+    console.log("hi form module is called from page");
+    console.log("edited form data", this.goodsFormEdit.value);
+    if (isValid == true) {
+      const headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      const requestOptions = new RequestOptions({ headers: headers });
+      const body = {
+        "_id": this.GoodsRowData._id,
+        "description": this.goodsFormEdit.value.description,
+        "hsn_code": this.goodsFormEdit.value.hsn_code,
+        "unit": this.goodsFormEdit.value.unit,
+        "rate": this.goodsFormEdit.value.rate,
+        "type": this.goodsFormEdit.value.type
+      };
+      console.log("body", body);
+
+      this.url = "http://localhost:3000/api/vendor/update?token=" + this.access_token;
+      return this.http.put(this.url, body, requestOptions)
+        .subscribe(
+        response => {
+          console.log("suceessfull data", response.json().message);
+          this.closeEditModal.nativeElement.click();
+          this.editSubmitted = false;
+          this.getGoodService(this.pager.currentPage);
+        },
+        error => {
+          console.log("error", error.message);
+          console.log(error.text());
+        }
+        );
+    }
   }
 
 

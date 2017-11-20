@@ -63,7 +63,6 @@ const routes: Routes = [
       { path: 'videos', component: VideoslinkComponent },
       // { path: 'newinvoice', component: AadNewInvoiceComponent },
       { path: 'admin-login', component: AdminLoginComponent },
-      
       { path: 'about-us', component: AboutUsComponent },
       { path: 'privacy-policy', component: PrivacyPolicyComponent },
       { path: 'user-hsn', component: UserHsnCodeComponent },

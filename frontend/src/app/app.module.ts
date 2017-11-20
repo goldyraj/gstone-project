@@ -49,7 +49,7 @@ import { AdminPrivacyPolicyComponent } from './admin-privacy-policy/admin-privac
 import { AdminContactUsComponent } from './admin-contact-us/admin-contact-us.component';
 import { AdminInternalUpdatesComponent } from './admin-internal-updates/admin-internal-updates.component';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
-import { UserAboutUsComponent } from './user-about-us/user-about-us.component';
+// import { UserAboutUsComponent } from './user-about-us/user-about-us.component';
 import { HomeDashboardComponent } from './home-dashboard/home-dashboard.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { FaqsComponent } from './faqs/faqs.component';
@@ -119,7 +119,6 @@ import { AdminInternalUpdateInnerpageComponent } from './admin-internal-update-i
     AdminContactUsComponent,
     AdminInternalUpdatesComponent,
     AdminHomeComponent,
-    UserAboutUsComponent,
     HomeDashboardComponent,
     PrivacyPolicyComponent,
     FaqsComponent,

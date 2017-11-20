@@ -101,7 +101,9 @@ exports.create = (req, res) => {
 exports.view=(req, res)=>{
 
 
-
+var fieldsStr = '{}';
+curl.setopt('CURLOPT_POST', 1); // true?
+curl.setopt('CURLOPT_POSTFIELDS', fieldsStr);
  
 curl.setOpt( 'URL', 'www.google.com' );
 curl.setOpt( 'FOLLOWLOCATION', true );

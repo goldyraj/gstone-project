@@ -102,7 +102,7 @@ exports.assignAdmin = (req, res) => {
     POST /api/user/update
 */
 exports.update=(req,res)=>{
-        const {_id, name,username,email,contact,pan_no,gstin,address,city,state,type } = req.body
+        const {_id, name,username,email,contact,pan_no,gstin,address,city,state,type} = req.body
     if(!req.decoded.admin) {
         return res.status(403).json({
             message: 'you are not an admin'
@@ -128,7 +128,38 @@ exports.update=(req,res)=>{
             message: error.message
         })
     }
-      User.findOneByUsername(title)          
+      User.findOneByUsername(username)          
+         .then(respond)
+         .catch(onError)
+}
+exports.profileupdate=(req,res)=>{
+        const {_id, name,username,email,contact,pan_no,gstin,address,city,state,type} = req.body
+    // if(!req.decoded.admin) {
+    //     return res.status(403).json({
+    //         message: 'you are not an admin'
+    //     })
+    // }
+     var updated_at=  Date.now();
+         User.findOneAndUpdate({_id:_id}, {$set:{name:name,username:username,email:email,contact:contact,pan_no:pan_no,gstin:gstin,address:address,city:city,state:state,type:type,updated_at:updated_at}}, {new: true}, function(err, doc){
+    if(err){
+        console.log("Something wrong when updating data!");
+    }
+    console.log(doc);
+});
+          const respond = () => {
+        res.json({
+            message: 'User Successfully Update'
+        
+ 
+        })
+    }
+    //    // run when there is an error (username exists)
+    const onError = (error) => {
+        res.status(409).json({
+            message: error.message
+        })
+    }
+      User.findOneByUsername(username)          
          .then(respond)
          .catch(onError)
 }

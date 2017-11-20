@@ -1,43 +1,43 @@
 <div class="container" *ngIf="userIsLogged == true">
 	<div class="row">
-		<div class="col-md-3 navbar-header-gst">
+		<div class="col-md-6 col-xs-3 navbar-header-gst">
 			<div class="navbar-brand">
 				<a routerLink="/home">
 					<h2 class="gst_logo">GST</h2>
 				</a>
 			</div>
 		</div>
-		<div class="col-md-5">
-		</div>
-		<div class="col-md-4">
-			<div class="user_profile">
-				<label>Contact Mail</label>
-				<div class="btn-group pull-right" role="group">
-					<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						{{userDetails.username}}
-						<span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu">
+		<div class="col-md-6 col-xs-9 form-group user_profile">
+			<label for="inputEmail3" class="text-right col-sm-8 col-xs-6 control-label">Contact Mail </label>
+			<div class="col-sm-4 col-xs-6">
+				<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					{{userDetails.username}}
+					<span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu">
 
-						<li>
-							<a class="page-scroll" routerLink="/user">
-								<i class="fa fa-user"></i>Dashboard</a>
-						</li>
-						<li>
-							<a routerLink="profile">
-								<i class="fa fa-user"></i> Profile</a>
-						</li>
+					<li>
+						<a class="page-scroll" routerLink="/user">
+							<i class="fa fa-user"></i>Dashboard</a>
 
-						<li>
-							<a (click)="logout()">
-								<i class="fa fa-key"></i> Logout</a>
-						</li>
-						<!-- <li *ngIf="userIsLogged == true">
+					</li>
+
+					<li>
+						<a routerLink="profile">
+
+							<i class="fa fa-user"></i> Profile</a>
+					</li>
+
+					<li>
+						<a (click)="logout()">
+							<i class="fa fa-key"></i> Logout</a>
+					</li>
+					<!-- <li *ngIf="userIsLogged == true">
 							<a class="page-scroll" (click)="logout()">LOGOUT</a>
 						   </li> -->
-					</ul>
-				</div>
+				</ul>
 			</div>
+
 		</div>
 	</div>
 </div>

@@ -165,7 +165,7 @@ var myCallback=usingItNow(req.decoded)
     const onError = (error) => {
          console.log(error.message.index)
         res.status(409).json({
-            messages: "Pan Number allready exites "
+            messages: e.message
         })
     }
 

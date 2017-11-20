@@ -190,7 +190,7 @@ var myobj= req.body.data
           message:"upload Successfully Save"
         })
   }).catch(function (e) {
-    //var error=  JSON.parse(e.message)
+    var error=  e.message
 
      res.json({
           error

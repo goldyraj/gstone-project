@@ -132,6 +132,17 @@ exports.update=(req,res)=>{
          .then(respond)
          .catch(onError)
 }
+exports.view=(req,res)=>{
+User.findOne({_id:req.decoded._id},{admin:0,password:0},function (err, data) {
+    if (err){ 
+    res.json({'meassge':'No Record Found '})
+}else{
+
+
+    res.json(data)  
+}
+});
+}
 exports.profileupdate=(req,res)=>{
         const {_id, name,username,email,contact,pan_no,gstin,address,city,state,type} = req.body
     // if(!req.decoded.admin) {
@@ -142,7 +153,11 @@ exports.profileupdate=(req,res)=>{
      var updated_at=  Date.now();
          User.findOneAndUpdate({_id:_id}, {$set:{name:name,username:username,email:email,contact:contact,pan_no:pan_no,gstin:gstin,address:address,city:city,state:state,type:type,updated_at:updated_at}}, {new: true}, function(err, doc){
     if(err){
-        console.log("Something wrong when updating data!");
+  res.json({
+            message: 'User NOT  Successfully Update'
+        
+ 
+        })
     }
     console.log(doc);
 });

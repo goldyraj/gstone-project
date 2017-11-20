@@ -65,35 +65,35 @@
                     <ul class="list-group list-group-unbordered">
                       <li class="list-group-item">
                         <b>Name</b>
-                        <a class="pull-right">Avinash Singh</a>
+                        <a class="pull-right">{{userDetail.name}}</a>
                       </li>
                       <li class="list-group-item">
                         <b>Contact No.</b>
-                        <a class="pull-right">+91-9876762533</a>
+                        <a class="pull-right">{{userDetail.contact}}</a>
                       </li>
                       <li class="list-group-item">
                         <b>PAN No.</b>
-                        <a class="pull-right">AWY756YUHS</a>
+                        <a class="pull-right">{{userDetail.pan_no}}</a>
                       </li>
                       <li class="list-group-item">
                         <b>Email Id</b>
-                        <a class="pull-right">avinashsinth83@gmail.com</a>
+                        <a class="pull-right">{{userDetail.username}}</a>
                       </li>
                       <li class="list-group-item">
                         <b>GSTIN</b>
-                        <a class="pull-right">MP88372Hk12</a>
+                        <a class="pull-right">{{userDetail.gstin}}</a>
                       </li>
                       <li class="list-group-item">
                         <b>Address</b>
-                        <a class="pull-right">7/891 Amanpur Madan Mahal</a>
+                        <a class="pull-right">{{userDetail.address}}</a>
                       </li>
                       <li class="list-group-item">
                         <b>State</b>
-                        <a class="pull-right">Madhya Pradesh</a>
+                        <a class="pull-right">{{userDetail.state}}</a>
                       </li>
                       <li class="list-group-item">
                         <b>City</b>
-                        <a class="pull-right">Jabalpur</a>
+                        <a class="pull-right">{{userDetail.city}}</a>
                       </li>
                     </ul>
                     <div class="box-body">
@@ -109,88 +109,87 @@
                 <!-- /.tab-pane -->
 
                 <div class="tab-pane section-top-20" id="settings">
-                  <form class="form-horizontal">
+                  <form class="form-horizontal" [formGroup]="editProfileForm" novalidate (ngSubmit)="editProfile(editProfileForm.valid)">
                     <div class="form-group">
-                      <label for="inputName" class="col-sm-2 control-label">Name</label>
+                      <label  class="col-sm-2 control-label">Name</label>
 
                       <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputName" placeholder="Name">
+                        <input type="text" class="form-control" formControlName="name" placeholder="Name">
+                        <small [hidden]="editProfileForm.controls.name.valid || (editProfileForm.controls.name.pristine && !submitted)">
+                            Name is required.
+                          </small>
+                      </div>
+                    </div>
+                     <div class="form-group">
+                      <label  class="col-sm-2 control-label">Contact No.</label>
+
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" formControlName="contact" placeholder="Contact No.">
+                        <small [hidden]="editProfileForm.controls.contact.valid || (editProfileForm.controls.contact.pristine && !submitted)">
+                            Contact no is required.
+                          </small>
+                      </div>
+                    </div>
+                   <div class="form-group">
+                      <label  class="col-sm-2 control-label">PAN No.</label>
+
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" formControlName="pan_no" placeholder="PAN No.">
+                        <small [hidden]="editProfileForm.controls.pan_no.valid || (editProfileForm.controls.pan_no.pristine && !submitted)">
+                            Pan no is required.
+                          </small>
+                      </div>
+                    </div>
+
+
+                    <div class="form-group">
+                      <label  class="col-sm-2 control-label">Email</label>
+
+                      <div class="col-sm-10">
+                        <input type="email" class="form-control" readonly formControlName="username" placeholder="Email">
+                      </div>
+                    </div>
+                   <div class="form-group">
+                      <label  class="col-sm-2 control-label">GSTIN</label>
+
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" formControlName="gstin" placeholder="GSTIN">
+                        <small [hidden]="editProfileForm.controls.gstin.valid || (editProfileForm.controls.gstin.pristine && !submitted)">
+                            GSTIN is required.
+                          </small>
+                      </div>
+                    </div>
+                     <div class="form-group">
+                      <label  class="col-sm-2 control-label">Address</label>
+
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" formControlName="address" placeholder="Address">
+                        <small [hidden]="editProfileForm.controls.address.valid || (editProfileForm.controls.address.pristine && !submitted)">
+                            Address is required.
+                          </small>
                       </div>
                     </div>
                     <div class="form-group">
-                      <label for="inputName" class="col-sm-2 control-label">Contact No.</label>
+                      <label  class="col-sm-2 control-label">State</label>
 
                       <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputName" placeholder="Contact No.">
+                        <input type="text" class="form-control" formControlName="state" placeholder="State">
+                        <small [hidden]="editProfileForm.controls.state.valid || (editProfileForm.controls.state.pristine && !submitted)">
+                            State is required.
+                          </small>
                       </div>
                     </div>
                     <div class="form-group">
-                      <label for="inputName" class="col-sm-2 control-label">PAN No.</label>
+                      <label  class="col-sm-2 control-label">City</label>
 
                       <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputName" placeholder="PAN No.">
+                        <input type="text" class="form-control" formControlName="city" placeholder="City">
+                        <small [hidden]="editProfileForm.controls.city.valid || (editProfileForm.controls.city.pristine && !submitted)">
+                            City is required.
+                          </small>
                       </div>
                     </div>
 
-
-                    <div class="form-group">
-                      <label for="inputEmail" class="col-sm-2 control-label">Email</label>
-
-                      <div class="col-sm-10">
-                        <input type="email" class="form-control" id="inputEmail" placeholder="Email">
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="inputName" class="col-sm-2 control-label">GSTIN</label>
-
-                      <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputName" placeholder="GSTIN">
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="inputName" class="col-sm-2 control-label">Address</label>
-
-                      <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputName" placeholder="Address">
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="inputName" class="col-sm-2 control-label">State</label>
-
-                      <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputName" placeholder="State">
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="inputName" class="col-sm-2 control-label">City</label>
-
-                      <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputName" placeholder="City">
-                      </div>
-                    </div>
-                    <!-- <div class="form-group">
-                    <label for="inputExperience" class="col-sm-2 control-label">Experience</label>
-
-                    <div class="col-sm-10">
-                      <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="inputSkills" class="col-sm-2 control-label">Skills</label>
-
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                      <div class="checkbox">
-                        <label>
-                          <input type="checkbox"> I agree to the <a href="#">terms and conditions</a>
-                        </label>
-                      </div>
-                    </div>
-                  </div>-->
                     <div class="form-group">
                       <div class="col-sm-offset-2 col-sm-10">
                         <button type="submit" class="btn btn-primary">Submit</button>

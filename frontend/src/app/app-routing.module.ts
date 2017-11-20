@@ -47,6 +47,10 @@ import { UserDashboardComponent } from './user-dashboard/user-dashboard.componen
 import { PreventLoggedInAccess } from './PreventLoggedInAccess';
 import { GstupdateDetailComponent } from './gstupdate-detail/gstupdate-detail.component';
 import { AdminInternalUpdateInnerpageComponent } from './admin-internal-update-innerpage/admin-internal-update-innerpage.component';
+import { AdminUserComponent } from './admin-user/admin-user.component';
+import { AdminCustomerComponent } from './admin-customer/admin-customer.component';
+import { AdminVendorComponent } from './admin-vendor/admin-vendor.component';
+
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -100,6 +104,10 @@ const routes: Routes = [
     path: 'admin', component: AdminDashboardComponent,
     children: [
       { path: 'dashboard', component: AdminHomeComponent, canActivate: [PreventLoggedInAccess] },
+      { path: 'admin-user', component: AdminUserComponent, canActivate: [PreventLoggedInAccess] },
+      { path: 'admin-customer', component: AdminCustomerComponent, canActivate: [PreventLoggedInAccess] },
+      { path: 'admin-branches', component: AdminBranchComponent, canActivate: [PreventLoggedInAccess] },
+      { path: 'admin-vendor', component: AdminVendorComponent, canActivate: [PreventLoggedInAccess] },
       { path: 'admin-state', component: AdminStateComponent, canActivate: [PreventLoggedInAccess] },
       { path: 'admin_hsn_code', component: AdminHsnCodeComponent, canActivate: [PreventLoggedInAccess] },
       { path: 'admin_gov_notification', component: AdminGovNotificationComponent, canActivate: [PreventLoggedInAccess] },

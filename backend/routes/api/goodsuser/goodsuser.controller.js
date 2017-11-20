@@ -56,7 +56,7 @@ const onError = (error) => {
    sortfiled={ date: -1 } 
 }
 var option={
-    select:'hsn_code description unit gstin dealer_type rate',
+    select:'hsn_code description unit gstin dealer_type rate type',
     sort:sortfiled, 
     offset:offset,
     limit:req.query.limit
@@ -114,7 +114,7 @@ exports.update=(req,res)=>{
             message: error.message
         })
     }
-      Goods.findOneByUsername(title)          
+      Goodsuser.findOneByUsername(title)          
          .then(respond)
          .catch(onError)
 }

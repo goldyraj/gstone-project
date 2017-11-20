@@ -47,7 +47,7 @@ exports.searchf=(req,res)=>{
 }
 
 exports.create = (req, res) => {
-    const {name,invoice_no,date,gstin_no,pos,e_com_gstin,type,gtotal,items} = req.body
+    const {gstin,fp,gt,cur_gt,b2b} = req.body
     let newUser = null
  // if(!req.decoded.admin) {
  //        return res.status(403).json({
@@ -61,7 +61,7 @@ exports.create = (req, res) => {
         if(invoice) {
             throw new Error('Invoice No Name exists')
         } else {
-            return Invoice.create(name,invoice_no,date,gstin_no,pos,e_com_gstin,type,gtotal,items)
+            return Invoice.create(gstin,fp,gt,cur_gt,b2b)
         }
     }
     // count the number of the user
@@ -89,7 +89,7 @@ exports.create = (req, res) => {
     }
 
     // check username duplication
-    Invoice.findOneByUsername(invoice_no)
+    Invoice.findOneByUsername(gstin,fp,gt)
     .then(create)
     .then(count)   
     .then(respond)

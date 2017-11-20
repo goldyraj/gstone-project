@@ -9,12 +9,13 @@ import { RouterModule, Routes, Router } from '@angular/router';
 import { NumberValidatorsService } from "../number-validators.service";
 
 @Component({
-  selector: 'app-admin-branch',
-  templateUrl: './admin-branch.component.html',
-  styleUrls: ['./admin-branch.component.css'],
-  providers:[PagerService]
+  selector: 'app-admin-user',
+  templateUrl: './admin-user.component.html',
+  styleUrls: ['./admin-user.component.css']
 })
-export class AdminBranchComponent implements OnInit {
+export class AdminUserComponent implements OnInit {
+
+  // pager object
   pager: any = {};
   searchedStringPager: any = {};
   sortBy = "created_at";
@@ -33,31 +34,27 @@ export class AdminBranchComponent implements OnInit {
   apiResult;
   rowData;
   userTypeList=[];
-  selectedState:string;
-  selectedUserType;
 
   @ViewChild('closeBtn') closeBtn:ElementRef;
   @ViewChild('closeBtn2') closeBtn2:ElementRef;
   
-  constructor(public http: Http, private pagerService: PagerService, private router: Router) {
+  constructor(public http: Http, private pagerService: PagerService, public excelServiceService: ExcelServiceService, private router: Router) {
 
   }
 
   ngOnInit() {
 
     this.myForm = new FormGroup({
-      name: new FormControl('', [Validators.required, Validators.pattern('.*\\S.*')]),
-      contact: new FormControl('', [<any>Validators.required, <any>Validators.minLength(10), Validators.pattern('.*\\S.*')]),
-      branch_name: new FormControl('', [Validators.required, Validators.pattern('.*\\S.*')]),
-      pan_no: new FormControl('', [<any>Validators.required, <any>Validators.minLength(10),Validators.pattern('.*\\S.*')]),
-      email: new FormControl('', [<any>Validators.required,Validators.pattern('.*\\S.*')]),
+      username: new FormControl('', [Validators.required, Validators.pattern('.*\\S.*')]),
+      contact: new FormControl('', [<any>Validators.required, <any>Validators.minLength(10)]),
+      pan_no: new FormControl('', [<any>Validators.required, <any>Validators.minLength(10)]),
+      email: new FormControl('', [<any>Validators.required]),
       gstin: new FormControl('', [<any>Validators.required, Validators.pattern('.*\\S.*')]),
       address: new FormControl('', [<any>Validators.required, Validators.pattern('.*\\S.*')]),
       city: new FormControl('', [<any>Validators.required, Validators.pattern('.*\\S.*')]),
-      // userType: new FormControl('', [<any>Validators.required]),
-      selectedDealer: new FormControl('Select Dealer',[Validators.required]),
-      // password: new FormControl('', [<any>Validators.required, <any>Validators.minLength(5)]),
-      // confirm_paasword: new FormControl('', [<any>Validators.required, <any>Validators.minLength(5)]),
+      userType: new FormControl('', [<any>Validators.required]),
+      // password: new FormControl('asdfgh', [<any>Validators.required, <any>Validators.minLength(5)]),
+      // confirm_paasword: new FormControl('asdfhh', [<any>Validators.required, <any>Validators.minLength(5)]),
       state: new FormControl('', [<any>Validators.required]),
 
     });
@@ -97,7 +94,7 @@ export class AdminBranchComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/branch/index?token=' + this.access_token + '&limit=' + 50 + '&page=' + page + "&sortBy=" + this.sortBy, options)
+    this.http.get('http://localhost:3000/api/user/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + page + "&sortBy=" + this.sortBy, options)
       .subscribe(
       response => {
         this.dataList = response.json().docs;
@@ -153,25 +150,19 @@ export class AdminBranchComponent implements OnInit {
     this.submitted = false;
   
     if (data) {
-      this.myForm.get("name").setValue(data.name);
+      this.myForm.get("username").setValue(data.username);
       this.myForm.get("contact").setValue(data.contact);
       this.myForm.get("pan_no").setValue(data.pan_no);
       this.myForm.get("email").setValue(data.email);
       this.myForm.get("gstin").setValue(data.gstin);
       this.myForm.get("address").setValue(data.address);
       this.myForm.get("city").setValue(data.city);
-      this.myForm.get("branch_name").setValue(data.branch_name);
-      // this.myForm.get("state").setValue(data.state);
+      this.myForm.get("state").setValue(data.state);
     }
-    this.selectedState=data.state;
-    this.selectedState=this.selectedState.trim();
-    this.selectedUserType=data.userType;
     this.rowData = data;
   }
 
   update(isValid: boolean) {
-    console.log("FORM",isValid);
-
     this.submitted = true; // set form submit to true
 
     if (isValid == true) {
@@ -182,18 +173,17 @@ export class AdminBranchComponent implements OnInit {
       console.log("ID", this.rowData._id);
       const body = {
         "_id": this.rowData._id,
-        "name": this.myForm.value.name,
+        "username": this.myForm.value.username,
         "contact": this.myForm.value.contact,
         "pan_no": this.myForm.value.pan_no,
         "email": this.myForm.value.email,
         "gstin": this.myForm.value.gstin,
         "address": this.myForm.value.address,
         "city": this.myForm.value.city,
-        "state": this.myForm.value.state,
-        "branch_name":this.myForm.value.branch_name
+        "state": this.myForm.value.state
       };
 
-      var url = "http://localhost:3000/api/branch/update?token=" + this.access_token;
+      var url = "http://localhost:3000/api/user/update?token=" + this.access_token;
       return this.http.put(url, body, requestOptions)
         .subscribe(
         response => {
@@ -220,7 +210,7 @@ export class AdminBranchComponent implements OnInit {
 
     const requestOptions = new RequestOptions({ headers: headers });
 
-    var url = "http://localhost:3000/api/branch/delete/" + this.rowData._id;
+    var url = "http://localhost:3000/api/user/delete/" + this.rowData._id;
     return this.http.delete(url, requestOptions)
       .subscribe(
       response => {
@@ -248,7 +238,7 @@ export class AdminBranchComponent implements OnInit {
   searchKeyword(searchString) {
 
     if (searchString) {
-      this.http.get('http://localhost:3000/api/branch/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
+      this.http.get('http://localhost:3000/api/user/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
         this.dataList = data.json().docs;
         this.pager.pageSize = data.json().limit;
         this.pager.totalItems = data.json().total;

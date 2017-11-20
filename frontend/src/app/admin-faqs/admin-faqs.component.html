@@ -135,7 +135,7 @@
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <textarea type="text" maxlength="1000" class="form-control" formControlName="answer" placeholder="Answer" name="answer" id="answer" required></textarea>
+                  <textarea type="text" rows="8" maxlength="1000" class="form-control" formControlName="answer" placeholder="Answer" name="answer" id="answer" required></textarea>
                   <small *ngIf="!FaqForm.controls.answer.valid && submitted">
                     Answer is required .
                   </small>
@@ -163,7 +163,7 @@
 </div>
 
 <div class="modal fade bs-user-lg-edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-  <div class="modal-dialog modal-lg" role="document">
+  <div class="modal-dialog modal-md" role="document">
     <div class="modal-content section-form">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" #closeBtn2 aria-label="Close">
@@ -176,8 +176,8 @@
       <div class="modal-body">
         <div class="service-section">
           <div class="row">
-            <div class="col-md-1 col-sm-1"></div>
-            <div class="col-md-10 col-sm-10">
+            <!-- <div class="col-md-1 col-sm-1"></div> -->
+            <div class="col-md-12 col-sm-12">
               <form [formGroup]="FaqFormEdit" novalidate (ngSubmit)="updateFaqs(FaqFormEdit.valid)">
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <input type="text" class="form-control" formControlName="question" placeholder="Question" name="question" id="question">
@@ -186,7 +186,7 @@
                   </small>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <textarea type="text" class="form-control" formControlName="answer" placeholder="Answer" name="answer" id="answer"></textarea>
+                  <textarea type="text" rows="8" class="form-control" formControlName="answer" placeholder="Answer" name="answer" id="answer"></textarea>
                   <small [hidden]="FaqFormEdit.controls.answer.valid || (FaqFormEdit.controls.answer.pristine && !submitted)">
                     Answer is required .
                   </small>

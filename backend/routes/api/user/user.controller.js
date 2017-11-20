@@ -153,7 +153,7 @@ const encrypted = crypto.createHmac('sha1', config.secret)
               })
          }else{
 return res.status(409).json({
-    'message':"old password is not match",
+    'message':"Old password is not matched",
             success: false
         })
          }

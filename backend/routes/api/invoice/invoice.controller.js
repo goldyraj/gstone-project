@@ -1,5 +1,8 @@
 const Invoice = require('../../../models/invoice')
 
+    var Curl = require( 'node-libcurl' ).Curl;
+ 
+var curl = new Curl();
 /* 
     GET /api/user/list
 */
@@ -96,20 +99,37 @@ exports.create = (req, res) => {
 }
 
 exports.view=(req, res)=>{
-  
-    var option={
-    select:'gstin,fp,gt,inum,cur_gt,b2b,b2cl,cdnr,b2cs,exp,hsn,nil,txpd,at,doc_issue,cdnur'
-  
-};
-Invoice.findOne({_id:req.params.id},{_id:0,userid:0,created_at:0,__v:0,status:0,inum:0},function (err, data) {
-    if (err){ 
-    res.json({'meassge':'No Record Found '})
-}else{
 
 
-    res.json(data)  
-}
-} );
+
+ 
+curl.setOpt( 'URL', 'www.google.com' );
+curl.setOpt( 'FOLLOWLOCATION', true );
+ 
+curl.on( 'end', function( statusCode, body, headers ) {
+ 
+    console.info( statusCode );
+    console.info( '---' );
+    console.info( body.length );
+    console.info( '---' );
+    console.info( this.getInfo( 'TOTAL_TIME' ) );
+ 
+    this.close();
+});
+ 
+curl.on( 'error', curl.close.bind( curl ) );
+curl.perform();
+  
+//   curl = require('node-curl');
+// Invoice.findOne({_id:req.params.id},{_id:0,userid:0,created_at:0,__v:0,status:0,inum:0},function (err, data) {
+//     if (err){ 
+//     res.json({'meassge':'No Record Found '})
+// }else{
+
+
+//     res.json(data)  
+// }
+// });
 }
 /*
     POST /api/user/assign-admin/:username

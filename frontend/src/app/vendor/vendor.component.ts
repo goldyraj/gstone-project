@@ -67,13 +67,13 @@ export class VendorComponent implements OnInit {
       name: new FormControl('', [<any>Validators.required]),
       gstin: new FormControl('', [<any>Validators.required]),
       address: new FormControl('', [<any>Validators.required]),
-      state: new FormControl('Select State')
+      state: new FormControl('')
     });
     this.myFormEdit = new FormGroup({
       name: new FormControl('', [<any>Validators.required]),
       gstin: new FormControl('', [<any>Validators.required]),
       address: new FormControl('', [<any>Validators.required]),
-      state: new FormControl('Select State')
+      state: new FormControl('')
     });
   }
   onInput($event) {

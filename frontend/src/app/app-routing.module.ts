@@ -50,6 +50,7 @@ import { AdminInternalUpdateInnerpageComponent } from './admin-internal-update-i
 import { AdminUserComponent } from './admin-user/admin-user.component';
 import { AdminCustomerComponent } from './admin-customer/admin-customer.component';
 import { AdminVendorComponent } from './admin-vendor/admin-vendor.component';
+import { ProfileComponent } from './profile/profile.component';
 
 
 const routes: Routes = [
@@ -82,6 +83,7 @@ const routes: Routes = [
       // { path: '**', redirectTo: '' },
       { path: 'client', component: ClientComponent },
       { path: 'customer', component: CustomerComponent },
+      { path: 'profile', component: ProfileComponent },
       { path: 'workreturns', component: WorkreturnsComponent },
       { path: 'goods', component: GoodservicesComponent },
       { path: 'vendor', component: VendorComponent },

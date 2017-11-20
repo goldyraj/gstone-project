@@ -73,6 +73,7 @@ import { AdminInternalUpdateInnerpageComponent } from './admin-internal-update-i
 import { AdminUserComponent } from './admin-user/admin-user.component';
 import { AdminCustomerComponent } from './admin-customer/admin-customer.component';
 import { AdminVendorComponent } from './admin-vendor/admin-vendor.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -134,7 +135,8 @@ import { AdminVendorComponent } from './admin-vendor/admin-vendor.component';
     AdminInternalUpdateInnerpageComponent,
     AdminUserComponent,
     AdminCustomerComponent,
-    AdminVendorComponent
+    AdminVendorComponent,
+    ProfileComponent
     //DatepickerModule
   ],
   imports: [

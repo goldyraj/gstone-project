@@ -11,23 +11,26 @@
 			<label for="inputEmail3" class="text-right col-sm-8 col-xs-6 control-label">Contact Mail </label>
 			<div class="col-sm-4 col-xs-6">
 				<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						{{userDetails.username}}
-						<span class="caret"></span>
-					</button>
+					{{userDetails.username}}
+					<span class="caret"></span>
+				</button>
 				<ul class="dropdown-menu">
 
 					<li>
 						<a class="page-scroll" routerLink="/user">
-								<i class="fa fa-user"></i>Dashboard</a>
+							<i class="fa fa-user"></i>Dashboard</a>
+
 					</li>
+
 					<li>
-						<a routerLink="/user">
-								<i class="fa fa-user"></i> Profile</a>
+						<a routerLink="profile">
+
+							<i class="fa fa-user"></i> Profile</a>
 					</li>
 
 					<li>
 						<a (click)="logout()">
-								<i class="fa fa-key"></i> Logout</a>
+							<i class="fa fa-key"></i> Logout</a>
 					</li>
 					<!-- <li *ngIf="userIsLogged == true">
 							<a class="page-scroll" (click)="logout()">LOGOUT</a>

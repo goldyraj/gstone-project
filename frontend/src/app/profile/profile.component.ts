@@ -89,9 +89,10 @@ export class ProfileComponent implements OnInit {
 
   getUserList() {
     console.log('list called');
-    this.http.get('http://localhost:3000/api/auth/check?token=' + this.access_token).subscribe(data => {
-      this.userDetail = data.json().info;
-      console.log("userDetail", this.userDetail);
+    this.http.get('http://localhost:3000/api/user/view?token=' + this.access_token).subscribe(data => {
+      this.userDetail = data['_body'];
+      console.log("userDetail", data);
+      console.log("userDetail1", this.userDetail);
       console.log("name", this.userDetail['name']);
       this.editProfileForm.get("name").setValue(this.userDetail['name']);
       this.editProfileForm.get("contact").setValue(this.userDetail['contact']);

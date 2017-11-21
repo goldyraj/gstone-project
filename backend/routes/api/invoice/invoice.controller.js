@@ -14,12 +14,30 @@ exports.list = (req, res) => {
     //         message: 'you are not an admin'
     //     })
     // }
- Invoice.find({}).exec()
-    .then(
-        invoice=> {
-            res.json({invoice})
-        }
-    )
+ // Invoice.find({}).exec()
+ //    .then(
+ //        invoice=> {
+ //            res.json({invoice})
+ //        }
+ //    )
+
+ var crypto = require('crypto'),  algorithm = 'aes-256-ctr', password = 'd6F3Efeq';
+function encrypt(text){
+  var cipher = crypto.createCipher(algorithm,password)
+  var crypted = cipher.update(text,'utf8','hex')
+  crypted += cipher.final('hex');
+  return crypted;
+}
+ 
+function decrypt(text){
+  var decipher = crypto.createDecipher(algorithm,password)
+  var dec = decipher.update(text,'hex','utf8')
+  dec += decipher.final('utf8');
+  return dec;
+}
+var hw = encrypt("hello world")
+console.log('encrypt work =>',hw)
+console.log(decrypt(hw));
    }
 
 exports.delete=(req,res)=>{
@@ -99,28 +117,44 @@ exports.create = (req, res) => {
 }
 
 exports.view=(req, res)=>{
+var crypto = require('crypto'),  algorithm = 'aes-256-ctr', password = 'd6F3Efeq';
+function encrypt(text){
+  var cipher = crypto.createCipher(algorithm,password)
+  var crypted = cipher.update(text,'utf8','hex')
+  crypted += cipher.final('hex');
+  return crypted;
+}
+ 
+function decrypt(text){
+  var decipher = crypto.createDecipher(algorithm,password)
+  var dec = decipher.update(text,'hex','utf8')
+  dec += decipher.final('utf8');
+  return dec;
+}
+var hw = encrypt("hello world")
+// outputs hello world
+console.log(decrypt(hw));
 
-
-var fieldsStr = '{}';
-curl.setopt('CURLOPT_POST', 1); // true?
-curl.setopt('CURLOPT_POSTFIELDS', fieldsStr);
+// var fieldsStr = '{}';
+// curl.setopt('CURLOPT_POST', 1); // true?
+// curl.setopt('CURLOPT_POSTFIELDS', fieldsStr);
  
-curl.setOpt( 'URL', 'www.google.com' );
-curl.setOpt( 'FOLLOWLOCATION', true );
+// curl.setOpt( 'URL', 'www.google.com' );
+// curl.setOpt( 'FOLLOWLOCATION', true );
  
-curl.on( 'end', function( statusCode, body, headers ) {
+// curl.on( 'end', function( statusCode, body, headers ) {
  
-    console.info( statusCode );
-    console.info( '---' );
-    console.info( body.length );
-    console.info( '---' );
-    console.info( this.getInfo( 'TOTAL_TIME' ) );
+//     console.info( statusCode );
+//     console.info( '---' );
+//     console.info( body.length );
+//     console.info( '---' );
+//     console.info( this.getInfo( 'TOTAL_TIME' ) );
  
-    this.close();
-});
+//     this.close();
+// });
  
-curl.on( 'error', curl.close.bind( curl ) );
-curl.perform();
+// curl.on( 'error', curl.close.bind( curl ) );
+// curl.perform();
   
 //   curl = require('node-curl');
 // Invoice.findOne({_id:req.params.id},{_id:0,userid:0,created_at:0,__v:0,status:0,inum:0},function (err, data) {

@@ -47,7 +47,9 @@ export class UserDashboardComponent implements OnInit {
   // pager object
   pager: any = {};
   userDetails = [];
+  dealerType = [];
   selectedState = '';
+  selectedDealer = '';
 
   // paged items
   pagedItems: any[];
@@ -61,6 +63,12 @@ export class UserDashboardComponent implements OnInit {
     this.getBranches(1);
     this.getStateList();
     this.checkAuth();
+    this.dealerType = [
+      { "id": "1", "name": "Regular" },
+      { "id": "2", "name": "Composition" },
+      { "id": "3", "name": "ISD" },
+      { "id": "3", "name": "E-Commerce" }
+    ];
   } // form builder simplify form initialization
 
   ngOnInit() {
@@ -108,6 +116,12 @@ export class UserDashboardComponent implements OnInit {
     this.selectedState = $event.target.value;
   }
 
+  onDealerInput($event) {
+    $event.preventDefault();
+    console.log('selected: ' + $event.target.value);
+    this.selectedDealer = $event.target.value;
+  }
+
   save(isValid: boolean) {
     this.submitted = true; // set form submit to true
     console.log(isValid);
@@ -133,7 +147,9 @@ export class UserDashboardComponent implements OnInit {
         'email': this.myForm.value.email,
         'address': this.myForm.value.address,
         'state': this.selectedState,
-        'branch_name': this.myForm.value.branch_name
+        'branch_name': this.myForm.value.branch_name,
+        'dealer_type': this.selectedDealer
+
       };
       this.url = 'http://localhost:3000/api/branch/create?token=' + this.access_token;
       return this.http.post(this.url, body, requestOptions)

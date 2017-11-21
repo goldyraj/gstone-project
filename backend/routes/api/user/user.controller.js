@@ -138,8 +138,7 @@ User.findOne({_id:req.decoded._id},{admin:0,password:0},function (err, data) {
     res.json({'meassge':'No Record Found '})
 }else{
 
-
-    res.json(data)  
+    res.json({"data":data})  
 }
 });
 }

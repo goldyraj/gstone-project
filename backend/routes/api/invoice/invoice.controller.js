@@ -1,7 +1,14 @@
 const Invoice = require('../../../models/invoice')
 
     var Curl = require( 'node-libcurl' ).Curl;
- 
+   var usingItNow = function(req) {
+if(req.type=="agentuser"||req.type=="admin"){
+  return false;
+}else{
+   return true;
+}
+}
+
 // var java = require('java');
 // var javaLangSystem = java.import('java.lang.System');
 // var javal = java.import('java.lang.*');
@@ -82,11 +89,12 @@ exports.searchf=(req,res)=>{
 exports.create = (req, res) => {
     const {gstin,fp,gt,inum,cur_gt,b2b,b2cl,cdnr,b2cs,exp,hsn,nil,txpd,at,doc_issue,cdnur} = req.body
     let newUser = null
- // if(!req.decoded.admin) {
- //        return res.status(403).json({
- //            message: 'you are not an admin'
- //        })
- //    }
+var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
     // create a new user if does not exist
     const create = (invoice) => {       
    

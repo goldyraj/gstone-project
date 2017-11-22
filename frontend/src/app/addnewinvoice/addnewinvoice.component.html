@@ -3,11 +3,21 @@
 
   <div class="clearfix"></div>
   <ul class="nav nav-pills">
-    <li role="presentation"><a routerLink="../summarypage">Summary</a></li>
-    <li role="presentation" class="active"><a routerLink="../gstr">Invoice Wise Detail</a></li>
-    <li role="presentation"><a routerLink="../other">Other</a></li>
-    <li role="presentation"><a routerLink="../">Submit</a></li>
-    <li role="presentation"><a routerLink="../">File</a></li>
+    <li role="presentation">
+      <a routerLink="../summarypage">Summary</a>
+    </li>
+    <li role="presentation" class="active">
+      <a routerLink="../gstr">Invoice Wise Detail</a>
+    </li>
+    <li role="presentation">
+      <a routerLink="../other">Other</a>
+    </li>
+    <li role="presentation">
+      <a routerLink="../">Submit</a>
+    </li>
+    <li role="presentation">
+      <a routerLink="../">File</a>
+    </li>
   </ul>
 
 
@@ -27,221 +37,99 @@
 
 
   <div class="col-md-6 col-xs-12 text-right">
-    <a routerLink="../newinvoice"><input type="button" class="btn btn-success" value="Save Data"></a> 
+    <a routerLink="../newinvoice">
+      <input type="button" class="btn btn-success" value="Save Data">
+    </a>
 
-     <a routerLink="../gstr"><input type="button" class="btn btn-success" value="Back"></a> 
-  
+    <a routerLink="../gstr">
+      <input type="button" class="btn btn-success" value="Back">
+    </a>
+
   </div>
 
   <div class="clearfix"> </div>
 
-
-  <div class="radio">
-    <label><input type="radio" [(ngModel)]="Inv-type" name="Inv-type" value="Normal_Invoice" >Normal Invoice</label>
-  </div>
-  <div class="radio">
-    <label><input type="radio" [(ngModel)]="Inv-type" name="Inv-type" value= "Reverse_Charge">Reverse Charge</label>
-  </div>
-  <div class="radio">
-    <label><input type="radio" [(ngModel)]="Inv-type" name="Inv-type" value="commerce">E-commerce</label>
-
-  </div>
-  <div class="radio">
-    <label><input type="radio" [(ngModel)]="Inv-type" name="Inv-type" value= "Debit_Note">Debit Note</label>
-  </div>
-  <div class="radio">
-    <label><input type="radio" [(ngModel)]="Inv-type" name="Inv-type" value="Credit_Note">Credit Note</label>
-
+  <div>
+    <form [formGroup]="invoiceTypeRadioForm" novalidate>
+      <label>
+        <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Normal_Invoice">Normal Invoice</label>
+      <label>
+        <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Reverse_Charge">Reverse Charge</label>
+      <label>
+        <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="E_Commerce">E-commerce</label>
+      <label>
+        <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Debit_Note">Debit Note</label>
+      <label>
+        <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Credit_Note">Credit Note</label>
+    </form>
   </div>
 
 </div>
 <div class="row">
-<div class="section-bottom-10 section-top-10">
-  <div class="col-md-4 col-sm-4 col-xs-12 form-group">
-    <label for="inputEmail3" class="col-sm-5 control-label">Name</label>
-    <div class="col-sm-7">
-      <input type="text" class="form-control" id="inputEmail3" value="Patrika">
-    </div>
-  </div>
-  <div class="col-md-4 col-sm-4 col-xs-12 form-group">
-    <label for="inputEmail3" class="col-sm-5 control-label">Invoice No.</label>
-    <div class="col-sm-7">
-      <input type="text" class="form-control" id="inputEmail3" value="34L61Z634L61Z6">
-    </div>
-  </div>
-  <div class="col-md-4 col-sm-12 col-xs-12 form-group">
-    <label for="inputEmail3" class="col-sm-5 control-label">Date</label>
-    <div class="col-sm-7">
-      <input type="text" class="form-control" id="inputEmail3" value="19-SEP-2017">
-    </div>
-  </div>
+  <div class="section-bottom-10 section-top-10">
+    <form [formGroup]="customerDetailsForm" novalidate (ngSubmit)="save( customerDetailsForm.valid )">
+      <div class="col-md-4 col-sm-4 col-xs-12 form-group">
+        <label for="inputEmail3" class="col-sm-5 control-label">Name</label>
+        <div class="col-sm-7">
+          <input id="customerName" type="text" class="validate filter-input" [(ngModel)]=query (keyup)=search() formControlName="name">
+          <div class="suggestions" *ngIf="filteredList.length > 0">
+            <div *ngFor="let item of filteredList">
+              <ul>
+                <li>
+                  <a (click)="select(item)">{{item}}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-4 col-xs-12 form-group">
+        <label for="inputEmail3" class="col-sm-5 control-label">Invoice No.</label>
+        <div class="col-sm-7">
+          <input type="text" class="form-control" id="invoiceNo" formControlName="invoiceNo" value="ABC12345">
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+        <label for="inputEmail3" class="col-sm-5 control-label">Date</label>
+        <div class="col-sm-7">
+          <input type="text" class="form-control" id="date" formControlName="date" value="22-11-17">
+        </div>
+      </div>
 
-  <div class="col-md-4 col-sm-4 col-xs-12">
-    <label for="inputEmail3" class="col-sm-5 control-label">GSTIN No</label>
-    <div class="col-sm-7">
-      <input type="text" class="form-control" id="inputEmail3" value="AGPTK234L61Z6">
-    </div>
+      <div class="col-md-4 col-sm-4 col-xs-12">
+        <label for="inputEmail3" class="col-sm-5 control-label">GSTIN No</label>
+        <div class="col-sm-7">
+          <input type="text" class="form-control" id="gstin" formControlName="gstin" value="">
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-4 col-xs-12 form-group">
+        <label for="inputEmail3" class="col-sm-5 control-label">POS</label>
+        <div class="col-sm-7">
+          <select class="form-control" formControlName="pos">
+            <option *ngFor="let pl of place" [value]="pl"> {{pl}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+        <label for="inputEmail3" class="col-sm-5 control-label">E-Com GSTIN</label>
+        <div class="col-sm-7">
+          <input type="text" [readonly]="disableEcommerceInput" class="form-control" id="eComGstin" formControlName="eComGstin">
+        </div>
+      </div>
+    </form>
   </div>
-  <div class="col-md-4 col-sm-4 col-xs-12 form-group">
-    <label for="inputEmail3" class="col-sm-5 control-label">POS</label>
-    <div class="col-sm-7">
-      <select class="form-control">
-                            <option *ngFor="let pl of place" [value]="pl"> {{pl}}</option>
-                          </select>
-    </div>
-  </div>
-  <div class="col-md-4 col-sm-12 col-xs-12 form-group">
-    <label for="inputEmail3" class="col-sm-5 control-label">E-Com GSTIN</label>
-    <div class="col-sm-7">
-      <input type="text" class="form-control" id="inputEmail3" value="AGPTK234L61Z6">
-    </div>
-  </div>
-
-</div>
 </div>
 <div class="table-responsive gsttable">
   <table class="table table-condensed  table-hover table-bordered">
-    <tr>
-      <td>
-        <table class="table table-condensed table-wrapper table-bordered">
-          <thead>
-            <tr>
-              <th rowspan="2">S.No</th>
-              <th rowspan="2">Description</th>
-              <th rowspan="2" width="100px">Goods Services</th>
-              <th rowspan="2">HSN / SAC </th>
-              <th rowspan="2">QTY </th>
-              <th rowspan="2">Unit Of Measurement</th>
-              <th rowspan="2">Taxable Value</th>
-              <th rowspan="2" width="100px">Rate Of Tax</th>
-              <th rowspan="2">CGST</th>
-              <th rowspan="2">SGST</th>
-              <th rowspan="2">IGST</th>
-              <th colspan="2">CESS</th>
-            </tr>
-            <tr>
-              <th>Rate</th>
-              <th>AMT </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td align="center"> 1</td>
-              <td><input type="text" class="form-control" value="Mesuarement"></td>
-              <td>
-                <select class="form-control">
-                            <option *ngFor="let sr of serice"[value]="sr">{{sr}}</option>
-                            <!-- <option value="">Goods</option>
-                            <option value="">Services</option> -->
-							</select>
-              </td>
-              <td><input type="text" class="form-control" value="HSN"></td>
-              <td><input type="text" class="form-control" value="500"></td>
-              <td>
-                <!-- <select name="select" class="form-control"> -->
-                <select class="form-control">
-                             <option *ngFor="let un of unit" [value]="un"> {{un}}</option>
-							</select>
-              </td>
-              <td><input type="text" class="form-control" value="49"></td>
-              <td>
-
-                <select class="form-control">
-                            <option *ngFor="let rt of rate" [value]="rt"> {{rt}} </option>
-                          </select>
-
-              </td>
-              <td><input type="text" class="form-control" value="345"></td>
-              <td><input type="text" class="form-control" value="34"></td>
-              <td><input type="text" class="form-control" value="34"></td>
-              <td><input type="text" class="form-control" value="4"></td>
-              <td><input type="text" class="form-control" value="45"></td>
-            </tr>
-            <tr>
-              <td align="center"> 2</td>
-              <td><input type="text" class="form-control" value="Mesuarement"></td>
-              <td>
-                <select class="form-control">
-                           <option *ngFor="let sr of serice"[value]="sr">{{sr}}</option>
-							</select>
-              </td>
-              <td><input type="text" class="form-control" value="HSN"></td>
-              <td><input type="text" class="form-control" value="500"></td>
-              <td>
-                <select class="form-control">
-                            <option *ngFor="let un of unit" [value]="un"> {{un}}</option>
-							</select>
-              </td>
-              <td><input type="text" class="form-control" value="49"></td>
-              <td>
-                <select class="form-control">
-                            <option *ngFor="let rt of rate" [value]="rt"> {{rt}} </option>
-                          </select>
-              </td>
-              <td><input type="text" class="form-control" value="345"></td>
-              <td><input type="text" class="form-control" value="34"></td>
-              <td><input type="text" class="form-control" value="34"></td>
-              <td><input type="text" class="form-control" value="4"></td>
-              <td><input type="text" class="form-control" value="45"></td>
-            </tr>
-            <tr>
-              <td align="center"> 3</td>
-              <td><input type="text" class="form-control" value="Mesuarement"></td>
-              <td>
-                <select class="form-control">
-                             <option *ngFor="let sr of serice"[value]="sr">{{sr}}</option>
-							</select>
-              </td>
-              <td><input type="text" class="form-control" value="HSN"></td>
-              <td><input type="text" class="form-control" value="500"></td>
-              <td>
-                <select class="form-control">
-                            <option *ngFor="let un of unit" [value]="un"> {{un}}</option>
-							</select>
-              </td>
-              <td><input type="text" class="form-control" value="49"></td>
-              <td>
-                <select class="form-control">
-                            <option *ngFor="let rt of rate" [value]="rt"> {{rt}} </option>
-                          </select>
-              </td>
-              <td><input type="text" class="form-control" value="345"></td>
-              <td><input type="text" class="form-control" value="34"></td>
-              <td><input type="text" class="form-control" value="34"></td>
-              <td><input type="text" class="form-control" value="4"></td>
-              <td><input type="text" class="form-control" value="45"></td>
-            </tr>
-            <tr>
-              <td><input type="text" class="form-control" value=""></td>
-              <td colspan="8" align="right" class="Total_word">Total in Words</td>
-              <td colspan="4" align="right" class="Grand_total"><b>Grand Total =</b></td>
-            </tr>
-          </tbody>
-        </table>
-      </td>
-      <td>
-        <table class="table table-condensed table-bordered fixed-column">
-          <thead>
-            <tr>
-              <th rowspan="2"><br>Total<br> &nbsp;</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><input type="text" class="form-control" value="900.00/-"></td>
-            </tr>
-            <tr>
-              <td><input type="text" class="form-control" value="12,000.00/-"></td>
-            </tr>
-            <tr>
-              <td><input type="text" class="form-control" value="45,000.00/-"></td>
-            </tr>
-            <tr>
-              <td><input type="text" class="form-control" value="57,900.00/-"></td>
-            </tr>
-          </tbody>
-        </table>
-      </td>
+    <tr *ngFor="let item of goodsData; let i = index;">
+      <td align="center">{{goodsPager.pageSize * (goodsPager.currentPage-1)+i+1}}</td>
+      <td align="center">{{ item.hsn_code }}</td>
+      <td align="center">{{item.description}}</td>
+      <td align="center">{{item.cgst}}</td>
+      <td align="center">{{item.sgst}}</td>
+      <td align="center">{{item.igst}}</td>
+      <td align="center">{{item.igst}}</td>
+      <td align="center">{{item.condition}}</td>
     </tr>
   </table>
 </div>

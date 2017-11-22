@@ -15,11 +15,13 @@ import { NumberValidatorsService } from "../number-validators.service";
 })
 export class AddnewinvoiceComponent implements OnInit {
 
-  access_token:string;
-  selectedName:string;
-  customersNamesList=[];
-  filteredList=[];
-  query:string;
+  access_token: string;
+  selectedName: string;
+  customersNamesList = [];
+  filteredList = [];
+  query: string;
+  invoiceTypeRadioForm: FormGroup;
+  customerDetailsList=[];
 
   serice = [
     'SELECT',
@@ -129,15 +131,31 @@ export class AddnewinvoiceComponent implements OnInit {
     '97-Other Territory'
   ]
 
+  customerDetailsForm: FormGroup;
+  selectedCustomerData:any;
+  disableEcommerceInput:boolean=false;
+
   constructor(public http: Http, private pagerService: PagerService, private router: Router) {
 
+    this.invoiceTypeRadioForm = new FormGroup({
+      invoiceTypeRadio: new FormControl('', [<any>Validators.required]),
+    });
+
+    this.customerDetailsForm = new FormGroup({
+      name: new FormControl('', [<any>Validators.required]),
+      invoiceNo: new FormControl('', [<any>Validators.required]),
+      date: new FormControl('', [<any>Validators.required]),
+      gstin: new FormControl('', [<any>Validators.required]),
+      pos: new FormControl('', [<any>Validators.required]),
+      eComGstin: new FormControl('', [<any>Validators.required]),
+    });
   }
 
   ngOnInit() {
-    if (this.access_token == null) {
-      this.router.navigate(['/home']);
-      return;
-    }
+    // if (this.access_token == null) {
+    //   this.router.navigate(['/home']);
+    //   return;
+    // }
 
     this.access_token = localStorage.getItem('user_token');
 
@@ -147,11 +165,9 @@ export class AddnewinvoiceComponent implements OnInit {
   getCustomerNames() {
     let response: any;
     let myHeaders = new Headers({ 'Content-Type': 'application/json' });
-    // myHeaders.append('x-access-token', access_token);
     myHeaders.append('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization, x-access-token');
     myHeaders.append('Access-Control-Allow-Methods', 'GET, OPTIONS, POST');
     myHeaders.append('Access-Control-Allow-Origin', '*');
-    // headers.append('Accept','charset=utf-8');
     myHeaders.append('Access-Control-Allow-Credentials', 'true');
 
     let options = new RequestOptions({ headers: myHeaders });
@@ -161,6 +177,7 @@ export class AddnewinvoiceComponent implements OnInit {
       response => {
         // this.customersNamesList = response.json().docs;
         console.log("RESPONSE", response.json().docs);
+        this.customerDetailsList=response.json().docs;
         for (let data of response.json().docs) {
           console.log("NAMES", data.name);
           this.customersNamesList.push(data.name);
@@ -174,12 +191,12 @@ export class AddnewinvoiceComponent implements OnInit {
       );
   }
 
-  search(query) {
-    
-    if (query !== "") {
-      this.query=query;
+  search() {
+
+    if (this.query !== "") {
+
       this.filteredList = this.customersNamesList.filter(function (el) {
-        return el.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
+        return el.toString().toLowerCase().indexOf(this.query.toString().toLowerCase()) > -1;
       }.bind(this));
     } else {
       this.filteredList = [];
@@ -189,6 +206,91 @@ export class AddnewinvoiceComponent implements OnInit {
   select(item) {
     this.query = item;
     this.filteredList = [];
+    this.selectedCustomerData= this.customerDetailsList.filter(x => x.name == item);
+    console.log("NAME",this.selectedCustomerData);
+    console.log("GSTIN",this.selectedCustomerData.gstin);
+    this.customerDetailsForm.get('gstin').setValue(this.selectedCustomerData[0].gstin);
+  }
+
+  selectRadio() {
+    if(this.invoiceTypeRadioForm.controls.invoiceTypeRadio.value==="E_Commerce")
+    {
+      this.disableEcommerceInput=true;
+    }
+    else
+    {
+      this.disableEcommerceInput=false;
+    }
+    console.log("CLICKEED",this.disableEcommerceInput);
+  }
+
+  addInvoice()
+  {
+    let response: any;
+    let myHeaders = new Headers({ 'Content-Type': 'application/json' });
+    myHeaders.append('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization, x-access-token');
+    myHeaders.append('Access-Control-Allow-Methods', 'GET, OPTIONS, POST');
+    myHeaders.append('Access-Control-Allow-Origin', '*');
+    myHeaders.append('Access-Control-Allow-Credentials', 'true');
+
+    let options = new RequestOptions({ headers: myHeaders });
+
+    let itm_det={
+      "rt":"",
+      "txval":"",
+      "iamt":"",
+      "csamt":""
+    };
+
+    let items ={
+      "num":"",
+      // "itm_det":JSON.parse(itm_det)
+    };
+
+    let invArray={
+        // "inum":this.customerDetailsForm.controls.invoiceNo.value,
+        // "idt":this.customerDetailsForm.controls.date.value,
+        // "val":this.customerDetailsForm.controls.
+        // "pos":"",
+        // "rchrg":"",
+        // "etin":"",
+        // "inv_typ":"",
+        // "itms":JSON.parse()
+    };
+
+    // let b2bArray={
+    //   "ctin":this.customerDetailsForm.controls.gstin.value,
+    //   "inv"
+    // };
+
+    let body={
+      "gstin":this.customerDetailsForm.controls.gstin.value,
+      "fp":"",
+      "gt":this.customerDetailsForm.controls.gstin.value,
+      "cur_gt":this.customerDetailsForm.controls.gstin.value,
+      "inum":this.customerDetailsForm.controls.gstin.value,
+      "b2b":this.customerDetailsForm.controls.gstin.value,
+      // "inum":this.customerDetailsForm.controls.gstin.value,
+      // "inum":this.customerDetailsForm.controls.gstin.value,
+      // "inum":this.customerDetailsForm.controls.gstin.value,
+      // "inum":this.customerDetailsForm.controls.gstin.value,
+
+    };
+
+    this.http.post('http://localhost:3000/api/invoice/create?token=' + this.access_token + '&limit=' + 5000,body, options)
+      .subscribe(
+      response => {
+        console.log("RESPONSE", response.json().docs);
+        this.customerDetailsList=response.json().docs;
+        for (let data of response.json().docs) {
+          this.customersNamesList.push(data.name);
+          console.log("CUSTOMER_NAMES", this.customersNamesList);
+        }
+      },
+      error => {
+        console.log(error.text());
+      }
+      );
   }
 
 }

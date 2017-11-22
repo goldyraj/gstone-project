@@ -48,7 +48,7 @@ import { AdminPrivacyPolicyComponent } from './admin-privacy-policy/admin-privac
 import { AdminContactUsComponent } from './admin-contact-us/admin-contact-us.component';
 import { AdminInternalUpdatesComponent } from './admin-internal-updates/admin-internal-updates.component';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
-import { UserAboutUsComponent } from './user-about-us/user-about-us.component';
+// import { UserAboutUsComponent } from './user-about-us/user-about-us.component';
 import { HomeDashboardComponent } from './home-dashboard/home-dashboard.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { FaqsComponent } from './faqs/faqs.component';
@@ -72,6 +72,7 @@ import { AdminInternalUpdateInnerpageComponent } from './admin-internal-update-i
 import { AdminUserComponent } from './admin-user/admin-user.component';
 import { AdminCustomerComponent } from './admin-customer/admin-customer.component';
 import { AdminVendorComponent } from './admin-vendor/admin-vendor.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -120,7 +121,6 @@ import { AdminVendorComponent } from './admin-vendor/admin-vendor.component';
     AdminContactUsComponent,
     AdminInternalUpdatesComponent,
     AdminHomeComponent,
-    UserAboutUsComponent,
     HomeDashboardComponent,
     PrivacyPolicyComponent,
     FaqsComponent,
@@ -133,7 +133,8 @@ import { AdminVendorComponent } from './admin-vendor/admin-vendor.component';
     AdminInternalUpdateInnerpageComponent,
     AdminUserComponent,
     AdminCustomerComponent,
-    AdminVendorComponent
+    AdminVendorComponent,
+    ProfileComponent
     //DatepickerModule
   ],
   imports: [

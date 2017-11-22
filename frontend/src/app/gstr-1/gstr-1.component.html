@@ -3,17 +3,13 @@
   <div class="tabs">
 
     <div class="clearfix"></div>
-
-    <div class="col-md-8 col-sm-8 col-xs-12 form-group">
-      <a routerLink="/summarypage"> Summary</a>
-      &nbsp;&nbsp;&nbsp;
-      <a routerLink="/gstr">Invoice Wise Detail</a>&nbsp;&nbsp;&nbsp;
-      <a routerLink="/other"> Other </a>
-      &nbsp;&nbsp;&nbsp;
-      <a routerLink="/"> Submit </a>
-      &nbsp;&nbsp;&nbsp;
-      <a routerLink="/"> File </a>
-    </div>
+    <ul class="nav nav-pills">
+      <li role="presentation" ><a routerLink="../summarypage">Summary</a></li>
+      <li role="presentation" class="active"><a routerLink="../gstr">Invoice Wise Detail</a></li>
+      <li role="presentation"><a routerLink="../other">Other</a></li>
+      <li role="presentation"><a routerLink="../">Submit</a></li>
+      <li role="presentation"><a routerLink="../">File</a></li>
+    </ul>
 
     <div class="col-md-4 col-sm-4 col-xs-12 form-group">
 
@@ -51,8 +47,10 @@
 
 
             <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+
+              
               <div class="col-sm-7">
-                <select>
+                <select  class="form-control">
                   <option *ngFor="let inv of Invoice" [value]="inv">{{inv}}</option>
                   <!-- <option value="">Show All</option>
 														<option value="">Show Normal Sales</option>
@@ -66,7 +64,7 @@
 
             <div class="col-md-4 col-sm-4 col-xs-12 form-group">
               <div class="col-sm-7">
-                <select>
+                <select  class="form-control">
                   <option *ngFor="let file of Filter" [value]="file">{{file}}</option>
                   <!-- <option value="">Not Uploaded</option>
 														<option value="">Uploaded</option>
@@ -78,7 +76,7 @@
 
             <div class="col-md-2 col-sm-2 col-xs-12 form-group">
 
-              <button routerLink="/newinvoice" class="btn btn-success"> Add New Invoice </button>
+              <button routerLink="../newinvoice" class="btn btn-success"> Add New Invoice </button>
 
             </div>
           </div>
@@ -87,10 +85,7 @@
 
 
           <div class="section-top-10 col-md-12 col-sm-12 section-bottom-20">
-            <div class="table-responsive gsttable">
-              <!-- <table class="table table-condensed  table-hover table-bordered">
-            <tr>
-              <td>-->
+            <div class="table-responsive gsttable">             
               <table class="table table-condensed table-wrapper table-bordered">
                 <thead>
                   <tr>
@@ -206,50 +201,10 @@
                       </a>
                     </td>
                   </tr>
-                  <!-- <tr>
-                    <td><input type="text" class="form-control" value=""></td>
-                    <td colspan="8" align="right">Total in Words</td>
-                    <td colspan="4" align="right"><b>Grand Total =</b></td>
-                  </tr> -->
                 </tbody>
               </table>
-              <!--</td> -->
-              <!-- <td><table class="table table-condensed table-bordered fixed-column">
-                <thead>
-                  <tr>
-                    <th rowspan="2"><br>Total<br> &nbsp;</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><input type="text" class="form-control" value="900.00/-"></td>
-                  </tr>
-                  <tr>
-                    <td><input type="text" class="form-control" value="12,000.00/-"></td>
-                  </tr>
-                  <tr>
-                    <td><input type="text" class="form-control" value="45,000.00/-"></td>
-                  </tr>
-                  <tr>
-                    <td><input type="text" class="form-control" value="57,900.00/-" ></td>
-                  </tr>
-                </tbody>
-              </table></td> -->
-              <!-- </tr>
-          </table> -->
             </div>
           </div>
-          <!-- <div class="col-md-12 col-sm-12  col-xs-12 form-group invoice">
-      <label for="label">Customer Notes:</label>
-      <textarea name="textarea" rows="5" class="form-control" id="label" type="text" ></textarea>
-    </div>
-    <div class="col-md-12 col-sm-12 col-xs-12 form-group invoice">
-      <label for="label">Terms And Conditions:</label>
-      <textarea name="textarea" rows="5" class="form-control" id="label" type="email" ></textarea>
-    </div> -->
-          <!-- <div class="text-center section-bottom-60">
-      <button class="btn btn-primary"> Save Invoice</button>
-    </div> -->
         </div>
 
 
@@ -293,7 +248,7 @@
 
             <div class="col-md-4 col-sm-4 col-xs-12 form-group">
               <div class="col-sm-7">
-                <select>
+                <select class="form-control">
                   <option *ngFor="let file of Filter" [value]="file">{{file}}</option>
                   <!-- <option value="">Not Uploaded</option>
 														<option value="">Uploaded</option>
@@ -523,7 +478,7 @@
 
             <div class="col-md-6 col-sm-6 col-xs-12 form-group">
               <div class="col-sm-7">
-                <select>
+                <select  class="form-control">
                   <option *ngFor="let inv of Invoice" [value]="inv">{{inv}}</option>
                   <!-- <option value="">Show All</option>
 														<option value="">Show Normal Sales</option>
@@ -537,7 +492,7 @@
 
             <div class="col-md-4 col-sm-4 col-xs-12 form-group">
               <div class="col-sm-7">
-                <select>
+                <select  class="form-control">
                   <option *ngFor="let file of Filter" [value]="file">{{file}}</option>
                   <!-- <option value="">Not Uploaded</option>
 														<option value="">Uploaded</option>
@@ -980,4 +935,3 @@
   </label>
 </div> -->
 </div>
-

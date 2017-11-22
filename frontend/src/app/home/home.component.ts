@@ -75,7 +75,7 @@ export class HomeComponent implements OnInit {
       userType: new FormControl('', [<any>Validators.required]),
       password: new FormControl('asdfgh', [<any>Validators.required, <any>Validators.minLength(5)]),
       confirm_paasword: new FormControl('asdfhh', [<any>Validators.required, <any>Validators.minLength(5)]),
-      state: new FormControl('', [<any>Validators.required]),
+      state: new FormControl('madhya pradesh', [<any>Validators.required]),
 
     });
     this.LoginForm = new FormGroup({
@@ -204,7 +204,7 @@ export class HomeComponent implements OnInit {
         'contact': this.myForm.value.contact,
         'email': this.myForm.value.email,
         'address': this.myForm.value.address,
-        'state': this.selectedState,
+        'state': "madhya pradesh",
         'type': 'agentuser'
         // 'type': this.myForm.value.userType
       };

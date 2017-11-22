@@ -287,8 +287,7 @@
     ]
   },
   "nil": {
-    "inv": [
-      {
+       {
         "sply_ty": "INTRB2B",
         "expt_amt": 123.45,
         "nil_amt": 1470.85,

@@ -1,0 +1,418 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="unicod-section-title-one">
+        <h2 class="comon-color">User Profile </h2>
+      </div>
+
+      <!-- Main content -->
+      <section class="content">
+
+        <div class="row">
+          <div class="col-md-3">
+
+            <!-- Profile Image -->
+            <div class="box box-primary">
+              <div class="box-body box-profile">
+                <img class="profile-user-img img-responsive img-circle" src=".././assets/images/avatar5.png" alt="User profile">
+
+
+                <p class="btn btn-primary btn-block section-top-20 text-muted text-center">{{userDetail.name}}</p>
+
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+
+            <!-- About Me Box -->
+            <!-- <div class="box box-primary section-top-20">
+
+              <div class="box-body">
+                <strong>
+                  <i class="fa fa-book margin-r-5"></i> Address</strong>
+
+                <p class="text-muted">
+                  B.S. in Computer Science from the University of Tennessee at Knoxville
+                </p>
+
+              </div>
+            </div> -->
+            <!-- /.box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-md-9">
+
+
+
+
+
+            <div class="nav-tabs-custom">
+              <ul class="nav nav-tabs">
+                <li class="active">
+                  <a href="#activity" data-toggle="tab">Profile</a>
+                </li>
+                <li>
+                  <a href="#settings" data-toggle="tab">Settings</a>
+                </li>
+                <li>
+                  <a href="#Password" data-toggle="tab">Manage Password</a>
+                </li>
+                <li>
+                  <a href="#editbranch" data-toggle="tab">Edit Branch</a>
+                </li>
+              </ul>
+              <div class="tab-content">
+                <div class="active tab-pane section-top-20" id="activity">
+                  <!-- Post -->
+                  <div class="post">
+                    <ul class="list-group list-group-unbordered">
+                      <li class="list-group-item">
+                        <b>Name</b>
+                        <a class="pull-right">{{userDetail.name}}</a>
+                      </li>
+                      <li class="list-group-item">
+                        <b>Contact No.</b>
+                        <a class="pull-right">{{userDetail.contact}}</a>
+                      </li>
+                      <li class="list-group-item">
+                        <b>PAN No.</b>
+                        <a class="pull-right">{{userDetail.pan_no}}</a>
+                      </li>
+                      <li class="list-group-item">
+                        <b>Email Id</b>
+                        <a class="pull-right">{{userDetail.username}}</a>
+                      </li>
+                      <li class="list-group-item">
+                        <b>GSTIN</b>
+                        <a class="pull-right">{{userDetail.gstin}}</a>
+                      </li>
+                      <li class="list-group-item">
+                        <b>Address</b>
+                        <a class="pull-right">{{userDetail.address}}</a>
+                      </li>
+                      <li class="list-group-item">
+                        <b>State</b>
+                        <a class="pull-right">{{userDetail.state}}</a>
+                      </li>
+                      <li class="list-group-item">
+                        <b>City</b>
+                        <a class="pull-right">{{userDetail.city}}</a>
+                      </li>
+                    </ul>
+                    <div class="box-body">
+
+
+
+                    </div>
+                  </div>
+                  <!-- /.post -->
+                </div>
+                <!-- /.tab-pane -->
+
+                <!-- /.tab-pane -->
+
+                <div class="tab-pane section-top-20" id="settings">
+                  <div class="alert alert-success" *ngIf="errorType == true">
+                    Profile Updated Successfully.
+                  </div>
+                  <div class="alert alert-danger" *ngIf="errorType == false">
+                    {{errorMsg}}
+                  </div>
+                  <form class="form-horizontal" [formGroup]="editProfileForm" novalidate (ngSubmit)="editProfile(editProfileForm.valid)">
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">Name</label>
+
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" formControlName="name" placeholder="Name">
+                        <small [hidden]="editProfileForm.controls.name.valid || (editProfileForm.controls.name.pristine && !submitted)">
+                          Name is required.
+                        </small>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">Contact No.</label>
+
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" formControlName="contact" placeholder="Contact No.">
+                        <small [hidden]="editProfileForm.controls.contact.valid || (editProfileForm.controls.contact.pristine && !submitted)">
+                          Contact no is required.
+                        </small>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">PAN No.</label>
+
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" formControlName="pan_no" placeholder="PAN No.">
+                        <small [hidden]="editProfileForm.controls.pan_no.valid || (editProfileForm.controls.pan_no.pristine && !submitted)">
+                          Pan no is required.
+                        </small>
+                      </div>
+                    </div>
+
+
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">Email</label>
+
+                      <div class="col-sm-10">
+                        <input type="email" class="form-control" readonly formControlName="username" placeholder="Email">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">GSTIN</label>
+
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" formControlName="gstin" placeholder="GSTIN">
+                        <small [hidden]="editProfileForm.controls.gstin.valid || (editProfileForm.controls.gstin.pristine && !submitted)">
+                          GSTIN is required.
+                        </small>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">Address</label>
+
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" formControlName="address" placeholder="Address">
+                        <small [hidden]="editProfileForm.controls.address.valid || (editProfileForm.controls.address.pristine && !submitted)">
+                          Address is required.
+                        </small>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">State</label>
+
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" formControlName="state" placeholder="State">
+                        <small [hidden]="editProfileForm.controls.state.valid || (editProfileForm.controls.state.pristine && !submitted)">
+                          State is required.
+                        </small>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">City</label>
+
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" formControlName="city" placeholder="City">
+                        <small [hidden]="editProfileForm.controls.city.valid || (editProfileForm.controls.city.pristine && !submitted)">
+                          City is required.
+                        </small>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <!-- /.tab-pane -->
+                <div class="tab-pane section-top-20" id="Password">
+                  <div class="alert alert-success" *ngIf="errorType == true">
+                    Your Password changed Successfully
+                  </div>
+                  <div class="alert alert-danger" *ngIf="errorType == false">
+                    {{errorMsg}}
+                  </div>
+                  <form class="form-horizontal" [formGroup]="changePassForm" novalidate (ngSubmit)="changePass(changePassForm.valid)">
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">Old Password</label>
+
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control" formControlName="oldPass" placeholder="Old Password">
+                        <small [hidden]="changePassForm.controls.oldPass.valid || (changePassForm.controls.oldPass.pristine && !submitted)">
+                          Old Password is required.
+                        </small>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">New Password</label>
+
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control" formControlName="newPass" placeholder="New Password">
+                        <small [hidden]="changePassForm.controls.newPass.valid || (changePassForm.controls.newPass.pristine && !submitted)">
+                          New Password is required.
+                        </small>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">Confirm Password</label>
+
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control" formControlName="confirPass" placeholder="Confirm Password">
+                        <small [hidden]="changePassForm.controls.confirPass.valid || (changePassForm.controls.confirPass.pristine && !submitted)">
+                          Confirm Password is required.
+                        </small>
+
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-sm-offset-3 col-sm-9">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <!-- /.tab-pane -->
+
+
+                <div class="tab-pane section-top-20" id="editbranch">
+                  <div class="alert alert-success" *ngIf="errorType == true">
+                    Your Password changed Successfully
+                  </div>
+                  <div class="alert alert-danger" *ngIf="errorType == false">
+                    {{errorMsg}}
+                  </div>
+
+                  <div class="table-responsive">
+                    <table class="table table-condensed  table-hover table-bordered">
+                      <thead>
+                        <tr>
+                          <th width="3%">S no.</th>
+                          <th width="16%">Branch </th>
+                          <th width="10%">Name</th>
+                          <th width="15%">GSTIN</th>
+                          <th width="10%">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of branchesList ;let i = index;">
+                          <td align="center">{{pager.pageSize * (pager.currentPage-1)+i+1}}</td>
+                          <td align="center">{{item.branch_name}}</td>
+                          <td align="center">{{item.name}}</td>
+                          <td align="center">{{item.gstin}}</td>
+                          <td class="text-center">
+                            <a data-toggle="modal" data-target=".bs-GSTIN-lg">
+                              <button class="fa fa-edit btn btn-primary btn-sm" title="Edit" (click)="editBranchRecord(item)"></button>
+                            </a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+
+              </div>
+              <!-- /.tab-content -->
+            </div>
+            <!-- /.nav-tabs-custom -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+
+  </div>
+</div>
+<div class="modal fade bs-GSTIN-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content section-form">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" #closeBtn aria-label="Close">
+          <span class="modal-text" aria-hidden="true">X</span>
+        </button>
+        <h4 class="modal-title modal-text" align="center"> Add New GSTIN</h4>
+      </div>
+      <div class="modal-body">
+        <div class="service-section">
+          <div class="row">
+            <div class="col-md-1 col-sm-1"></div>
+            <div class="col-md-10 col-sm-10">
+              <form [formGroup]="editBranchFrom" novalidate (ngSubmit)="save( editBranchFrom.valid)">
+                <!-- <form [formGroup]="editBranchFrom" novalidate (ngSubmit)="save()"> -->
+
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                  <input type="text" class="form-control" formControlName="name" placeholder="Name" required>
+                  <small [hidden]="editBranchFrom.controls.name.valid || (editBranchFrom.controls.name.pristine && !submitted)">
+                    Name is required (minimum 5 characters).
+                  </small>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                  <input type="text" class="form-control" formControlName="contact" maxlength="10" placeholder="Contact No.">
+                  <small [hidden]="editBranchFrom.controls.contact.valid || (editBranchFrom.controls.contact.pristine && !submitted)">
+                    Contact is required (minimum 5 characters).
+                  </small>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                  <input type="text" class="form-control" formControlName="pan_no" placeholder="PAN No." pattern="[A-Za-z]{5}\d{4}[A-Za-z]{1}">
+                  <small [hidden]="editBranchFrom.controls.pan_no.valid || (editBranchFrom.controls.pan_no.pristine && !submitted)">
+                    <span style="color:red" [hidden]="editBranchFrom.controls.pan_no.valid">Pan No is required.</span>
+                    <b [hidden]="editBranchFrom.controls.pan_no.pristine">YHSDS2345E</b>
+                  </small>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                  <input type="text" class="form-control" formControlName="email" placeholder="Email Id" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
+                  <small [hidden]="editBranchFrom.controls.email.valid || (editBranchFrom.controls.email.pristine && !submitted)">
+                    <span style="color:red" [hidden]="editBranchFrom.controls.email.valid">Email is required </span>
+                    <b [hidden]="editBranchFrom.controls.email.pristine">joe@abc.com</b>
+                  </small>
+
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                  <input type="text" class="form-control" formControlName="gstin" placeholder="GSTIN" name="gstin" id="gstin">
+                  <small [hidden]="editBranchFrom.controls.gstin.valid || (editBranchFrom.controls.gstin.pristine && !submitted)">
+                    GSTIN is required (minimum 5 characters).
+                  </small>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                  <input type="text" class="form-control" formControlName="address" placeholder="Address" name="address" id="address">
+                  <small [hidden]="editBranchFrom.controls.address.valid || (editBranchFrom.controls.address.pristine && !submitted)">
+                    Address is required (minimum 5 characters).
+                  </small>
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                  <select class="form-control" formControlName="selectedDealer" >
+                    <option value="" selected="selected">--Select Dealer--</option>
+                    <option *ngFor="let item of dealerType" selected="{{item.name === selectedDealer}}" value="{{item.name}}">{{item.name}}</option>
+                  </select>
+                  <small *ngIf="editBranchFrom.controls.selectedDealer.value=== '' && submitted">
+                    Please select dealer !
+                  </small>
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                  <input type="text" class="form-control" placeholder="City" formControlName="city" name="city" id="city">
+                  <small [hidden]="editBranchFrom.controls.city.valid || (editBranchFrom.controls.city.pristine && !submitted)">
+                    City is required (minimum 5 characters).
+                  </small>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                  <input type="text" class="form-control" formControlName="branch_name" placeholder="Branch Name" name="branch_name" id="branch_name">
+                  <small [hidden]="editBranchFrom.controls.branch_name.valid || (editBranchFrom.controls.branch_name.pristine && !submitted)">
+                    Branch Name is required (minimum 5 characters).
+                  </small>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                  <select class="form-control" (input)="onInput($event)" formControlName="state">
+                    <option value="" selected="selected"> -- Select State -- </option>
+                    <option *ngFor="let item of stateList" selected="{{item.name === state}}" value="{{item.name}}">{{item.name}}</option>
+                  </select>
+                  <small *ngIf="editBranchFrom.controls.state.value ==='' && submitted">
+                    Please select State !
+                  </small>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group" align="center">
+                  <button type="submit" class="btn btn-primary">Create</button>
+                  <!-- <button type="submit" class="btn btn-primary" data-dismiss="modal" (click)="save(myForm.valid)">Create</button> -->
+                  <!-- <input type="submit" class="btn btn-primary" data-dismiss="modal" value="Create"> -->
+
+                  <button type="button" class="btn btn-primary" data-dismiss="modal" value="Cancel">
+                    Cancel
+                  </button>
+                  <!-- <input type="button" class="btn btn-primary" data-dismiss="modal" value="Cancel"> -->
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,8 @@
 const Invoice = require('../../../models/invoice')
 
+    var Curl = require( 'node-libcurl' ).Curl;
+ 
+var curl = new Curl();
 /* 
     GET /api/user/list
 */
@@ -11,12 +14,30 @@ exports.list = (req, res) => {
     //         message: 'you are not an admin'
     //     })
     // }
- Invoice.find({}).exec()
-    .then(
-        invoice=> {
-            res.json({invoice})
-        }
-    )
+ // Invoice.find({}).exec()
+ //    .then(
+ //        invoice=> {
+ //            res.json({invoice})
+ //        }
+ //    )
+
+ var crypto = require('crypto'),  algorithm = 'aes-256-ctr', password = 'd6F3Efeq';
+function encrypt(text){
+  var cipher = crypto.createCipher(algorithm,password)
+  var crypted = cipher.update(text,'utf8','hex')
+  crypted += cipher.final('hex');
+  return crypted;
+}
+ 
+function decrypt(text){
+  var decipher = crypto.createDecipher(algorithm,password)
+  var dec = decipher.update(text,'hex','utf8')
+  dec += decipher.final('utf8');
+  return dec;
+}
+var hw = encrypt("hello world")
+console.log('encrypt work =>',hw)
+console.log(decrypt(hw));
    }
 
 exports.delete=(req,res)=>{
@@ -28,7 +49,7 @@ exports.delete=(req,res)=>{
 }else{
     res.json({'message':'invoice is Successfully deleted'})  
 }
-
+ 
   // we have deleted the user
    
 });
@@ -47,7 +68,7 @@ exports.searchf=(req,res)=>{
 }
 
 exports.create = (req, res) => {
-    const {gstin,fp,gt,cur_gt,b2b} = req.body
+    const {gstin,fp,gt,inum,cur_gt,b2b,b2cl,cdnr,b2cs,exp,hsn,nil,txpd,at,doc_issue,cdnur} = req.body
     let newUser = null
  // if(!req.decoded.admin) {
  //        return res.status(403).json({
@@ -55,13 +76,12 @@ exports.create = (req, res) => {
  //        })
  //    }
     // create a new user if does not exist
-    const create = (invoice) => {
-       
+    const create = (invoice) => {       
    
         if(invoice) {
-            throw new Error('Invoice No Name exists')
+            throw new Error('Invoice Number Allready exists')
         } else {
-            return Invoice.create(gstin,fp,gt,cur_gt,b2b)
+            return Invoice.create(gstin,fp,gt,inum,cur_gt,b2b,b2cl,cdnr,b2cs,exp,hsn,nil,txpd,at,doc_issue,cdnur,req.decoded._id)
         }
     }
     // count the number of the user
@@ -75,7 +95,7 @@ exports.create = (req, res) => {
    
  const respond = () => {
         res.json({
-            message: 'State Successfully Save'
+            message: 'Invoice  Successfully Save'
         
  
         })
@@ -89,14 +109,64 @@ exports.create = (req, res) => {
     }
 
     // check username duplication
-    Invoice.findOneByUsername(gstin,fp,gt)
+    Invoice.findOneByInvoicenumber(inum)
     .then(create)
     .then(count)   
     .then(respond)
     .catch(onError)
 }
 
+exports.view=(req, res)=>{
+var crypto = require('crypto'),  algorithm = 'aes-256-ctr', password = 'd6F3Efeq';
+function encrypt(text){
+  var cipher = crypto.createCipher(algorithm,password)
+  var crypted = cipher.update(text,'utf8','hex')
+  crypted += cipher.final('hex');
+  return crypted;
+}
+ 
+function decrypt(text){
+  var decipher = crypto.createDecipher(algorithm,password)
+  var dec = decipher.update(text,'hex','utf8')
+  dec += decipher.final('utf8');
+  return dec;
+}
+var hw = encrypt("hello world")
+// outputs hello world
+console.log(decrypt(hw));
 
+// var fieldsStr = '{}';
+// curl.setopt('CURLOPT_POST', 1); // true?
+// curl.setopt('CURLOPT_POSTFIELDS', fieldsStr);
+ 
+// curl.setOpt( 'URL', 'www.google.com' );
+// curl.setOpt( 'FOLLOWLOCATION', true );
+ 
+// curl.on( 'end', function( statusCode, body, headers ) {
+ 
+//     console.info( statusCode );
+//     console.info( '---' );
+//     console.info( body.length );
+//     console.info( '---' );
+//     console.info( this.getInfo( 'TOTAL_TIME' ) );
+ 
+//     this.close();
+// });
+ 
+// curl.on( 'error', curl.close.bind( curl ) );
+// curl.perform();
+  
+//   curl = require('node-curl');
+// Invoice.findOne({_id:req.params.id},{_id:0,userid:0,created_at:0,__v:0,status:0,inum:0},function (err, data) {
+//     if (err){ 
+//     res.json({'meassge':'No Record Found '})
+// }else{
+
+
+//     res.json(data)  
+// }
+// });
+}
 /*
     POST /api/user/assign-admin/:username
 */

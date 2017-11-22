@@ -12,7 +12,6 @@ if(req.type=="agentuser"||req.type=="admin"){
     GET /api/vendor/index
 */
 exports.index=(req,res)=>{
-//console.log(req);
  var myCallback=usingItNow(req.decoded)
  if(myCallback) {
    return res.status(403).json({
@@ -191,7 +190,7 @@ var myobj= req.body.data
           message:"upload Successfully Save"
         })
   }).catch(function (e) {
-    //var error=  JSON.parse(e.message)
+    var error=  e.message
 
      res.json({
           error

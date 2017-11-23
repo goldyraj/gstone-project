@@ -6,12 +6,13 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { RouterModule, Routes, Router } from '@angular/router';
+import {ApiserviceService} from '../apiservice.service';
 
 @Component({
   selector: 'app-admin-gov-notification',
   templateUrl: './admin-gov-notification.component.html',
   styleUrls: ['./admin-gov-notification.component.css'],
-  providers:[ExcelServiceService,PagerService]
+  providers:[ExcelServiceService,PagerService,ApiserviceService]
 })
 export class AdminGovNotificationComponent implements OnInit {
 
@@ -38,7 +39,7 @@ export class AdminGovNotificationComponent implements OnInit {
   public events: any[] = []; // use later to display form changes
   access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
 
-  constructor(private _fb: FormBuilder, private http: Http,public ExcelServiceService:ExcelServiceService,public PagerService:PagerService,public Router:Router) {
+  constructor(private _fb: FormBuilder, private http: Http,public ExcelServiceService:ExcelServiceService,public PagerService:PagerService,public Router:Router,public apiserviceService: ApiserviceService) {
     this.pager.currentPage=1;
     this.access_token = localStorage.getItem("admin_token");
     this.getNotificationList(this.pager.currentPage);
@@ -70,7 +71,7 @@ export class AdminGovNotificationComponent implements OnInit {
   getNotificationList(page: number) {
     this.pager.currentPage=page;
     console.log('list called');
-    this.http.get('http://localhost:3000/api/notification/index?token='+this.access_token+'&limit='+10 + '&page=' + this.pager.currentPage).subscribe(data => {
+    this.http.get(this.apiserviceService.BASE_URL+'notification/index?token='+this.access_token+'&limit='+10 + '&page=' + this.pager.currentPage).subscribe(data => {
       this.notificationList = data.json().docs;
       this.pager.pageSize = data.json().limit;
       this.pager.totalItems=data.json().total;
@@ -115,7 +116,7 @@ export class AdminGovNotificationComponent implements OnInit {
         "link": this.editGovNotiForm.value.link
       };
 
-      this.url = "http://localhost:3000/api/notification/update?token="+this.access_token;
+      this.url = this.apiserviceService.BASE_URL+"notification/update?token="+this.access_token;
       return this.http.put(this.url, body, requestOptions)
         .subscribe(
         response => {
@@ -148,7 +149,7 @@ export class AdminGovNotificationComponent implements OnInit {
     // headers.append('x-access-token', access_token);
     const requestOptions = new RequestOptions({ headers: headers });
 
-    this.url = "http://localhost:3000/api/notification/delete/" + this.notiRowData._id;
+    this.url = this.apiserviceService.BASE_URL+"notification/delete/" + this.notiRowData._id;
     return this.http.delete(this.url, requestOptions)
       .subscribe(
       response => {
@@ -184,7 +185,7 @@ export class AdminGovNotificationComponent implements OnInit {
         "description": this.govNotiForm.value.description,
         "link": this.govNotiForm.value.link
       };
-      this.url = "http://localhost:3000/api/notification/create?token="+this.access_token;
+      this.url = this.apiserviceService.BASE_URL+"notification/create?token="+this.access_token;
       return this.http.post(this.url, body, requestOptions)
         .subscribe(
         response => {
@@ -233,7 +234,7 @@ export class AdminGovNotificationComponent implements OnInit {
     console.log("SEARCH_HIT");
 
     if (searchString) {
-      this.http.get('http://localhost:3000/api/notification/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
+      this.http.get(this.apiserviceService.BASE_URL+'notification/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
         this.notificationList = data.json().docs;
         this.pager.pageSize = data.json().limit;
         this.pager.totalItems = data.json().total;

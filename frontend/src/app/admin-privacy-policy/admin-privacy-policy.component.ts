@@ -2,11 +2,13 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
+import {ApiserviceService} from '../apiservice.service';
 
 @Component({
   selector: 'app-admin-privacy-policy',
   templateUrl: './admin-privacy-policy.component.html',
-  styleUrls: ['./admin-privacy-policy.component.css']
+  styleUrls: ['./admin-privacy-policy.component.css'],
+  providers:[ApiserviceService]
 })
 export class AdminPrivacyPolicyComponent implements OnInit {
 
@@ -24,7 +26,7 @@ export class AdminPrivacyPolicyComponent implements OnInit {
   public submitted: boolean; // keep track on whether form is submitted
   public submittedEdit: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
-  constructor(private _fb: FormBuilder, private http: Http) {
+  constructor(private _fb: FormBuilder, private http: Http,public ApiserviceService:ApiserviceService) {
     this.access_token = localStorage.getItem("admin_token");
     this.getPrivacyPolicy();
   }
@@ -36,7 +38,7 @@ export class AdminPrivacyPolicyComponent implements OnInit {
   }
   getPrivacyPolicy() {
     console.log('list called');
-    this.http.get('http://localhost:3000/api/privacy/list?token='+this.access_token).subscribe(data => {
+    this.http.get(this.ApiserviceService.BASE_URL+'privacy/list?token='+this.access_token).subscribe(data => {
       this.PrivacyPolicy = data.json().privacy[0];
       console.log("State  PArse", this.PrivacyPolicy);
     });
@@ -73,7 +75,7 @@ export class AdminPrivacyPolicyComponent implements OnInit {
       };
       console.log("body", body);
 
-      this.url = "http://localhost:3000/api/privacy/update?token="+this.access_token;
+      this.url = this.ApiserviceService.BASE_URL+"privacy/update?token="+this.access_token;
       return this.http.put(this.url, body, requestOptions)
         .subscribe(
         response => {

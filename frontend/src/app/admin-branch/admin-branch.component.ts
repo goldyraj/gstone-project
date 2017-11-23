@@ -7,12 +7,13 @@ import { PagerService } from '../service/pager.service';
 import { ExcelServiceService } from '../excel-service.service';
 import { RouterModule, Routes, Router } from '@angular/router';
 import { NumberValidatorsService } from "../number-validators.service";
+import {ApiserviceService} from '../apiservice.service';
 
 @Component({
   selector: 'app-admin-branch',
   templateUrl: './admin-branch.component.html',
   styleUrls: ['./admin-branch.component.css'],
-  providers:[PagerService]
+  providers:[PagerService,ApiserviceService]
 })
 export class AdminBranchComponent implements OnInit {
   pager: any = {};
@@ -39,7 +40,7 @@ export class AdminBranchComponent implements OnInit {
   @ViewChild('closeBtn') closeBtn:ElementRef;
   @ViewChild('closeBtn2') closeBtn2:ElementRef;
   
-  constructor(public http: Http, private pagerService: PagerService, private router: Router) {
+  constructor(public http: Http, private pagerService: PagerService, private router: Router,public apiserviceService: ApiserviceService) {
 
   }
 

@@ -7,12 +7,13 @@ import { PagerService } from '../service/pager.service';
 import { ExcelServiceService } from '../excel-service.service';
 import { RouterModule, Routes, Router } from '@angular/router';
 import { NumberValidatorsService } from "../number-validators.service";
+import {ApiserviceService} from '../apiservice.service';
 
 @Component({
   selector: 'app-admin-customer',
   templateUrl: './admin-customer.component.html',
   styleUrls: ['./admin-customer.component.css'],
-  providers:[PagerService]
+  providers:[PagerService,ApiserviceService]
 })
 export class AdminCustomerComponent implements OnInit {
 
@@ -40,7 +41,7 @@ export class AdminCustomerComponent implements OnInit {
   @ViewChild('closeBtn') closeBtn:ElementRef;
   @ViewChild('closeBtn2') closeBtn2:ElementRef;
   
-  constructor(public http: Http, private pagerService: PagerService, private router: Router) {
+  constructor(public http: Http, private pagerService: PagerService, private router: Router,public apiserviceService: ApiserviceService) {
 
   }
 
@@ -96,7 +97,7 @@ export class AdminCustomerComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/customer/index?token=' + this.access_token + '&limit=' + 50 + '&page=' + page + "&sortBy=" + this.sortBy, options)
+    this.http.get(this.apiserviceService.BASE_URL+'customer/index?token=' + this.access_token + '&limit=' + 50 + '&page=' + page + "&sortBy=" + this.sortBy, options)
       .subscribe(
       response => {
         this.dataList = response.json().docs;

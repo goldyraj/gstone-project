@@ -21,7 +21,6 @@ const about =require('./about')
 const home =require('./home')
 const goodsuser =require('./goodsuser')
 const services =require('./services')
-
 //================ home page list API =============
 router.use('/home', home)
 //====================== End home page list API ================

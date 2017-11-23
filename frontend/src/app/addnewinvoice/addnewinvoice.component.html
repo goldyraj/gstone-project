@@ -40,25 +40,25 @@
 </div>
 
 <div class="clearfix"> </div>
+<form [formGroup]="reimburshForm" novalidate="">
+  <div>
+    <!-- <form [formGroup]="invoiceTypeRadioForm" novalidate> -->
+      <label>
+        <input type="radio" [checked]="true" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Normal_Invoice">Normal Invoice</label>
+      <label>
+        <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Reverse_Charge">Reverse Charge</label>
+      <label>
+        <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="E_Commerce">E-commerce</label>
+      <label>
+        <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Debit_Note">Debit Note</label>
+      <label>
+        <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Credit_Note">Credit Note</label>
+    <!-- </form> -->
+  </div>
 
-<div>
-  <form [formGroup]="invoiceTypeRadioForm" novalidate>
-    <label>
-      <input type="radio" [checked]="true" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Normal_Invoice">Normal Invoice</label>
-    <label>
-      <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Reverse_Charge">Reverse Charge</label>
-    <label>
-      <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="E_Commerce">E-commerce</label>
-    <label>
-      <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Debit_Note">Debit Note</label>
-    <label>
-      <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Credit_Note">Credit Note</label>
-  </form>
-</div>
-
-<div class="row">
-  <div class="section-bottom-10 section-top-10">
-    <form [formGroup]="customerDetailsForm" novalidate (ngSubmit)="save( customerDetailsForm.valid )">
+  <div class="row">
+    <div class="section-bottom-10 section-top-10">
+      <!-- <form [formGroup]="customerDetailsForm" novalidate (ngSubmit)="save( customerDetailsForm.valid )"> -->
       <div class="col-md-4 col-sm-4 col-xs-12 form-group">
         <label for="inputEmail3" class="col-sm-5 control-label">Name</label>
         <div class="col-sm-7">
@@ -108,15 +108,15 @@
           <input type="text" [readonly]="disableEcommerceInput" class="form-control" id="eComGstin" formControlName="eComGstin">
         </div>
       </div>
-    </form>
+      <!-- </form> -->
+    </div>
   </div>
-</div>
 
-<!-- table contect   table-hover-->
-<div class="table-responsive gsttable">
 
-  <form #rowDataForm="ngForm" [formGroup]="addInvoiceForm" novalidate (ngSubmit)="addNew(addInvoiceForm)">
-    <table class="table table-condensed  table-hover table-bordered">
+  <!-- table contect   table-hover-->
+  <div class="table-responsive gsttable">
+    <!-- <form [formGroup]="addInvoiceForm" novalidate (ngSubmit)="addNew(addInvoiceForm)"> -->
+    <table class="table table-condensed  table-hover table-bordered" formArrayName="salesList">
       <thead>
         <tr>
           <th rowspan="3">S.No</th>
@@ -131,24 +131,26 @@
           <th rowspan="3">SGST</th>
           <th rowspan="3">IGST</th>
           <th colspan="4">CESS</th>
-          <th colspan="4">Action</th>
+          <th colspan="4">
+            <button (click)="addSalesListItem()">Add</button>
+          </th>
         </tr>
         <!-- <tr>
-        <th>Rate</th>
-        <th>AMT </th>
-        <th rowspan="3">Total</th>
-        <th rowspan="3">Action</th>
-      </tr> -->
+          <th>Rate</th>
+          <th>AMT </th>
+          <th rowspan="3">Total</th>
+          <th rowspan="3">Action</th>
+        </tr> -->
 
       </thead>
       <tbody>
 
         <!-- <div  *ngFor="let item of invoiceList ;let i = index;"> -->
-        <tr *ngFor="let item of invoiceList ;let i = index;">
+        <tr *ngFor="let saleList of salesListArray.controls;let i = index" [formGroupName]="i">
           <td align="center"> 1</td>
           <td>
             <!-- <input type="text" class="form-control" value="Mesuarement"> -->
-            <input type="text" class="form-control" formControlName="description" value="{{item.description}}" required>
+            <input type="text" class="form-control" formControlName="description" required>
           </td>
           <td>
             <select class="form-control" formControlName="goodservice">
@@ -156,12 +158,12 @@
             </select>
           </td>
           <td>
-            <input type="text" class="form-control" formControlName="hsn" value="{{item.hsn}}" required>
+            <input type="text" class="form-control" formControlName="hsn" required>
             <!-- <input type="text" class="form-control" value="HSN"> -->
           </td>
           <td>
             <!-- <input type="text" class="form-control" value="500"> -->
-            <input type="text" class="form-control" formControlName="qty" value="{{item.qty}}" required>
+            <input type="text" class="form-control" formControlName="qty" required>
           </td>
           <td>
             <select class="form-control" formControlName="uom">
@@ -170,7 +172,7 @@
           </td>
           <td>
             <!-- <input type="text" class="form-control" value="49"> -->
-            <input type="text" class="form-control" formControlName="tax" value="{{item.tax}}" required>
+            <input type="text" class="form-control" formControlName="tax" required>
           </td>
           <td>
             <select class="form-control" formControlName="rtax">
@@ -178,125 +180,58 @@
             </select>
           </td>
           <td>
-            <input type="text" class="form-control" formControlName="sgst" value="{{item.sgst}}" required>
+            <input type="text" class="form-control" formControlName="sgst" required>
             <!-- <input type="text" class="form-control" value="345"> -->
           </td>
           <td>
             <!-- <input type="text" class="form-control" value="34"> -->
-            <input type="text" class="form-control" formControlName="igst" value="{{item.igst}}" required>
+            <input type="text" class="form-control" formControlName="igst" required>
           </td>
           <td>
             <!-- <input type="text" class="form-control" value="34"> -->
-            <input type="text" class="form-control" formControlName="val1" value="{{item.val1}}" required>
+            <input type="text" class="form-control" formControlName="val1" required>
           </td>
           <td>
             <!-- <input type="text" class="form-control" value="4"> -->
-            <input type="text" class="form-control" formControlName="val2" value="{{item.val2}}" required>
+            <input type="text" class="form-control" formControlName="val2" required>
           </td>
           <td>
             <!-- <input type="text" class="form-control" value="45"> -->
-            <input type="text" class="form-control" formControlName="val3" value="{{item.val3}}" required>
+            <input type="text" class="form-control" formControlName="val3" required>
           </td>
           <td>
             <!-- <input type="text" class="form-control" value="500"> -->
-            <input type="text" class="form-control" formControlName="val4" value="{{item.val4}}" required>
+            <input type="text" class="form-control" formControlName="val4" required>
           </td>
           <td>
             <!-- <input type="text" class="form-control" value="500"> -->
-            <input type="text" class="form-control" formControlName="igst" value="{{item.igst}}" required>
+            <input type="text" class="form-control" formControlName="val5" required>
           </td>
           <td>
-            <input type="submit" class="btn btn-primary addnew " value="+">
+            <button (click)="deleteRow(i)">Remove</button>
           </td>
         </tr>
-        
-          
-            <tr *ngFor="let item of invoiceDynList ;let i = index;">
-              <td align="center"> 1</td>
-              <td>
-                <!-- <input type="text" class="form-control" value="Mesuarement"> -->
-                <input type="text" (keyup)="changeInd($event,i,'description')" class="form-control" value="{{item.description}}" required>
-              </td>
-              <td>
-                <select class="form-control">
-                  <option *ngFor="let sr of serice" value="{{sr}}" [selected]="sr == item.goodservice">{{sr}}</option>
-                </select>
-              </td>
-              <td>
-                <input type="text" (keyup)="changeInd($event,i,'hsn')" class="form-control" value="{{item.hsn}}" required>
-                <!-- <input type="text" class="form-control" value="HSN"> -->
-              </td>
-              <td>
-                <!-- <input type="text" class="form-control" value="500"> -->
-                <input type="text" class="form-control" value="{{item.qty}}" required (keyup)="changeInd($event,i,'qty')">
-              </td>
-              <td>
-                <select class="form-control">
-                  <option *ngFor="let un of unit" [value]="un" [selected]="un === item.uom"> {{un}}</option>
-                </select>
-              </td>
-              <td>
-                <!-- <input type="text" class="form-control" value="49"> -->
-                <input type="text" class="form-control" value="{{item.tax}}" required (keyup)="changeInd($event,i,'tax')">
-              </td>
-              <td>
-                <select class="form-control" (input)="onInput($event)">
-                  <option *ngFor="let rt of rate" [value]="rt" [selected]="rt === item.rtax"> {{rt}} </option>
-                </select>
-              </td>
-              <td>
-                <input type="text" class="form-control" value="{{item.sgst}}" required (keyup)="changeInd($event,i,'sgst')">
-                <!-- <input type="text" class="form-control" value="345"> -->
-              </td>
-              <td>
-                <!-- <input type="text" class="form-control" value="34"> -->
-                <input type="text" class="form-control" value="{{item.igst}}" required (keyup)="changeInd($event,i,'igst')">
-              </td>
-              <td>
-                <!-- <input type="text" class="form-control" value="34"> -->
-                <input type="text" class="form-control" value="{{item.val1}}" required (keyup)="changeInd($event,i,'val1')">
-              </td>
-              <td>
-                <!-- <input type="text" class="form-control" value="4"> -->
-                <input type="text" class="form-control" value="{{item.val2}}" required (keyup)="changeInd($event,i,'val1')">
-              </td>
-              <td>
-                <!-- <input type="text" class="form-control" value="45"> -->
-                <input type="text" class="form-control" value="{{item.val3}}" required (keyup)="changeInd($event,i,'val1')">
-              </td>
-              <td>
-                <!-- <input type="text" class="form-control" value="500"> -->
-                <input type="text" class="form-control" value="{{item.val4}}" required (keyup)="changeInd($event,i,'val1')">
-              </td>
-              <td>
-                <!-- <input type="text" class="form-control" value="500"> -->
-                <input type="text" class="form-control" value="{{item.igst}}" required (keyup)="changeInd($event,i,'val1')">
-              </td>
-              <td>
-                <input type="button" class="btn btn-danger " (click)="remove(item.description)" value="-" (keyup)="changeInd($event,i,'val1')">
-              </td>
-            </tr>
-          
-        
+
+
         <!-- <tr>
-          <td>
-            <input type="text" class="form-control" value="">
-          </td>
-          <td></td>
-          <td colspan="8" align="right" class="Total_word">Total in Words</td>
-          <td colspan="4" align="right" class="Grand_total">
-            <b>Grand Total =</b>
-          </td>
-          <td>
-            <input type="text" class="form-control" value="500">
-          </td>
-        </tr> -->
+            <td>
+              <input type="text" class="form-control" value="">
+            </td>
+            <td></td>
+            <td colspan="8" align="right" class="Total_word">Total in Words</td>
+            <td colspan="4" align="right" class="Grand_total">
+              <b>Grand Total =</b>
+            </td>
+            <td>
+              <input type="text" class="form-control" value="500">
+            </td>
+          </tr> -->
       </tbody>
 
     </table>
-  </form>
-</div>
-
-<div class="text-center section-bottom-60">
-  <button class="btn btn-success btnSave_data" (click)="addInvoice(rowDataForm)">Save Data</button>
-</div>
+    <!-- </form> -->
+  </div>
+  <div class="text-center section-bottom-60">
+    <button class="btn btn-success btnSave_data" (click)='submitForm(reimburshForm.value)'> Save Data</button>
+  </div>
+</form>

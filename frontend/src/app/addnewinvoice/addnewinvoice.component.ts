@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import * as _ from 'underscore';
@@ -7,36 +7,35 @@ import { PagerService } from '../service/pager.service';
 import { ExcelServiceService } from '../excel-service.service';
 import { RouterModule, Routes, Router } from '@angular/router';
 import { NumberValidatorsService } from "../number-validators.service";
-import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
+import {ApiserviceService} from '../apiservice.service';
 
 @Component({
   selector: 'app-addnewinvoice',
   templateUrl: './addnewinvoice.component.html',
-  styleUrls: ['./addnewinvoice.component.css']
+  styleUrls: ['./addnewinvoice.component.css'],
+  providers:[ApiserviceService]
 })
 export class AddnewinvoiceComponent implements OnInit {
-  personalDetails: any = [];
-  invoiceList: any = [];
-  personalData = [];
-  public addTableForm: FormGroup;
-  public addInvoiceForm: FormGroup;
+  reimburshForm: FormGroup;
+  salesListArray: FormArray;
+  // public addTableForm: FormGroup;
+  // public addInvoiceForm: FormGroup;
   public selectedAll: boolean;
-  per = [];
-  customerDetailsForm: FormGroup;
-  selectedCustomerData: any;
-  disableEcommerceInput: boolean = false;
-  invoiceDynList = [];
 
   access_token: string;
   selectedName: string;
   customersNamesList = [];
   filteredList = [];
   query: string;
-  invoiceTypeRadioForm: FormGroup;
+  // invoiceTypeRadioForm: FormGroup;
   customerDetailsList = [];
   userGstin = "ABCDE123R";
   grandTotal: number = 1000000;
   stateList = [];
+  selectedCustomerData: any;
+  disableEcommerceInput: boolean = false;
+  invoiceDynList = [];
+
 
   serice = [
     'SELECT',
@@ -104,213 +103,82 @@ export class AddnewinvoiceComponent implements OnInit {
     'YDS-YARDS',
     'OTH-OTHERS'
   ]
-
-  place = [
-    'SELECT',
-    '01-Jammu & Kashmir',
-    '02-Himachal Pradesh',
-    '03-Punjab',
-    '04-Chandigarh',
-    '05-Uttarakhand',
-    '06-Haryana',
-    '07-Delhi',
-    '08-Rajasthan',
-    '09-Uttar Pradesh',
-    '10-Bihar',
-    '11-Sikkim',
-    '12-Arunachal Pradesh',
-    '13-Nagaland',
-    '14-Manipur',
-    '15-Mizoram',
-    '16-Tripura',
-    '17-Meghalaya',
-    '18-Assam',
-    '19-West Bengal',
-    '20-Jharkhand',
-    '21-Odisha',
-    '22-Chhattisgarh',
-    '23-Madhya Pradesh',
-    '24-Gujarat',
-    '25-Daman & Diu',
-    '26-Dadra & Nagar Haveli',
-    '27-Maharashtra',
-    '29-Karnataka',
-    '30-Goa',
-    '31-Lakshdweep',
-    '32-Kerala',
-    '33-Tamil Nadu',
-    '34-Pondicherry',
-    '35-Andaman & Nicobar Islands',
-    '36-Telangana',
-    '37-Andhra Pradesh',
-    '97-Other Territory'
-  ]
-
-  constructor(private _fb: FormBuilder, public http: Http, private pagerService: PagerService, private router: Router) {
-    this.invoiceList = [{
-      "description": "",
-      "goodservice": "",
-      "hsn": "",
-      "qty": "",
-      "uom": "",
-      "tax": "",
-      "rtax": "",
-      "cgst": "",
-      "sgst": "",
-      "igst": "",
-      "val1": "",
-      "val2": "",
-      "val3": "",
-      "val4": "",
-    }];
-    this.personalDetails =
-      [
-        {
-          'fname': "",
-          'lname': "",
-          'email': "",
-        }];
-    this.personalData =
-      [
-        {
-          'fname': 'Muhammed',
-          'lname': 'Shanid',
-          'email': 'shanid@shanid.com'
-        },
-        {
-          'fname': 'John',
-          'lname': 'Abraham',
-          'email': 'john@john.com'
-        },
-        {
-          'fname': 'Roy',
-          'lname': 'Mathew',
-          'email': 'roy@roy.com'
-        }];
-    console.log("length", this.personalDetails.length);
+  constructor(private formBuilder: FormBuilder, private pagerService: PagerService, private router: Router, public http: Http,public apiserviceService: ApiserviceService ) {
+    
   }
 
   ngOnInit() {
-    this.addTableForm = new FormGroup({
-      fname: new FormControl('', [<any>Validators.required]),
-      lname: new FormControl('', [<any>Validators.required]),
-      email: new FormControl('', [<any>Validators.required]),
-    });
-    this.addInvoiceForm = new FormGroup({
-      description: new FormControl('', [<any>Validators.required]),
-      goodservice: new FormControl('', [<any>Validators.required]),
-      hsn: new FormControl('', [<any>Validators.required]),
-      qty: new FormControl('', [<any>Validators.required]),
-      uom: new FormControl('', [<any>Validators.required]),
-      tax: new FormControl('', [<any>Validators.required]),
-      rtax: new FormControl('', [<any>Validators.required]),
-      cgst: new FormControl('', [<any>Validators.required]),
-      sgst: new FormControl('', [<any>Validators.required]),
-      igst: new FormControl('', [<any>Validators.required]),
-      val1: new FormControl('', [<any>Validators.required]),
-      val2: new FormControl('', [<any>Validators.required]),
-      val3: new FormControl('', [<any>Validators.required]),
-      val4: new FormControl('', [<any>Validators.required]),
-    });
-    this.invoiceTypeRadioForm = new FormGroup({
-      invoiceTypeRadio: new FormControl('', [<any>Validators.required]),
-    });
-
-    this.customerDetailsForm = new FormGroup({
-      name: new FormControl('', [<any>Validators.required]),
-      invoiceNo: new FormControl('', [<any>Validators.required]),
-      date: new FormControl('', [<any>Validators.required]),
-      gstin: new FormControl('', [<any>Validators.required]),
-      pos: new FormControl('0', [<any>Validators.required]),
-      eComGstin: new FormControl('', [<any>Validators.required]),
-    });
-
     this.access_token = localStorage.getItem('user_token');
-
-    this.getStateList();
+    this.buildForm();
     this.getCustomerNames();
-  }
-  addNew() {
-    this.invoiceList = [
-      {
-        "description": "",
-        "goodservice": "",
-        "hsn": "",
-        "qty": "",
-        "uom": "",
-        "tax": "",
-        "rtax": "",
-        "cgst": "",
-        "sgst": "",
-        "igst": "",
-        "val1": "",
-        "val2": "",
-        "val3": "",
-        "val4": "",
-      }];
-    this.invoiceDynList.push({
-      "description": this.addInvoiceForm.value.description,
-      "goodservice": this.addInvoiceForm.value.goodservice,
-      "hsn": this.addInvoiceForm.value.hsn,
-      "qty": this.addInvoiceForm.value.qty,
-      "uom": this.addInvoiceForm.value.uom,
-      "tax": this.addInvoiceForm.value.tax,
-      "rtax": this.addInvoiceForm.value.rtax,
-      "cgst": this.addInvoiceForm.value.cgst,
-      "sgst": this.addInvoiceForm.value.sgst,
-      "igst": this.addInvoiceForm.value.igst,
-      "val1": this.addInvoiceForm.value.val1,
-      "val2": this.addInvoiceForm.value.val2,
-      "val3": this.addInvoiceForm.value.val3,
-      "val4": this.addInvoiceForm.value.val4,
-    })
-    console.log("this.per", this.invoiceDynList);
-  }
-  // addNew() {
-  //   // this.personalDetails.push({
-  //   //   'fname': "",
-  //   //   'lname': "",
-  //   //   'email': "",
-  //   // })
-  //   this.personalDetails = [
-  //     {
-  //       'fname': "",
-  //       'lname': "",
-  //       'email': "",
-  //     }];
-  //   this.per.push({
-  //     'fname': this.addTableForm.value.fname,
-  //     'lname': this.addTableForm.value.lname,
-  //     'email': this.addTableForm.value.email,
-  //   })
-  //   console.log("this.per", this.per);
-  // }
-
-  save() {
-    // this.per.push({
-    //   'fname': this.addTableForm.value.fname,
-    //   'lname': this.addTableForm.value.lname,
-    //   'email': this.addTableForm.value.email,
-    // })
-    console.log("push daa", this.per);
+    this.getStateList();
   }
 
-  remove(data) {
-    console.log("name", data);
-    var index = -1;
-    var arrPer = this.invoiceDynList.length;
-    var arrPerData = this.invoiceDynList;
-    for (var i = 0; i < arrPer; i++) {
-      if (arrPerData[i].description === data) {
-        console.log("arrPer", arrPerData[i].description);
-        index = i;
-        break;
-      }
-    }
-    if (index === -1) {
-      alert("Something gone wrong");
-    }
-    this.invoiceDynList.splice(index, 1);
+  buildForm() {
+    this.reimburshForm = this.formBuilder.group({
+      name: this.formBuilder.control(null),
+      invoiceNo: this.formBuilder.control({ value: null, disabled: true }),
+      date: this.formBuilder.control(null),
+      gstin: this.formBuilder.control(null),
+      pos: this.formBuilder.control('0'),
+      eComGstin: this.formBuilder.control(null),
+      salesPerson: this.formBuilder.control(null),
+      invoiceTypeRadio: this.formBuilder.control(null),
+      salesList: this.formBuilder.array([
+        this.formBuilder.group({
+          description: this.formBuilder.control(null),
+          goodservice: this.formBuilder.control(null),
+          hsn: this.formBuilder.control(null),
+          qty: this.formBuilder.control(null),
+          uom: this.formBuilder.control(null),
+          tax: this.formBuilder.control(null),
+          rtax: this.formBuilder.control(null),
+          sgst: this.formBuilder.control(null),
+          igst: this.formBuilder.control(null),
+          val1: this.formBuilder.control(null),
+          val2: this.formBuilder.control(null),
+          val3: this.formBuilder.control(null),
+          val4: this.formBuilder.control(null),
+          val5: this.formBuilder.control(null),
+        }),
+      ]),
+
+    });
+
+    this.salesListArray = this.reimburshForm.get('salesList') as FormArray;
+    console.log("submit  val", this.salesListArray);
+  }
+
+  submitForm(value) {
+    console.log(value);
+  }
+
+  addSalesListItem() {
+    let formGroup: FormGroup = this.formBuilder.group({
+      description: this.formBuilder.control(null),
+      goodservice: this.formBuilder.control(null),
+      hsn: this.formBuilder.control(null),
+      qty: this.formBuilder.control(null),
+      uom: this.formBuilder.control(null),
+      tax: this.formBuilder.control(null),
+      rtax: this.formBuilder.control(null),
+      sgst: this.formBuilder.control(null),
+      igst: this.formBuilder.control(null),
+      val1: this.formBuilder.control(null),
+      val2: this.formBuilder.control(null),
+      val3: this.formBuilder.control(null),
+      val4: this.formBuilder.control(null),
+      val5: this.formBuilder.control(null),
+    });
+
+    this.salesListArray.push(formGroup);
+    console.log("added val", this.salesListArray);
+  }
+
+  deleteRow(index: number) {
+    const control = <FormArray>this.reimburshForm.controls['salesList'];
+    // remove the chosen row
+    control.removeAt(index);
 
   }
 
@@ -324,7 +192,7 @@ export class AddnewinvoiceComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/customer/index?token=' + this.access_token + '&limit=' + 5000, options)
+    this.http.get(this.apiserviceService.BASE_URL+'customer/index?token=' + this.access_token + '&limit=' + 5000, options)
       .subscribe(
       response => {
         // this.customersNamesList = response.json().docs;
@@ -343,13 +211,17 @@ export class AddnewinvoiceComponent implements OnInit {
       );
   }
 
-  search() {
 
+
+
+  search() {
+    console.log("serarch called");
     if (this.query !== "") {
 
       this.filteredList = this.customersNamesList.filter(function (el) {
         return el.toString().toLowerCase().indexOf(this.query.toString().toLowerCase()) > -1;
       }.bind(this));
+      console.log("filteredList", this.filteredList);
     } else {
       this.filteredList = [];
     }
@@ -361,11 +233,11 @@ export class AddnewinvoiceComponent implements OnInit {
     this.selectedCustomerData = this.customerDetailsList.filter(x => x.name == item);
     console.log("NAME", this.selectedCustomerData);
     console.log("GSTIN", this.selectedCustomerData.gstin);
-    this.customerDetailsForm.get('gstin').setValue(this.selectedCustomerData[0].gstin);
+    this.reimburshForm.get('gstin').setValue(this.selectedCustomerData[0].gstin);
   }
 
   selectRadio() {
-    if (this.invoiceTypeRadioForm.controls.invoiceTypeRadio.value === "E_Commerce") {
+    if (this.reimburshForm.controls.invoiceTypeRadio.value === "E_Commerce") {
       this.disableEcommerceInput = true;
     }
     else {
@@ -374,73 +246,73 @@ export class AddnewinvoiceComponent implements OnInit {
     console.log("CLICKEED", this.disableEcommerceInput);
   }
 
-  addInvoice(form:FormGroup) {
-    let response: any;
-    let myHeaders = new Headers({ 'Content-Type': 'application/json' });
-    myHeaders.append('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization, x-access-token');
-    myHeaders.append('Access-Control-Allow-Methods', 'GET, OPTIONS, POST');
-    myHeaders.append('Access-Control-Allow-Origin', '*');
-    myHeaders.append('Access-Control-Allow-Credentials', 'true');
+  // addInvoice(form: FormGroup) {
+  //   let response: any;
+  //   let myHeaders = new Headers({ 'Content-Type': 'application/json' });
+  //   myHeaders.append('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization, x-access-token');
+  //   myHeaders.append('Access-Control-Allow-Methods', 'GET, OPTIONS, POST');
+  //   myHeaders.append('Access-Control-Allow-Origin', '*');
+  //   myHeaders.append('Access-Control-Allow-Credentials', 'true');
 
-    let options = new RequestOptions({ headers: myHeaders });
+  //   let options = new RequestOptions({ headers: myHeaders });
 
-    const body = {
-      "gstin": this.userGstin,
-      "fp": this.customerDetailsForm.controls.date.value,
-      "gt": this.customerDetailsForm.controls.gstin.value,
-      "cur_gt": this.customerDetailsForm.controls.gstin.value,
-      "inum": this.customerDetailsForm.controls.invoiceNo.value,
-      "b2b": [
-        {
-          "ctin": this.customerDetailsForm.controls.gstin.value,
-          "inv": [
-            {
-              "inum": this.customerDetailsForm.controls.invoiceNo.value,
-              "idt": this.customerDetailsForm.controls.date.value,
-              "val": this.grandTotal,
-              "pos": this.customerDetailsForm.controls.pos,
-              "rchrg": "N",
-              "etin": this.customerDetailsForm.controls.gstin,
-              "inv_typ": "R",
-              "itms": [
-                {
-                  "num": 1,
-                  "itm_det": {
-                    "rt": 5,
-                    "txval": 10000,
-                    "iamt": 833.33,
-                    "csamt": 500
-                  }
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    };
+  //   const body = {
+  //     "gstin": this.userGstin,
+  //     "fp": this.customerDetailsForm.controls.date.value,
+  //     "gt": this.customerDetailsForm.controls.gstin.value,
+  //     "cur_gt": this.customerDetailsForm.controls.gstin.value,
+  //     "inum": this.customerDetailsForm.controls.invoiceNo.value,
+  //     "b2b": [
+  //       {
+  //         "ctin": this.customerDetailsForm.controls.gstin.value,
+  //         "inv": [
+  //           {
+  //             "inum": this.customerDetailsForm.controls.invoiceNo.value,
+  //             "idt": this.customerDetailsForm.controls.date.value,
+  //             "val": this.grandTotal,
+  //             "pos": this.customerDetailsForm.controls.pos,
+  //             "rchrg": "N",
+  //             "etin": this.customerDetailsForm.controls.gstin,
+  //             "inv_typ": "R",
+  //             "itms": [
+  //               {
+  //                 "num": 1,
+  //                 "itm_det": {
+  //                   "rt": 5,
+  //                   "txval": 10000,
+  //                   "iamt": 833.33,
+  //                   "csamt": 500
+  //                 }
+  //               }
+  //             ]
+  //           }
+  //         ]
+  //       }
+  //     ]
+  //   };
 
-    console.log("BODY", body);
+  //   console.log("BODY", body);
 
-    this.http.post('http://localhost:3000/api/invoice/create?token=' + this.access_token, body, options)
-      .subscribe(
-      response => {
-        console.log("RESPONSE", response);
-        // this.customerDetailsList = response.json().docs;
-        // for (let data of response.json().docs) {
-        //   this.customersNamesList.push(data.name);
-        //   console.log("CUSTOMER_NAMES", this.customersNamesList);
-        // }
+  //   this.http.post('http://localhost:3000/api/invoice/create?token=' + this.access_token, body, options)
+  //     .subscribe(
+  //     response => {
+  //       console.log("RESPONSE", response);
+  //       // this.customerDetailsList = response.json().docs;
+  //       // for (let data of response.json().docs) {
+  //       //   this.customersNamesList.push(data.name);
+  //       //   console.log("CUSTOMER_NAMES", this.customersNamesList);
+  //       // }
 
 
-      },
-      error => {
-        console.log(error);
-        if (error.text() == "Invoice Number Allready exists") {
+  //     },
+  //     error => {
+  //       console.log(error);
+  //       if (error.text() == "Invoice Number Allready exists") {
 
-        }
-      }
-      );
-  }
+  //       }
+  //     }
+  //     );
+  // }
 
   getStateList() {
     let response: any;
@@ -479,15 +351,11 @@ export class AddnewinvoiceComponent implements OnInit {
       this.invoiceDynList[i].hsn = $event.target.value;
       console.log("pushed array", this.invoiceDynList);
     }
-    else if(control==="description")
-    {
+    else if (control === "description") {
       this.invoiceDynList[i].description = $event.target.value;
     }
-    else if(control==="description")
-    {
+    else if (control === "description") {
       this.invoiceDynList[i].description = $event.target.value;
     }
   }
-
-
 }

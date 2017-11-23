@@ -36,7 +36,7 @@ export class UserDashboardComponent implements OnInit {
   url = '';
   cutomer = {};
   errorMsg = '';
-  public errorType: boolean = false;
+  public errorType: boolean;
   stateList = [];
   public myForm: FormGroup; // our model driven form
   public submitted: boolean; // keep track on whether form is submitted
@@ -78,14 +78,14 @@ export class UserDashboardComponent implements OnInit {
       return;
     }
     this.myForm = new FormGroup({
-      name: new FormControl('', [<any>Validators.required]),
-      contact: new FormControl('', [<any>Validators.required, <any>Validators.minLength(10)]),
-      pan_no: new FormControl('', [<any>Validators.required, <any>Validators.minLength(10)]),
-      email: new FormControl('', [<any>Validators.required]),
-      gstin: new FormControl('', [<any>Validators.required]),
-      address: new FormControl('', [<any>Validators.required]),
-      city: new FormControl('', [<any>Validators.required]),
-      branch_name: new FormControl('', [<any>Validators.required]),
+      name: new FormControl('asd', [<any>Validators.required]),
+      contact: new FormControl('9889562315', [<any>Validators.required, <any>Validators.minLength(10)]),
+      pan_no: new FormControl('YHSDS2345E', [<any>Validators.required, <any>Validators.minLength(10)]),
+      email: new FormControl('adb@adsfo.com', [<any>Validators.required]),
+      gstin: new FormControl('adsf', [<any>Validators.required]),
+      address: new FormControl('adsf', [<any>Validators.required]),
+      city: new FormControl('asdf', [<any>Validators.required]),
+      branch_name: new FormControl('adsf', [<any>Validators.required]),
       state: new FormControl(''),
       selectedDealer: new FormControl('')
       // address: new FormGroup({
@@ -159,18 +159,40 @@ export class UserDashboardComponent implements OnInit {
           this.closeModal();
           // alert(response.json().message);
           this.getBranches(this.pager.currentPage)
+          this.saveTodos(true);
+          this.errorMsg = response.json().message;
+
+          // this.changePassForm.reset();
+          this.submitted = false;
         },
         error => {
           console.log('error', error.message);
           console.log(error.text());
           this.errorType = true;
-          this.errorMsg = error.json().messages;
+          this.saveTodos(false);
+          const errorval = error.text();
+          console.log('real error msg : ', errorval.substr(72, 9));
+          if (errorval.substr(72, 8) === 'pan_no_1') {
+            this.errorMsg = 'Pan No is already register.';
+          } else {
+            this.errorMsg = 'Branch Name alerdy exists';
+          }
         }
         );
     }
   }
   private closeModal(): void {
     this.closeBtn.nativeElement.click();
+  }
+
+  saveTodos(val) {
+    //show box msg
+    this.errorType = val;
+    //wait 3 Seconds and hide
+    setTimeout(function () {
+      this.errorType = null;
+      console.log(this.errorType);
+    }.bind(this), 3000);
   }
 
   getBranches(page: number) {

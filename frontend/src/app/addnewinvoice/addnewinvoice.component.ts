@@ -14,6 +14,17 @@ import { NumberValidatorsService } from "../number-validators.service";
   styleUrls: ['./addnewinvoice.component.css']
 })
 export class AddnewinvoiceComponent implements OnInit {
+  personalDetails: any = [];
+  invoiceList: any = [];
+  personalData = [];
+  public addTableForm: FormGroup;
+  public addInvoiceForm: FormGroup;
+  public selectedAll: boolean;
+  per = [];
+  customerDetailsForm: FormGroup;
+  selectedCustomerData: any;
+  disableEcommerceInput: boolean = false;
+  invoiceDynList = [];
 
   access_token: string;
   selectedName: string;
@@ -21,7 +32,7 @@ export class AddnewinvoiceComponent implements OnInit {
   filteredList = [];
   query: string;
   invoiceTypeRadioForm: FormGroup;
-  customerDetailsList=[];
+  customerDetailsList = [];
 
   serice = [
     'SELECT',
@@ -130,13 +141,72 @@ export class AddnewinvoiceComponent implements OnInit {
     '37-Andhra Pradesh',
     '97-Other Territory'
   ]
+  constructor(private _fb: FormBuilder, public http: Http, private pagerService: PagerService, private router: Router) {
+    this.invoiceList = [{
+      "description": "",
+      "goodservice": "",
+      "hsn": "",
+      "qty": "",
+      "uom": "",
+      "tax": "",
+      "rtax": "",
+      "cgst": "",
+      "sgst": "",
+      "igst": "",
+      "val1": "",
+      "val2": "",
+      "val3": "",
+      "val4": "",
+    }];
+    this.personalDetails =
+      [
+        {
+          'fname': "",
+          'lname': "",
+          'email': "",
+        }];
+    this.personalData =
+      [
+        {
+          'fname': 'Muhammed',
+          'lname': 'Shanid',
+          'email': 'shanid@shanid.com'
+        },
+        {
+          'fname': 'John',
+          'lname': 'Abraham',
+          'email': 'john@john.com'
+        },
+        {
+          'fname': 'Roy',
+          'lname': 'Mathew',
+          'email': 'roy@roy.com'
+        }];
+    console.log("length", this.personalDetails.length);
+  }
 
-  customerDetailsForm: FormGroup;
-  selectedCustomerData:any;
-  disableEcommerceInput:boolean=false;
-
-  constructor(public http: Http, private pagerService: PagerService, private router: Router) {
-
+  ngOnInit() {
+    this.addTableForm = new FormGroup({
+      fname: new FormControl('', [<any>Validators.required]),
+      lname: new FormControl('', [<any>Validators.required]),
+      email: new FormControl('', [<any>Validators.required]),
+    });
+    this.addInvoiceForm = new FormGroup({
+      description: new FormControl('', [<any>Validators.required]),
+      goodservice: new FormControl('', [<any>Validators.required]),
+      hsn: new FormControl('', [<any>Validators.required]),
+      qty: new FormControl('', [<any>Validators.required]),
+      uom: new FormControl('', [<any>Validators.required]),
+      tax: new FormControl('', [<any>Validators.required]),
+      rtax: new FormControl('', [<any>Validators.required]),
+      cgst: new FormControl('', [<any>Validators.required]),
+      sgst: new FormControl('', [<any>Validators.required]),
+      igst: new FormControl('', [<any>Validators.required]),
+      val1: new FormControl('', [<any>Validators.required]),
+      val2: new FormControl('', [<any>Validators.required]),
+      val3: new FormControl('', [<any>Validators.required]),
+      val4: new FormControl('', [<any>Validators.required]),
+    });
     this.invoiceTypeRadioForm = new FormGroup({
       invoiceTypeRadio: new FormControl('', [<any>Validators.required]),
     });
@@ -149,17 +219,93 @@ export class AddnewinvoiceComponent implements OnInit {
       pos: new FormControl('', [<any>Validators.required]),
       eComGstin: new FormControl('', [<any>Validators.required]),
     });
-  }
-
-  ngOnInit() {
-    // if (this.access_token == null) {
-    //   this.router.navigate(['/home']);
-    //   return;
-    // }
 
     this.access_token = localStorage.getItem('user_token');
 
     this.getCustomerNames();
+  }
+  addNew() {
+    this.invoiceList = [
+      {
+        "description": "",
+        "goodservice": "",
+        "hsn": "",
+        "qty": "",
+        "uom": "",
+        "tax": "",
+        "rtax": "",
+        "cgst": "",
+        "sgst": "",
+        "igst": "",
+        "val1": "",
+        "val2": "",
+        "val3": "",
+        "val4": "",
+      }];
+    this.invoiceDynList.push({
+      "description": this.addInvoiceForm.value.description,
+      "goodservice": this.addInvoiceForm.value.goodservice,
+      "hsn": this.addInvoiceForm.value.hsn,
+      "qty": this.addInvoiceForm.value.qty,
+      "uom": this.addInvoiceForm.value.uom,
+      "tax": this.addInvoiceForm.value.tax,
+      "rtax": this.addInvoiceForm.value.rtax,
+      "cgst": this.addInvoiceForm.value.cgst,
+      "sgst": this.addInvoiceForm.value.sgst,
+      "igst": this.addInvoiceForm.value.igst,
+      "val1": this.addInvoiceForm.value.val1,
+      "val2": this.addInvoiceForm.value.val2,
+      "val3": this.addInvoiceForm.value.val3,
+      "val4": this.addInvoiceForm.value.val4,
+    })
+    console.log("this.per", this.invoiceDynList);
+  }
+  // addNew() {
+  //   // this.personalDetails.push({
+  //   //   'fname': "",
+  //   //   'lname': "",
+  //   //   'email': "",
+  //   // })
+  //   this.personalDetails = [
+  //     {
+  //       'fname': "",
+  //       'lname': "",
+  //       'email': "",
+  //     }];
+  //   this.per.push({
+  //     'fname': this.addTableForm.value.fname,
+  //     'lname': this.addTableForm.value.lname,
+  //     'email': this.addTableForm.value.email,
+  //   })
+  //   console.log("this.per", this.per);
+  // }
+
+  save() {
+    // this.per.push({
+    //   'fname': this.addTableForm.value.fname,
+    //   'lname': this.addTableForm.value.lname,
+    //   'email': this.addTableForm.value.email,
+    // })
+    console.log("push daa", this.per);
+  }
+
+  remove(data) {
+    console.log("name", data);
+    var index = -1;
+    var arrPer = this.invoiceDynList.length;
+    var arrPerData = this.invoiceDynList;
+    for (var i = 0; i < arrPer; i++) {
+      if (arrPerData[i].description === data) {
+        console.log("arrPer", arrPerData[i].description);
+        index = i;
+        break;
+      }
+    }
+    if (index === -1) {
+      alert("Something gone wrong");
+    }
+    this.invoiceDynList.splice(index, 1);
+
   }
 
   getCustomerNames() {
@@ -177,7 +323,7 @@ export class AddnewinvoiceComponent implements OnInit {
       response => {
         // this.customersNamesList = response.json().docs;
         console.log("RESPONSE", response.json().docs);
-        this.customerDetailsList=response.json().docs;
+        this.customerDetailsList = response.json().docs;
         for (let data of response.json().docs) {
           console.log("NAMES", data.name);
           this.customersNamesList.push(data.name);
@@ -206,26 +352,23 @@ export class AddnewinvoiceComponent implements OnInit {
   select(item) {
     this.query = item;
     this.filteredList = [];
-    this.selectedCustomerData= this.customerDetailsList.filter(x => x.name == item);
-    console.log("NAME",this.selectedCustomerData);
-    console.log("GSTIN",this.selectedCustomerData.gstin);
+    this.selectedCustomerData = this.customerDetailsList.filter(x => x.name == item);
+    console.log("NAME", this.selectedCustomerData);
+    console.log("GSTIN", this.selectedCustomerData.gstin);
     this.customerDetailsForm.get('gstin').setValue(this.selectedCustomerData[0].gstin);
   }
 
   selectRadio() {
-    if(this.invoiceTypeRadioForm.controls.invoiceTypeRadio.value==="E_Commerce")
-    {
-      this.disableEcommerceInput=true;
+    if (this.invoiceTypeRadioForm.controls.invoiceTypeRadio.value === "E_Commerce") {
+      this.disableEcommerceInput = true;
     }
-    else
-    {
-      this.disableEcommerceInput=false;
+    else {
+      this.disableEcommerceInput = false;
     }
-    console.log("CLICKEED",this.disableEcommerceInput);
+    console.log("CLICKEED", this.disableEcommerceInput);
   }
 
-  addInvoice()
-  {
+  addInvoice() {
     let response: any;
     let myHeaders = new Headers({ 'Content-Type': 'application/json' });
     myHeaders.append('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization, x-access-token');
@@ -235,27 +378,27 @@ export class AddnewinvoiceComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    let itm_det={
-      "rt":"",
-      "txval":"",
-      "iamt":"",
-      "csamt":""
+    let itm_det = {
+      "rt": "",
+      "txval": "",
+      "iamt": "",
+      "csamt": ""
     };
 
-    let items ={
-      "num":"",
+    let items = {
+      "num": "",
       // "itm_det":JSON.parse(itm_det)
     };
 
-    let invArray={
-        // "inum":this.customerDetailsForm.controls.invoiceNo.value,
-        // "idt":this.customerDetailsForm.controls.date.value,
-        // "val":this.customerDetailsForm.controls.
-        // "pos":"",
-        // "rchrg":"",
-        // "etin":"",
-        // "inv_typ":"",
-        // "itms":JSON.parse()
+    let invArray = {
+      // "inum":this.customerDetailsForm.controls.invoiceNo.value,
+      // "idt":this.customerDetailsForm.controls.date.value,
+      // "val":this.customerDetailsForm.controls.
+      // "pos":"",
+      // "rchrg":"",
+      // "etin":"",
+      // "inv_typ":"",
+      // "itms":JSON.parse()
     };
 
     // let b2bArray={
@@ -263,13 +406,13 @@ export class AddnewinvoiceComponent implements OnInit {
     //   "inv"
     // };
 
-    let body={
-      "gstin":this.customerDetailsForm.controls.gstin.value,
-      "fp":"",
-      "gt":this.customerDetailsForm.controls.gstin.value,
-      "cur_gt":this.customerDetailsForm.controls.gstin.value,
-      "inum":this.customerDetailsForm.controls.gstin.value,
-      "b2b":this.customerDetailsForm.controls.gstin.value,
+    let body = {
+      "gstin": this.customerDetailsForm.controls.gstin.value,
+      "fp": "",
+      "gt": this.customerDetailsForm.controls.gstin.value,
+      "cur_gt": this.customerDetailsForm.controls.gstin.value,
+      "inum": this.customerDetailsForm.controls.gstin.value,
+      "b2b": this.customerDetailsForm.controls.gstin.value,
       // "inum":this.customerDetailsForm.controls.gstin.value,
       // "inum":this.customerDetailsForm.controls.gstin.value,
       // "inum":this.customerDetailsForm.controls.gstin.value,
@@ -277,11 +420,11 @@ export class AddnewinvoiceComponent implements OnInit {
 
     };
 
-    this.http.post('http://localhost:3000/api/invoice/create?token=' + this.access_token + '&limit=' + 5000,body, options)
+    this.http.post('http://localhost:3000/api/invoice/create?token=' + this.access_token + '&limit=' + 5000, body, options)
       .subscribe(
       response => {
         console.log("RESPONSE", response.json().docs);
-        this.customerDetailsList=response.json().docs;
+        this.customerDetailsList = response.json().docs;
         for (let data of response.json().docs) {
           this.customersNamesList.push(data.name);
           console.log("CUSTOMER_NAMES", this.customersNamesList);
@@ -292,5 +435,62 @@ export class AddnewinvoiceComponent implements OnInit {
       }
       );
   }
+  // remove(data) {
+  //   console.log("name", data);
+  //   var index = -1;
+  //   var arrPer = this.per.length;
+  //   var arrPerData = this.per;
+  //   for (var i = 0; i < arrPer; i++) {
+  //     if (arrPerData[i].fname === data) {
+  //       console.log("arrPer", arrPerData[i].fname);
+  //       index = i;
+  //       break;
+  //     }
+  //   }
+  //   if (index === -1) {
+  //     alert("Something gone wrong");
+  //   }
+  //   this.per.splice(index, 1);
+  //   // console.log()
+  //   // this.personalDetails.pop(data);
+  //   // this.per.pop();
+
+  // }
+
+  // addNew() {
+  //   this.personalDetails.push({
+  //     'fname': "",
+  //     'lname': "",
+  //     'email': "",
+  //   })
+  //   console.log("this.personalDetails", this.personalDetails);
+
+  // }
+  // addNew(data) {
+  //   console.log("data",data);
+  //   this.personalDetails.push({
+  //     'fname': this.addTableForm.value.fname,
+  //     'lname': this.addTableForm.value.lname,
+  //     'email': this.addTableForm.value.email,
+  //   })
+  //   this.addTableForm.value.fname = "";
+  //   this.addTableForm.value.lname = "";
+  //   this.addTableForm.value.email = "";
+  //   console.log("this.personalDetails", this.personalDetails);
+
+  // }
+
+
+  // checkAll() {
+  //   if (!this.selectedAll) {
+  //     this.selectedAll = true;
+  //   } else {
+  //     this.selectedAll = false;
+  //   }
+  //   forEach(this.personalDetails, function (personalDetail) {
+  //     personalDetail.selected = this.selectedAll;
+  //   });
+  // }
+
 
 }

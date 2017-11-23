@@ -7,11 +7,13 @@ import { PagerService } from '../service/pager.service';
 import { ExcelServiceService } from '../excel-service.service';
 import { RouterModule, Routes, Router } from '@angular/router';
 import { NumberValidatorsService } from "../number-validators.service";
+import {ApiserviceService} from '../apiservice.service';
 
 @Component({
   selector: 'app-summary',
   templateUrl: './summary.component.html',
-  styleUrls: ['./summary.component.css']
+  styleUrls: ['./summary.component.css'],
+  providers:[ApiserviceService]
 })
 export class SummaryComponent implements OnInit {
 page = 1;
@@ -61,7 +63,7 @@ currentYear:number;
     'Filed'
   ]
   
-  constructor() { }
+  constructor(public apiserviceService: ApiserviceService) { }
 
   ngOnInit() {
     this.summaryForm=new FormGroup({

@@ -12,7 +12,7 @@ import { PagerService } from '../service/pager.service';
   selector: 'app-goodservices',
   templateUrl: './goodservices.component.html',
   styleUrls: ['./goodservices.component.css'],
-  providers: [PagerService, ExcelServiceService]
+  providers: [PagerService, ExcelServiceService,ApiserviceService]
 })
 export class GoodservicesComponent implements OnInit {
 
@@ -48,7 +48,7 @@ export class GoodservicesComponent implements OnInit {
   @ViewChild('closeBtn') closeBtn: ElementRef;
   @ViewChild('closeEditModal') closeEditModal: ElementRef;
 
-  constructor(private http: Http, private pagerService: PagerService, public excelServiceService: ExcelServiceService, private router: Router) {
+  constructor(private http: Http, private pagerService: PagerService, public excelServiceService: ExcelServiceService, private router: Router,public apiserviceService: ApiserviceService) {
     this.access_token = localStorage.getItem("user_token");
     console.log("user_token", this.access_token);
     this.getGoodService(1);
@@ -98,7 +98,7 @@ export class GoodservicesComponent implements OnInit {
   getGoodService(page: number) {
     let myHeaders = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: myHeaders });
-    this.http.get('http://localhost:3000/api/goodsuser/index?token=' + this.access_token + '&limit=2&page=' + this.pager.currentPage, options)
+    this.http.get(this.apiserviceService.BASE_URL+'goodsuser/index?token=' + this.access_token + '&limit=2&page=' + this.pager.currentPage, options)
       .subscribe(
       response => {
         console.log("googservice list", response.json().docs);
@@ -141,7 +141,7 @@ export class GoodservicesComponent implements OnInit {
         "type": this.goodsForm.value.type
       };
 
-      this.url = "http://localhost:3000/api/goodsuser/create?token=" + this.access_token;
+      this.url = this.apiserviceService.BASE_URL+"goodsuser/create?token=" + this.access_token;
       return this.http.post(this.url, body, requestOptions)
         .subscribe(
         response => {
@@ -210,7 +210,7 @@ export class GoodservicesComponent implements OnInit {
       };
       console.log("body", body);
 
-      this.url = "http://localhost:3000/api/vendor/update?token=" + this.access_token;
+      this.url = this.apiserviceService.BASE_URL+"vendor/update?token=" + this.access_token;
       return this.http.put(this.url, body, requestOptions)
         .subscribe(
         response => {

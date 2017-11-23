@@ -1,7 +1,14 @@
 const Invoice = require('../../../models/invoice')
 
     var Curl = require( 'node-libcurl' ).Curl;
- 
+   var usingItNow = function(req) {
+if(req.type=="agentuser"||req.type=="admin"){
+  return false;
+}else{
+   return true;
+}
+}
+
 // var java = require('java');
 // var javaLangSystem = java.import('java.lang.System');
 // var javal = java.import('java.lang.*');
@@ -30,10 +37,19 @@ const Invoice = require('../../../models/invoice')
 
  //    }
 exports.list = (req, res) => {
-    const fs = require('fs'),
-      x509 = require('x509');
-var issuer = x509.getIssuer(fs.readFileSync('./Public_key/GSTN_G2A_SANDBOX_UAT_public.cer').toString());
-console.log(issuer);
+//     var exec = require('child_process').exec, child;
+// child = exec('java -jar C:\\..\\..\\yourjar.jar',
+// function (error, stdout, stderr){
+// console.log('stdout: ' + stdout);
+// console.log('stderr: ' + stderr);
+// if(error !== null){
+//   console.log('exec error: ' + error);
+// }
+// });
+//     const fs = require('fs'),
+//       x509 = require('x509');
+// var issuer = x509.getIssuer(fs.readFileSync('./Public_key/GSTN_G2A_SANDBOX_UAT_public.cer').toString());
+// console.log(issuer);
     // refuse if not an admin
       // if(!req.decoded.admin) {
     //     return res.status(403).json({
@@ -82,11 +98,12 @@ exports.searchf=(req,res)=>{
 exports.create = (req, res) => {
     const {gstin,fp,gt,inum,cur_gt,b2b,b2cl,cdnr,b2cs,exp,hsn,nil,txpd,at,doc_issue,cdnur} = req.body
     let newUser = null
- // if(!req.decoded.admin) {
- //        return res.status(403).json({
- //            message: 'you are not an admin'
- //        })
- //    }
+var myCallback=usingItNow(req.decoded)
+ if(myCallback) {
+   return res.status(403).json({
+            message: 'you are not an authorise'
+        }) 
+    }
     // create a new user if does not exist
     const create = (invoice) => {       
    
@@ -107,8 +124,7 @@ exports.create = (req, res) => {
    
  const respond = () => {
         res.json({
-            message: 'Invoice  Successfully Save'
-        
+            message: 'Invoice  Successfully Save'       
  
         })
     }

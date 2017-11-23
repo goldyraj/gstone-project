@@ -10,7 +10,7 @@ import { PagerService } from '../service/pager.service';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-
+  @ViewChild('closeBtn') closeBtn: ElementRef;
   rowDataIndex;
   public changePassForm: FormGroup; // our model driven form
   public editProfileForm: FormGroup;
@@ -28,8 +28,9 @@ export class ProfileComponent implements OnInit {
   branchesList = [];
   pagedItems: any[];
   pager: any = {};
-  branchRowData = [];
+  branchRowData;
   selectedState = '';
+  selectedDealer = '';
   stateList = [];
   dealerType = [];
   public errorType: boolean;
@@ -64,7 +65,7 @@ export class ProfileComponent implements OnInit {
       city: new FormControl('', [<any>Validators.required]),
       branch_name: new FormControl('', [<any>Validators.required]),
       state: new FormControl(''),
-      selectedDealer: new FormControl('')
+      dealer_type: new FormControl('')
     });
     this.editProfileForm = new FormGroup({
       name: new FormControl('', [<any>Validators.required]),
@@ -85,6 +86,11 @@ export class ProfileComponent implements OnInit {
     $event.preventDefault();
     console.log('selected: ' + $event.target.value);
     this.selectedState = $event.target.value;
+  }
+  onDealerInput($event) {
+    $event.preventDefault();
+    console.log('selected: ' + $event.target.value);
+    this.selectedDealer = $event.target.value;
   }
 
   getStateList() {
@@ -252,10 +258,59 @@ export class ProfileComponent implements OnInit {
       this.editBranchFrom.get("address").setValue(data.address);
       this.editBranchFrom.get("state").setValue(data.state);
       this.editBranchFrom.get("branch_name").setValue(data.branch_name);
+      this.editBranchFrom.get("dealer_type").setValue(data.dealer_type);
     }
 
     this.branchRowData = data;
 
+  }
+
+  updateBranchRecord(isValid: boolean) {
+    this.submittedEdit = true; // set form submit to true
+    console.log(isValid);
+    console.log("hi form module is called from page");
+    console.log("edited form data", this.editBranchFrom.value);
+    if (isValid == true) {
+      const headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      headers.append('x-access-token', this.access_token);
+      const requestOptions = new RequestOptions({ headers: headers });
+
+      const body = {
+        "_id": this.branchRowData._id,
+        "address": this.editBranchFrom.value.address,
+        "branch_name":  this.editBranchFrom.value.branch_name,
+        "city":  this.editBranchFrom.value.city,
+        "contact":  this.editBranchFrom.value.contact,
+        "email":  this.editBranchFrom.value.email,
+        "gstin":  this.editBranchFrom.value.gstin,
+        "name":  this.editBranchFrom.value.name,
+        "pan_no":  this.editBranchFrom.value.pan_no,
+        "dealer_type":  this.selectedDealer,
+        "state":  this.selectedState
+      };
+      console.log("body", body);
+
+      this.url = "http://localhost:3000/api/branch/update?token=" + this.access_token;
+      return this.http.put(this.url, body, requestOptions)
+        .subscribe(
+        response => {
+          console.log("suceessfull data", response.json().message);
+          this.closeModal();
+          this.submittedEdit = false;
+          this.getBranches(this.pager.currentPage);
+        },
+        error => {
+          // this.closeEditModal();
+          console.log("error", error.message);
+          console.log(error.text());
+        }
+        );
+    }
+  }
+
+  private closeModal(): void {
+    this.closeBtn.nativeElement.click();
   }
 
   setPage() {

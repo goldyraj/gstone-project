@@ -257,14 +257,12 @@
 
 
                 <div class="tab-pane section-top-20" id="editbranch">
-                  <div class="alert alert-success" *ngIf="errorType == true">
-                    Your Password changed Successfully
-                  </div>
-                  <div class="alert alert-danger" *ngIf="errorType == false">
-                    {{errorMsg}}
+
+                  <div class="alert alert-danger" *ngIf="isBranchList == true">
+                    <strong>Sorry!</strong> Your dont have Branch list.
                   </div>
 
-                  <div class="table-responsive">
+                  <div class="table-responsive" *ngIf="isBranchList == false">
                     <table class="table table-condensed  table-hover table-bordered">
                       <thead>
                         <tr>
@@ -289,6 +287,26 @@
                         </tr>
                       </tbody>
                     </table>
+                    <ul class="pagination btn-sm" *ngIf="isBranchList == false">
+                      <li [ngClass]="{disabled:pager.currentPage === 1}">
+                        <a *ngIf="pager.currentPage > 1" (click)="getBranches(pager.currentPage - 1)">Previous</a>
+                      </li>
+
+                      <li [ngClass]="{disabled:pager.currentPage === 1}">
+                        <a *ngIf="pager.currentPage ==1">Previous</a>
+                      </li>
+
+                      <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                        <a (click)="getBranches(page)">{{page}}</a>
+                      </li>
+
+                      <li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
+                        <a *ngIf="pager.currentPage < pager.endPage" (click)="getBranches(pager.currentPage + 1)">Next</a>
+                      </li>
+                      <li [ngClass]="{disabled:pager.currentPage === pager.endPage}">
+                        <a *ngIf="pager.currentPage == pager.endPage">Next</a>
+                      </li>
+                    </ul>
                   </div>
                 </div>
 
@@ -317,14 +335,14 @@
         <button type="button" class="close" data-dismiss="modal" #closeBtn aria-label="Close">
           <span class="modal-text" aria-hidden="true">X</span>
         </button>
-        <h4 class="modal-title modal-text" align="center"> Add New GSTIN</h4>
+        <h4 class="modal-title modal-text" align="center"> Edit Branch List</h4>
       </div>
       <div class="modal-body">
         <div class="service-section">
           <div class="row">
             <div class="col-md-1 col-sm-1"></div>
             <div class="col-md-10 col-sm-10">
-              <form [formGroup]="editBranchFrom" novalidate (ngSubmit)="save( editBranchFrom.valid)">
+              <form [formGroup]="editBranchFrom" novalidate (ngSubmit)="updateBranchRecord(editBranchFrom.valid)">
                 <!-- <form [formGroup]="editBranchFrom" novalidate (ngSubmit)="save()"> -->
 
                 <div class="col-md-6 col-sm-6 col-xs-12 form-group">
@@ -368,11 +386,11 @@
                 </div>
 
                 <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-                  <select class="form-control" formControlName="selectedDealer" >
+                  <select class="form-control" formControlName="dealer_type">
                     <option value="" selected="selected">--Select Dealer--</option>
-                    <option *ngFor="let item of dealerType" selected="{{item.name === selectedDealer}}" value="{{item.name}}">{{item.name}}</option>
+                    <option *ngFor="let item of dealerType" selected="{{item.name === dealer_type}}" value="{{item.name}}">{{item.name}}</option>
                   </select>
-                  <small *ngIf="editBranchFrom.controls.selectedDealer.value=== '' && submitted">
+                  <small *ngIf="editBranchFrom.controls.dealer_type.value=== '' && submitted">
                     Please select dealer !
                   </small>
                 </div>

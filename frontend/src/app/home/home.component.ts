@@ -151,6 +151,9 @@ export class HomeComponent implements OnInit {
               this.button2.nativeElement.click();
               this.router.navigate(['/user']);
               localStorage.setItem('user_token', response.json().token);
+              localStorage.setItem('user_gstin', this.userDetails['gstin']);
+              localStorage.setItem('user_pan_no', this.userDetails['pan_no']);
+              localStorage.setItem('user_contact', this.userDetails['contact']);
             }
             // this.router.navigate(['/user']);
             console.log('State  PArse', this.userDetails);

@@ -3,11 +3,13 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { RouterModule, Routes, Router } from '@angular/router';
+import {ApiserviceService} from '../apiservice.service';
 
 @Component({
   selector: 'app-videoslink',
   templateUrl: './videoslink.component.html',
-  styleUrls: ['./videoslink.component.css']
+  styleUrls: ['./videoslink.component.css'],
+  providers:[ApiserviceService]
 })
 export class VideoslinkComponent implements OnInit {
 
@@ -29,7 +31,7 @@ export class VideoslinkComponent implements OnInit {
   public submitted: boolean; // keep track on whether form is submitted
   public submittedEdit: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
-  constructor(private _fb: FormBuilder, private http: Http, private router: Router) {
+  constructor(private _fb: FormBuilder, private http: Http, private router: Router,public apiserviceService: ApiserviceService) {
     // this.access_token = localStorage.getItem("user_token");
     this.getVideosList();
   }
@@ -39,7 +41,7 @@ export class VideoslinkComponent implements OnInit {
   }
   getVideosList() {
     console.log('list called');
-    this.http.get('http://localhost:3000/api/home/vedio').subscribe(data => {
+    this.http.get(this.apiserviceService.BASE_URL+'home/vedio').subscribe(data => {
       this.videosList = data.json().docs;
       this.TotalPages = data.json().total;
       this.pageSize = this.Paging.limit;

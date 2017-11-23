@@ -4,11 +4,13 @@ import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { RouterModule, Routes, Router } from '@angular/router';
 import { PagerService } from '../service/pager.service';
+import {ApiserviceService} from '../apiservice.service';
 
 @Component({
   selector: 'app-gstupdate',
   templateUrl: './gstupdate.component.html',
-  styleUrls: ['./gstupdate.component.css']
+  styleUrls: ['./gstupdate.component.css'],
+  providers:[ApiserviceService]
 })
 export class GstupdateComponent implements OnInit {
 
@@ -35,7 +37,7 @@ export class GstupdateComponent implements OnInit {
   public events: any[] = []; // use later to display form changes
   access_token;
 
-  constructor(public http: Http, private router: Router, private _fb: FormBuilder, public pagerService: PagerService) {
+  constructor(public http: Http, private router: Router, private _fb: FormBuilder, public pagerService: PagerService,public apiserviceService: ApiserviceService) {
     this.access_token = localStorage.getItem("user_token");
     console.log("user_token", this.access_token);
     this.getInternalUpdateList(1);
@@ -48,7 +50,7 @@ export class GstupdateComponent implements OnInit {
 
   getInternalUpdateList(page: number) {
     console.log('list called');
-    this.http.get('http://localhost:3000/api/home/internal?limit=2&page=' + this.pager.currentPage).subscribe(data => {
+    this.http.get(this.apiserviceService.BASE_URL+'home/internal?limit=2&page=' + this.pager.currentPage).subscribe(data => {
       this.internalUpdateList = data.json().docs;
       this.TotalPages = data.json().total;
       this.pageSize = this.Paging.limit;

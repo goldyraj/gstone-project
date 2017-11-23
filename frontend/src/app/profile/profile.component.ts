@@ -3,11 +3,13 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { PagerService } from '../service/pager.service';
+import { ApiserviceService } from '../apiservice.service';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  styleUrls: ['./profile.component.css'],
+  providers: [ApiserviceService]
 })
 export class ProfileComponent implements OnInit {
   @ViewChild('closeBtn') closeBtn: ElementRef;
@@ -36,7 +38,8 @@ export class ProfileComponent implements OnInit {
   public errorType: boolean;
 
 
-  constructor(private _fb: FormBuilder, private http: Http, public PagerService: PagerService, ) {
+  constructor(private _fb: FormBuilder, private http: Http, public PagerService: PagerService
+    , public apiserviceService: ApiserviceService) {
     this.access_token = localStorage.getItem("user_token");
     this.user_name = localStorage.getItem("user_name");
     this.getBranches(1);
@@ -95,7 +98,7 @@ export class ProfileComponent implements OnInit {
 
   getStateList() {
     console.log('list called');
-    this.http.get('http://localhost:3000/api/state/list').subscribe(data => {
+    this.http.get(this.apiserviceService.BASE_URL+'state/list').subscribe(data => {
       this.stateList = data.json().state;
       // this.TotalPages = data.json().total;
       // this.pageSize = this.Paging.limit;
@@ -123,7 +126,7 @@ export class ProfileComponent implements OnInit {
         "password": this.changePassForm.value.oldPass,
         "newpassword": this.changePassForm.value.newPass,
       };
-      this.url = "http://localhost:3000/api/user/changepassword?token=" + this.access_token;
+      this.url = this.apiserviceService.BASE_URL+"user/changepassword?token=" + this.access_token;
       return this.http.post(this.url, body, requestOptions)
         .subscribe(
         response => {
@@ -145,7 +148,7 @@ export class ProfileComponent implements OnInit {
 
   getUserList() {
     console.log('list called');
-    this.http.get('http://localhost:3000/api/user/view?token=' + this.access_token).subscribe(data => {
+    this.http.get(this.apiserviceService.BASE_URL+'user/view?token=' + this.access_token).subscribe(data => {
       this.userDetail = data.json().data;
       console.log("userDetail", data);
       console.log("userDetail1", this.userDetail);
@@ -193,7 +196,7 @@ export class ProfileComponent implements OnInit {
       };
       console.log("body", body);
 
-      this.url = "http://localhost:3000/api/user/profileupdate/?token=" + this.access_token;
+      this.url = this.apiserviceService.BASE_URL+"user/profileupdate/?token=" + this.access_token;
       return this.http.put(this.url, body, requestOptions)
         .subscribe(
         response => {
@@ -220,7 +223,7 @@ export class ProfileComponent implements OnInit {
     let myHeaders = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/branch/index?token=' + this.access_token + '&page=' + this.pager.currentPage + '&limit=' + 5, options)
+    this.http.get(this.apiserviceService.BASE_URL+'branch/index?token=' + this.access_token + '&page=' + this.pager.currentPage + '&limit=' + 5, options)
       .subscribe(
       response => {
         console.log('BRANCH_LIST_API_RESPONSE_2', response.json().docs);
@@ -279,19 +282,19 @@ export class ProfileComponent implements OnInit {
       const body = {
         "_id": this.branchRowData._id,
         "address": this.editBranchFrom.value.address,
-        "branch_name":  this.editBranchFrom.value.branch_name,
-        "city":  this.editBranchFrom.value.city,
-        "contact":  this.editBranchFrom.value.contact,
-        "email":  this.editBranchFrom.value.email,
-        "gstin":  this.editBranchFrom.value.gstin,
-        "name":  this.editBranchFrom.value.name,
-        "pan_no":  this.editBranchFrom.value.pan_no,
-        "dealer_type":  this.selectedDealer,
-        "state":  this.selectedState
+        "branch_name": this.editBranchFrom.value.branch_name,
+        "city": this.editBranchFrom.value.city,
+        "contact": this.editBranchFrom.value.contact,
+        "email": this.editBranchFrom.value.email,
+        "gstin": this.editBranchFrom.value.gstin,
+        "name": this.editBranchFrom.value.name,
+        "pan_no": this.editBranchFrom.value.pan_no,
+        "dealer_type": this.selectedDealer,
+        "state": this.selectedState
       };
       console.log("body", body);
 
-      this.url = "http://localhost:3000/api/branch/update?token=" + this.access_token;
+      this.url = this.apiserviceService.BASE_URL+"branch/update?token=" + this.access_token;
       return this.http.put(this.url, body, requestOptions)
         .subscribe(
         response => {

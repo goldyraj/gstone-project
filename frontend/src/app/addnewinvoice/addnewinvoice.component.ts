@@ -7,12 +7,13 @@ import { PagerService } from '../service/pager.service';
 import { ExcelServiceService } from '../excel-service.service';
 import { RouterModule, Routes, Router } from '@angular/router';
 import { NumberValidatorsService } from "../number-validators.service";
-
+import {ApiserviceService} from '../apiservice.service';
 
 @Component({
   selector: 'app-addnewinvoice',
   templateUrl: './addnewinvoice.component.html',
-  styleUrls: ['./addnewinvoice.component.css']
+  styleUrls: ['./addnewinvoice.component.css'],
+  providers:[ApiserviceService]
 })
 export class AddnewinvoiceComponent implements OnInit {
   reimburshForm: FormGroup;
@@ -102,7 +103,7 @@ export class AddnewinvoiceComponent implements OnInit {
     'YDS-YARDS',
     'OTH-OTHERS'
   ]
-  constructor(private formBuilder: FormBuilder, private pagerService: PagerService, private router: Router, public http: Http, ) {
+  constructor(private formBuilder: FormBuilder, private pagerService: PagerService, private router: Router, public http: Http,public apiserviceService: ApiserviceService ) {
     
   }
 
@@ -119,7 +120,7 @@ export class AddnewinvoiceComponent implements OnInit {
       invoiceNo: this.formBuilder.control({ value: null, disabled: true }),
       date: this.formBuilder.control(null),
       gstin: this.formBuilder.control(null),
-      pos: this.formBuilder.control(null),
+      pos: this.formBuilder.control('0'),
       eComGstin: this.formBuilder.control(null),
       salesPerson: this.formBuilder.control(null),
       invoiceTypeRadio: this.formBuilder.control(null),
@@ -191,7 +192,7 @@ export class AddnewinvoiceComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/customer/index?token=' + this.access_token + '&limit=' + 5000, options)
+    this.http.get(this.apiserviceService.BASE_URL+'customer/index?token=' + this.access_token + '&limit=' + 5000, options)
       .subscribe(
       response => {
         // this.customersNamesList = response.json().docs;
@@ -232,7 +233,7 @@ export class AddnewinvoiceComponent implements OnInit {
     this.selectedCustomerData = this.customerDetailsList.filter(x => x.name == item);
     console.log("NAME", this.selectedCustomerData);
     console.log("GSTIN", this.selectedCustomerData.gstin);
-    // this.customerDetailsForm.get('gstin').setValue(this.selectedCustomerData[0].gstin);
+    this.reimburshForm.get('gstin').setValue(this.selectedCustomerData[0].gstin);
   }
 
   selectRadio() {

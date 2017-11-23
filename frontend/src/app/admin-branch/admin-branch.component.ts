@@ -98,7 +98,7 @@ export class AdminBranchComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/branch/index?token=' + this.access_token + '&limit=' + 50 + '&page=' + page + "&sortBy=" + this.sortBy, options)
+    this.http.get(this.apiserviceService.BASE_URL+'branch/index?token=' + this.access_token + '&limit=' + 50 + '&page=' + page + "&sortBy=" + this.sortBy, options)
       .subscribe(
       response => {
         this.dataList = response.json().docs;
@@ -134,7 +134,7 @@ export class AdminBranchComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/state/list', options)
+    this.http.get(this.apiserviceService.BASE_URL+'state/list', options)
       .subscribe(
       response => {
         this.stateDropDownList = response.json().state;
@@ -194,7 +194,7 @@ export class AdminBranchComponent implements OnInit {
         "branch_name":this.myForm.value.branch_name
       };
 
-      var url = "http://localhost:3000/api/branch/update?token=" + this.access_token;
+      var url = this.apiserviceService.BASE_URL+"branch/update?token=" + this.access_token;
       return this.http.put(url, body, requestOptions)
         .subscribe(
         response => {
@@ -221,7 +221,7 @@ export class AdminBranchComponent implements OnInit {
 
     const requestOptions = new RequestOptions({ headers: headers });
 
-    var url = "http://localhost:3000/api/branch/delete/" + this.rowData._id;
+    var url = this.apiserviceService.BASE_URL+"branch/delete/" + this.rowData._id;
     return this.http.delete(url, requestOptions)
       .subscribe(
       response => {
@@ -249,7 +249,7 @@ export class AdminBranchComponent implements OnInit {
   searchKeyword(searchString) {
 
     if (searchString) {
-      this.http.get('http://localhost:3000/api/branch/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
+      this.http.get(this.apiserviceService.BASE_URL+'branch/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
         this.dataList = data.json().docs;
         this.pager.pageSize = data.json().limit;
         this.pager.totalItems = data.json().total;

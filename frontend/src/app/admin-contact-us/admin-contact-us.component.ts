@@ -112,7 +112,7 @@ export class AdminContactUsComponent implements OnInit {
         "company": this.contactUsForm.value.company,
         "remark": this.contactUsForm.value.remark
       };
-      this.url = "http://localhost:3000/api/contact/create?token=" + this.access_token;
+      this.url = this.apiserviceService.BASE_URL+"contact/create?token=" + this.access_token;
       return this.http.post(this.url, body, requestOptions)
         .subscribe(
         response => {
@@ -141,7 +141,7 @@ export class AdminContactUsComponent implements OnInit {
     console.log("SEARCH_HIT");
 
     if (searchString) {
-      this.http.get('http://localhost:3000/api/contact/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
+      this.http.get(this.apiserviceService.BASE_URL+'contact/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
         this.notificationList = data.json().docs;
         this.pager.pageSize = data.json().limit;
         this.pager.totalItems = data.json().total;

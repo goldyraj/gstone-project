@@ -1,237 +1,302 @@
 <!-- summary Tab -->
-
 <div class="tabs">
 
   <div class="clearfix"></div>
-
-  <div class="col-md-8 col-sm-8 col-xs-12 form-group">
-    <a routerLink="../summarypage"> Summary</a>&nbsp;&nbsp;&nbsp;
-    <a routerLink="../gstr">Invoice Wise Detail</a>&nbsp;&nbsp;&nbsp;
-    <a routerLink="../other"> Other </a>&nbsp;&nbsp;&nbsp;
-    <a routerLink="#"> Submit </a>&nbsp;&nbsp;&nbsp;
-    <a routerLink="#">File </a>&nbsp;&nbsp;&nbsp;
-  </div>
-
-  <div class="col-md-4 col-sm-4 col-xs-12 form-group">
-
-  </div>
-
+  <ul class="nav nav-pills">
+    <li role="presentation">
+      <a routerLink="../summarypage">Summary</a>
+    </li>
+    <li role="presentation" class="active">
+      <a routerLink="../gstr">Invoice Wise Detail</a>
+    </li>
+    <li role="presentation">
+      <a routerLink="../other">Other</a>
+    </li>
+    <li role="presentation">
+      <a routerLink="../">Submit</a>
+    </li>
+    <li role="presentation">
+      <a routerLink="../">File</a>
+    </li>
+  </ul>
 </div>
 <div class="clearfix"></div>
+<div class="section-top-20 section-bottom-10 row">
 
-<div class="col-md-12 col-sm-12">
-  <div class="col-md-6 col-xs-12">
-    <h2 class="text-invoice">Create BOS</h2>
+  <div class="col-md-6 col-xs-12  section-bottom-20">
+    <h2 class="text-invoice">Bill of Supply</h2>
   </div>
-  <div class="col-md-6 col-xs-12 text-right"> 
-    <a href="newinvoice">
+  <div class="col-md-6 col-xs-12 text-right">
+    <a routerLink="../newinvoice">
       <input type="button" class="btn btn-success" value="Save Data">
     </a>
-   <a href="" routerLink="/gstr"><input type="button" class="btn btn-success" value="Back"></a>  
-  </div>
-</div>
 
-<div class="clearfix"></div>
+    <a routerLink="../gstr">
+      <input type="button" class="btn btn-success" value="Back">
+    </a>
 
-<div class="section-bottom-10 section-top-10">
-
-
-  <div class="col-md-4 col-sm-4 col-xs-12 form-group">
-    <label for="inputEmail3" class="col-sm-5 control-label">Name</label>
-    <div class="col-sm-7">
-      <input type="text" class="form-control" id="inputEmail3" value="">
-    </div>
-  </div>
-  <div class="col-md-4 col-sm-12 col-xs-12 form-group">
-    <label for="inputEmail3" class="col-sm-5 control-label">Bill of Supply No</label>
-    <div class="col-sm-7">
-      <input type="text" class="form-control" id="inputEmail3" value="">
-    </div>
-  </div>
-  <div class="col-md-4 col-sm-4 col-xs-12 form-group">
-    <label for="inputEmail3" class="col-sm-5 control-label">POS</label>
-    <div class="col-sm-7">
-      <select class="form-control">
-        <option *ngFor="let pl of place" [value]="pl"> {{pl}}</option>
-        <!-- <option value="" selected="selected" > AP</option>
-                            <option value=""> BH</option>
-                            <option value=""> MH</option>
-                            <option value=""> MP</option>
-                            <option value=""> UK</option>
-                            <option value=""> UP</option>
-                            <option value=""> TN</option> -->
-      </select>
-    </div>
-  </div>
-  <div class="col-md-4 col-sm-4 col-xs-12 form-group">
-    <label for="inputEmail3" class="col-sm-5 control-label"> GSTIN No.</label>
-    <div class="col-sm-7">
-      <select class="form-control">
-        <option *ngFor="let gstn of GSTIN" [value]="gstn"> {{gstn}} </option>
-        <!-- <option value="" selected="selected" >AGPTK234L61Z6</option>
-                            <option value="">AGPTK234L61Z6</option>
-                            <option value="">AGPTK214M61Z6</option>
-                            <option value="">AGPTK894K61Z6</option>
-                            <option value="">SJPTK234L61Z6</option>
-                            <option value="">AWRTK236S61Z6</option>
-                            <option value="">ATDTK237Z61Z6</option> -->
-      </select>
-    </div>
-  </div>
-  <div class="col-md-4 col-sm-12 col-xs-12 form-group">
-    <label for="inputEmail3" class="col-sm-5 control-label">Date</label>
-    <div class="col-sm-7">
-      <input type="text" class="form-control" id="inputEmail3" value="">
-    </div>
   </div>
 
 </div>
 
+<div class="clearfix"> </div>
 
-<div class="section-top-10 col-md-12 col-sm-12 section-bottom-20">
+<div>
+  <form [formGroup]="invoiceTypeRadioForm" novalidate>
+    <label>
+      <input type="radio" [checked]="true" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Normal_Invoice">Normal Invoice</label>
+    <label>
+      <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Reverse_Charge">Reverse Charge</label>
+    <label>
+      <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="E_Commerce">E-commerce</label>
+    <label>
+      <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Debit_Note">Debit Note</label>
+    <label>
+      <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Credit_Note">Credit Note</label>
+  </form>
+</div>
 
-  <div class="table-responsive gsttable">
-    <table class="table table-condensed table-bordered">
+<div class="row">
+  <div class="section-bottom-10 section-top-10">
+    <form [formGroup]="customerDetailsForm" novalidate (ngSubmit)="save( customerDetailsForm.valid )">
+      <div class="col-md-4 col-sm-4 col-xs-12 form-group">
+        <label for="inputEmail3" class="col-sm-5 control-label">Name</label>
+        <div class="col-sm-7">
+          <input id="customerName" type="text" class="validate filter-input" [(ngModel)]=query (keyup)=search() formControlName="name">
+          <div class="suggestions" *ngIf="filteredList.length > 0">
+            <div *ngFor="let item of filteredList">
+              <ul>
+                <li>
+                  <a (click)="select(item)">{{item}}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-4 col-xs-12 form-group">
+        <label for="inputEmail3" class="col-sm-5 control-label">Invoice No.</label>
+        <div class="col-sm-7">
+          <input type="text" class="form-control" id="invoiceNo" formControlName="invoiceNo" value="ABC12345">
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+        <label for="inputEmail3" class="col-sm-5 control-label">Date</label>
+        <div class="col-sm-7">
+          <input type="text" class="form-control" id="date" formControlName="date" value="22-11-17">
+        </div>
+      </div>
+
+      <div class="col-md-4 col-sm-4 col-xs-12">
+        <label for="inputEmail3" class="col-sm-5 control-label">GSTIN No</label>
+        <div class="col-sm-7">
+          <input type="text" class="form-control" id="gstin" formControlName="gstin" value="">
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-4 col-xs-12 form-group">
+        <label for="inputEmail3" class="col-sm-5 control-label">POS</label>
+        <div class="col-sm-7">
+          <select class="form-control" formControlName="pos" required>
+            <option value="0">Select State</option>
+            <option *ngFor="let item of stateList" [value]="item.code"> {{item.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+        <label for="inputEmail3" class="col-sm-5 control-label">E-Com GSTIN</label>
+        <div class="col-sm-7">
+          <input type="text" [readonly]="disableEcommerceInput" class="form-control" id="eComGstin" formControlName="eComGstin">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- table contect   table-hover-->
+<div class="table-responsive gsttable">
+
+  <form #rowDataForm="ngForm" [formGroup]="addInvoiceForm" novalidate (ngSubmit)="addNew(addInvoiceForm)">
+    <table class="table table-condensed  table-hover table-bordered">
       <thead>
         <tr>
-          <th>S.No</th>
-          <th>Description </th>
-          <th width="100px">Goods Services</th>
-          <th>HSN / SAC </th>
-          <th>QTY</th>
-          <th width="100px">Unit Of Measurement</th>
-          <th>Taxable Value</th>
-          <th>Total</th>
+          <th rowspan="3">S.No</th>
+          <th rowspan="3">Description</th>
+          <th rowspan="3" width="100px">Goods Services</th>
+          <th rowspan="3">HSN / SAC </th>
+          <th rowspan="3">QTY </th>
+          <th rowspan="3">Unit Of Measurement</th>
+          <th rowspan="3">Taxable Value</th>
+          <th rowspan="3" width="100px">Rate Of Tax</th>
+          <th rowspan="3">CGST</th>
+          <th rowspan="3">SGST</th>
+          <th rowspan="3">IGST</th>
+          <th colspan="4">CESS</th>
+          <th colspan="4">Action</th>
         </tr>
+        <!-- <tr>
+            <th>Rate</th>
+            <th>AMT </th>
+            <th rowspan="3">Total</th>
+            <th rowspan="3">Action</th>
+          </tr> -->
+
       </thead>
       <tbody>
-        <tr>
+
+        <!-- <div  *ngFor="let item of invoiceList ;let i = index;"> -->
+        <tr *ngFor="let item of invoiceList ;let i = index;">
           <td align="center"> 1</td>
           <td>
-            <input type="text" class="form-control" required>
+            <!-- <input type="text" class="form-control" value="Mesuarement"> -->
+            <input type="text" class="form-control" formControlName="description" value="{{item.description}}" required>
           </td>
           <td>
-            <select  class="form-control">
+            <select class="form-control" formControlName="goodservice">
               <option *ngFor="let sr of serice" [value]="sr">{{sr}}</option>
             </select>
           </td>
           <td>
-            <input type="text" class="form-control" required>
+            <input type="text" class="form-control" formControlName="hsn" value="{{item.hsn}}" required>
+            <!-- <input type="text" class="form-control" value="HSN"> -->
           </td>
           <td>
-            <input type="text" class="form-control" required>
+            <!-- <input type="text" class="form-control" value="500"> -->
+            <input type="text" class="form-control" formControlName="qty" value="{{item.qty}}" required>
           </td>
           <td>
-
-            <select  class="form-control">
-              <option *ngFor="let un of unit" [value]="un"> {{un}}</option>
-            </select>
-
-          </td>
-          <td>
-            <input type="text" class="form-control" required>
-          </td>
-          <td>
-            <input type="text" class="form-control" required>
-          </td>
-
-        </tr>
-        <tr>
-          <td align="center"> 2</td>
-          <td>
-            <input type="text" class="form-control" required>
-          </td>
-          <td>
-            <select  class="form-control">
-              <option *ngFor="let sr of serice" [value]="sr">{{sr}}</option>
-            </select>
-          </td>
-          <td>
-            <input type="text" class="form-control" required>
-          </td>
-          <td>
-            <input type="text" class="form-control" required>
-          </td>
-          <td>
-            <select  class="form-control">
-              <option *ngFor="let un of unit" [value]="un"> {{un}}</option>
-            </select>
-
-          </td>
-          <td>
-            <input type="text" class="form-control" required>
-          </td>
-          <td>
-            <input type="text" class="form-control" required>
-          </td>
-
-        </tr>
-        <tr>
-          <td align="center"> 3</td>
-          <td>
-            <input type="text" class="form-control" required>
-          </td>
-          <td>
-            <select  class="form-control">
-              <option *ngFor="let sr of serice" [value]="sr">{{sr}}</option>
-            </select>
-          </td>
-          <td>
-            <input type="text" class="form-control" required>
-          </td>
-          <td>
-            <input type="text" class="form-control" required>
-          </td>
-          <td>
-            <select  class="form-control">
+            <select class="form-control" formControlName="uom">
               <option *ngFor="let un of unit" [value]="un"> {{un}}</option>
             </select>
           </td>
           <td>
-            <input type="text" class="form-control" required>
+            <!-- <input type="text" class="form-control" value="49"> -->
+            <input type="text" class="form-control" formControlName="tax" value="{{item.tax}}" required>
           </td>
           <td>
-            <input type="text" class="form-control" required>
-          </td>
-
-        </tr>
-        <tr>
-          <td align="center"> 4</td>
-          <td>
-            <input type="text" class="form-control" required>
-          </td>
-          <td>
-            <select  class="form-control">
-              <option *ngFor="let sr of serice" [value]="sr">{{sr}}</option>
+            <select class="form-control" formControlName="rtax">
+              <option *ngFor="let rt of rate" [value]="rt"> {{rt}} </option>
             </select>
           </td>
           <td>
-            <input type="text" class="form-control" required>
+            <input type="text" class="form-control" formControlName="sgst" value="{{item.sgst}}" required>
+            <!-- <input type="text" class="form-control" value="345"> -->
           </td>
           <td>
-            <input type="text" class="form-control" required>
+            <!-- <input type="text" class="form-control" value="34"> -->
+            <input type="text" class="form-control" formControlName="igst" value="{{item.igst}}" required>
           </td>
           <td>
-            <select  class="form-control">
-              <option *ngFor="let un of unit" [value]="un"> {{un}}</option>
-            </select>
+            <!-- <input type="text" class="form-control" value="34"> -->
+            <input type="text" class="form-control" formControlName="val1" value="{{item.val1}}" required>
           </td>
           <td>
-            <input type="text" class="form-control" required>
+            <!-- <input type="text" class="form-control" value="4"> -->
+            <input type="text" class="form-control" formControlName="val2" value="{{item.val2}}" required>
           </td>
           <td>
-            <input type="text" class="form-control" required>
+            <!-- <input type="text" class="form-control" value="45"> -->
+            <input type="text" class="form-control" formControlName="val3" value="{{item.val3}}" required>
           </td>
-
+          <td>
+            <!-- <input type="text" class="form-control" value="500"> -->
+            <input type="text" class="form-control" formControlName="val4" value="{{item.val4}}" required>
+          </td>
+          <td>
+            <!-- <input type="text" class="form-control" value="500"> -->
+            <input type="text" class="form-control" formControlName="igst" value="{{item.igst}}" required>
+          </td>
+          <td>
+            <input type="submit" class="btn btn-primary addnew " value="+">
+          </td>
         </tr>
+
+        <fieldset ngModelGroup="inputs" #inputs="ngModelGroup">
+          <tr *ngFor="let item of invoiceDynList ;let i = index;">
+            <td align="center"> 1</td>
+            <td>
+              <!-- <input type="text" class="form-control" value="Mesuarement"> -->
+              <input type="text" (keyup)="changeInd($event,i,'description')" class="form-control" value="{{item.description}}" required>
+            </td>
+            <td>
+              <select class="form-control">
+                <option *ngFor="let sr of serice" value="{{sr}}" [selected]="sr == item.goodservice">{{sr}}</option>
+              </select>
+            </td>
+            <td>
+              <input type="text" (keyup)="changeInd($event,i,'hsn')" class="form-control" value="{{item.hsn}}" required>
+              <!-- <input type="text" class="form-control" value="HSN"> -->
+            </td>
+            <td>
+              <!-- <input type="text" class="form-control" value="500"> -->
+              <input type="text" class="form-control" value="{{item.qty}}" required (keyup)="changeInd($event,i,'qty')">
+            </td>
+            <td>
+              <select class="form-control">
+                <option *ngFor="let un of unit" [value]="un" [selected]="un === item.uom"> {{un}}</option>
+              </select>
+            </td>
+            <td>
+              <!-- <input type="text" class="form-control" value="49"> -->
+              <input type="text" class="form-control" value="{{item.tax}}" required (keyup)="changeInd($event,i,'tax')">
+            </td>
+            <td>
+              <select class="form-control" (input)="onInput($event)">
+                <option *ngFor="let rt of rate" [value]="rt" [selected]="rt === item.rtax"> {{rt}} </option>
+              </select>
+            </td>
+            <td>
+              <input type="text" class="form-control" value="{{item.sgst}}" required (keyup)="changeInd($event,i,'sgst')">
+              <!-- <input type="text" class="form-control" value="345"> -->
+            </td>
+            <td>
+              <!-- <input type="text" class="form-control" value="34"> -->
+              <input type="text" class="form-control" value="{{item.igst}}" required (keyup)="changeInd($event,i,'igst')">
+            </td>
+            <td>
+              <!-- <input type="text" class="form-control" value="34"> -->
+              <input type="text" class="form-control" value="{{item.val1}}" required (keyup)="changeInd($event,i,'val1')">
+            </td>
+            <td>
+              <!-- <input type="text" class="form-control" value="4"> -->
+              <input type="text" class="form-control" value="{{item.val2}}" required (keyup)="changeInd($event,i,'val1')">
+            </td>
+            <td>
+              <!-- <input type="text" class="form-control" value="45"> -->
+              <input type="text" class="form-control" value="{{item.val3}}" required (keyup)="changeInd($event,i,'val1')">
+            </td>
+            <td>
+              <!-- <input type="text" class="form-control" value="500"> -->
+              <input type="text" class="form-control" value="{{item.val4}}" required (keyup)="changeInd($event,i,'val1')">
+            </td>
+            <td>
+              <!-- <input type="text" class="form-control" value="500"> -->
+              <input type="text" class="form-control" value="{{item.igst}}" required (keyup)="changeInd($event,i,'val1')">
+            </td>
+            <td>
+              <input type="button" class="btn btn-danger " (click)="remove(item.description)" value="-" (keyup)="changeInd($event,i,'val1')">
+            </td>
+          </tr>
+        </fieldset>
+
+        <!-- <tr>
+              <td>
+                <input type="text" class="form-control" value="">
+              </td>
+              <td></td>
+              <td colspan="8" align="right" class="Total_word">Total in Words</td>
+              <td colspan="4" align="right" class="Grand_total">
+                <b>Grand Total =</b>
+              </td>
+              <td>
+                <input type="text" class="form-control" value="500">
+              </td>
+            </tr> -->
       </tbody>
+
     </table>
-  </div>
+  </form>
 </div>
 
-<div class="clearfix"></div>
 <div class="text-center section-bottom-60">
-  <button class="btn btn-success"> Save Data</button>
+  <button class="btn btn-success btnSave_data" (click)="addInvoice(rowDataForm)">Save Data</button>
 </div>
-
-<div class="clearfix"></div>

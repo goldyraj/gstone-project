@@ -324,7 +324,7 @@ export class AddnewinvoiceComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/state/list?token=' + this.access_token + '&limit=' + 1000, options)
+    this.http.get(this.apiserviceService.BASE_URL+'state/list?token=' + this.access_token + '&limit=' + 1000, options)
       .subscribe(
       response => {
         this.stateList = response.json().state;

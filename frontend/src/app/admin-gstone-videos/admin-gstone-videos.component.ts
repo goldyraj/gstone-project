@@ -5,12 +5,13 @@ import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { PagerService } from '../service/pager.service';
 import { RouterModule, Routes, Router } from '@angular/router';
+import {ApiserviceService} from '../apiservice.service';
 
 @Component({
   selector: 'app-admin-gstone-videos',
   templateUrl: './admin-gstone-videos.component.html',
   styleUrls: ['./admin-gstone-videos.component.css'],
-  providers:[PagerService]
+  providers:[PagerService,ApiserviceService]
 })
 export class AdminGstoneVideosComponent implements OnInit {
   @ViewChild('closeBtn') closeBtn: ElementRef;
@@ -35,7 +36,7 @@ export class AdminGstoneVideosComponent implements OnInit {
   public submitted: boolean; // keep track on whether form is submitted
   public submittedEdit: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
-  constructor(private _fb: FormBuilder, private http: Http,private PagerService:PagerService,public router:Router) {
+  constructor(private _fb: FormBuilder, private http: Http,private PagerService:PagerService,public router:Router,public ApiserviceService:ApiserviceService) {
     this.pager.currentPage = 1;
     this.access_token = localStorage.getItem("admin_token");
     this.getVideosList(this.pager.currentPage);
@@ -71,7 +72,7 @@ export class AdminGstoneVideosComponent implements OnInit {
   getVideosList(page:number) {
     this.pager.currentPage = page;
     console.log('list called');
-    this.http.get('http://localhost:3000/api/vedio/index?token='+this.access_token+'&limit=' + 10 + '&page=' + this.pager.currentPage).subscribe(data => {
+    this.http.get(this.ApiserviceService.BASE_URL+'vedio/index?token='+this.access_token+'&limit=' + 10 + '&page=' + this.pager.currentPage).subscribe(data => {
       this.videosList = data.json().docs;
       this.pager.pageSize = data.json().limit;
       this.pager.totalItems = data.json().total;
@@ -108,7 +109,7 @@ export class AdminGstoneVideosComponent implements OnInit {
         "description": this.gstVideosForm.value.description,
         "link": this.gstVideosForm.value.link
       };
-      this.url = "http://localhost:3000/api/vedio/create?token="+this.access_token;
+      this.url = this.ApiserviceService.BASE_URL+"vedio/create?token="+this.access_token;
       return this.http.post(this.url, body, requestOptions)
         .subscribe(
         response => {
@@ -164,7 +165,7 @@ export class AdminGstoneVideosComponent implements OnInit {
         "link": this.editGstVideosForm.value.link
       };
 
-      this.url = "http://localhost:3000/api/vedio/update?token="+this.access_token;
+      this.url = this.ApiserviceService.BASE_URL+"vedio/update?token="+this.access_token;
       return this.http.put(this.url, body, requestOptions)
         .subscribe(
         response => {
@@ -203,7 +204,7 @@ export class AdminGstoneVideosComponent implements OnInit {
     // headers.append('x-access-token', access_token);
     const requestOptions = new RequestOptions({ headers: headers });
 
-    this.url = "http://localhost:3000/api/vedio/delete/" + this.notiRowData._id+"?token="+this.access_token;
+    this.url = this.ApiserviceService.BASE_URL+"vedio/delete/" + this.notiRowData._id+"?token="+this.access_token;
     return this.http.delete(this.url,  requestOptions)
       .subscribe(
       response => {
@@ -240,7 +241,7 @@ export class AdminGstoneVideosComponent implements OnInit {
     console.log("SEARCH_HIT");
 
     if (searchString) {
-      this.http.get('http://localhost:3000/api/vedio/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
+      this.http.get(this.ApiserviceService.BASE_URL+'vedio/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
         this.videosList = data.json().docs;
         this.pager.pageSize = data.json().limit;
         this.pager.totalItems = data.json().total;

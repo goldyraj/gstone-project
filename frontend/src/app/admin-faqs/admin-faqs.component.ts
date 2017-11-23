@@ -4,12 +4,13 @@ import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { RouterModule, Routes, Router } from '@angular/router';
 import { PagerService } from '../service/pager.service';
+import {ApiserviceService} from '../apiservice.service';
 
 @Component({
   selector: 'app-admin-faqs',
   templateUrl: './admin-faqs.component.html',
   styleUrls: ['./admin-faqs.component.css'],
-  providers: [PagerService]
+  providers:[PagerService,ApiserviceService]
 })
 export class AdminFaqsComponent implements OnInit {
   @ViewChild('closeBtn') closeBtn: ElementRef;
@@ -36,7 +37,7 @@ export class AdminFaqsComponent implements OnInit {
   // paged items
   pagedItems: any[];
 
-  constructor(private _fb: FormBuilder, private http: Http, public Router: Router, public PagerService: PagerService) {
+  constructor(private _fb: FormBuilder, private http: Http, public Router: Router, public PagerService: PagerService,public apiserviceService: ApiserviceService) {
     this.access_token = localStorage.getItem("admin_token");
     this.pager.currentPage=1;
     this.getFaqsList(1);
@@ -77,7 +78,7 @@ export class AdminFaqsComponent implements OnInit {
         "question": this.FaqForm.value.question,
         "answer": this.FaqForm.value.answer
       };
-      this.url = "http://localhost:3000/api/faq/create?token=" + this.access_token;
+      this.url = this.apiserviceService+"faq/create?token=" + this.access_token;
       return this.http.post(this.url, body, requestOptions)
         .subscribe(
         response => {
@@ -96,7 +97,7 @@ export class AdminFaqsComponent implements OnInit {
   getFaqsList(page:number) {
     this.pager.currentPage=page;
     console.log('list called');
-    this.http.get('http://localhost:3000/api/faq/index?token=' + this.access_token + '&limit=' + 10 + '&page=' +page).subscribe(data => {
+    this.http.get(this.apiserviceService+'faq/index?token=' + this.access_token + '&limit=' + 10 + '&page=' +page).subscribe(data => {
       this.faqsList = data.json().docs;
       this.pager.pageSize = data.json().limit;
       this.pager.totalItems = data.json().total;
@@ -156,7 +157,7 @@ export class AdminFaqsComponent implements OnInit {
         "answer": this.FaqFormEdit.value.answer,
       };
 
-      this.url = "http://localhost:3000/api/faq/update?token=" + this.access_token;
+      this.url = this.apiserviceService+"faq/update?token=" + this.access_token;
       return this.http.put(this.url, body, requestOptions)
         .subscribe(
         response => {
@@ -184,7 +185,7 @@ export class AdminFaqsComponent implements OnInit {
     // headers.append('x-access-token', access_token);
     const requestOptions = new RequestOptions({ headers: headers });
 
-    this.url = "http://localhost:3000/api/faq/delete/" + this.faqsRowData._id + "?token=" + this.access_token;
+    this.url = this.apiserviceService+"faq/delete/" + this.faqsRowData._id + "?token=" + this.access_token;
     return this.http.delete(this.url, requestOptions)
       .subscribe(
       response => {

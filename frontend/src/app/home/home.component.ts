@@ -65,17 +65,17 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
 
     this.myForm = new FormGroup({
-      name: new FormControl('asd', [Validators.required, Validators.pattern('.*\\S.*')]),
-      contact: new FormControl('9713270396', [<any>Validators.required, <any>Validators.minLength(10)]),
-      pan_no: new FormControl('YHSDS2345E', [<any>Validators.required, <any>Validators.minLength(10)]),
-      email: new FormControl('asdg@adsf.ocm', [<any>Validators.required]),
-      gstin: new FormControl('asdf', [<any>Validators.required, Validators.pattern('.*\\S.*')]),
-      address: new FormControl('asdf', [<any>Validators.required, Validators.pattern('.*\\S.*')]),
-      city: new FormControl('asdf', [<any>Validators.required, Validators.pattern('.*\\S.*')]),
+      name: new FormControl('', [Validators.required, Validators.pattern('.*\\S.*')]),
+      contact: new FormControl('', [<any>Validators.required, <any>Validators.minLength(10)]),
+      pan_no: new FormControl('', [<any>Validators.required, <any>Validators.minLength(10)]),
+      email: new FormControl('', [<any>Validators.required]),
+      gstin: new FormControl('', [<any>Validators.required, Validators.pattern('.*\\S.*')]),
+      address: new FormControl('', [<any>Validators.required, Validators.pattern('.*\\S.*')]),
+      city: new FormControl('', [<any>Validators.required, Validators.pattern('.*\\S.*')]),
       userType: new FormControl('', [<any>Validators.required]),
-      password: new FormControl('asdfgh', [<any>Validators.required, <any>Validators.minLength(5)]),
-      confirm_paasword: new FormControl('asdfhh', [<any>Validators.required, <any>Validators.minLength(5)]),
-      state: new FormControl('madhya pradesh', [<any>Validators.required]),
+      password: new FormControl('', [<any>Validators.required, <any>Validators.minLength(5)]),
+      confirm_paasword: new FormControl('', [<any>Validators.required, <any>Validators.minLength(5)]),
+      state: new FormControl('', [<any>Validators.required]),
 
     });
     this.LoginForm = new FormGroup({

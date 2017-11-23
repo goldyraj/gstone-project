@@ -75,7 +75,7 @@ export class HomeComponent implements OnInit {
       userType: new FormControl('', [<any>Validators.required]),
       password: new FormControl('asdfgh', [<any>Validators.required, <any>Validators.minLength(5)]),
       confirm_paasword: new FormControl('asdfhh', [<any>Validators.required, <any>Validators.minLength(5)]),
-      state: new FormControl('', [<any>Validators.required]),
+      state: new FormControl('madhya pradesh', [<any>Validators.required]),
 
     });
     this.LoginForm = new FormGroup({
@@ -151,6 +151,9 @@ export class HomeComponent implements OnInit {
               this.button2.nativeElement.click();
               this.router.navigate(['/user']);
               localStorage.setItem('user_token', response.json().token);
+              localStorage.setItem('user_gstin', this.userDetails['gstin']);
+              localStorage.setItem('user_pan_no', this.userDetails['pan_no']);
+              localStorage.setItem('user_contact', this.userDetails['contact']);
             }
             // this.router.navigate(['/user']);
             console.log('State  PArse', this.userDetails);
@@ -204,7 +207,7 @@ export class HomeComponent implements OnInit {
         'contact': this.myForm.value.contact,
         'email': this.myForm.value.email,
         'address': this.myForm.value.address,
-        'state': this.selectedState,
+        'state': "madhya pradesh",
         'type': 'agentuser'
         // 'type': this.myForm.value.userType
       };

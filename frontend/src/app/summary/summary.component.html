@@ -1,683 +1,586 @@
 <div class="container">
-	<div class="row">
-		<div class="col-md-3 navbar-header-gst">
-			<div class="navbar-brand">
-				<a href="index.html">
-					<h2 class="gst_logo">GST</h2>
-				</a>
-			</div>
-		</div>
-		<div class="col-md-6"> </div>
-		<div class="col-md-3">
-			<div class="user_profile">
-				<label>Contact Mail</label>
-				<div class="btn-group pull-right" role="group">
-					<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> User email <span class="caret"></span> </button>
-					<ul class="dropdown-menu">
-						<li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
-						<li><a href="#"><i class="fa fa-cog"></i> Setting</a></li>
-						<li><a href="#"><i class="fa fa-key"></i> Logout</a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<header class="main-header">
-	<div class="container-fluid">
-		<div class="row">
-			<!-- Navigation  navbar-static-top -->
-			<nav class="navbar navbar-inverse">
-				<div class="container navbar-header-gst">
-					<div class="navbar-header page-scroll">
-						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-					</div>
-					<!-- Collect the nav links, forms, and other content for toggling -->
-					<div class="collapse navbar-collapse navbar-ex1-collapse">
-						<ul class="nav navbar-nav">
-							<!-- Hidden li included to remove active class from about link when scrolled up past about section -->
-							<li> <a class="page-scroll" href="#">User Name <span> GSTIN No</span></a> </li>
-							<li> <a class="page-scroll" href="summarypage">Dashboard</a> </li>
-							<li> <a class="page-scroll" href="#">Returns</a> </li>
-							<li> <a class="page-scroll" href="#">Notification </a> </li>
-							<li> <a class="page-scroll" href="#">Updates </a> </li>
-							<li> <a class="page-scroll" href="#">videos </a> </li>
-						</ul>
-					</div>
-					<!-- /.navbar-collapse -->
-				</div>
-			</nav>
-		</div>
-	</div>
-</header>
+	<div class="tabs">
 
-<div class="container">
-<div class="tabs">
+		<div class="clearfix"></div>
+		<ul class="nav nav-pills">
+			<li role="presentation" class="active"><a  routerLink="../summarypage">Summary</a></li>
+			<li role="presentation"><a  routerLink="../gstr">Invoice Wise Detail</a></li>
+			<li role="presentation"><a  routerLink="../other">Other</a></li>
+			<li role="presentation"><a  routerLink="../">Submit</a></li>
+			<li role="presentation"><a  routerLink="../">File</a></li>
+		</ul>
+		<div class="col-md-4 col-sm-4 col-xs-12 form-group">
+
+		</div>
+
+	</div>
+	<div class="clearfix"></div>
+<div class="row">
+	<div class="col-md-2 col-sm-2 col-xs-12 form-group">
+		<select class="form-control">
+			<option *ngFor="let yr of finyear" [value]="yr">{{yr}}</option>
+		</select>
+	</div>
+	<div class="col-md-2 col-sm-2 col-xs-12 form-group">
+		<select class="form-control">
+			<option *ngFor="let mnth of Month" [value]="mnth">{{mnth}}</option>
+		</select>
+	</div>
+	<div class="col-md-6 col-sm-6 col-xs-12 form-group">
+		<label for="inputEmail3" class="text-right col-sm-8 control-label">Sale For </label>
+		<div class="col-sm-4">
+			<select class="form-control">
+				<option *ngFor="let yr of finyear" [value]="yr">{{yr}}</option>
+			</select>
+		</div>
+	</div>
+	<div class="col-md-2 col-sm-2 col-xs-12 form-group">
+		<input type="text" class="form-control" id="inputEmail3" placeholder="Amount">
+	</div>
+
 
 	<div class="clearfix"></div>
 
-	<div class="col-md-8 col-sm-8 col-xs-12 form-group">
-		<!-- <button class="btn btn-primary" routerLink="/summarypage"> Summary </button> -->
-		<a routerLink="/summarypage"> Summary</a> &nbsp;&nbsp;&nbsp;
-		<!-- </button> -->
-
-		<a routerLink="/gstr">Invoice Wise Detail</a>&nbsp;&nbsp;&nbsp;
-		<!-- <button class="btn btn-primary" routerLink="/gstr"> Invoice Wise Detail </button>  -->
-		<!-- <button class="btn btn-primary"> -->
-		<!-- <a routerLink="/">Export Invoice</a> &nbsp;&nbsp;&nbsp;  -->
-		<!-- <button class="btn btn-primary" routerLink="/"> Other </button> -->
-		<a routerLink="/other"> Other </a> &nbsp;&nbsp;&nbsp;
-		<!-- </button> -->
-		<!-- <button class="btn btn-primary">  -->
-		<!-- <button class="btn btn-primary" routerLink="/">Submit </button>&nbsp;&nbsp;&nbsp; -->
-		<!-- </button> -->
-		<a routerLink="/"> Submit </a>&nbsp;&nbsp;&nbsp;
-		<!-- <button class="btn btn-primary"> -->
-		<!-- <button class="btn btn-primary" routerLink="/">File </button>&nbsp;&nbsp;&nbsp; -->
-		<!-- </button> -->
-		<a routerLink="/"> File </a>
+	<div class="col-md-4 col-sm-2 col-xs-12 form-group"></div>
+	<div class="col-md-6 col-sm-2 col-xs-12 form-group">
+		<label for="inputEmail3" class="text-right col-sm-8 control-label">Sale For Apr to Jun 17 </label>
+		<div class="col-sm-4">
+			<input type="text" class="form-control" id="inputEmail3" placeholder="Amount">
+		</div>
 	</div>
-
-	<div class="col-md-4 col-sm-4 col-xs-12 form-group">
-
-	</div>
-
-</div>
-<div class="clearfix"></div>
-
-<div class="col-md-2 col-sm-2 col-xs-12 form-group">
-	<select>
-                            <option *ngFor="let yr of finyear" [value]="yr">{{yr}}</option>
-                            <!-- <option value="">2014</option>
-                            <option value="">2015</option>
-                            <option value="">2016</option>
-                            <option value="">2017</option>
-                            <option value="">2018</option>
-                            <option value="">2019</option> -->
-                          </select>
-</div>
-<div class="col-md-2 col-sm-2 col-xs-12 form-group">
-	<select>
-														<option *ngFor="let mnth of Month" [value]="mnth">{{mnth}}</option>
-														
-                            <!-- <option value="">Jan</option>
-                            <option value="">Feb</option>
-							<option value="">Mar</option>
-                            <option value="">Apr</option>
-                            <option value="">May</option>
-                            <option value="">Jun</option>
-                            <option value="">Jul</option>
-							<option value="">Aug</option>
-                            <option value="">Sept</option>
-                            <option value="">Oct</option>
-                            <option value="">Nov</option>
-                            <option value="">Dec</option> -->
-                            
-                          </select>
-</div>
-<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-	<label for="inputEmail3" class="text-right col-sm-8 control-label">Sale For </label>
-	<div class="col-sm-4">
-		<select>
-                            <option *ngFor="let yr of finyear" [value]="yr">{{yr}}</option>
-                            <!-- <option value="">2014</option>
-                            <option value="">2015</option>
-                            <option value="">2016</option>
-                            <option value="">2017</option>
-                            <option value="">2018</option>
-                            <option value="">2019</option> -->
-                          </select>
+	<div class="col-md-2 col-sm-2 col-xs-12 text-right">
+		<button class="btn btn-primary"> Save Data </button>
 	</div>
 </div>
-<div class="col-md-2 col-sm-2 col-xs-12 form-group">
-	<input type="text" class="form-control" id="inputEmail3" placeholder="Amount">
-</div>
+	<div class="clearfix"></div>
 
+	<ngb-accordion #acc="ngbAccordion">
+		<ngb-panel id="toggle-1" title="4.Taxable supplies to register dealers including Reverse Charge & sale through E-commerce ">
 
-<div class="clearfix"></div>
+			<ng-template ngbPanelContent>
 
-<div class="col-md-4 col-sm-4 col-xs-12 form-group">
-	<label for="inputEmail3" class="text-left col-sm-6 control-label">Sale For Apr to Jun 17 </label>
-</div>
-<div class="col-md-2 col-sm-2 col-xs-12 form-group">
-	<input type="text" class="form-control" id="inputEmail3" placeholder="Amount">
-</div>
-<div class="col-md-4 col-sm-4 col-xs-12 form-group">
-
-</div>
-<div class="col-md-2 col-sm-2 col-xs-12 form-group">
-	<button class="btn btn-primary"> Save Data </button>
-</div>
-
-<div class="clearfix"></div>
-
-<ngb-accordion #acc="ngbAccordion">
-	<ngb-panel id="toggle-1" title="4.Taxable supplies to register dealers including Reverse Charge & sale through E-commerce ">
-
-		<ng-template ngbPanelContent>
-
-			<table class="table table-condensed  table-hover table-bordered">
-				<thead>
+				<table class="table table-condensed  table-hover table-bordered">
+					<thead>
+						<tr>
+							<th width="750"></th>
+							<th width="100">Total Amt</th>
+							<th width="100">Tax</th>
+							<th width="100">Total Value</th>
+						</tr>
+					</thead>
 					<tr>
-						<th width="750"></th>
-						<th width="100">Total Amt</th>
-						<th width="100">Tax</th>
-						<th width="100">Total Value</th>
-					</tr>
-				</thead>
-				<tr>
-					<td>4A. Supplies other than those (i) attracting reverse charge and (ii) supplies made through e - commerce operator</td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>4B. Sattracting tax on reverse charge basis</td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>4C. Supplies made through e-commerce operator attracting TCS (operator wise, rate wise)</td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-			</table>
-
-		</ng-template>
-	</ngb-panel>
-
-
-
-
-
-	<ngb-panel id="toggle-2" title="5.Taxable supplies to unregistered persons where value more than 2.5 Lakhs ">
-		<ng-template ngbPanelContent>
-			<table class="table table-condensed  table-hover table-bordered">
-				<thead>
-					<tr>
-						<th width="750"></th>
-						<th width="100">Total Amt</th>
-						<th width="100">Tax</th>
-						<th width="100">Total Value</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>5A. Outward supplies (other than supplies made through e-commerce operator rate wise )</td>
+						<td>4A. Supplies other than those (i) attracting reverse charge and (ii) supplies made through e - commerce operator</td>
 						<td></td>
 						<td></td>
 						<td></td>
 					</tr>
 					<tr>
-						<td>5B. Supplies made through e-commerce operator attracting TCS (operator wise, rate wise)</td>
+						<td>4B. Sattracting tax on reverse charge basis</td>
 						<td></td>
 						<td></td>
 						<td></td>
 					</tr>
-				</tbody>
-			</table>
+					<tr>
+						<td>4C. Supplies made through e-commerce operator attracting TCS (operator wise, rate wise)</td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</table>
 
-		</ng-template>
-	</ngb-panel>
-
-
-	<ngb-panel id="toggle-3" title="6.Export, Deemed Export & Supplies to SE2 Units">
-		<ng-template ngbPanelContent>
-			<table class="table table-condensed  table-hover table-bordered">
-				<thead>
-					<tr>
-						<th width="750"></th>
-						<th width="100">Total Amt</th>
-						<th width="100">Tax</th>
-						<th width="100">Total Value</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>6A.Exports</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>6B. Supplies made to SEZ unit or SEZ Developer</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>6C. Deemed exports</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-				</tbody>
-			</table>
-
-		</ng-template>
-	</ngb-panel>
-
-	<ngb-panel id="toggle-4" title="7.Taxable supplies to unregistered persons other than Table 5">
-		<ng-template ngbPanelContent>
-
-			<table class="table table-condensed  table-hover table-bordered">
-				<thead>
-					<tr>
-					<th width="750"></th>
-						<th width="100">Total Amt</th>
-						<th width="100">Tax</th>
-						<th width="100">Total Value</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>7A(1).Total Supplies Intra State</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>7A(2).Sale through E-commerce out of 7A(1)</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>7B(1). Total Supplies Inter State</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>7B(2). Sale through E-commerce out of 7B(1)</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-				</tbody>
-			</table>
-
-		</ng-template>
-	</ngb-panel>
+			</ng-template>
+		</ngb-panel>
 
 
-	<ngb-panel id="toggle-5" title="8.NIL Rated, Exampted and Non GST supplies">
-		<ng-template ngbPanelContent>
-			<table class="table table-condensed  table-hover table-bordered">
-				<thead>
-					<tr>
-						<th width="750"></th>
-						<th width="100">NIL Rated</th>
-						<th width="100">Exempted</th>
-						<th width="100">Non GST</th>
-						<!-- <th></th>
+
+
+
+		<ngb-panel id="toggle-2" title="5.Taxable supplies to unregistered persons where value more than 2.5 Lakhs ">
+			<ng-template ngbPanelContent>
+				<table class="table table-condensed  table-hover table-bordered">
+					<thead>
+						<tr>
+							<th width="750"></th>
+							<th width="100">Total Amt</th>
+							<th width="100">Tax</th>
+							<th width="100">Total Value</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>5A. Outward supplies (other than supplies made through e-commerce operator rate wise )</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>5B. Supplies made through e-commerce operator attracting TCS (operator wise, rate wise)</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+
+			</ng-template>
+		</ngb-panel>
+
+
+		<ngb-panel id="toggle-3" title="6.Export, Deemed Export & Supplies to SE2 Units">
+			<ng-template ngbPanelContent>
+				<table class="table table-condensed  table-hover table-bordered">
+					<thead>
+						<tr>
+							<th width="750"></th>
+							<th width="100">Total Amt</th>
+							<th width="100">Tax</th>
+							<th width="100">Total Value</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>6A.Exports</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>6B. Supplies made to SEZ unit or SEZ Developer</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>6C. Deemed exports</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+
+			</ng-template>
+		</ngb-panel>
+
+		<ngb-panel id="toggle-4" title="7.Taxable supplies to unregistered persons other than Table 5">
+			<ng-template ngbPanelContent>
+
+				<table class="table table-condensed  table-hover table-bordered">
+					<thead>
+						<tr>
+							<th width="750"></th>
+							<th width="100">Total Amt</th>
+							<th width="100">Tax</th>
+							<th width="100">Total Value</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>7A(1).Total Supplies Intra State</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>7A(2).Sale through E-commerce out of 7A(1)</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>7B(1). Total Supplies Inter State</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>7B(2). Sale through E-commerce out of 7B(1)</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+
+			</ng-template>
+		</ngb-panel>
+
+
+		<ngb-panel id="toggle-5" title="8.NIL Rated, Exampted and Non GST supplies">
+			<ng-template ngbPanelContent>
+				<table class="table table-condensed  table-hover table-bordered">
+					<thead>
+						<tr>
+							<th width="750"></th>
+							<th width="100">NIL Rated</th>
+							<th width="100">Exempted</th>
+							<th width="100">Non GST</th>
+							<!-- <th></th>
 						<th>NIL Rated</th>
 						<th>Exempted</th>
 						<th>Non GST</th> -->
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>8A.Intra State supplies to registered persons</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>8B. Intra State supplies to registered persons</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>8C. Inter State supplies to unregistered persons</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>8D. Intra State supplies to unregistered persons</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-				</tbody>
-			</table>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>8A.Intra State supplies to registered persons</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>8B. Intra State supplies to registered persons</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>8C. Inter State supplies to unregistered persons</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>8D. Intra State supplies to unregistered persons</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
 
-		</ng-template>
-	</ngb-panel>
+			</ng-template>
+		</ngb-panel>
 
-	<ngb-panel id="toggle-6" title="9.Amendment to earlier period invoices">
-		<ng-template ngbPanelContent>
-			<table class="table table-condensed  table-hover table-bordered">
-				<thead>
-					<tr>
-					<th width="750"></th>
-						<th width="100">Total Amt</th>
-						<th width="100">Tax</th>
-						<th width="100">Total Value</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>9A. Amended Invoices</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>9B. Debit Notes/Credit Notes (Original)</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>9C. Debit Notes/Credit Notes (Amendments)</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-				</tbody>
-			</table>
+		<ngb-panel id="toggle-6" title="9.Amendment to earlier period invoices">
+			<ng-template ngbPanelContent>
+				<table class="table table-condensed  table-hover table-bordered">
+					<thead>
+						<tr>
+							<th width="750"></th>
+							<th width="100">Total Amt</th>
+							<th width="100">Tax</th>
+							<th width="100">Total Value</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>9A. Amended Invoices</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>9B. Debit Notes/Credit Notes (Original)</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>9C. Debit Notes/Credit Notes (Amendments)</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
 
-		</ng-template>
-	</ngb-panel>
+			</ng-template>
+		</ngb-panel>
 
-	<ngb-panel id="toggle-7" title="10.Amendment to Taxable sales to unregistered persons furnished in earlier Tax periods">
-		<ng-template ngbPanelContent>
-			<table class="table table-condensed  table-hover table-bordered">
-				<thead>
-					<tr>
-					<th width="750"></th>
-						<th width="100">Total Amt</th>
-						<th width="100">Tax</th>
-						<th width="100">Total Value</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>10A. Intra-State Supplies [including supplies made through e-commerce operator attracting TCS] [Rate wise]</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>10A(1). Out of supplies mentioned at 10A, value of supplies made through e-Commerce Operators attracting TCS(operator
-							wise, rate wise)</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>10B. nter-State Supplies[including supplies made through e-commerce operator attracting TCS][Rate wise</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>10B (1). Out of supplies mentioned at 10B, value of supplies made through e-Commerce Operatorsattracting TCS(operator
-							wise, rate wise)</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-				</tbody>
-			</table>
+		<ngb-panel id="toggle-7" title="10.Amendment to Taxable sales to unregistered persons furnished in earlier Tax periods">
+			<ng-template ngbPanelContent>
+				<table class="table table-condensed  table-hover table-bordered">
+					<thead>
+						<tr>
+							<th width="750"></th>
+							<th width="100">Total Amt</th>
+							<th width="100">Tax</th>
+							<th width="100">Total Value</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>10A. Intra-State Supplies [including supplies made through e-commerce operator attracting TCS] [Rate wise]</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>10A(1). Out of supplies mentioned at 10A, value of supplies made through e-Commerce Operators attracting TCS(operator
+								wise, rate wise)</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>10B. nter-State Supplies[including supplies made through e-commerce operator attracting TCS][Rate wise</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>10B (1). Out of supplies mentioned at 10B, value of supplies made through e-Commerce Operatorsattracting TCS(operator
+								wise, rate wise)</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
 
-		</ng-template>
-	</ngb-panel>
-	<ngb-panel id="toggle-8" title="11.Advance Received / Amendment/ to Advance received Adjustments">
-		<ng-template ngbPanelContent>
-			<div align="center">
-				<h4 class="headsummary">1. Current Period</h4>
-			</div>
-			<table class="table table-condensed  table-hover table-bordered">
-				<thead>
-					<tr>
-						<th width="750"></th>
-						<th width="100">Total Amt</th>
-						<th width="100">Tax</th>
-						<th width="100">Total Value</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>11A. Advance Received for current period</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>11B. Advance Adjusted for current period</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-				</tbody>
-			</table>
-			<br/>
-			<div align="center">
-				<h4 class="headsummary">2. Amendment</h4>
-			</div>
-			<table class="table table-condensed  table-hover table-bordered">
-				<thead>
-					<tr>
-						<th width="750"></th>
-						<th width="160">Total Amt</th>
-						<th width="160">Tax</th>
-						<th width="160">Total Value</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>11A. Advance Received Ameded for earlier Tax period</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>11B. Advance Adjusted Ameded for earlier Tax period</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-				</tbody>
-			</table>
+			</ng-template>
+		</ngb-panel>
+		<ngb-panel id="toggle-8" title="11.Advance Received / Amendment/ to Advance received Adjustments">
+			<ng-template ngbPanelContent>
+				<div align="center">
+					<h4 class="headsummary">1. Current Period</h4>
+				</div>
+				<table class="table table-condensed  table-hover table-bordered">
+					<thead>
+						<tr>
+							<th width="750"></th>
+							<th width="100">Total Amt</th>
+							<th width="100">Tax</th>
+							<th width="100">Total Value</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>11A. Advance Received for current period</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>11B. Advance Adjusted for current period</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+				<br/>
+				<div align="center">
+					<h4 class="headsummary">2. Amendment</h4>
+				</div>
+				<table class="table table-condensed  table-hover table-bordered">
+					<thead>
+						<tr>
+							<th width="750"></th>
+							<th width="160">Total Amt</th>
+							<th width="160">Tax</th>
+							<th width="160">Total Value</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>11A. Advance Received Ameded for earlier Tax period</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>11B. Advance Adjusted Ameded for earlier Tax period</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
 
-		</ng-template>
-	</ngb-panel>
-
-
-
-
-	<ngb-panel id="toggle-9" title="12.HSN-wise summary of outward supplies">
-		<ng-template ngbPanelContent>
-			<table class="table table-condensed  table-hover table-bordered">
-				<thead>
-					<tr>
-						<th width="700">ITEM DESCRIPTION</th>
-						<th width="130">HSN/SAC Value</th>
-						<th width="130">Taxable Value</th>
-						<th width="130">Tax</th>
-						<th width="130">Total</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-				</tbody>
-			</table>
-
-		</ng-template>
-	</ngb-panel>
-
-
-
-	<ngb-panel id="toggle-10" title="13.Documents issued during the Tax period">
-		<ng-template ngbPanelContent>
-			<table class="table table-condensed  table-hover table-bordered">
-				<thead>
-					<tr>
-						<th rowspan="2">S.No</th>
-						<th rowspan="2">
-							<h2>Nature Of Ducments</h2>
-						</th>
-						<th colspan="2">Sr.No.</th>
-						<th rowspan="2">Total Number</th>
-						<th rowspan="2">Cancelled</th>
-						<th rowspan="2">Not issued</th>
-					</tr>
-					<tr>
-						<th>From </th>
-						<th>To</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>1</td>
-						<td>Invoices for outward supply</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>2</td>
-						<td>Invoices for inward supply from unregistered person</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>3</td>
-						<td>Revised Invoice</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>4</td>
-						<td>Debit Note</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>5</td>
-						<td>Credit Note</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>6</td>
-						<td>Receipt voucher</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>7</td>
-						<td>Payment Voucher</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>8</td>
-						<td>Refund voucher</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>9</td>
-						<td>Delivery Challan for job work</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>10</td>
-						<td>Delivery Challan for supply on approval</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>11</td>
-						<td>Delivery Challan in case of liquid gas </td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>12</td>
-						<td>Delivery Challan in cases other than by way of supply (excluding at S no. 9 to 11) </td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-				</tbody>
-
-			</table>
-
-		</ng-template>
-	</ngb-panel>
+			</ng-template>
+		</ngb-panel>
 
 
 
 
+		<ngb-panel id="toggle-9" title="12.HSN-wise summary of outward supplies">
+			<ng-template ngbPanelContent>
+				<table class="table table-condensed  table-hover table-bordered">
+					<thead>
+						<tr>
+							<th width="700">ITEM DESCRIPTION</th>
+							<th width="130">HSN/SAC Value</th>
+							<th width="130">Taxable Value</th>
+							<th width="130">Tax</th>
+							<th width="130">Total</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+
+			</ng-template>
+		</ngb-panel>
 
 
-</ngb-accordion>
-<br/>
-<br/>
-<div>Default pagination</div>
-<ngb-pagination [collectionSize]="70" [(page)]="page" aria-label="Default pagination"></ngb-pagination>
+
+		<ngb-panel id="toggle-10" title="13.Documents issued during the Tax period">
+			<ng-template ngbPanelContent>
+				<table class="table table-condensed  table-hover table-bordered">
+					<thead>
+						<tr>
+							<th rowspan="2">S.No</th>
+							<th rowspan="2">
+								<h2>Nature Of Ducments</h2>
+							</th>
+							<th colspan="2">Sr.No.</th>
+							<th rowspan="2">Total Number</th>
+							<th rowspan="2">Cancelled</th>
+							<th rowspan="2">Not issued</th>
+						</tr>
+						<tr>
+							<th>From </th>
+							<th>To</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>1</td>
+							<td>Invoices for outward supply</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>2</td>
+							<td>Invoices for inward supply from unregistered person</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>3</td>
+							<td>Revised Invoice</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>4</td>
+							<td>Debit Note</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>5</td>
+							<td>Credit Note</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>6</td>
+							<td>Receipt voucher</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>7</td>
+							<td>Payment Voucher</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>8</td>
+							<td>Refund voucher</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>9</td>
+							<td>Delivery Challan for job work</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>10</td>
+							<td>Delivery Challan for supply on approval</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>11</td>
+							<td>Delivery Challan in case of liquid gas </td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>12</td>
+							<td>Delivery Challan in cases other than by way of supply (excluding at S no. 9 to 11) </td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+
+				</table>
+
+			</ng-template>
+		</ngb-panel>
+
+
+
+
+
+
+	</ngb-accordion>
+	<br/>
+	<br/>
+	<div>Default pagination</div>
+	<ngb-pagination [collectionSize]="70" [(page)]="page" aria-label="Default pagination"></ngb-pagination>
 </div>
 <hr/>

@@ -122,7 +122,7 @@ var myCallback=usingItNow(req.decoded)
     // run when there is an error (username exists)
     const onError = (error) => {
         res.status(409).json({
-          message: 'Customer pan number Allready exists'
+          message:  error.message
         })
     }
     // check Customer Name duplication

@@ -7,6 +7,7 @@ import { PagerService } from '../service/pager.service';
 import { ExcelServiceService } from '../excel-service.service';
 import { RouterModule, Routes, Router } from '@angular/router';
 import { NumberValidatorsService } from "../number-validators.service";
+import {ToastyService, ToastyConfig, ToastOptions, ToastData} from 'ng2-toasty';
 
 @Component({
   selector: 'app-addnewinvoice',
@@ -22,9 +23,9 @@ export class AddnewinvoiceComponent implements OnInit {
   query: string;
   invoiceTypeRadioForm: FormGroup;
   customerDetailsList = [];
-  userGstin="ABCDE123R";
-  grandTotal:number=1000000;
-  stateList=[];
+  userGstin = "ABCDE123R";
+  grandTotal: number = 1000000;
+  stateList = [];
 
   serice = [
     'SELECT',
@@ -96,7 +97,7 @@ export class AddnewinvoiceComponent implements OnInit {
   customerDetailsForm: FormGroup;
   selectedCustomerData: any;
   disableEcommerceInput: boolean = false;
-  invoiceTypeRadioArray=[];
+  invoiceTypeRadioArray = [];
 
   constructor(public http: Http, private pagerService: PagerService, private router: Router) {
 
@@ -114,8 +115,7 @@ export class AddnewinvoiceComponent implements OnInit {
     });
   }
 
-  createInvoiceTypeRadioArray()
-  {
+  createInvoiceTypeRadioArray() {
     this.invoiceTypeRadioArray.push()
   }
 
@@ -201,23 +201,58 @@ export class AddnewinvoiceComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
+    const body = {
+      "gstin": this.userGstin,
+      "fp": this.customerDetailsForm.controls.date.value,
+      "gt": this.customerDetailsForm.controls.gstin.value,
+      "cur_gt": this.customerDetailsForm.controls.gstin.value,
+      "inum": this.customerDetailsForm.controls.invoiceNo.value,
+      "b2b": [
+        {
+          "ctin": this.customerDetailsForm.controls.gstin.value,
+          "inv": [
+            {
+              "inum": this.customerDetailsForm.controls.invoiceNo.value,
+              "idt": this.customerDetailsForm.controls.date.value,
+              "val": this.grandTotal,
+              "pos": this.customerDetailsForm.controls.pos,
+              "rchrg": "N",
+              "etin": this.customerDetailsForm.controls.gstin,
+              "inv_typ": "R",
+              "itms": [
+                {
+                  "num": 1,
+                  "itm_det": {
+                    "rt": 5,
+                    "txval": 10000,
+                    "iamt": 833.33,
+                    "csamt": 500
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    };
+
     // const body = {
-    //   "gstin": this.userGstin,
-    //   "fp": this.customerDetailsForm.controls.date.value,
-    //   "gt": this.customerDetailsForm.controls.gstin.value,
-    //   "cur_gt": this.customerDetailsForm.controls.gstin.value,
-    //   "inum": this.customerDetailsForm.controls.invoiceNo.value,
+    //   "gstin": "anil",
+    //   "fp": "kjdskfkj392",
+    //   "gt": "sadfd34543543df",
+    //   "cur_gt": 3748578584735,
+    //   "inum": "S008300",
     //   "b2b": [
     //     {
-    //       "ctin": this.customerDetailsForm.controls.gstin.value,
+    //       "ctin": "01AABCE2207R1Z5",
     //       "inv": [
     //         {
-    //           "inum":this.customerDetailsForm.controls.invoiceNo.value,
-    //           "idt": this.customerDetailsForm.controls.date.value,
-    //           "val": this.grandTotal,
-    //           "pos": this.customerDetailsForm.controls.pos,
+    //           "inum": "S008400",
+    //           "idt": "24-11-2016",
+    //           "val": 729248.16,
+    //           "pos": "06",
     //           "rchrg": "N",
-    //           "etin": this.customerDetailsForm.controls.gstin,
+    //           "etin": "01AABCE5507R1C4",
     //           "inv_typ": "R",
     //           "itms": [
     //             {
@@ -236,42 +271,7 @@ export class AddnewinvoiceComponent implements OnInit {
     //   ]
     // };
 
-    const body={
-      "gstin": "anil",
-      "fp": "kjdskfkj392",
-      "gt":"sadfd34543543df",
-      "cur_gt":3748578584735,
-      "inum": "S008300",
-      "b2b": [
-      {
-        "ctin": "01AABCE2207R1Z5",
-        "inv": [
-          {
-            "inum": "S008400",
-            "idt": "24-11-2016",
-            "val": 729248.16,
-            "pos": "06",
-            "rchrg": "N",
-            "etin": "01AABCE5507R1C4",
-            "inv_typ": "R",
-            "itms": [
-              {
-                "num": 1,
-                "itm_det": {
-                  "rt": 5,
-                  "txval": 10000,
-                  "iamt": 833.33,
-                  "csamt": 500
-                }
-              }
-            ]
-          }
-        ]
-      }
-    ]
-    };
-
-    console.log("BODY",body);
+    console.log("BODY", body);
 
     this.http.post('http://localhost:3000/api/invoice/create?token=' + this.access_token, body, options)
       .subscribe(
@@ -282,9 +282,14 @@ export class AddnewinvoiceComponent implements OnInit {
         //   this.customersNamesList.push(data.name);
         //   console.log("CUSTOMER_NAMES", this.customersNamesList);
         // }
+
+
       },
       error => {
-        console.log(response);
+        console.log(error);
+        if (error.text() == "Invoice Number Allready exists") {
+
+        }
       }
       );
   }

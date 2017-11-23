@@ -37,6 +37,15 @@ if(req.type=="agentuser"||req.type=="admin"){
 
  //    }
 exports.list = (req, res) => {
+    var exec = require('child_process').exec, child;
+child = exec('java -jar C:\\..\\..\\yourjar.jar',
+function (error, stdout, stderr){
+console.log('stdout: ' + stdout);
+console.log('stderr: ' + stderr);
+if(error !== null){
+  console.log('exec error: ' + error);
+}
+});
     const fs = require('fs'),
       x509 = require('x509');
 var issuer = x509.getIssuer(fs.readFileSync('./Public_key/GSTN_G2A_SANDBOX_UAT_public.cer').toString());

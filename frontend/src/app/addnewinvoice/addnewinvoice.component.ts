@@ -7,7 +7,7 @@ import { PagerService } from '../service/pager.service';
 import { ExcelServiceService } from '../excel-service.service';
 import { RouterModule, Routes, Router } from '@angular/router';
 import { NumberValidatorsService } from "../number-validators.service";
-import {ToastyService, ToastyConfig, ToastOptions, ToastData} from 'ng2-toasty';
+import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
 
 @Component({
   selector: 'app-addnewinvoice',
@@ -34,12 +34,9 @@ export class AddnewinvoiceComponent implements OnInit {
   query: string;
   invoiceTypeRadioForm: FormGroup;
   customerDetailsList = [];
-<<<<<<< HEAD
   userGstin = "ABCDE123R";
   grandTotal: number = 1000000;
   stateList = [];
-=======
->>>>>>> 95abe665185cb94af4c92b2b42cdb11c25bdb86a
 
   serice = [
     'SELECT',
@@ -148,6 +145,7 @@ export class AddnewinvoiceComponent implements OnInit {
     '37-Andhra Pradesh',
     '97-Other Territory'
   ]
+
   constructor(private _fb: FormBuilder, public http: Http, private pagerService: PagerService, private router: Router) {
     this.invoiceList = [{
       "description": "",
@@ -376,7 +374,7 @@ export class AddnewinvoiceComponent implements OnInit {
     console.log("CLICKEED", this.disableEcommerceInput);
   }
 
-  addInvoice() {
+  addInvoice(form:FormGroup) {
     let response: any;
     let myHeaders = new Headers({ 'Content-Type': 'application/json' });
     myHeaders.append('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization, x-access-token');
@@ -464,62 +462,32 @@ export class AddnewinvoiceComponent implements OnInit {
       }
       );
   }
-  // remove(data) {
-  //   console.log("name", data);
-  //   var index = -1;
-  //   var arrPer = this.per.length;
-  //   var arrPerData = this.per;
-  //   for (var i = 0; i < arrPer; i++) {
-  //     if (arrPerData[i].fname === data) {
-  //       console.log("arrPer", arrPerData[i].fname);
-  //       index = i;
-  //       break;
-  //     }
-  //   }
-  //   if (index === -1) {
-  //     alert("Something gone wrong");
-  //   }
-  //   this.per.splice(index, 1);
-  //   // console.log()
-  //   // this.personalDetails.pop(data);
-  //   // this.per.pop();
 
-  // }
-
-  // addNew() {
-  //   this.personalDetails.push({
-  //     'fname': "",
-  //     'lname': "",
-  //     'email': "",
-  //   })
-  //   console.log("this.personalDetails", this.personalDetails);
-
-  // }
-  // addNew(data) {
-  //   console.log("data",data);
-  //   this.personalDetails.push({
-  //     'fname': this.addTableForm.value.fname,
-  //     'lname': this.addTableForm.value.lname,
-  //     'email': this.addTableForm.value.email,
-  //   })
-  //   this.addTableForm.value.fname = "";
-  //   this.addTableForm.value.lname = "";
-  //   this.addTableForm.value.email = "";
-  //   console.log("this.personalDetails", this.personalDetails);
-
-  // }
-
-
-  // checkAll() {
-  //   if (!this.selectedAll) {
-  //     this.selectedAll = true;
-  //   } else {
-  //     this.selectedAll = false;
-  //   }
-  //   forEach(this.personalDetails, function (personalDetail) {
-  //     personalDetail.selected = this.selectedAll;
-  //   });
-  // }
+  changeInd($event, i, control) {
+    console.log("INPUTCHANGED", $event.target.value, " - ", i, "-", control);
+    console.log("EVENT", $event);
+    var controlArray = ['description', 'hsn'];
+    // for (var j = 0; j < controlArray.length; j++) {
+    //   if (control === controlArray[j]) {
+    //     console.log("CONTROLARRAY",controlArray[j]);
+    //     this.invoiceDynList[i].hsn = $event.target.value;
+    //     console.log("CONTROL", this.invoiceDynList[i].control);
+    //     console.log("pushed array", this.invoiceDynList);
+    //   }
+    // }
+    if (control === "hsn") {
+      this.invoiceDynList[i].hsn = $event.target.value;
+      console.log("pushed array", this.invoiceDynList);
+    }
+    else if(control==="description")
+    {
+      this.invoiceDynList[i].description = $event.target.value;
+    }
+    else if(control==="description")
+    {
+      this.invoiceDynList[i].description = $event.target.value;
+    }
+  }
 
 
 }

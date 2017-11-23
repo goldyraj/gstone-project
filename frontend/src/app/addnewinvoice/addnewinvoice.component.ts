@@ -1,8 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
-import { forEach } from '@angular/router/src/utils/collection';
+import * as _ from 'underscore';
+import { PagerService } from '../service/pager.service';
+import { ExcelServiceService } from '../excel-service.service';
+import { RouterModule, Routes, Router } from '@angular/router';
+import { NumberValidatorsService } from "../number-validators.service";
 
 @Component({
   selector: 'app-addnewinvoice',
@@ -17,7 +21,18 @@ export class AddnewinvoiceComponent implements OnInit {
   public addInvoiceForm: FormGroup;
   public selectedAll: boolean;
   per = [];
+  customerDetailsForm: FormGroup;
+  selectedCustomerData: any;
+  disableEcommerceInput: boolean = false;
   invoiceDynList = [];
+
+  access_token: string;
+  selectedName: string;
+  customersNamesList = [];
+  filteredList = [];
+  query: string;
+  invoiceTypeRadioForm: FormGroup;
+  customerDetailsList = [];
 
   serice = [
     'SELECT',
@@ -126,7 +141,7 @@ export class AddnewinvoiceComponent implements OnInit {
     '37-Andhra Pradesh',
     '97-Other Territory'
   ]
-  constructor(private _fb: FormBuilder, ) {
+  constructor(private _fb: FormBuilder, public http: Http, private pagerService: PagerService, private router: Router) {
     this.invoiceList = [{
       "description": "",
       "goodservice": "",
@@ -192,6 +207,22 @@ export class AddnewinvoiceComponent implements OnInit {
       val3: new FormControl('', [<any>Validators.required]),
       val4: new FormControl('', [<any>Validators.required]),
     });
+    this.invoiceTypeRadioForm = new FormGroup({
+      invoiceTypeRadio: new FormControl('', [<any>Validators.required]),
+    });
+
+    this.customerDetailsForm = new FormGroup({
+      name: new FormControl('', [<any>Validators.required]),
+      invoiceNo: new FormControl('', [<any>Validators.required]),
+      date: new FormControl('', [<any>Validators.required]),
+      gstin: new FormControl('', [<any>Validators.required]),
+      pos: new FormControl('', [<any>Validators.required]),
+      eComGstin: new FormControl('', [<any>Validators.required]),
+    });
+
+    this.access_token = localStorage.getItem('user_token');
+
+    this.getCustomerNames();
   }
   addNew() {
     this.invoiceList = [
@@ -274,6 +305,135 @@ export class AddnewinvoiceComponent implements OnInit {
       alert("Something gone wrong");
     }
     this.invoiceDynList.splice(index, 1);
+
+  }
+
+  getCustomerNames() {
+    let response: any;
+    let myHeaders = new Headers({ 'Content-Type': 'application/json' });
+    myHeaders.append('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization, x-access-token');
+    myHeaders.append('Access-Control-Allow-Methods', 'GET, OPTIONS, POST');
+    myHeaders.append('Access-Control-Allow-Origin', '*');
+    myHeaders.append('Access-Control-Allow-Credentials', 'true');
+
+    let options = new RequestOptions({ headers: myHeaders });
+
+    this.http.get('http://localhost:3000/api/customer/index?token=' + this.access_token + '&limit=' + 5000, options)
+      .subscribe(
+      response => {
+        // this.customersNamesList = response.json().docs;
+        console.log("RESPONSE", response.json().docs);
+        this.customerDetailsList = response.json().docs;
+        for (let data of response.json().docs) {
+          console.log("NAMES", data.name);
+          this.customersNamesList.push(data.name);
+          console.log("CUSTOMER_NAMES", this.customersNamesList);
+        }
+      },
+      error => {
+        // alert(error.text());
+        console.log(error.text());
+      }
+      );
+  }
+
+  search() {
+
+    if (this.query !== "") {
+
+      this.filteredList = this.customersNamesList.filter(function (el) {
+        return el.toString().toLowerCase().indexOf(this.query.toString().toLowerCase()) > -1;
+      }.bind(this));
+    } else {
+      this.filteredList = [];
+    }
+  }
+
+  select(item) {
+    this.query = item;
+    this.filteredList = [];
+    this.selectedCustomerData = this.customerDetailsList.filter(x => x.name == item);
+    console.log("NAME", this.selectedCustomerData);
+    console.log("GSTIN", this.selectedCustomerData.gstin);
+    this.customerDetailsForm.get('gstin').setValue(this.selectedCustomerData[0].gstin);
+  }
+
+  selectRadio() {
+    if (this.invoiceTypeRadioForm.controls.invoiceTypeRadio.value === "E_Commerce") {
+      this.disableEcommerceInput = true;
+    }
+    else {
+      this.disableEcommerceInput = false;
+    }
+    console.log("CLICKEED", this.disableEcommerceInput);
+  }
+
+  addInvoice() {
+    let response: any;
+    let myHeaders = new Headers({ 'Content-Type': 'application/json' });
+    myHeaders.append('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization, x-access-token');
+    myHeaders.append('Access-Control-Allow-Methods', 'GET, OPTIONS, POST');
+    myHeaders.append('Access-Control-Allow-Origin', '*');
+    myHeaders.append('Access-Control-Allow-Credentials', 'true');
+
+    let options = new RequestOptions({ headers: myHeaders });
+
+    let itm_det = {
+      "rt": "",
+      "txval": "",
+      "iamt": "",
+      "csamt": ""
+    };
+
+    let items = {
+      "num": "",
+      // "itm_det":JSON.parse(itm_det)
+    };
+
+    let invArray = {
+      // "inum":this.customerDetailsForm.controls.invoiceNo.value,
+      // "idt":this.customerDetailsForm.controls.date.value,
+      // "val":this.customerDetailsForm.controls.
+      // "pos":"",
+      // "rchrg":"",
+      // "etin":"",
+      // "inv_typ":"",
+      // "itms":JSON.parse()
+    };
+
+    // let b2bArray={
+    //   "ctin":this.customerDetailsForm.controls.gstin.value,
+    //   "inv"
+    // };
+
+    let body = {
+      "gstin": this.customerDetailsForm.controls.gstin.value,
+      "fp": "",
+      "gt": this.customerDetailsForm.controls.gstin.value,
+      "cur_gt": this.customerDetailsForm.controls.gstin.value,
+      "inum": this.customerDetailsForm.controls.gstin.value,
+      "b2b": this.customerDetailsForm.controls.gstin.value,
+      // "inum":this.customerDetailsForm.controls.gstin.value,
+      // "inum":this.customerDetailsForm.controls.gstin.value,
+      // "inum":this.customerDetailsForm.controls.gstin.value,
+      // "inum":this.customerDetailsForm.controls.gstin.value,
+
+    };
+
+    this.http.post('http://localhost:3000/api/invoice/create?token=' + this.access_token + '&limit=' + 5000, body, options)
+      .subscribe(
+      response => {
+        console.log("RESPONSE", response.json().docs);
+        this.customerDetailsList = response.json().docs;
+        for (let data of response.json().docs) {
+          this.customersNamesList.push(data.name);
+          console.log("CUSTOMER_NAMES", this.customersNamesList);
+        }
+      },
+      error => {
+        console.log(error.text());
+      }
+      );
   }
   // remove(data) {
   //   console.log("name", data);

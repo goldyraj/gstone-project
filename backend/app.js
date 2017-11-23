@@ -5,7 +5,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const mongoose = require('mongoose')
-
+var cors = require('cors')
 /* =======================
     LOAD THE CONFIG
 ==========================*/
@@ -19,7 +19,7 @@ const app = express()
 // parse JSON and url-encoded query
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
-
+app.use(cors())
 // print the request log on console
 app.use(morgan('dev'))
 

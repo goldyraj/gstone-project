@@ -16,7 +16,6 @@ import { Gstr1Component } from './gstr-1/gstr-1.component';
 import { EditComponent } from './edit/edit.component';
 import { WorkreturnsComponent } from './workreturns/workreturns.component';
 import { GoodservicesComponent } from './goodservices/goodservices.component';
-import { AadNewInvoiceComponent } from './aad-new-invoice/aad-new-invoice.component';
 import { VendorComponent } from './vendor/vendor.component';
 import { EditinvoiceComponent } from './editinvoice/editinvoice.component';
 import { FormsModule } from '@angular/forms';
@@ -97,11 +96,10 @@ import { ProfileComponent } from './profile/profile.component';
     EditComponent,
     WorkreturnsComponent,
     GoodservicesComponent,
-    AadNewInvoiceComponent,
+    AddnewinvoiceComponent,
     VendorComponent,
     EditinvoiceComponent,
     SummaryComponent,
-    AddnewinvoiceComponent,
     AddbosComponent,
     ExportinvoiceComponent,
     NewamendmentComponent,

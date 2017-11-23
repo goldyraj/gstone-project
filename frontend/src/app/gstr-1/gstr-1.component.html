@@ -4,7 +4,7 @@
 
     <div class="clearfix"></div>
     <ul class="nav nav-pills">
-      <li role="presentation" ><a routerLink="../summarypage">Summary</a></li>
+      <li role="presentation"><a routerLink="../summarypage">Summary</a></li>
       <li role="presentation" class="active"><a routerLink="../gstr">Invoice Wise Detail</a></li>
       <li role="presentation"><a routerLink="../other">Other</a></li>
       <li role="presentation"><a routerLink="../">Submit</a></li>
@@ -27,66 +27,35 @@
         <div class="row ">
 
           <div class="section-bottom-10 section-top-10">
-            <!-- manage alignment -->
-
-            <!-- &nbsp;&nbsp;&nbsp;&nbsp;		<label class="radio-inline">
-					  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Normal_Invoice"> Normal Invoice
-					</label>
-										<label class="radio-inline">
-					  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="Reverse_Charge"> Reverse Charge
-					</label>
-										<label class="radio-inline">
-					  <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="E-commerce"> E-commerce
-					</label>
-										<label class="radio-inline">
-					  <input type="radio" name="inlineRadioOptions" id="inlineRadio4" value="Debit_Note"> Debit Note
-					</label>
-										<label class="radio-inline">
-					  <input type="radio" name="inlineRadioOptions" id="inlineRadio5" value="Credit_Note"> Credit Note
-					</label> -->
 
 
-            <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+            <div class="col-md-12 col-sm-12 col-xs-12 form-group">
 
-              
-              <div class="col-sm-7">
-                <select  class="form-control">
+              <div class="row">
+                <div class="col-sm-4">
+                  <select class="form-control">
                   <option *ngFor="let inv of Invoice" [value]="inv">{{inv}}</option>
-                  <!-- <option value="">Show All</option>
-														<option value="">Show Normal Sales</option>
-														<option value="">Show RC Sales</option>
-														<option value="">Show E-com Sales </option>
-														<option value="">Show Debit Notes</option>
-														<option value="">Show Credits Notes</option> -->
                 </select>
-              </div>
-            </div>
-
-            <div class="col-md-4 col-sm-4 col-xs-12 form-group">
-              <div class="col-sm-7">
-                <select  class="form-control">
+                </div>
+          
+              <div class="col-sm-4">
+                <select class="form-control">
                   <option *ngFor="let file of Filter" [value]="file">{{file}}</option>
-                  <!-- <option value="">Not Uploaded</option>
-														<option value="">Uploaded</option>
-														<option value="">Filed</option> -->
-
                 </select>
               </div>
-            </div>
 
-            <div class="col-md-2 col-sm-2 col-xs-12 form-group">
-
-              <button routerLink="../newinvoice" class="btn btn-success"> Add New Invoice </button>
+              <div class="col-sm-4 text-right">
+                <button routerLink="../newinvoice" class="btn btn-success"> Add New Invoice </button>
+              </div>
 
             </div>
           </div>
 
 
 
-
           <div class="section-top-10 col-md-12 col-sm-12 section-bottom-20">
-            <div class="table-responsive gsttable">             
-              <table class="table table-condensed table-wrapper table-bordered">
+            <div class="table-responsive gsttable">
+              <table class="table table-condensed table-bordered">
                 <thead>
                   <tr>
                     <th rowspan="2">S.No</th>
@@ -206,7 +175,7 @@
             </div>
           </div>
         </div>
-
+        </div>
 
 
       </ng-template>
@@ -225,24 +194,6 @@
         <div class="row ">
 
           <div class="section-bottom-10 section-top-10">
-            <!-- manage alignment -->
-
-            <!-- &nbsp;&nbsp;&nbsp;&nbsp;		<label class="radio-inline">
-					  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Normal_Invoice"> Normal Invoice
-					</label>
-										<label class="radio-inline">
-					  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="Reverse_Charge"> Reverse Charge
-					</label>
-										<label class="radio-inline">
-					  <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="E-commerce"> E-commerce
-					</label>
-										<label class="radio-inline">
-					  <input type="radio" name="inlineRadioOptions" id="inlineRadio4" value="Debit_Note"> Debit Note
-					</label>
-										<label class="radio-inline">
-					  <input type="radio" name="inlineRadioOptions" id="inlineRadio5" value="Credit_Note"> Credit Note
-					</label> -->
-
 
 
 
@@ -278,7 +229,7 @@
               <!-- <table class="table table-condensed  table-hover table-bordered">
             <tr>
               <td>-->
-              <table class="table table-condensed table-wrapper table-bordered">
+              <table class="table table-condensed table-bordered">
                 <thead>
                   <tr>
                     <th rowspan="2">S.No</th>
@@ -393,50 +344,12 @@
                       </a>
                     </td>
                   </tr>
-                  <!-- <tr>
-                    <td><input type="text" class="form-control" value=""></td>
-                    <td colspan="8" align="right">Total in Words</td>
-                    <td colspan="4" align="right"><b>Grand Total =</b></td>
-                  </tr> -->
                 </tbody>
               </table>
-              <!--</td> -->
-              <!-- <td><table class="table table-condensed table-bordered fixed-column">
-                <thead>
-                  <tr>
-                    <th rowspan="2"><br>Total<br> &nbsp;</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><input type="text" class="form-control" value="900.00/-"></td>
-                  </tr>
-                  <tr>
-                    <td><input type="text" class="form-control" value="12,000.00/-"></td>
-                  </tr>
-                  <tr>
-                    <td><input type="text" class="form-control" value="45,000.00/-"></td>
-                  </tr>
-                  <tr>
-                    <td><input type="text" class="form-control" value="57,900.00/-" ></td>
-                  </tr>
-                </tbody>
-              </table></td> -->
-              <!-- </tr>
-          </table> -->
+             
             </div>
           </div>
-          <!-- <div class="col-md-12 col-sm-12  col-xs-12 form-group invoice">
-      <label for="label">Customer Notes:</label>
-      <textarea name="textarea" rows="5" class="form-control" id="label" type="text" ></textarea>
-    </div>
-    <div class="col-md-12 col-sm-12 col-xs-12 form-group invoice">
-      <label for="label">Terms And Conditions:</label>
-      <textarea name="textarea" rows="5" class="form-control" id="label" type="email" ></textarea>
-    </div> -->
-          <!-- <div class="text-center section-bottom-60">
-      <button class="btn btn-primary"> Save Invoice</button>
-    </div> -->
+          
         </div>
 
 
@@ -456,52 +369,27 @@
 
         <div class="row ">
 
-          <div class="section-bottom-10 section-top-10">
-            <!-- manage alignment -->
-
-            <!-- &nbsp;&nbsp;&nbsp;&nbsp;		<label class="radio-inline">
-					  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Normal_Invoice"> Normal Invoice
-					</label>
-										<label class="radio-inline">
-					  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="Reverse_Charge"> Reverse Charge
-					</label>
-										<label class="radio-inline">
-					  <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="E-commerce"> E-commerce
-					</label>
-										<label class="radio-inline">
-					  <input type="radio" name="inlineRadioOptions" id="inlineRadio4" value="Debit_Note"> Debit Note
-					</label>
-										<label class="radio-inline">
-					  <input type="radio" name="inlineRadioOptions" id="inlineRadio5" value="Credit_Note"> Credit Note
-					</label> -->
+          <div class="section-top-10">
+           
 
 
             <div class="col-md-6 col-sm-6 col-xs-12 form-group">
               <div class="col-sm-7">
-                <select  class="form-control">
+                <select class="form-control">
                   <option *ngFor="let inv of Invoice" [value]="inv">{{inv}}</option>
-                  <!-- <option value="">Show All</option>
-														<option value="">Show Normal Sales</option>
-														<option value="">Show RC Sales</option>
-														<option value="">Show E-com Sales </option>
-														<option value="">Show Debit Notes</option>
-														<option value="">Show Credits Notes</option> -->
                 </select>
               </div>
             </div>
 
             <div class="col-md-4 col-sm-4 col-xs-12 form-group">
               <div class="col-sm-7">
-                <select  class="form-control">
+                <select class="form-control">
                   <option *ngFor="let file of Filter" [value]="file">{{file}}</option>
-                  <!-- <option value="">Not Uploaded</option>
-														<option value="">Uploaded</option>
-														<option value="">Filed</option> -->
 
                 </select>
               </div>
             </div>
-            <div class="col-md-2 col-sm-2 col-xs-12 form-group">
+            <div class="col-md-2 col-sm-2 col-xs-12 text-right">
 
               <button routerLink="/exportinv" class="btn btn-success"> Add Export Invoice </button>
 
@@ -513,10 +401,7 @@
 
           <div class="section-top-10 col-md-12 col-sm-12 section-bottom-20">
             <div class="table-responsive gsttable">
-              <!-- <table class="table table-condensed  table-hover table-bordered">
-            <tr>
-              <td>-->
-              <table class="table table-condensed table-wrapper table-bordered">
+              <table class="table table-condensed table-bordered">
                 <thead>
                   <tr>
                     <th rowspan="2">S.No</th>
@@ -631,50 +516,13 @@
                       </a>
                     </td>
                   </tr>
-                  <!-- <tr>
-                    <td><input type="text" class="form-control" value=""></td>
-                    <td colspan="8" align="right">Total in Words</td>
-                    <td colspan="4" align="right"><b>Grand Total =</b></td>
-                  </tr> -->
+                 
                 </tbody>
               </table>
-              <!--</td> -->
-              <!-- <td><table class="table table-condensed table-bordered fixed-column">
-                <thead>
-                  <tr>
-                    <th rowspan="2"><br>Total<br> &nbsp;</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><input type="text" class="form-control" value="900.00/-"></td>
-                  </tr>
-                  <tr>
-                    <td><input type="text" class="form-control" value="12,000.00/-"></td>
-                  </tr>
-                  <tr>
-                    <td><input type="text" class="form-control" value="45,000.00/-"></td>
-                  </tr>
-                  <tr>
-                    <td><input type="text" class="form-control" value="57,900.00/-" ></td>
-                  </tr>
-                </tbody>
-              </table></td> -->
-              <!-- </tr>
-          </table> -->
+              
             </div>
           </div>
-          <!-- <div class="col-md-12 col-sm-12  col-xs-12 form-group invoice">
-      <label for="label">Customer Notes:</label>
-      <textarea name="textarea" rows="5" class="form-control" id="label" type="text" ></textarea>
-    </div>
-    <div class="col-md-12 col-sm-12 col-xs-12 form-group invoice">
-      <label for="label">Terms And Conditions:</label>
-      <textarea name="textarea" rows="5" class="form-control" id="label" type="email" ></textarea>
-    </div> -->
-          <!-- <div class="text-center section-bottom-60">
-      <button class="btn btn-primary"> Save Invoice</button>
-    </div> -->
+         
         </div>
 
 
@@ -694,37 +542,10 @@
 
         <div class="row ">
 
-          <div class="section-bottom-10 section-top-10">
-            <!-- manage alignment -->
+          <div class="section-bottom-20 section-top-10">
+            
 
-            <!-- &nbsp;&nbsp;&nbsp;&nbsp;		<label class="radio-inline">
-					  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Normal_Invoice"> Normal Invoice
-					</label>
-										<label class="radio-inline">
-					  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="Reverse_Charge"> Reverse Charge
-					</label>
-										<label class="radio-inline">
-					  <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="E-commerce"> E-commerce
-					</label>
-										<label class="radio-inline">
-					  <input type="radio" name="inlineRadioOptions" id="inlineRadio4" value="Debit_Note"> Debit Note
-					</label>
-										<label class="radio-inline">
-					  <input type="radio" name="inlineRadioOptions" id="inlineRadio5" value="Credit_Note"> Credit Note
-					</label> -->
-
-
-            <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-              <div class="col-sm-7">
-                <!-- <select >
-                           <option *ngFor="let inv of Invoice" [value]="inv">{{inv}}</option>
-														
-														</select> -->
-              </div>
-            </div>
-
-            <div class="col-md-4 col-sm-4 col-xs-12 form-group">
-              <div class="col-sm-7">
+              <div class="col-sm-12 text-right">
                 <!-- <select >
                            <option *ngFor="let file of Filter" [value]="file">{{file}}</option>
 														
@@ -732,18 +553,17 @@
 
                 <button routerLink="/amendment" class="btn btn-success"> Add Amendment </button>
               </div>
-            </div>
           </div>
 
 
 
 
-          <div class="section-top-10 col-md-12 col-sm-12 section-bottom-20">
+          <div class="section-top-20 col-md-12 col-sm-12 section-bottom-20">
             <div class="table-responsive gsttable">
               <!-- <table class="table table-condensed  table-hover table-bordered">
             <tr>
               <td>-->
-              <table class="table table-condensed table-wrapper table-bordered">
+              <table class="table table-condensed table-bordered">
                 <thead>
                   <tr>
                     <th rowspan="2">S.No</th>
@@ -868,50 +688,13 @@
                       </a>
                     </td>
                   </tr>
-                  <!-- <tr>
-                    <td><input type="text" class="form-control" value=""></td>
-                    <td colspan="8" align="right">Total in Words</td>
-                    <td colspan="4" align="right"><b>Grand Total =</b></td>
-                  </tr> -->
+                 
                 </tbody>
               </table>
-              <!--</td> -->
-              <!-- <td><table class="table table-condensed table-bordered fixed-column">
-                <thead>
-                  <tr>
-                    <th rowspan="2"><br>Total<br> &nbsp;</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><input type="text" class="form-control" value="900.00/-"></td>
-                  </tr>
-                  <tr>
-                    <td><input type="text" class="form-control" value="12,000.00/-"></td>
-                  </tr>
-                  <tr>
-                    <td><input type="text" class="form-control" value="45,000.00/-"></td>
-                  </tr>
-                  <tr>
-                    <td><input type="text" class="form-control" value="57,900.00/-" ></td>
-                  </tr>
-                </tbody>
-              </table></td> -->
-              <!-- </tr>
-          </table> -->
+              
             </div>
           </div>
-          <!-- <div class="col-md-12 col-sm-12  col-xs-12 form-group invoice">
-      <label for="label">Customer Notes:</label>
-      <textarea name="textarea" rows="5" class="form-control" id="label" type="text" ></textarea>
-    </div>
-    <div class="col-md-12 col-sm-12 col-xs-12 form-group invoice">
-      <label for="label">Terms And Conditions:</label>
-      <textarea name="textarea" rows="5" class="form-control" id="label" type="email" ></textarea>
-    </div> -->
-          <!-- <div class="text-center section-bottom-60">
-      <button class="btn btn-primary"> Save Invoice</button>
-    </div> -->
+          
         </div>
 
       </ng-template>

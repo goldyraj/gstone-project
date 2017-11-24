@@ -7,11 +7,13 @@ import { PagerService } from '../service/pager.service';
 import { ExcelServiceService } from '../excel-service.service';
 import { RouterModule, Routes, Router } from '@angular/router';
 import { NumberValidatorsService } from "../number-validators.service";
+import {ApiserviceService} from '../apiservice.service';
 
 @Component({
   selector: 'app-admin-user',
   templateUrl: './admin-user.component.html',
-  styleUrls: ['./admin-user.component.css']
+  styleUrls: ['./admin-user.component.css'],
+  providers:[ApiserviceService]
 })
 export class AdminUserComponent implements OnInit {
 
@@ -38,7 +40,7 @@ export class AdminUserComponent implements OnInit {
   @ViewChild('closeBtn') closeBtn:ElementRef;
   @ViewChild('closeBtn2') closeBtn2:ElementRef;
   
-  constructor(public http: Http, private pagerService: PagerService, public excelServiceService: ExcelServiceService, private router: Router) {
+  constructor(public http: Http, private pagerService: PagerService, public excelServiceService: ExcelServiceService, private router: Router,public ApiserviceService:ApiserviceService) {
 
   }
 
@@ -94,7 +96,7 @@ export class AdminUserComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/user/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + page + "&sortBy=" + this.sortBy, options)
+    this.http.get(this.ApiserviceService.BASE_URL+'user/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + page + "&sortBy=" + this.sortBy, options)
       .subscribe(
       response => {
         this.dataList = response.json().docs;
@@ -130,7 +132,7 @@ export class AdminUserComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/state/list', options)
+    this.http.get(this.ApiserviceService.BASE_URL+'state/list', options)
       .subscribe(
       response => {
         this.stateDropDownList = response.json().state;
@@ -183,7 +185,7 @@ export class AdminUserComponent implements OnInit {
         "state": this.myForm.value.state
       };
 
-      var url = "http://localhost:3000/api/user/update?token=" + this.access_token;
+      var url = this.ApiserviceService.BASE_URL+"user/update?token=" + this.access_token;
       return this.http.put(url, body, requestOptions)
         .subscribe(
         response => {
@@ -210,7 +212,7 @@ export class AdminUserComponent implements OnInit {
 
     const requestOptions = new RequestOptions({ headers: headers });
 
-    var url = "http://localhost:3000/api/user/delete/" + this.rowData._id;
+    var url = this.ApiserviceService.BASE_URL+"user/delete/" + this.rowData._id;
     return this.http.delete(url, requestOptions)
       .subscribe(
       response => {
@@ -238,7 +240,7 @@ export class AdminUserComponent implements OnInit {
   searchKeyword(searchString) {
 
     if (searchString) {
-      this.http.get('http://localhost:3000/api/user/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
+      this.http.get(this.ApiserviceService.BASE_URL+'user/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
         this.dataList = data.json().docs;
         this.pager.pageSize = data.json().limit;
         this.pager.totalItems = data.json().total;

@@ -5,12 +5,13 @@ import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { PagerService } from '../service/pager.service';
 import { RouterModule, Routes, Router } from '@angular/router';
+import {ApiserviceService} from '../apiservice.service';
 
 @Component({
   selector: 'app-admin-contact-us',
   templateUrl: './admin-contact-us.component.html',
   styleUrls: ['./admin-contact-us.component.css'],
-  providers: [PagerService]
+  providers: [PagerService,ApiserviceService]
 })
 export class AdminContactUsComponent implements OnInit {
 
@@ -37,7 +38,7 @@ export class AdminContactUsComponent implements OnInit {
   // paged items
   pagedItems: any[];
 
-  constructor(private _fb: FormBuilder, private http: Http, public PagerService: PagerService, public Router: Router) {
+  constructor(private _fb: FormBuilder, private http: Http, public PagerService: PagerService, public Router: Router,public apiserviceService: ApiserviceService) {
     this.access_token = localStorage.getItem("admin_token");
     this.pager.currentPage = 1;
     this.getNotificationList(this.pager.currentPage);
@@ -68,7 +69,7 @@ export class AdminContactUsComponent implements OnInit {
       return;
     }
     console.log('list called');
-    this.http.get('http://localhost:3000/api/contact/index?token=' + this.access_token + '&limit=' + 5 + '&page=' + this.pager.currentPage + '&sortBy=created_at&search=').subscribe(data => {
+    this.http.get(this.apiserviceService.BASE_URL+'contact/index?token=' + this.access_token + '&limit=' + 5 + '&page=' + this.pager.currentPage + '&sortBy=created_at&search=').subscribe(data => {
       this.notificationList = data.json().docs;
       console.log("CONTACTS_LIST", this.notificationList);
       this.pager.pageSize = data.json().limit;
@@ -111,7 +112,7 @@ export class AdminContactUsComponent implements OnInit {
         "company": this.contactUsForm.value.company,
         "remark": this.contactUsForm.value.remark
       };
-      this.url = "http://localhost:3000/api/contact/create?token=" + this.access_token;
+      this.url = this.apiserviceService.BASE_URL+"contact/create?token=" + this.access_token;
       return this.http.post(this.url, body, requestOptions)
         .subscribe(
         response => {
@@ -140,7 +141,7 @@ export class AdminContactUsComponent implements OnInit {
     console.log("SEARCH_HIT");
 
     if (searchString) {
-      this.http.get('http://localhost:3000/api/contact/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
+      this.http.get(this.apiserviceService.BASE_URL+'contact/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
         this.notificationList = data.json().docs;
         this.pager.pageSize = data.json().limit;
         this.pager.totalItems = data.json().total;

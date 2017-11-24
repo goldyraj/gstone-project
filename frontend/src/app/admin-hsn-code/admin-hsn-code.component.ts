@@ -7,12 +7,13 @@ import { PagerService } from '../service/pager.service';
 import { ExcelServiceService } from '../excel-service.service';
 import { RouterModule, Routes, Router } from '@angular/router';
 import { NumberValidatorsService } from "../number-validators.service";
+import {ApiserviceService} from '../apiservice.service';
 
 @Component({
   selector: 'app-admin-hsn-code',
   templateUrl: './admin-hsn-code.component.html',
   styleUrls: ['./admin-hsn-code.component.css'],
-  providers: [PagerService, ExcelServiceService,NumberValidatorsService]
+  providers: [PagerService, ExcelServiceService,NumberValidatorsService,ApiserviceService]
 })
 export class AdminHsnCodeComponent implements OnInit {
 
@@ -56,7 +57,7 @@ export class AdminHsnCodeComponent implements OnInit {
   public isDownloadSuccessful;
   isGoodsSelected = true;
 
-  constructor(private http: Http, private pagerService: PagerService, public excelServiceService: ExcelServiceService, private router: Router) {
+  constructor(private http: Http, private pagerService: PagerService, public excelServiceService: ExcelServiceService, private router: Router,public ApiserviceService:ApiserviceService) {
 
   }
 
@@ -153,10 +154,10 @@ export class AdminHsnCodeComponent implements OnInit {
     console.log("CSV_DATA", body);
 
     if (this.isGoodsSelected) {
-      this.url = "http://localhost:3000/api/goods/uploadFile?token=" + this.access_token;
+      this.url = this.ApiserviceService.BASE_URL+"goods/uploadFile?token=" + this.access_token;
     }
     else {
-      this.url = "http://localhost:3000/api/services/uploadFile?token=" + this.access_token;
+      this.url = this.ApiserviceService.BASE_URL+"services/uploadFile?token=" + this.access_token;
     }
 
     return this.http.post(this.url, body, requestOptions)

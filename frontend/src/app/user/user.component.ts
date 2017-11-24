@@ -6,11 +6,13 @@ import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { RouterModule, Routes, Router } from '@angular/router';
 // import { HttpClientModule, HttpClient, HttpHeaders } from '@angular/common/http';
+import {ApiserviceService} from '../apiservice.service';
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css']
+  styleUrls: ['./user.component.css'],
+  providers:[ApiserviceService]
 })
 export class UserComponent implements OnInit {
 
@@ -26,7 +28,7 @@ export class UserComponent implements OnInit {
   public submitted: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
   // private http: Http HttpClient,
-  constructor(private _fb: FormBuilder, private http: Http,private router: Router) {
+  constructor(private _fb: FormBuilder, private http: Http,private router: Router,public apiserviceService: ApiserviceService) {
     this.access_token = localStorage.getItem("user_token");
     console.log("user token",this.access_token);
     // window.location.reload();
@@ -42,7 +44,7 @@ export class UserComponent implements OnInit {
 
   checkAuth(){
     console.log('auth called');
-    this.http.get('http://localhost:3000/api/auth/check?token='+this.access_token).subscribe(data => {
+    this.http.get(this.apiserviceService.BASE_URL+'auth/check?token='+this.access_token).subscribe(data => {
       this.userDetails = data.json().info;
       this.userIsLogged = data.json().success;
       console.log("users", this.userDetails);

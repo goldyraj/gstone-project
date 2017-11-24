@@ -5,12 +5,13 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import * as _ from 'underscore';
 import { PagerService } from '../service/pager.service';
 import { RouterModule, Routes, Router } from '@angular/router';
+import {ApiserviceService} from '../apiservice.service';
 
 @Component({
   selector: 'app-user-gov-notification',
   templateUrl: './user-gov-notification.component.html',
   styleUrls: ['./user-gov-notification.component.css'],
-  providers: [ PagerService]
+  providers: [ PagerService,ApiserviceService]
 })
 export class UserGovNotificationComponent implements OnInit {
 
@@ -30,7 +31,7 @@ export class UserGovNotificationComponent implements OnInit {
   public submitted: boolean; // keep track on whether form is submitted
   public submittedEdit: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
-  constructor(private _fb: FormBuilder, private http: Http,public pagerService:PagerService,private router: Router) {
+  constructor(private _fb: FormBuilder, private http: Http,public pagerService:PagerService,private router: Router,public apiserviceService: ApiserviceService) {
     this.pager.currentPage = 1;
     // this.access_token = localStorage.getItem("user_token");
     this.getNotificationList(1);
@@ -44,7 +45,7 @@ export class UserGovNotificationComponent implements OnInit {
     this.pager.currentPage=page;
 
     console.log('list called');
-    this.http.get('http://localhost:3000/api/home/notification?limit=3&page='+this.pager.currentPage).subscribe(data => {
+    this.http.get(this.apiserviceService.BASE_URL+'home/notification?limit=3&page='+this.pager.currentPage).subscribe(data => {
       this.notificationList = data.json().docs;
       this.pager.pageSize = data.json().limit;
       this.pager.totalItems = data.json().total;

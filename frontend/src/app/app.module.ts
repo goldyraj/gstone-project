@@ -73,6 +73,7 @@ import { AdminUserComponent } from './admin-user/admin-user.component';
 import { AdminCustomerComponent } from './admin-customer/admin-customer.component';
 import { AdminVendorComponent } from './admin-vendor/admin-vendor.component';
 import { ProfileComponent } from './profile/profile.component';
+import {ToastyModule} from 'ng2-toasty';
 
 @NgModule({
   declarations: [
@@ -145,6 +146,7 @@ import { ProfileComponent } from './profile/profile.component';
     HttpModule,
     NgbModule.forRoot(),
     NgxPaginationModule,
+    ToastyModule
   ],
   providers: [ApiserviceService, ExcelServiceService, PagerService, PreventLoggedInAccess, AuthService],
   bootstrap: [AppComponent]

@@ -119,37 +119,31 @@
     <table class="table table-condensed  table-hover table-bordered" formArrayName="salesList">
       <thead>
         <tr>
-          <th rowspan="3">S.No</th>
-          <th rowspan="3">Description</th>
-          <th rowspan="3" width="100px">Goods Services</th>
-          <th rowspan="3">HSN / SAC </th>
-          <th rowspan="3">QTY </th>
-          <th rowspan="3">Unit Of Measurement</th>
-          <th rowspan="3">Taxable Value</th>
-          <th rowspan="3" width="100px">Rate Of Tax</th>
-          <th rowspan="3">CGST</th>
-          <th rowspan="3">SGST</th>
-          <th rowspan="3">IGST</th>
-          <th colspan="4">CESS</th>
-          <th colspan="4">
-            <button (click)="addSalesListItem()">Add</button>
-          </th>
-        </tr>
-        <!-- <tr>
-          <th>Rate</th>
-          <th>AMT </th>
-          <th rowspan="3">Total</th>
-          <th rowspan="3">Action</th>
-        </tr> -->
+            <th value="#" colspan="1" rowspan="2" class="text-center">S.No</th>
+            <th value="Description" colspan="1" rowspan="2" class="text-left">Description</th>
+            <th value="Goods Services" colspan="1" rowspan="2" class="text-left">Goods Services</th>
+            <th value="HSN / SAC" colspan="1" rowspan="2" class="text-center">HSN / SAC</th>
+            <th value="Qty" colspan="1" rowspan="2" class="text-right">Qty</th>
+            <th value="Unit of Measurement" colspan="1" rowspan="2" class="unit_of_measurement">Unit of Measurement</th>
+            <th value="Taxable Value" colspan="1" rowspan="2" class="text-center">Taxable Value</th>
+            <th value="Rate Of Tax" colspan="1" rowspan="2" class="text-center">Rate Of Tax</th>
+            <th value="CGST" colspan="1" rowspan="2" class="text-center">CGST</th>
+            <th value="SGST" colspan="1" rowspan="2" class="text-right">SGST</th>
+            <th value="IGST" colspan="1" rowspan="2" class="text-center">IGST</th>
+            <th value="CESS" colspan="2" rowspan="1" class="cess text-center">CESS</th>
+            <th value="Total" colspan="1" rowspan="2" class="text-left">Total</th>
+          </tr>
+          <tr>
+            <th value="IGST" colspan="1" rowspan="1" class="igst text-right">RATE</th>
+            <th value="%" colspan="1" rowspan="1" class="cess text-center">AMT</th>
+          </tr>
 
       </thead>
       <tbody>
 
-        <!-- <div  *ngFor="let item of invoiceList ;let i = index;"> -->
         <tr *ngFor="let saleList of salesListArray.controls;let i = index" [formGroupName]="i">
           <td align="center"> 1</td>
           <td>
-            <!-- <input type="text" class="form-control" value="Mesuarement"> -->
             <input type="text" class="form-control" formControlName="description" required>
           </td>
           <td>
@@ -159,10 +153,8 @@
           </td>
           <td>
             <input type="text" class="form-control" formControlName="hsn" required>
-            <!-- <input type="text" class="form-control" value="HSN"> -->
           </td>
           <td>
-            <!-- <input type="text" class="form-control" value="500"> -->
             <input type="text" class="form-control" formControlName="qty" required>
           </td>
           <td>
@@ -171,7 +163,6 @@
             </select>
           </td>
           <td>
-            <!-- <input type="text" class="form-control" value="49"> -->
             <input type="text" class="form-control" formControlName="tax" required>
           </td>
           <td>
@@ -202,10 +193,6 @@
           <td>
             <!-- <input type="text" class="form-control" value="500"> -->
             <input type="text" class="form-control" formControlName="val4" required>
-          </td>
-          <td>
-            <!-- <input type="text" class="form-control" value="500"> -->
-            <input type="text" class="form-control" formControlName="val5" required>
           </td>
           <td>
             <button (click)="deleteRow(i)">Remove</button>

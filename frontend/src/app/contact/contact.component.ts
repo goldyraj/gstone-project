@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
+import {ApiserviceService} from '../apiservice.service';
 
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.component.html',
-  styleUrls: ['./contact.component.css']
+  styleUrls: ['./contact.component.css'],
+  providers:[ApiserviceService]
 })
 export class ContactComponent implements OnInit {
 
@@ -17,7 +19,7 @@ export class ContactComponent implements OnInit {
   alertType = "";
   public errorType: boolean;
   public submitted: boolean; // keep track on whether form is submitted
-  constructor(private _fb: FormBuilder, private http: Http) { }
+  constructor(private _fb: FormBuilder, private http: Http,public apiserviceService: ApiserviceService) { }
 
   ngOnInit() {
     this.contactForm = new FormGroup({
@@ -53,7 +55,7 @@ export class ContactComponent implements OnInit {
         "remark": this.contactForm.value.remarks
       };
 
-      this.url = "http://localhost:3000/api/contact/create";
+      this.url = this.apiserviceService.BASE_URL+"contact/create";
       return this.http.post(this.url, body, requestOptions)
         .subscribe(
         response => {

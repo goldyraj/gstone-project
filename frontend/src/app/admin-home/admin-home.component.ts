@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterModule, Routes, Router } from '@angular/router';
 import { Http, Headers, RequestOptions } from '@angular/http';
+import {ApiserviceService} from '../apiservice.service';
 
 
 @Component({
   selector: 'app-admin-home',
   templateUrl: './admin-home.component.html',
-  styleUrls: ['./admin-home.component.css']
+  styleUrls: ['./admin-home.component.css'],
+  providers:[ApiserviceService]
 })
 export class AdminHomeComponent implements OnInit {
 
@@ -16,7 +18,7 @@ export class AdminHomeComponent implements OnInit {
   customersCount;
   branchesCount;
 
-  constructor(private router: Router, public http: Http) {
+  constructor(private router: Router, public http: Http,public ApiserviceService:ApiserviceService) {
 
   }
 
@@ -53,7 +55,7 @@ export class AdminHomeComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/user/index?token=' + this.access_token + '&limit=' + 1000, options)
+    this.http.get(this.ApiserviceService.BASE_URL+'user/index?token=' + this.access_token + '&limit=' + 1000, options)
       .subscribe(
       response => {
         this.usersCount = [];
@@ -80,7 +82,7 @@ export class AdminHomeComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/vendor/index?token=' + this.access_token + '&limit=' + 1000, options)
+    this.http.get(this.ApiserviceService.BASE_URL+'vendor/index?token=' + this.access_token + '&limit=' + 1000, options)
       .subscribe(
       response => {
         this.vendorsCount = [];
@@ -103,7 +105,7 @@ export class AdminHomeComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/branch/index?token=' + this.access_token + '&limit=' + 1000, options)
+    this.http.get(this.ApiserviceService.BASE_URL+'branch/index?token=' + this.access_token + '&limit=' + 1000, options)
       .subscribe(
       response => {
         this.branchesCount = [];
@@ -126,7 +128,7 @@ export class AdminHomeComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/customer/index?token=' + this.access_token + '&limit=' + 1000, options)
+    this.http.get(this.ApiserviceService.BASE_URL+'customer/index?token=' + this.access_token + '&limit=' + 1000, options)
       .subscribe(
       response => {
         this.customersCount = [];

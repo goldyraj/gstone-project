@@ -5,12 +5,13 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { ExcelServiceService } from '../excel-service.service';
 import { DateTime } from 'date-time-js';
 import { PagerService } from '../service/pager.service';
+import {ApiserviceService} from '../apiservice.service';
 
 @Component({
   selector: 'app-vendor',
   templateUrl: './vendor.component.html',
   styleUrls: ['./vendor.component.css'],
-  providers: [ExcelServiceService, PagerService]
+  providers: [ExcelServiceService, PagerService,ApiserviceService]
 })
 export class VendorComponent implements OnInit {
   // constructor() { }
@@ -44,7 +45,7 @@ export class VendorComponent implements OnInit {
   selectedState = "";
   venderRowData;
 
-  constructor(private _fb: FormBuilder, private http: Http, public excelServiceService: ExcelServiceService, public pagerService: PagerService) {
+  constructor(private _fb: FormBuilder, private http: Http, public excelServiceService: ExcelServiceService, public pagerService: PagerService,public apiserviceService: ApiserviceService) {
     this.pager.currentPage = 1;
     this.access_token = localStorage.getItem("user_token");
     this.getVenderList(1);
@@ -103,7 +104,7 @@ export class VendorComponent implements OnInit {
         "address": this.myForm.value.address,
         "state": this.selectedState
       };
-      this.url = "http://localhost:3000/api/vendor/create?token=" + this.access_token;
+      this.url = this.apiserviceService.BASE_URL+"vendor/create?token=" + this.access_token;
       return this.http.post(this.url, body, requestOptions)
         .subscribe(
         response => {
@@ -147,7 +148,7 @@ export class VendorComponent implements OnInit {
       };
       console.log("body", body);
 
-      this.url = "http://localhost:3000/api/vendor/update?token=" + this.access_token;
+      this.url = this.apiserviceService.BASE_URL+"vendor/update?token=" + this.access_token;
       return this.http.put(this.url, body, requestOptions)
         .subscribe(
         response => {
@@ -179,7 +180,7 @@ export class VendorComponent implements OnInit {
 
   getStateList() {
     console.log('list called');
-    this.http.get('http://localhost:3000/api/state/list').subscribe(data => {
+    this.http.get(this.apiserviceService.BASE_URL+'state/list').subscribe(data => {
       this.stateList = data.json().state;
       // this.TotalPages = data.json().total;
       // this.pageSize = this.Paging.limit;
@@ -192,7 +193,7 @@ export class VendorComponent implements OnInit {
 
   getVenderList(page: number) {
     this.pager.currentPage = page;
-    this.http.get('http://localhost:3000/api/vendor/index?token=' + this.access_token + '&page=' + this.pager.currentPage + '&limit=' + 5).subscribe(data => {
+    this.http.get(this.apiserviceService.BASE_URL+'vendor/index?token=' + this.access_token + '&page=' + this.pager.currentPage + '&limit=' + 5).subscribe(data => {
       this.venderList = data.json().docs;
       let isList = this.venderList.length;
       console.log("verder  PArse", this.venderList);
@@ -258,7 +259,7 @@ export class VendorComponent implements OnInit {
     // headers.append('x-access-token', access_token);
     const requestOptions = new RequestOptions({ headers: headers });
 
-    this.url = "http://localhost:3000/api/vendor/delete/" + this.venderRowData._id;
+    this.url = this.apiserviceService.BASE_URL+"vendor/delete/" + this.venderRowData._id;
     return this.http.delete(this.url, requestOptions)
       .subscribe(
       response => {
@@ -310,7 +311,7 @@ export class VendorComponent implements OnInit {
 
     console.log("CSV_DATA", body);
 
-    this.url = "http://localhost:3000/api/vendor/uploadFile?token=" + this.access_token;
+    this.url = this.apiserviceService.BASE_URL+"vendor/uploadFile?token=" + this.access_token;
 
     return this.http.post(this.url, body, requestOptions)
       .subscribe(
@@ -343,7 +344,7 @@ export class VendorComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/vendor/index?token=' + this.access_token+"&limit="+1000, options)
+    this.http.get(this.apiserviceService.BASE_URL+'vendor/index?token=' + this.access_token+"&limit="+1000, options)
       .subscribe(
       response => {
         exportedList = response.json().docs;

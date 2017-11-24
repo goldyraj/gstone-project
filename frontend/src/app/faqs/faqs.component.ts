@@ -3,17 +3,19 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { RouterModule, Routes, Router } from '@angular/router';
+import {ApiserviceService} from '../apiservice.service';
 
 @Component({
   selector: 'app-faqs',
   templateUrl: './faqs.component.html',
-  styleUrls: ['./faqs.component.css']
+  styleUrls: ['./faqs.component.css'],
+  providers:[ApiserviceService]
 })
 export class FaqsComponent implements OnInit {
   faqsList = [];
   notiRowData;
   
-  constructor(public http: Http, private router: Router, private _fb: FormBuilder) {
+  constructor(public http: Http, private router: Router, private _fb: FormBuilder,public apiserviceService: ApiserviceService) {
     this.getFaqsList();
   }
 
@@ -22,7 +24,7 @@ export class FaqsComponent implements OnInit {
 
   getFaqsList() {
     console.log('list called');
-    this.http.get('http://localhost:3000/api/faq/index').subscribe(data => {
+    this.http.get(this.apiserviceService.BASE_URL+'faq/index').subscribe(data => {
       this.faqsList = data.json().docs;
       console.log("pagecount", )
       console.log("faqsList", this.faqsList);

@@ -5,12 +5,13 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import * as _ from 'underscore';
 import {PagerService} from '../service/pager.service';
 import { RouterModule, Routes, Router } from '@angular/router';
+import {ApiserviceService} from '../apiservice.service';
 
 @Component({
   selector: 'app-admin-internal-update-innerpage',
   templateUrl: './admin-internal-update-innerpage.component.html',
   styleUrls: ['./admin-internal-update-innerpage.component.css'],
-  providers:[PagerService]
+  providers:[PagerService,ApiserviceService]
 })
 export class AdminInternalUpdateInnerpageComponent implements OnInit {
 
@@ -45,7 +46,7 @@ export class AdminInternalUpdateInnerpageComponent implements OnInit {
   public chapter;
 
   access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
-  constructor(private _fb: FormBuilder, private http: Http,public PagerService:PagerService,public router:Router) {
+  constructor(private _fb: FormBuilder, private http: Http,public PagerService:PagerService,public router:Router,public ApiserviceService:ApiserviceService) {
     this.pager.currentPage=1;
     this.access_token = localStorage.getItem("admin_token");
     this.getInternalUpdateList(this.pager.currentPage);
@@ -83,7 +84,7 @@ export class AdminInternalUpdateInnerpageComponent implements OnInit {
   getInternalUpdateList(page:number) {
     this.pager.currentPage=page;
     console.log('list called');
-    this.http.get('http://localhost:3000/api/internal/index?token='+this.access_token+'&limit=' + 10 + '&page=' + this.pager.currentPage + '&sortBy=created_at&search=').subscribe(data => {
+    this.http.get(this.ApiserviceService.BASE_URL+'internal/index?token='+this.access_token+'&limit=' + 10 + '&page=' + this.pager.currentPage + '&sortBy=created_at&search=').subscribe(data => {
       this.internalUpdateList = data.json().docs;
       this.pager.pageSize = data.json().limit;
       this.pager.totalItems=data.json().total;
@@ -137,7 +138,7 @@ export class AdminInternalUpdateInnerpageComponent implements OnInit {
         "chapter":chapterParam,
         "article":articleParam
       };
-      this.url = "http://localhost:3000/api/internal/create?token="+this.access_token;
+      this.url = this.ApiserviceService.BASE_URL+"internal/create?token="+this.access_token;
       return this.http.post(this.url, body, requestOptions)
         .subscribe(
         response => {
@@ -232,7 +233,7 @@ export class AdminInternalUpdateInnerpageComponent implements OnInit {
         "article":articleParam
       };
 
-      this.url = "http://localhost:3000/api/internal/update?token="+this.access_token;
+      this.url = this.ApiserviceService.BASE_URL+"internal/update?token="+this.access_token;
       return this.http.put(this.url, body, requestOptions)
         .subscribe(
         response => {
@@ -266,7 +267,7 @@ export class AdminInternalUpdateInnerpageComponent implements OnInit {
     // headers.append('x-access-token', access_token);
     const requestOptions = new RequestOptions({ headers: headers });
 
-    this.url = "http://localhost:3000/api/internal/delete/" + this.notiRowData._id+"?token="+this.access_token;
+    this.url = this.ApiserviceService.BASE_URL+"internal/delete/" + this.notiRowData._id+"?token="+this.access_token;
     return this.http.delete(this.url, requestOptions)
       .subscribe(
       response => {
@@ -343,7 +344,7 @@ export class AdminInternalUpdateInnerpageComponent implements OnInit {
     console.log("SEARCH_HIT");
 
     if (searchString) {
-      this.http.get('http://localhost:3000/api/internal/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
+      this.http.get(this.ApiserviceService.BASE_URL+'internal/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
         this.internalUpdateList = data.json().docs;
         this.pager.pageSize = data.json().limit;
         this.pager.totalItems = data.json().total;

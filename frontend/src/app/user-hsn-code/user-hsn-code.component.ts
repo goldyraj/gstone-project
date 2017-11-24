@@ -5,13 +5,14 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { ExcelServiceService } from '../excel-service.service';
 import { PagerService } from '../service/pager.service';
 import { RouterModule, Routes, Router } from '@angular/router';
-import * as _ from 'underscore'
+import * as _ from 'underscore';
+import {ApiserviceService} from '../apiservice.service';
 
 @Component({
   selector: 'app-user-hsn-code',
   templateUrl: './user-hsn-code.component.html',
   styleUrls: ['./user-hsn-code.component.css'],
-  providers: [ExcelServiceService, PagerService]
+  providers: [ExcelServiceService, PagerService,ApiserviceService]
 })
 export class UserHsnCodeComponent implements OnInit {
 
@@ -51,7 +52,7 @@ export class UserHsnCodeComponent implements OnInit {
   public isDownloadSuccessful;
   isGoodsSelected = true;
 
-  constructor(private http: Http, private pagerService: PagerService, public excelServiceService: ExcelServiceService, private router: Router) {
+  constructor(private http: Http, private pagerService: PagerService, public excelServiceService: ExcelServiceService, private router: Router,public apiserviceService: ApiserviceService) {
 
   }
 
@@ -109,7 +110,7 @@ export class UserHsnCodeComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/services/list', options)
+    this.http.get(this.apiserviceService.BASE_URL+'services/list', options)
       .subscribe(
       response => {
         console.log("BRANCH_LIST_API_RESPONSE", response.json());
@@ -148,7 +149,7 @@ export class UserHsnCodeComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/goods/list', options)
+    this.http.get(this.apiserviceService.BASE_URL+'goods/list', options)
       .subscribe(
       response => {
         console.log("BRANCH_LIST_API_RESPONSE", response.json());

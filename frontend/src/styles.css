@@ -796,6 +796,7 @@ span {
   
 }
 .gsttable .table-condensed>tbody>tr>td, .table-condensed>tbody>tr>th, .gsttable .table-condensed>tfoot>tr>td, .gsttable .table-condensed>tfoot>tr>th { padding:0px!important;}
+.tbbgcolor input.form-control{ background:#e4e40a6b;}
 .table-condensed>thead>tr>th{
   color:#161616;
   font-size:13px;
@@ -1028,6 +1029,7 @@ span {
 .color-3{ background:#ff6569; color:#FFFFFF;}
 .color-4{ background:#2c4653; color:#FFFFFF;}
 .nav>li{ text-align: center;}
+.tabcolor{background:#8fa6cc; color:#FFFFFF;padding:11px 0px 3px 0px; font-weight: 600px; text-align: center; margin-bottom: 10px;}
 .navbar-default {
     padding: 5px 14px 0px 14px;}
 .navbar-nav li a{ margin-bottom:1px!important;}
@@ -1064,6 +1066,7 @@ span {
 #accordion .panel-title > a.accordion-toggle.collapsed::before, #accordion a.collapsed[data-toggle="collapse"]::before  {
     content:"\e114";
 }
+
 @media screen and (max-width 768px){
 .navbar-nav li a span{
   display:block;

@@ -7,22 +7,25 @@ import { PagerService } from '../service/pager.service';
 import { ExcelServiceService } from '../excel-service.service';
 import { RouterModule, Routes, Router } from '@angular/router';
 import { NumberValidatorsService } from "../number-validators.service";
-import {ApiserviceService} from '../apiservice.service';
+import { ApiserviceService } from '../apiservice.service';
+import { concat } from 'rxjs/operator/concat';
 
 @Component({
   selector: 'app-addnewinvoice',
   templateUrl: './addnewinvoice.component.html',
   styleUrls: ['./addnewinvoice.component.css'],
-  providers:[ApiserviceService]
+  providers: [ApiserviceService]
 })
 export class AddnewinvoiceComponent implements OnInit {
   descriptionQuery:string;
   reimburshForm: FormGroup;
   salesListArray: FormArray;
+  myModel: any;
+  public selectedAll: boolean;
+  a: number;
   filteredDescriptionList=[];
   // public addTableForm: FormGroup;
   // public addInvoiceForm: FormGroup;
-  public selectedAll: boolean;
   customersGoodsAndServciesList=[];
   access_token: string;
   selectedName: string;
@@ -105,16 +108,53 @@ export class AddnewinvoiceComponent implements OnInit {
     'YDS-YARDS',
     'OTH-OTHERS'
   ]
-  constructor(private formBuilder: FormBuilder, private pagerService: PagerService, private router: Router, public http: Http,public apiserviceService: ApiserviceService ) {
-    
+  constructor(private formBuilder: FormBuilder, private pagerService: PagerService, private router: Router, public http: Http, public apiserviceService: ApiserviceService) {
+    this.myModel = {
+      salesList: [
+        { val5: 111.11 },
+        { val5: 222.22 }
+      ]
+    };
+    console.log("mymodel", this.myModel.salesList);
   }
 
   ngOnInit() {
+
     this.access_token = localStorage.getItem('user_token');
     this.buildForm();
     this.getCustomerNames();
     this.getStateList();
-    this.getCustomersGoodsAndServices();
+    // this.reimburshForm.valueChanges.subscribe((change) => {
+    //   console.log("hi");
+    //   const calculateAmount = (salesList: any[]): number => {
+    //     return salesList.reduce((acc, current) => {
+    //       return acc + parseFloat(current.val5 || 0);
+    //     }, 0);
+    //   }
+    //   console.log("changes vale", calculateAmount(this.reimburshForm.value));
+    // })
+    // this.reimburshForm.get('salesList').valueChanges.subscribe( x => console.log(x));
+    // this.reimburshForm.get('salesList').valueChanges.subscribe(x => {
+    //   console.log("changed val",x,x[0].val5,x['val5']);
+    // });
+
+    // this.reimburshForm.controls.val5.valueChanges.subscribe(x => console.log("changed val", x));
+
+
+  }
+  sumPayOffs() {
+    // return this.reimburshForm..reduce((sum, val) => sum + val.val5, 0);
+    // var a = 1;
+    // return a;
+    
+    this.reimburshForm.get('salesList').valueChanges.subscribe(x => {
+      console.log("changed val", x, x[0].val5, x['val5']);
+      this.a = x[0].val5;
+      console.log("inside", this.a);
+    });
+    console.log("outside", this.a);
+    return this.a;
+    // this.getCustomersGoodsAndServices();
   }
 
   buildForm() {
@@ -178,6 +218,7 @@ export class AddnewinvoiceComponent implements OnInit {
     console.log("added val", this.salesListArray);
   }
 
+
   deleteRow(index: number) {
     const control = <FormArray>this.reimburshForm.controls['salesList'];
     // remove the chosen row
@@ -195,7 +236,7 @@ export class AddnewinvoiceComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get(this.apiserviceService.BASE_URL+'customer/index?token=' + this.access_token + '&limit=' + 5000, options)
+    this.http.get(this.apiserviceService.BASE_URL + 'customer/index?token=' + this.access_token + '&limit=' + 5000, options)
       .subscribe(
       response => {
         // this.customersNamesList = response.json().docs;
@@ -327,7 +368,7 @@ export class AddnewinvoiceComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get(this.apiserviceService.BASE_URL+'state/list?token=' + this.access_token + '&limit=' + 1000, options)
+    this.http.get(this.apiserviceService.BASE_URL + 'state/list?token=' + this.access_token + '&limit=' + 1000, options)
       .subscribe(
       response => {
         this.stateList = response.json().state;

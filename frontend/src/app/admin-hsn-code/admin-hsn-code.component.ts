@@ -54,11 +54,13 @@ export class AdminHsnCodeComponent implements OnInit {
   @ViewChild('closeCsv') closeCsv: ElementRef;
   @ViewChild('clearInputFile') clearInputFile:ElementRef;
   public selectCategory;
-  public isDownloadSuccessful;
-  isGoodsSelected = true;
+  public isDownloadSuccessful:boolean;
+  isGoodsSelected:boolean = true;
 
   constructor(private http: Http, private pagerService: PagerService, public excelServiceService: ExcelServiceService, private router: Router,public ApiserviceService:ApiserviceService) {
-
+    this.goodsPager.pageSize=0;
+    this.goodsPager.totalItems=0;
+    this.goodsPager.currentPage=0;
   }
 
   ngOnInit() {

@@ -136,13 +136,13 @@
 
                   <!-- TABLE -->
 
-                  <ul class="pagination btn-sm" *ngIf="isGoodsSelected==true && goodsData?.length > 1">
+                  <ul class="pagination btn-sm" *ngIf="isGoodsSelected===true && goodsData?.length > 1">
                     <li [ngClass]="{disabled:goodsPager.currentPage === 1}">
                       <a *ngIf="goodsPager.currentPage > 1" (click)="getAllGoods(goodsPager.currentPage - 1)">Previous</a>
                     </li>
 
                     <li [ngClass]="{disabled:goodsPager.currentPage === 1}">
-                      <a *ngIf="goodsPager.currentPage ==1">Previous</a>
+                      <a *ngIf="goodsPager.currentPage ===1">Previous</a>
                     </li>
 
                     <li *ngFor="let page of goodsPager.pages" [ngClass]="{active:goodsPager.currentPage === page}">
@@ -153,7 +153,7 @@
                       <a *ngIf="goodsPager.currentPage < goodsPager.endPage" (click)="getAllGoods(goodsPager.currentPage + 1)">Next</a>
                     </li>
                     <li [ngClass]="{disabled:goodsPager.currentPage === goodsPager.endPage}">
-                      <a *ngIf="goodsPager.currentPage == goodsPager.endPage">Next</a>
+                      <a *ngIf="goodsPager.currentPage === goodsPager.endPage">Next</a>
                     </li>
                   </ul>
                 </div>

@@ -3,11 +3,13 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { RouterModule, Routes, Router } from '@angular/router';
+import {ApiserviceService} from '../apiservice.service';
 
 @Component({
   selector: 'app-home-dashboard',
   templateUrl: './home-dashboard.component.html',
-  styleUrls: ['./home-dashboard.component.css']
+  styleUrls: ['./home-dashboard.component.css'],
+  providers:[ApiserviceService]
 })
 export class HomeDashboardComponent implements OnInit {
   @ViewChild('closeBtn') closeBtn: ElementRef;
@@ -40,7 +42,7 @@ export class HomeDashboardComponent implements OnInit {
   public LoginForm: FormGroup; // our model driven form
   public submitted: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
-  constructor(public http: Http, private router: Router, private _fb: FormBuilder) {
+  constructor(public http: Http, private router: Router, private _fb: FormBuilder,public apiserviceService: ApiserviceService) {
     this.getNotificationList();
     this.getVideosList();
     this.getInternalUpdateList();
@@ -77,7 +79,7 @@ export class HomeDashboardComponent implements OnInit {
 
   getVideosList() {
     console.log('list called');
-    this.http.get('http://localhost:3000/api/home/vedio').subscribe(data => {
+    this.http.get(this.apiserviceService.BASE_URL+'home/vedio').subscribe(data => {
       this.videosList = data.json().docs;
       this.TotalPages = data.json().total;
       this.pageSize = this.Paging.limit;
@@ -89,7 +91,7 @@ export class HomeDashboardComponent implements OnInit {
   }
   getNotificationList() {
     console.log('list called');
-    this.http.get('http://localhost:3000/api/home/notification').subscribe(data => {
+    this.http.get(this.apiserviceService.BASE_URL+'home/notification').subscribe(data => {
       this.notificationList = data.json().docs;
       this.TotalPages = data.json().total;
       this.pageSize = this.Paging.limit;
@@ -102,7 +104,7 @@ export class HomeDashboardComponent implements OnInit {
 
   getInternalUpdateList() {
     console.log('list called');
-    this.http.get('http://localhost:3000/api/home/internal').subscribe(data => {
+    this.http.get(this.apiserviceService.BASE_URL+'home/internal').subscribe(data => {
       this.internalUpdateList = data.json().docs;
       this.TotalPages = data.json().total;
       this.pageSize = this.Paging.limit;
@@ -114,7 +116,7 @@ export class HomeDashboardComponent implements OnInit {
   }
   checkAuth(){
     console.log('auth called');
-    this.http.get('http://localhost:3000/api/auth/check?token='+this.access_token).subscribe(data => {
+    this.http.get(this.apiserviceService.BASE_URL+'auth/check?token='+this.access_token).subscribe(data => {
       this.userDetails = data.json().info;
       this.userIsLogged = data.json().success;
       console.log("State  PArse", this.userDetails);
@@ -129,7 +131,7 @@ export class HomeDashboardComponent implements OnInit {
   
   // getVideosList() {
   //   console.log('list called');
-  //   this.http.get('http://localhost:3000/api/home/vedio').subscribe(data => {
+  //   this.http.get(this.apiserviceService.BASE_URL+'home/vedio').subscribe(data => {
   //     this.videosList = data.json().docs;
   //     this.TotalPages = data.json().total;
   //     this.pageSize = this.Paging.limit;
@@ -141,7 +143,7 @@ export class HomeDashboardComponent implements OnInit {
   // }
   // getNotificationList() {
   //   console.log('list called');
-  //   this.http.get('http://localhost:3000/api/home/notification').subscribe(data => {
+  //   this.http.get(this.apiserviceService.BASE_URL+'home/notification').subscribe(data => {
   //     this.notificationList = data.json().docs;
   //     this.TotalPages = data.json().total;
   //     this.pageSize = this.Paging.limit;
@@ -153,7 +155,7 @@ export class HomeDashboardComponent implements OnInit {
   // }
   // getInternalUpdateList() {
   //   console.log('list called');
-  //   this.http.get('http://localhost:3000/api/home/internal').subscribe(data => {
+  //   this.http.get(this.apiserviceService.BASE_URL+'home/internal').subscribe(data => {
   //     this.internalUpdateList = data.json().docs;
   //     this.TotalPages = data.json().total;
   //     this.pageSize = this.Paging.limit;
@@ -168,7 +170,7 @@ export class HomeDashboardComponent implements OnInit {
   //   console.log('Form Data: ');
   //   console.log(form);
   //   let body = form;
-  //   this.http.post('http://localhost:3000/api/auth/login', body)
+  //   this.http.post(this.apiserviceService.BASE_URL+'auth/login', body)
   //     .subscribe(
   //     response => {
   //       localStorage.setItem('user_token', response.json().token);
@@ -229,7 +231,7 @@ export class HomeDashboardComponent implements OnInit {
   //     };
      
 
-  //     this.url = "http://localhost:3000/api/auth/register";
+  //     this.url = this.apiserviceService.BASE_URL+"auth/register";
   //     return this.http.post(this.url, body, requestOptions)
   //       .subscribe(
   //       response => {

@@ -65,7 +65,7 @@
           </div>
           <div class="box">
             <div class="box-body">
-              <form [formGroup]="editPolicy" novalidate (ngSubmit)="updatePrivacyPolicy(editPolicy.valid)">
+              <form [formGroup]="editPolicy" novalidate (ngSubmit)="updateOrAddPolicy(editPolicy.valid)">
                 <div class="box-body">
                   <div class="form-group">
                     <textarea rows="15" type="text" formControlName="discription" class="form-control" id="exampleInputEmail1" value=""></textarea>

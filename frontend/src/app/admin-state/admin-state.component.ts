@@ -8,12 +8,13 @@ import { RouterModule, Routes, Router } from '@angular/router';
 import { PreventLoggedInAccess } from '../PreventLoggedInAccess';
 import { NumberValidatorsService } from "../number-validators.service";
 import { NgZone } from '@angular/core';
+import {ApiserviceService} from '../apiservice.service';
 
 @Component({
   selector: 'app-admin-state',
   templateUrl: './admin-state.component.html',
   styleUrls: ['./admin-state.component.css'],
-  providers: [PagerService, PreventLoggedInAccess, NumberValidatorsService]
+  providers: [PagerService, PreventLoggedInAccess, NumberValidatorsService,ApiserviceService]
 })
 export class AdminStateComponent implements OnInit {
 
@@ -61,7 +62,7 @@ export class AdminStateComponent implements OnInit {
   access_token = "";
   pagedSearchedItems;
 
-  constructor(private _fb: FormBuilder, private http: Http, private pagerService: PagerService, public router: Router, private zone: NgZone) {
+  constructor(private _fb: FormBuilder, private http: Http, private pagerService: PagerService, public router: Router, private zone: NgZone,public ApiserviceService:ApiserviceService) {
     // this.currentPage=1;
   }
 
@@ -104,11 +105,6 @@ export class AdminStateComponent implements OnInit {
 
   saveState(isValid: boolean) {
     this.submitted = true; // set form submit to true
-    console.log(isValid);
-    console.log("hi form module is called from page");
-    console.log("form val", this.myForm.value.name);
-    this.StateVal = this.myForm.value;
-    console.log("form valuse", this.StateVal);
 
     if (isValid == true) {
 
@@ -121,7 +117,7 @@ export class AdminStateComponent implements OnInit {
         "code": this.myForm.value.statecode
       };
       this.stateList.push(body);
-      this.url = "http://localhost:3000/api/state/create?token=" + this.access_token;
+      this.url = this.ApiserviceService.BASE_URL+"state/create?token=" + this.access_token;
       return this.http.post(this.url, body, requestOptions)
         .subscribe(
         response => {
@@ -142,7 +138,7 @@ export class AdminStateComponent implements OnInit {
 
   getStateList(page: number) {
     this.pager.currentPage = page;
-    this.http.get('http://localhost:3000/api/state/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + this.pager.currentPage).subscribe(data => {
+    this.http.get(this.ApiserviceService.BASE_URL+'state/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + this.pager.currentPage).subscribe(data => {
       this.stateList = data.json().docs;
       // this.pager.TotalPages = data.json().total;
       this.pager.pageSize = data.json().limit;
@@ -207,7 +203,7 @@ export class AdminStateComponent implements OnInit {
         "code": this.myFormEdit.value.statecode
       };
 
-      this.url = "http://localhost:3000/api/state/update?token=" + this.access_token;
+      this.url = this.ApiserviceService.BASE_URL+"state/update?token=" + this.access_token;
       return this.http.put(this.url, body, requestOptions)
         .subscribe(
         response => {
@@ -232,7 +228,7 @@ export class AdminStateComponent implements OnInit {
     const requestOptions = new RequestOptions({ headers: headers });
     console.log("_ID___", this.stateRowData._id);
 
-    this.url = "http://localhost:3000/api/state/delete/" + this.stateRowData._id;
+    this.url = this.ApiserviceService.BASE_URL+"state/delete/" + this.stateRowData._id;
     return this.http.delete(this.url, requestOptions)
       .subscribe(
       response => {
@@ -263,7 +259,7 @@ export class AdminStateComponent implements OnInit {
     console.log("BACKUP_LIST", this.backupStateList);
 
     if (searchString) {
-      this.http.get('http://localhost:3000/api/state/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
+      this.http.get(this.ApiserviceService.BASE_URL+'state/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
         this.stateList = data.json().docs;
         this.pager.pageSize = data.json().limit;
         this.pager.totalItems = data.json().total;

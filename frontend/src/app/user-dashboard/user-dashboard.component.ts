@@ -6,12 +6,13 @@ import { ExcelServiceService } from '../excel-service.service';
 import { PagerService } from '../service/pager.service';
 import { RouterModule, Routes, Router } from '@angular/router';
 import * as _ from 'underscore';
+import {ApiserviceService} from '../apiservice.service';
 
 @Component({
   selector: 'app-user-dashboard',
   templateUrl: './user-dashboard.component.html',
   styleUrls: ['./user-dashboard.component.css'],
-  providers: [ExcelServiceService, PagerService]
+  providers: [ExcelServiceService, PagerService,ApiserviceService]
 })
 export class UserDashboardComponent implements OnInit {
 
@@ -29,7 +30,7 @@ export class UserDashboardComponent implements OnInit {
   publicBranchData;
   selectedDealerStateEdit = '0';
   selectedDealerStateNew = '0';
-  jsonString;
+  jsonString:string;
   // constructor() { }
   @ViewChild('closeBtn') closeBtn: ElementRef;
   modelHide = '';
@@ -55,7 +56,7 @@ export class UserDashboardComponent implements OnInit {
   pagedItems: any[];
   // private http: Http HttpClient,
   public userName: string;
-  constructor(private _fb: FormBuilder, private http: Http, public excelServiceService: ExcelServiceService, public PagerService: PagerService, private router: Router) {
+  constructor(private _fb: FormBuilder, private http: Http, public excelServiceService: ExcelServiceService, public PagerService: PagerService, private router: Router,public apiserviceService: ApiserviceService) {
     this.isEditingClicked = false;
     this.pager.currentPage = 1;
     this.access_token = localStorage.getItem('user_token');
@@ -98,7 +99,7 @@ export class UserDashboardComponent implements OnInit {
 
   checkAuth() {
     console.log('auth called');
-    this.http.get('http://localhost:3000/api/auth/check?token=' + this.access_token).subscribe(data => {
+    this.http.get(this.apiserviceService.BASE_URL+'auth/check?token=' + this.access_token).subscribe(data => {
       this.userDetails = data.json().info;
       // this.userIsLogged = data.json().success;
       console.log('user details', this.userDetails);
@@ -151,7 +152,7 @@ export class UserDashboardComponent implements OnInit {
         'dealer_type': this.selectedDealer
 
       };
-      this.url = 'http://localhost:3000/api/branch/create?token=' + this.access_token;
+      this.url = this.apiserviceService.BASE_URL+'branch/create?token=' + this.access_token;
       return this.http.post(this.url, body, requestOptions)
         .subscribe(
         response => {
@@ -208,7 +209,7 @@ export class UserDashboardComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/branch/index?token=' + this.access_token + '&page=' + this.pager.currentPage + '&limit=' + 5, options)
+    this.http.get(this.apiserviceService.BASE_URL+'branch/index?token=' + this.access_token + '&page=' + this.pager.currentPage + '&limit=' + 5, options)
       .subscribe(
       response => {
 
@@ -250,7 +251,7 @@ export class UserDashboardComponent implements OnInit {
 
   getStateList() {
     console.log('list called');
-    this.http.get('http://localhost:3000/api/state/list').subscribe(data => {
+    this.http.get(this.apiserviceService.BASE_URL+'state/list').subscribe(data => {
       this.stateList = data.json().state;
       // this.TotalPages = data.json().total;
       // this.pageSize = this.Paging.limit;
@@ -294,7 +295,7 @@ export class UserDashboardComponent implements OnInit {
 
     console.log('CSV_DATA', body);
 
-    this.url = 'http://localhost:3000/api/branch/uploadFile?token=' + this.access_token;
+    this.url = this.apiserviceService.BASE_URL+'branch/uploadFile?token=' + this.access_token;
 
     return this.http.post(this.url, body, requestOptions)
       .subscribe(
@@ -328,7 +329,7 @@ export class UserDashboardComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/branch/index?token=' + this.access_token, options)
+    this.http.get(this.apiserviceService.BASE_URL+'branch/index?token=' + this.access_token, options)
       .subscribe(
       response => {
         exportedList = response.json().docs;

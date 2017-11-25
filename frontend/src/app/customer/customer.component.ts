@@ -5,12 +5,13 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { ExcelServiceService } from '../excel-service.service';
 import * as _ from 'underscore';
 import { PagerService } from '../service/pager.service';
+import {ApiserviceService} from '../apiservice.service';
 
 @Component({
   selector: 'app-customer',
   templateUrl: './customer.component.html',
   styleUrls: ['./customer.component.css'],
-  providers: [PagerService, ExcelServiceService]
+  providers: [PagerService, ExcelServiceService,ApiserviceService]
 })
 export class CustomerComponent implements OnInit {
   // constructor() { }
@@ -53,7 +54,7 @@ export class CustomerComponent implements OnInit {
   access_token;
   errorMsg;
 
-  constructor(private _fb: FormBuilder, private http: Http, public excelServiceService: ExcelServiceService, public pagerService: PagerService) {
+  constructor(private _fb: FormBuilder, private http: Http, public excelServiceService: ExcelServiceService, public pagerService: PagerService,public apiserviceService: ApiserviceService) {
     this.access_token = localStorage.getItem("user_token");
     console.log("user_token", this.access_token);
     this.pager.currentPage = 1;
@@ -119,7 +120,7 @@ export class CustomerComponent implements OnInit {
         "state": this.selectedState
       };
 
-      this.url = "http://localhost:3000/api/customer/create?token=" + this.access_token;
+      this.url = this.apiserviceService.BASE_URL+"customer/create?token=" + this.access_token;
       return this.http.post(this.url, body, requestOptions)
         .subscribe(
         response => {
@@ -149,7 +150,7 @@ export class CustomerComponent implements OnInit {
 
   getStateList() {
     console.log('list called');
-    this.http.get('http://localhost:3000/api/state/list').subscribe(data => {
+    this.http.get(this.apiserviceService.BASE_URL+'state/list').subscribe(data => {
       this.stateList = data.json().state;
       // this.TotalPages = data.json().total;
       // this.pageSize = this.Paging.limit;
@@ -168,7 +169,7 @@ export class CustomerComponent implements OnInit {
     // headers.append('x-access-token', access_token);
     const requestOptions = new RequestOptions({ headers: headers });
 
-    this.url = "http://localhost:3000/api/customer/delete/" + this.custRowData._id;
+    this.url = this.apiserviceService.BASE_URL+"customer/delete/" + this.custRowData._id;
     return this.http.delete(this.url, requestOptions)
       .subscribe(
       response => {
@@ -194,7 +195,7 @@ export class CustomerComponent implements OnInit {
 
   getCustomerList(page: number) {
     this.pager.currentPage = page;
-    this.http.get('http://localhost:3000/api/customer/index?token=' + this.access_token + '&limit=5&page=' + this.pager.currentPage + '&sortBy=title&search=').subscribe(data => {
+    this.http.get(this.apiserviceService.BASE_URL+'customer/index?token=' + this.access_token + '&limit=5&page=' + this.pager.currentPage + '&sortBy=title&search=').subscribe(data => {
       console.log("customer list", data);
       this.custList = data.json().docs;
       let isList = this.custList.length;
@@ -267,7 +268,7 @@ export class CustomerComponent implements OnInit {
       };
       console.log("body",body);
 
-      this.url = "http://localhost:3000/api/customer/update?token=" + this.access_token;
+      this.url = this.apiserviceService.BASE_URL+"customer/update?token=" + this.access_token;
       return this.http.put(this.url, body, requestOptions)
         .subscribe(
         response => {
@@ -322,7 +323,7 @@ export class CustomerComponent implements OnInit {
 
     console.log("CSV_DATA", body);
 
-    this.url = "http://localhost:3000/api/customer/uploadFile?token=" + this.access_token;
+    this.url = this.apiserviceService.BASE_URL+"customer/uploadFile?token=" + this.access_token;
 
     return this.http.post(this.url, body, requestOptions)
       .subscribe(
@@ -337,11 +338,11 @@ export class CustomerComponent implements OnInit {
           this.ifSuccess=false;
           errorval = response.json().error;
           if (errorval.substr(56, 9) === 'contact_1') {
-            this.errorMsg = 'Contact No is already register.';
+            this.errorMsg = 'Contact No is already registered !';
           } else if (errorval.substr(56, 8) === 'pan_no_1') {
-            this.errorMsg = 'Pan No is already register.';
+            this.errorMsg = 'Pan No is already registered !';
           } else {
-            this.errorMsg = 'Email id is already register.';
+            this.errorMsg = 'Email id is already registered !';
           }
         }
         else
@@ -377,7 +378,7 @@ export class CustomerComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/customer/index?token=' + this.access_token+"&limit="+1000, options)
+    this.http.get(this.apiserviceService.BASE_URL+'customer/index?token=' + this.access_token+"&limit="+1000, options)
       .subscribe(
       response => {
         exportedList = response.json().docs;

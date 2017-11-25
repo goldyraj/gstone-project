@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import {ApiserviceService} from '../apiservice.service';
 
 @Component({
   selector: 'app-addbos',
   templateUrl: './addbos.component.html',
-  styleUrls: ['./addbos.component.css']
+  styleUrls: ['./addbos.component.css'],
+  providers:[ApiserviceService]
 })
 export class AddbosComponent implements OnInit {
 
@@ -112,7 +114,7 @@ serice=[
 'OTH-OTHERS'
   ]
 
-  constructor() { }
+  constructor(public apiserviceService: ApiserviceService) { }
 
   ngOnInit() {
   }

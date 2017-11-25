@@ -7,12 +7,13 @@ import { PagerService } from '../service/pager.service';
 import { ExcelServiceService } from '../excel-service.service';
 import { RouterModule, Routes, Router } from '@angular/router';
 import { NumberValidatorsService } from "../number-validators.service";
+import {ApiserviceService} from '../apiservice.service';
 
 @Component({
   selector: 'app-admin-hsn-code',
   templateUrl: './admin-hsn-code.component.html',
   styleUrls: ['./admin-hsn-code.component.css'],
-  providers: [PagerService, ExcelServiceService,NumberValidatorsService]
+  providers: [PagerService, ExcelServiceService,NumberValidatorsService,ApiserviceService]
 })
 export class AdminHsnCodeComponent implements OnInit {
 
@@ -56,7 +57,7 @@ export class AdminHsnCodeComponent implements OnInit {
   public isDownloadSuccessful;
   isGoodsSelected = true;
 
-  constructor(private http: Http, private pagerService: PagerService, public excelServiceService: ExcelServiceService, private router: Router) {
+  constructor(private http: Http, private pagerService: PagerService, public excelServiceService: ExcelServiceService, private router: Router,public ApiserviceService:ApiserviceService) {
 
   }
 
@@ -153,10 +154,10 @@ export class AdminHsnCodeComponent implements OnInit {
     console.log("CSV_DATA", body);
 
     if (this.isGoodsSelected) {
-      this.url = "http://localhost:3000/api/goods/uploadFile?token=" + this.access_token;
+      this.url = this.ApiserviceService.BASE_URL+"goods/uploadFile?token=" + this.access_token;
     }
     else {
-      this.url = "http://localhost:3000/api/services/uploadFile?token=" + this.access_token;
+      this.url = this.ApiserviceService.BASE_URL+"services/uploadFile?token=" + this.access_token;
     }
 
     return this.http.post(this.url, body, requestOptions)
@@ -210,10 +211,10 @@ export class AdminHsnCodeComponent implements OnInit {
       };
 
       if (this.isGoodsSelected) {
-        this.url = "http://localhost:3000/api/goods/create?token=" + this.access_token;
+        this.url = this.ApiserviceService.BASE_URL+"goods/create?token=" + this.access_token;
       }
       else {
-        this.url = "http://localhost:3000/api/services/create?token=" + this.access_token;
+        this.url = this.ApiserviceService.BASE_URL+"services/create?token=" + this.access_token;
       }
 
       return this.http.post(this.url, body, requestOptions)
@@ -267,10 +268,10 @@ export class AdminHsnCodeComponent implements OnInit {
 
 
       if (this.isGoodsSelected) {
-        this.url = "http://localhost:3000/api/goods/update?token=" + this.access_token;
+        this.url = this.ApiserviceService.BASE_URL+"goods/update?token=" + this.access_token;
       }
       else {
-        this.url = "http://localhost:3000/api/services/update?token=" + this.access_token;
+        this.url = this.ApiserviceService.BASE_URL+"services/update?token=" + this.access_token;
       }
 
 
@@ -330,10 +331,10 @@ export class AdminHsnCodeComponent implements OnInit {
     console.log("_ID___", this.hsnRowData._id);
 
     if (this.isGoodsSelected) {
-      this.url = "http://localhost:3000/api/goods/delete/" + this.hsnRowData._id ;
+      this.url = this.ApiserviceService.BASE_URL+"goods/delete/" + this.hsnRowData._id ;
     }
     else {
-      this.url = "http://localhost:3000/api/services/delete/" + this.hsnRowData._id ;
+      this.url = this.ApiserviceService.BASE_URL+"services/delete/" + this.hsnRowData._id ;
     }
 
     return this.http.delete(this.url, requestOptions)
@@ -368,7 +369,7 @@ export class AdminHsnCodeComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/services/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + page + '&search=' + "&sortBy=" + this.sortBy, options)
+    this.http.get(this.ApiserviceService.BASE_URL+'services/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + page + '&search=' + "&sortBy=" + this.sortBy, options)
       .subscribe(
       response => {
         console.log("BRANCH_LIST_API_RESPONSE", response.json());
@@ -402,7 +403,7 @@ export class AdminHsnCodeComponent implements OnInit {
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get('http://localhost:3000/api/goods/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + page+"&sortBy="+this.sortBy, options)
+    this.http.get(this.ApiserviceService.BASE_URL+'goods/index?token=' + this.access_token + '&limit=' + 10 + '&page=' + page+"&sortBy="+this.sortBy, options)
       .subscribe(
       response => {
         console.log("BRANCH_LIST_API_RESPONSE", response.json());
@@ -475,10 +476,10 @@ export class AdminHsnCodeComponent implements OnInit {
     let options = new RequestOptions({ headers: myHeaders });
 
     if (this.isGoodsSelected) {
-      this.url = 'http://localhost:3000/api/services/index?token=' + this.access_token;
+      this.url = this.ApiserviceService.BASE_URL+'services/index?token=' + this.access_token;
     }
     else {
-      this.url = 'http://localhost:3000/api/goods/index?token=' + this.access_token;
+      this.url = this.ApiserviceService.BASE_URL+'goods/index?token=' + this.access_token;
     }
 
     this.http.get(this.url, options)
@@ -520,7 +521,7 @@ export class AdminHsnCodeComponent implements OnInit {
     this.goodsKeyWord=searchString;
 
     if (searchString) {
-      this.http.get('http://localhost:3000/api/goods/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
+      this.http.get(this.ApiserviceService.BASE_URL+'goods/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
         this.goodsData = data.json().docs;
         this.goodsPager.pageSize = data.json().limit;
         this.goodsPager.totalItems = data.json().total;
@@ -539,7 +540,7 @@ export class AdminHsnCodeComponent implements OnInit {
     console.log("SEARCH_HIT");
     this.servicesKeyWord=searchString;
     if (searchString) {
-      this.http.get('http://localhost:3000/api/services/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
+      this.http.get(this.ApiserviceService.BASE_URL+'services/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
         this.servicesData = data.json().docs;
         this.servicesPager.pageSize = data.json().limit;
         this.servicesPager.totalItems = data.json().total;

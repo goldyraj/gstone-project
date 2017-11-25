@@ -86,22 +86,6 @@ span {
 .preloader-dot-loading .cssload-loading i {
     background: #488fe1 !important;
 }
-.navbar{
-    border-radius: 0px !important;
-}
-.navbar-inverse .navbar-nav > li > a{ color: #ffffff;}
-.navbar-nav li a span{
-	display:block;
-	font-size:10px;
-	color:#FFFFFF;
-	position:relative;
-	top:-5px;
-	bottom:0px;
-}
-.navbar-brand{
-    padding: 8px 0px 0px 14px;
-}
-.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus{ background: #2c398f;}
 /* section-title */
 .navbar{
     border-radius: 0px !important;
@@ -111,8 +95,9 @@ span {
   display:block;
   font-size:10px;
   color:#FFFFFF;
-  position:relative;
-  top:-5px;
+  position:absolute;
+  top:30px;
+  left: 15px;
   bottom:0px;
 }
 .navbar-ex1-collapse ul li a:hover{color: #ffffff!important;}
@@ -811,6 +796,7 @@ span {
   
 }
 .gsttable .table-condensed>tbody>tr>td, .table-condensed>tbody>tr>th, .gsttable .table-condensed>tfoot>tr>td, .gsttable .table-condensed>tfoot>tr>th { padding:0px!important;}
+.tbbgcolor input.form-control{ background:#e4e40a6b;}
 .table-condensed>thead>tr>th{
   color:#161616;
   font-size:13px;
@@ -819,7 +805,7 @@ span {
 .modal-header{
   border-bottom:0px;
 }
-.headsummary{color:#333; padding-bottom:5px; font-weight:bold;}
+.headsummary{color:#333; padding:10px 0px 1px 0px;  font-weight:bold;}
 .modal-text{
  color:#0e4d6c !important;
 }
@@ -969,6 +955,7 @@ span {
 .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover{ border-bottom:solid 3px #0e4d6c;}
 .work-border-right{border-right:solid 1px #999999; }
 .well-work{ padding:30px 0px 30px 0px;}
+.well-work-in{ padding:20px 0px 20px 0px;}
 .work-success{ background:#0e4d6c; color:#FFFFFF;}
 /*.dropdown-menu>li>a{
    border-bottom:1px #666666 solid;
@@ -1042,6 +1029,7 @@ span {
 .color-3{ background:#ff6569; color:#FFFFFF;}
 .color-4{ background:#2c4653; color:#FFFFFF;}
 .nav>li{ text-align: center;}
+.tabcolor{background:#8fa6cc; color:#FFFFFF;padding:11px 0px 3px 0px; font-weight: 600px; text-align: center; margin-bottom: 10px;}
 .navbar-default {
     padding: 5px 14px 0px 14px;}
 .navbar-nav li a{ margin-bottom:1px!important;}
@@ -1053,10 +1041,43 @@ span {
 .text-primary{font-size: 25px;vertical-align:middle; padding-top: 5px;}
 
 .navbar-default .navbar-nav>li>a{ color: #ffffff!important;}
+.navbar-header-gst .navbar-nav>li>a{ line-height: 12px!important;}
 .gstlogout{ color: #ffffff; cursor: pointer; padding: 20px;}
 .gstlogout i{margin-top: 15px;}
 .gstlogout:hover{color: #ffffff;}
 .user_profile b{text-align: right!important;}
+
+
+#accordion .panel-heading { padding: 0;}
+#accordion .panel-title > a {
+	display: block;
+	padding: 0.4em 0.6em;
+    outline: none;
+    /*font-weight:bold;*/
+    text-decoration: none;
+}
+
+#accordion .panel-title > a.accordion-toggle::before, #accordion a[data-toggle="collapse"]::before  {
+    content:"\e113";
+    float: right;
+    font-family: 'Glyphicons Halflings';
+	/*margin-right :1em;*/
+}
+#accordion .panel-title > a.accordion-toggle.collapsed::before, #accordion a.collapsed[data-toggle="collapse"]::before  {
+    content:"\e114";
+}
+
+@media screen and (max-width 768px){
+.navbar-nav li a span{
+  display:block;
+  font-size:10px;
+  color:#FFFFFF;
+  position:relative!important;
+  text-align: center!important;
+  bottom:0px;
+}
+}
+
 @media(min-width:767px) {
     .navbar {
         padding: 1px 0;

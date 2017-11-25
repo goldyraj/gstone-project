@@ -30,7 +30,7 @@ export class UserDashboardComponent implements OnInit {
   publicBranchData;
   selectedDealerStateEdit = '0';
   selectedDealerStateNew = '0';
-  jsonString;
+  jsonString:string;
   // constructor() { }
   @ViewChild('closeBtn') closeBtn: ElementRef;
   modelHide = '';

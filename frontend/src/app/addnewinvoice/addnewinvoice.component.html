@@ -43,29 +43,16 @@
 <form [formGroup]="reimburshForm" novalidate="">
   <div>
     <!-- <form [formGroup]="invoiceTypeRadioForm" novalidate> -->
-<<<<<<< HEAD
-    <label>
+    <label class="radio-inline">
       <input type="radio" [checked]="true" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Normal_Invoice">Normal Invoice</label>
-    <label>
+    <label class="radio-inline">
       <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Reverse_Charge">Reverse Charge</label>
-    <label>
+    <label class="radio-inline">
       <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="E_Commerce">E-commerce</label>
-    <label>
+    <label class="radio-inline">
       <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Debit_Note">Debit Note</label>
-    <label>
+    <label class="radio-inline">
       <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Credit_Note">Credit Note</label>
-=======
-    <label class="radio-inline">
-        <input type="radio" [checked]="true" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Normal_Invoice">Normal Invoice</label>
-    <label class="radio-inline">
-        <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Reverse_Charge">Reverse Charge</label>
-    <label class="radio-inline">
-        <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="E_Commerce">E-commerce</label>
-    <label class="radio-inline">
-        <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Debit_Note">Debit Note</label>
-    <label class="radio-inline">
-        <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Credit_Note">Credit Note</label>
->>>>>>> a5212e095c4a5eb3f665bb6992018fa25c7a254c
     <!-- </form> -->
   </div>
 
@@ -123,16 +110,16 @@
       </div>
 
 
-  
-        <div class="col-md-4 col-sm-4 col-xs-12">
 
+      <div class="col-md-4 col-sm-4 col-xs-12">
+
+      </div>
+      <div class="col-md-8 col-sm-8 col-xs-12">
+        <div class="tabcolor">
+          <h3>E-commerce Sales</h3>
         </div>
-        <div class="col-md-8 col-sm-8 col-xs-12">
-          <div class="tabcolor">
-            <h3>E-commerce Sales</h3>
-          </div>
-        </div>
-      
+      </div>
+
       <!-- </form> -->
     </div>
   </div>
@@ -169,11 +156,11 @@
         <tr *ngFor="let saleList of salesListArray.controls;let i = index" [formGroupName]="i">
           <td align="center"> 1</td>
           <td>
-<<<<<<< HEAD
             <!-- <input type="text" class="form-control" value="Mesuarement"> -->
             <!-- <input type="text" class="form-control"  > -->
 
-            <input id="description" type="text" formControlName="description" class="validate filter-input" [(ngModel)]=descriptionQuery (keyup)=searchDescription() required>
+            <input id="description" type="text" formControlName="description" class="validate filter-input" [(ngModel)]=descriptionQuery
+              (keyup)=searchDescription() required>
             <div *ngIf="filteredDescriptionList.length > 0">
               <div class="completer-dropdown" *ngFor="let item of filteredDescriptionList">
                 <ul class="box">
@@ -184,9 +171,6 @@
               </div>
             </div>
 
-=======
-            <input type="text" class="form-control" formControlName="description" required>
->>>>>>> a5212e095c4a5eb3f665bb6992018fa25c7a254c
           </td>
           <td>
             <select class="form-control" formControlName="goodservice">
@@ -237,17 +221,27 @@
             <input type="text" class="form-control" formControlName="val4" required>
           </td>
           <td>
-            <a (click)="deleteRow(i)"><i class="fa fa-trash-o fa-2x"></i></a>
+            <a (click)="deleteRow(i)">
+              <i class="fa fa-trash-o fa-2x"></i>
+            </a>
           </td>
         </tr>
 
 
         <tr>
-          <td colspan="4" class="tableadd"><a  (click)="addSalesListItem()">  +Add another line</a></td>
+          <td colspan="4" class="tableadd">
+            <a (click)="addSalesListItem()"> +Add another line</a>
+          </td>
           <td colspan="5" align="right">Total in Words</td>
-          <td colspan="3" align="right"><b>Grand Total =</b></td>
-          <td class="tbbgcolor"><input type="text" class="form-control" value="500"></td>
-          <td class="tbbgcolor"><input type="text" class="form-control" value="500"></td>
+          <td colspan="3" align="right">
+            <b>Grand Total =</b>
+          </td>
+          <td class="tbbgcolor">
+            <input type="text" class="form-control" value="500">
+          </td>
+          <td class="tbbgcolor">
+            <input type="text" class="form-control" value="500">
+          </td>
         </tr>
       </tbody>
 

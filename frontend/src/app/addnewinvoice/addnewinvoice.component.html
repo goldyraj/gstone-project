@@ -21,7 +21,7 @@
   </ul>
 </div>
 <div class="clearfix"></div>
-<div class="section-top-20 section-bottom-10 row">
+<div class="section-top-20 row">
 
   <div class="col-md-6 col-xs-12  section-bottom-20">
     <h2 class="text-invoice">Create Invoice</h2>
@@ -43,6 +43,7 @@
 <form [formGroup]="reimburshForm" novalidate="">
   <div>
     <!-- <form [formGroup]="invoiceTypeRadioForm" novalidate> -->
+<<<<<<< HEAD
     <label>
       <input type="radio" [checked]="true" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Normal_Invoice">Normal Invoice</label>
     <label>
@@ -53,11 +54,23 @@
       <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Debit_Note">Debit Note</label>
     <label>
       <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Credit_Note">Credit Note</label>
+=======
+    <label class="radio-inline">
+        <input type="radio" [checked]="true" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Normal_Invoice">Normal Invoice</label>
+    <label class="radio-inline">
+        <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Reverse_Charge">Reverse Charge</label>
+    <label class="radio-inline">
+        <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="E_Commerce">E-commerce</label>
+    <label class="radio-inline">
+        <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Debit_Note">Debit Note</label>
+    <label class="radio-inline">
+        <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Credit_Note">Credit Note</label>
+>>>>>>> a5212e095c4a5eb3f665bb6992018fa25c7a254c
     <!-- </form> -->
   </div>
 
-  <div class="row">
-    <div class="section-bottom-10 section-top-10">
+  <div class="">
+    <div class="section-bottom-20 section-top-20">
       <!-- <form [formGroup]="customerDetailsForm" novalidate (ngSubmit)="save( customerDetailsForm.valid )"> -->
       <div class="col-md-4 col-sm-4 col-xs-12 form-group">
         <label for="inputEmail3" class="col-sm-5 control-label">Name</label>
@@ -108,6 +121,18 @@
           <input type="text" [readonly]="disableEcommerceInput" class="form-control" id="eComGstin" formControlName="eComGstin">
         </div>
       </div>
+
+
+  
+        <div class="col-md-4 col-sm-4 col-xs-12">
+
+        </div>
+        <div class="col-md-8 col-sm-8 col-xs-12">
+          <div class="tabcolor">
+            <h3>E-commerce Sales</h3>
+          </div>
+        </div>
+      
       <!-- </form> -->
     </div>
   </div>
@@ -119,36 +144,32 @@
     <table class="table table-condensed  table-hover table-bordered" formArrayName="salesList">
       <thead>
         <tr>
-          <th rowspan="3">S.No</th>
-          <th rowspan="3">Description</th>
-          <th rowspan="3" width="100px">Goods Services</th>
-          <th rowspan="3">HSN / SAC </th>
-          <th rowspan="3">QTY </th>
-          <th rowspan="3">Unit Of Measurement</th>
-          <th rowspan="3">Taxable Value</th>
-          <th rowspan="3" width="100px">Rate Of Tax</th>
-          <th rowspan="3">CGST</th>
-          <th rowspan="3">SGST</th>
-          <th rowspan="3">IGST</th>
-          <th colspan="4">CESS</th>
-          <th colspan="4">
-            <button (click)="addSalesListItem()">Add</button>
-          </th>
+          <th value="#" colspan="1" rowspan="2" class="text-center">S.No</th>
+          <th value="Description" colspan="1" rowspan="2" class="text-left">Description</th>
+          <th value="Goods Services" colspan="1" rowspan="2" class="text-left">Goods Services</th>
+          <th value="HSN / SAC" colspan="1" rowspan="2" class="text-center">HSN / SAC</th>
+          <th value="Qty" colspan="1" rowspan="2" class="text-right">Qty</th>
+          <th value="Unit of Measurement" colspan="1" rowspan="2" class="unit_of_measurement">Unit of Measurement</th>
+          <th value="Taxable Value" colspan="1" rowspan="2" class="text-center">Taxable Value</th>
+          <th value="Rate Of Tax" colspan="1" rowspan="2" class="text-center">Rate Of Tax</th>
+          <th value="CGST" colspan="1" rowspan="2" class="text-center">CGST</th>
+          <th value="SGST" colspan="1" rowspan="2" class="text-right">SGST</th>
+          <th value="IGST" colspan="1" rowspan="2" class="text-center">IGST</th>
+          <th value="CESS" colspan="2" rowspan="1" class="cess text-center">CESS</th>
+          <th value="Total" colspan="1" rowspan="2" class="text-left">Total</th>
         </tr>
-        <!-- <tr>
-          <th>Rate</th>
-          <th>AMT </th>
-          <th rowspan="3">Total</th>
-          <th rowspan="3">Action</th>
-        </tr> -->
+        <tr>
+          <th value="IGST" colspan="1" rowspan="1" class="igst text-right">RATE</th>
+          <th value="%" colspan="1" rowspan="1" class="cess text-center">AMT</th>
+        </tr>
 
       </thead>
       <tbody>
 
-        <!-- <div  *ngFor="let item of invoiceList ;let i = index;"> -->
         <tr *ngFor="let saleList of salesListArray.controls;let i = index" [formGroupName]="i">
           <td align="center"> 1</td>
           <td>
+<<<<<<< HEAD
             <!-- <input type="text" class="form-control" value="Mesuarement"> -->
             <!-- <input type="text" class="form-control"  > -->
 
@@ -163,6 +184,9 @@
               </div>
             </div>
 
+=======
+            <input type="text" class="form-control" formControlName="description" required>
+>>>>>>> a5212e095c4a5eb3f665bb6992018fa25c7a254c
           </td>
           <td>
             <select class="form-control" formControlName="goodservice">
@@ -171,10 +195,8 @@
           </td>
           <td>
             <input type="text" class="form-control" formControlName="hsn" required>
-            <!-- <input type="text" class="form-control" value="HSN"> -->
           </td>
           <td>
-            <!-- <input type="text" class="form-control" value="500"> -->
             <input type="text" class="form-control" formControlName="qty" required>
           </td>
           <td>
@@ -183,7 +205,6 @@
             </select>
           </td>
           <td>
-            <!-- <input type="text" class="form-control" value="49"> -->
             <input type="text" class="form-control" formControlName="tax" required>
           </td>
           <td>
@@ -216,28 +237,18 @@
             <input type="text" class="form-control" formControlName="val4" required>
           </td>
           <td>
-            <!-- <input type="text" class="form-control" value="500"> -->
-            <input type="text" class="form-control" formControlName="val5" required>
-          </td>
-          <td>
-            <button (click)="deleteRow(i)">Remove</button>
+            <a (click)="deleteRow(i)"><i class="fa fa-trash-o fa-2x"></i></a>
           </td>
         </tr>
 
 
-        <!-- <tr>
-            <td>
-              <input type="text" class="form-control" value="">
-            </td>
-            <td></td>
-            <td colspan="8" align="right" class="Total_word">Total in Words</td>
-            <td colspan="4" align="right" class="Grand_total">
-              <b>Grand Total =</b>
-            </td>
-            <td>
-              <input type="text" class="form-control" value="500">
-            </td>
-          </tr> -->
+        <tr>
+          <td colspan="4" class="tableadd"><a  (click)="addSalesListItem()">  +Add another line</a></td>
+          <td colspan="5" align="right">Total in Words</td>
+          <td colspan="3" align="right"><b>Grand Total =</b></td>
+          <td class="tbbgcolor"><input type="text" class="form-control" value="500"></td>
+          <td class="tbbgcolor"><input type="text" class="form-control" value="500"></td>
+        </tr>
       </tbody>
 
     </table>

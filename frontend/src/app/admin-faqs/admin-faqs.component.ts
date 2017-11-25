@@ -78,7 +78,7 @@ export class AdminFaqsComponent implements OnInit {
         "question": this.FaqForm.value.question,
         "answer": this.FaqForm.value.answer
       };
-      this.url = this.apiserviceService+"faq/create?token=" + this.access_token;
+      this.url = this.apiserviceService.BASE_URL+"faq/create?token=" + this.access_token;
       return this.http.post(this.url, body, requestOptions)
         .subscribe(
         response => {
@@ -97,7 +97,7 @@ export class AdminFaqsComponent implements OnInit {
   getFaqsList(page:number) {
     this.pager.currentPage=page;
     console.log('list called');
-    this.http.get(this.apiserviceService+'faq/index?token=' + this.access_token + '&limit=' + 10 + '&page=' +page).subscribe(data => {
+    this.http.get(this.apiserviceService.BASE_URL+'faq/index?token=' + this.access_token + '&limit=' + 10 + '&page=' +page).subscribe(data => {
       this.faqsList = data.json().docs;
       this.pager.pageSize = data.json().limit;
       this.pager.totalItems = data.json().total;
@@ -157,7 +157,7 @@ export class AdminFaqsComponent implements OnInit {
         "answer": this.FaqFormEdit.value.answer,
       };
 
-      this.url = this.apiserviceService+"faq/update?token=" + this.access_token;
+      this.url = this.apiserviceService.BASE_URL+"faq/update?token=" + this.access_token;
       return this.http.put(this.url, body, requestOptions)
         .subscribe(
         response => {
@@ -185,7 +185,7 @@ export class AdminFaqsComponent implements OnInit {
     // headers.append('x-access-token', access_token);
     const requestOptions = new RequestOptions({ headers: headers });
 
-    this.url = this.apiserviceService+"faq/delete/" + this.faqsRowData._id + "?token=" + this.access_token;
+    this.url = this.apiserviceService.BASE_URL+"faq/delete/" + this.faqsRowData._id + "?token=" + this.access_token;
     return this.http.delete(this.url, requestOptions)
       .subscribe(
       response => {

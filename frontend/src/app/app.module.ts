@@ -68,12 +68,10 @@ import { videosPipe } from './admin-gstone-videos/videos.pipe';
 import { GstupdateDetailComponent } from './gstupdate-detail/gstupdate-detail.component';
 import { CharOnlyDirective } from './Directives/char-only.directive';
 import { NumbersOnlyDirective } from './Directives/numbers-only.directive';
-import { AdminInternalUpdateInnerpageComponent } from './admin-internal-update-innerpage/admin-internal-update-innerpage.component';
 import { AdminUserComponent } from './admin-user/admin-user.component';
 import { AdminCustomerComponent } from './admin-customer/admin-customer.component';
 import { AdminVendorComponent } from './admin-vendor/admin-vendor.component';
 import { ProfileComponent } from './profile/profile.component';
-import {ToastyModule} from 'ng2-toasty';
 
 @NgModule({
   declarations: [
@@ -131,7 +129,6 @@ import {ToastyModule} from 'ng2-toasty';
     GstupdateDetailComponent,
     CharOnlyDirective,
     NumbersOnlyDirective,
-    AdminInternalUpdateInnerpageComponent,
     AdminUserComponent,
     AdminCustomerComponent,
     AdminVendorComponent,
@@ -146,7 +143,6 @@ import {ToastyModule} from 'ng2-toasty';
     HttpModule,
     NgbModule.forRoot(),
     NgxPaginationModule,
-    ToastyModule
   ],
   providers: [ApiserviceService, ExcelServiceService, PagerService, PreventLoggedInAccess, AuthService],
   bootstrap: [AppComponent]

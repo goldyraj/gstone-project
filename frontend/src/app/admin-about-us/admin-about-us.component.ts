@@ -15,7 +15,7 @@ export class AdminAboutUsComponent implements OnInit {
   @ViewChild('closeBtn') closeBtn: ElementRef;
   @ViewChild('closeBtn2') closeBtn2: ElementRef;
   @ViewChild('closeBtn3') closeBtn3: ElementRef;
-  aboutUs ="";
+  public aboutUs:any;
   aboutUs_ID ="";
   StateVal = {};
   url = "";
@@ -97,7 +97,7 @@ export class AdminAboutUsComponent implements OnInit {
         };
         console.log("body",body);
   
-        this.url = this.ApiserviceService+"about/update?token="+this.access_token;
+        this.url = this.ApiserviceService.BASE_URL+"about/update?token="+this.access_token;
         return this.http.put(this.url, body, requestOptions)
           .subscribe(
           response => {
@@ -125,7 +125,7 @@ export class AdminAboutUsComponent implements OnInit {
         };
         console.log("body",body);
   
-        this.url = this.ApiserviceService+"about/create?token="+this.access_token;
+        this.url = this.ApiserviceService.BASE_URL+"about/create?token="+this.access_token;
         return this.http.post(this.url, body, requestOptions)
           .subscribe(
           response => {

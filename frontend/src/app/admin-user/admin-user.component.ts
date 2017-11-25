@@ -18,7 +18,10 @@ import {ApiserviceService} from '../apiservice.service';
 export class AdminUserComponent implements OnInit {
 
   // pager object
+  errorMsg:string;
   pager: any = {};
+  errorType:boolean;
+  searchString:string;
   searchedStringPager: any = {};
   sortBy = "created_at";
   backupPager:any={};
@@ -252,6 +255,11 @@ export class AdminUserComponent implements OnInit {
       this.dataList = this.backupdataList;
       this.pager=this.backupPager;
     }
+  }
+
+  onInput($data)
+  {
+
   }
 
 }

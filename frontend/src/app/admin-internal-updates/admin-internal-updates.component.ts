@@ -18,25 +18,26 @@ export class AdminInternalUpdatesComponent implements OnInit {
   @ViewChild('closeBtn2') closeBtn2: ElementRef;
   @ViewChild('closeBtn3') closeBtn3: ElementRef;
 
-  chapterArray=[];
+  searchString:string;
+  chapterArray:any;
   backupInternalPager:any={};
-  backupInternalList=[];
-  articleArray=[];
-  secondDropDownArray=[];
-  internalUpdateList = [];
-  StateVal = {};
-  url = "";
-  notiRowData;
-  apiMessage;
-  apiResult=0;
-  rowDataIndex = "";
+  backupInternalList:any;
+  articleArray:any;
+  secondDropDownArray:any;
+  internalUpdateList:any;
+  StateVal:any = {};
+  url:string = "";
+  notiRowData:any;
+  apiMessage:string;
+  apiResult:number=0;
+  rowDataIndex:string = "";
   // pager object
   pager: any = {};
 
   // paged items
-  pagedItems: any[];
-  selectUpdateType;
-  selectChapterArticle;
+  pagedItems: any;
+  selectUpdateType:any;
+  selectChapterArticle:any;
   
   public internalUpdateForm: FormGroup; // our model driven form
   public editInternalUpdate: FormGroup; // our model driven form
@@ -363,4 +364,5 @@ export class AdminInternalUpdatesComponent implements OnInit {
       this.pager=this.backupInternalPager;
     }
   }
+
 }

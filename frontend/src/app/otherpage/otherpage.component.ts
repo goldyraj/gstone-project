@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OtherpageComponent implements OnInit {
 
+  currentOrientation;
   constructor() { }
 
   ngOnInit() {

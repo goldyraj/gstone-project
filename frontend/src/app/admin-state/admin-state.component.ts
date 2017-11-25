@@ -22,6 +22,7 @@ export class AdminStateComponent implements OnInit {
   @ViewChild('closeBtn2') closeBtn2: ElementRef;
   @ViewChild('closeBtn3') closeBtn3: ElementRef;
 
+  searchString:string;
   backupStateList;
   modelHide = '';
   url = "";
@@ -105,11 +106,6 @@ export class AdminStateComponent implements OnInit {
 
   saveState(isValid: boolean) {
     this.submitted = true; // set form submit to true
-    console.log(isValid);
-    console.log("hi form module is called from page");
-    console.log("form val", this.myForm.value.name);
-    this.StateVal = this.myForm.value;
-    console.log("form valuse", this.StateVal);
 
     if (isValid == true) {
 
@@ -259,6 +255,7 @@ export class AdminStateComponent implements OnInit {
   }
 
   searchKeyword(searchString) {
+    this.searchString=searchString;
     console.log("SEARCH_HIT");
     console.log("REAL_LIST", this.stateList);
     console.log("BACKUP_LIST", this.backupStateList);

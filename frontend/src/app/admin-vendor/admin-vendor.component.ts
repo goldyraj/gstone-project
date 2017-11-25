@@ -16,10 +16,12 @@ import {ApiserviceService} from '../apiservice.service';
 })
 export class AdminVendorComponent implements OnInit {
 
-  
+  errorType:boolean;
+  errorMsg:string;
   pager: any = {};
   searchedStringPager: any = {};
   sortBy = "created_at";
+  searchString:string;
   backupPager:any={};
   // paged items
   pagedItems: any[];

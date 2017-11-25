@@ -108,6 +108,18 @@
           <input type="text" [readonly]="disableEcommerceInput" class="form-control" id="eComGstin" formControlName="eComGstin">
         </div>
       </div>
+
+
+
+      <div class="col-md-4 col-sm-4 col-xs-12">
+
+      </div>
+      <div class="col-md-8 col-sm-8 col-xs-12">
+        <div class="tabcolor">
+          <h3>E-commerce Sales</h3>
+        </div>
+      </div>
+
       <!-- </form> -->
     </div>
   </div>
@@ -150,7 +162,20 @@
           <td align="center"> {{i+1}}</td>
           <td>
             <!-- <input type="text" class="form-control" value="Mesuarement"> -->
-            <input type="text" class="form-control" formControlName="description" required>
+            <!-- <input type="text" class="form-control"  > -->
+
+            <input id="description" type="text" formControlName="description" class="validate filter-input" [(ngModel)]=descriptionQuery
+              (keyup)=searchDescription() required>
+            <div *ngIf="filteredDescriptionList.length > 0">
+              <div class="completer-dropdown" *ngFor="let item of filteredDescriptionList">
+                <ul class="box">
+                  <li>
+                    <a (click)="selectDesciption(item)">{{item.description}}</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
           </td>
           <td>
             <select class="form-control" formControlName="goodservice">

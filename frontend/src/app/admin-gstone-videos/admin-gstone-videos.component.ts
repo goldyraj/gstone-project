@@ -18,6 +18,7 @@ export class AdminGstoneVideosComponent implements OnInit {
   @ViewChild('closeBtn2') closeBtn2: ElementRef;
   @ViewChild('closeBtn3') closeBtn3: ElementRef;
 
+  searchString:string;
   videosList = [];
   StateVal={};
   url = "";
@@ -237,7 +238,7 @@ export class AdminGstoneVideosComponent implements OnInit {
     this.gstVideosForm.reset();
   }
 
-  searchKeyword(searchString) {
+  searchKeyword(searchString:string) {
     console.log("SEARCH_HIT");
 
     if (searchString) {

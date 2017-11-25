@@ -19,6 +19,9 @@ export class UserHsnCodeComponent implements OnInit {
   @ViewChild('closeChoose') closeChoose: ElementRef;
   @ViewChild('closeCsv') closeCsv: ElementRef;
 
+  public searchDescString:string;
+  searchString:string;
+  codeValue:string;
   public addStateForm: FormGroup; // our model driven form
   public isGoodsList: boolean ; // keep track on whether form is submitted
   public isServiceList: boolean ; // keep track on whether form is submitted

@@ -32,10 +32,10 @@
 
 			<div class="col-md-3 col-xs-12">
 				<div class="input-group section-bottom-20">
-					<input type="text" placeholder="Search Name" (input)="searchKeyword($event.target.value)" class="form-control"
+					<input type="text" placeholder="Search Name" (input)="searchKeyword($event.target.value)" class="form-control" [(ngModel)]=searchString
 					 data-inputmask="'alias': 'ip'" data-mask>
 					<div class="input-group-addon">
-						<i class="fa fa-search" (click)="searchKeyword()">
+						<i class="fa fa-search" (click)="searchKeyword(searchString)">
 						</i>
 					</div>
 				</div>
@@ -142,40 +142,40 @@
 
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="name" placeholder="Name" required>
-									<small [hidden]="myForm.controls.name.valid || (myForm.controls.name.pristine && !submitted)">
+									<small [hidden]="myForm.controls['name'].valid || (myForm.controls['name'].pristine && !submitted)">
 										Name is required (minimum 5 characters).
 									</small>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="contact" maxlength="10" placeholder="Contact No.">
-									<small [hidden]="myForm.controls.contact.valid || (myForm.controls.contact.pristine && !submitted)">
+									<small [hidden]="myForm.controls['contact'].valid || (myForm.controls['contact'].pristine && !submitted)">
 										Contact is required (minimum 5 characters).
 									</small>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="pan_no" placeholder="PAN No." pattern="[A-Za-z]{5}\d{4}[A-Za-z]{1}">
-									<small [hidden]="myForm.controls.pan_no.valid || (myForm.controls.pan_no.pristine && !submitted)">
-										<span style="color:red" [hidden]="myForm.controls.pan_no.valid">Pan No is required.</span>
-										<b [hidden]="myForm.controls.pan_no.pristine">YHSDS2345E</b>
+									<small [hidden]="myForm.controls['pan_no'].valid || (myForm.controls['pan_no'].pristine && !submitted)">
+										<span style="color:red" [hidden]="myForm.controls['pan_no'].valid">Pan No is required.</span>
+										<b [hidden]="myForm.controls['pan_no'].pristine">YHSDS2345E</b>
 									</small>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="email" placeholder="Email Id" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
-									<small [hidden]="myForm.controls.email.valid || (myForm.controls.email.pristine && !submitted)">
-										<span style="color:red" [hidden]="myForm.controls.email.valid">Email is required </span>
-										<b [hidden]="myForm.controls.email.pristine">joe@abc.com</b>
+									<small [hidden]="myForm.controls['email'].valid || (myForm.controls['email'].pristine && !submitted)">
+										<span style="color:red" [hidden]="myForm.controls['email'].valid">Email is required </span>
+										<b [hidden]="myForm.controls['email'].pristine">joe@abc.com</b>
 									</small>
 
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="gstin" placeholder="GSTIN" name="gstin" id="gstin">
-									<small [hidden]="myForm.controls.gstin.valid || (myForm.controls.gstin.pristine && !submitted)">
+									<small [hidden]="myForm.controls['gstin'].valid || (myForm.controls['gstin'].pristine && !submitted)">
 										GSTIN is required (minimum 5 characters).
 									</small>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="address" placeholder="Address" name="address" id="address">
-									<small [hidden]="myForm.controls.address.valid || (myForm.controls.address.pristine && !submitted)">
+									<small [hidden]="myForm.controls['address'].valid || (myForm.controls['address'].pristine && !submitted)">
 										Address is required (minimum 5 characters).
 									</small>
 								</div>
@@ -188,20 +188,20 @@
 										<option value="2" name="ISD">ISD</option>
 										<option value="2" name="E-Commerce">E-Commerce</option>
 									</select>
-									<small *ngIf="myForm.controls.selectedDealer.value=='-1' && submitted">
+									<small *ngIf="myForm.controls['selectedDealer'].value=='-1' && submitted">
 										Please select dealer !
 									</small>
 								</div>
 
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
 									<input type="text" class="form-control" placeholder="City" formControlName="city" name="city" id="city">
-									<small [hidden]="myForm.controls.city.valid || (myForm.controls.city.pristine && !submitted)">
+									<small [hidden]="myForm.controls['city'].valid || (myForm.controls['city'].pristine && !submitted)">
 										City is required (minimum 5 characters).
 									</small>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 form-group">
 									<input type="text" class="form-control" formControlName="branch_name" placeholder="Branch Name" name="branch_name" id="branch_name">
-									<small [hidden]="myForm.controls.branch_name.valid || (myForm.controls.branch_name.pristine && !submitted)">
+									<small [hidden]="myForm.controls['branch_name'].valid || (myForm.controls['branch_name'].pristine && !submitted)">
 										Branch Name is required (minimum 5 characters).
 									</small>
 								</div>
@@ -211,7 +211,7 @@
 										<option value="" selected="selected">Select State</option>
 										<option *ngFor="let item of stateDropDownList" value="{{item.name}}">{{item.name}}</option>
 									</select>
-									<small *ngIf="myForm.controls.state.value ==='' && submitted">
+									<small *ngIf="myForm.controls['state'].value ==='' && submitted">
 										Please select state !
 									</small>
 								</div>

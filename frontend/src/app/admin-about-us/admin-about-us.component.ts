@@ -15,7 +15,7 @@ export class AdminAboutUsComponent implements OnInit {
   @ViewChild('closeBtn') closeBtn: ElementRef;
   @ViewChild('closeBtn2') closeBtn2: ElementRef;
   @ViewChild('closeBtn3') closeBtn3: ElementRef;
-  aboutUs ="";
+  public aboutUs:any;
   aboutUs_ID ="";
   StateVal = {};
   url = "";

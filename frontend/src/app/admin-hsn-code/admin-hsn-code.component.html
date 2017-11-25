@@ -60,7 +60,7 @@
 
               <div class="col-md-4 col-xs-12">
                 <div class="input-group section-bottom-20">
-                  <input type="text" (input)="searchGoodsKeyword($event.target.value)" (ngModel)="codeValue" placeholder="Search HSN/SAC Code" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
+                  <input type="text" (input)="searchGoodsKeyword($event.target.value)" [(ngModel)]=codeValue placeholder="Search HSN/SAC Code" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
                   <div class="input-group-addon">
                     <i class="fa fa-search" (click)="searchGoodsKeyword(codeValue)"></i>
                   </div>
@@ -68,7 +68,7 @@
               </div>
               <div class="col-md-4 col-xs-12">
                 <div class="input-group section-bottom-20">
-                  <input type="text" (input)="searchGoodsKeyword($event.target.value)" (ngModel)="searchString"  placeholder="Search Description" class="form-control" data-inputmask="'alias': 'ip'"
+                  <input type="text" (input)="searchGoodsKeyword($event.target.value)" [(ngModel)]=searchString  placeholder="Search Description" class="form-control" data-inputmask="'alias': 'ip'"
                     data-mask>
                   <div class="input-group-addon">
                     <i class="fa fa-search" (click)="searchGoodsKeyword(searchString)"></i>
@@ -136,13 +136,13 @@
 
                   <!-- TABLE -->
 
-                  <ul class="pagination btn-sm" *ngIf="isGoodsSelected==true && goodsData?.length > 1">
+                  <ul class="pagination btn-sm" *ngIf="isGoodsSelected===true && goodsData?.length > 1">
                     <li [ngClass]="{disabled:goodsPager.currentPage === 1}">
                       <a *ngIf="goodsPager.currentPage > 1" (click)="getAllGoods(goodsPager.currentPage - 1)">Previous</a>
                     </li>
 
                     <li [ngClass]="{disabled:goodsPager.currentPage === 1}">
-                      <a *ngIf="goodsPager.currentPage ==1">Previous</a>
+                      <a *ngIf="goodsPager.currentPage ===1">Previous</a>
                     </li>
 
                     <li *ngFor="let page of goodsPager.pages" [ngClass]="{active:goodsPager.currentPage === page}">
@@ -153,7 +153,7 @@
                       <a *ngIf="goodsPager.currentPage < goodsPager.endPage" (click)="getAllGoods(goodsPager.currentPage + 1)">Next</a>
                     </li>
                     <li [ngClass]="{disabled:goodsPager.currentPage === goodsPager.endPage}">
-                      <a *ngIf="goodsPager.currentPage == goodsPager.endPage">Next</a>
+                      <a *ngIf="goodsPager.currentPage === goodsPager.endPage">Next</a>
                     </li>
                   </ul>
                 </div>
@@ -168,7 +168,7 @@
 
               <div class="col-md-4 col-xs-12">
                 <div class="input-group section-bottom-20">
-                  <input type="text" placeholder="Search HSN/SAC Code" (input)="searchServicesKeyword($event.target.value)" [(ngModel)]="codeSerValue" class="form-control" data-inputmask="'alias': 'ip'"
+                  <input type="text" placeholder="Search HSN/SAC Code" (input)="searchServicesKeyword($event.target.value)" [(ngModel)]=codeSerValue class="form-control" data-inputmask="'alias': 'ip'"
                     data-mask>
                   <div class="input-group-addon">
                     <i class="fa fa-search" (click)="searchServicesKeyword(codeSerValue)"></i>
@@ -177,10 +177,10 @@
               </div>
               <div class="col-md-4 col-xs-12">
                 <div class="input-group section-bottom-20">
-                  <input type="text" placeholder="Search Description" (input)="searchServicesKeyword($event.target.value)" [(ngModel)]="searchDescString" class="form-control"
+                  <input type="text" placeholder="Search Description" (input)="searchServicesKeyword($event.target.value)" (ngModel)=searchDescString class="form-control"
                     data-inputmask="'alias': 'ip'" data-mask>
                   <div class="input-group-addon">
-                    <i class="fa fa-search" (click)="searchServicesKeyword(searchString)"></i>
+                    <i class="fa fa-search" (click)="searchServicesKeyword(searchDescString)"></i>
                   </div>
                 </div>
               </div>
@@ -248,7 +248,7 @@
                     </li>
 
                     <li [ngClass]="{disabled:servicesPager.currentPage === 1}">
-                      <a *ngIf="goodsPager.currentPage ==1">Previous</a>
+                      <a *ngIf="goodsPager.currentPage ===1">Previous</a>
                     </li>
 
                     <li *ngFor="let page of servicesPager.pages" [ngClass]="{active:servicesPager.currentPage === page}">
@@ -259,7 +259,7 @@
                       <a *ngIf="servicesPager.currentPage < servicesPager.endPage" (click)="getAllServices(servicesPager.currentPage + 1)">Next</a>
                     </li>
                     <li [ngClass]="{disabled:servicesPager.currentPage === servicesPager.endPage}">
-                      <a *ngIf="servicesPager.currentPage == servicesPager.endPage">Next</a>
+                      <a *ngIf="servicesPager.currentPage === servicesPager.endPage">Next</a>
                     </li>
                   </ul>
                 </div>
@@ -289,7 +289,7 @@
         <button type="button" class="close" data-dismiss="modal" #closeBtn aria-label="Close">
           <span class="modal-text" aria-hidden="true">X</span>
         </button>
-        <!-- <h4 ><span *ngIf="isGoodsSelected==true" class="modal-title modal-text">Add Goods</span></h4> -->
+        <!-- <h4 ><span *ngIf="isGoodsSelected===true" class="modal-title modal-text">Add Goods</span></h4> -->
         <h4 class="modal-title modal-text">Add Goods/Services</h4>
       </div>
       <div class="modal-body">
@@ -300,11 +300,11 @@
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <select formControlName="selectCategory" class="form-control" required>
-                    <option value="Select Category">Select Category</option>
+                    <option value="">Select Category</option>
                     <option value="Goods">Goods</option>
                     <option value="Services">Services</option>
                   </select>
-                  <small *ngIf="goodsForm.controls.selectCategory=='Select Category' && submitted">
+                  <small *ngIf="goodsForm.controls['selectCategory'].value==='' && submitted">
                     Select Category !
                   </small>
                 </div>
@@ -312,7 +312,7 @@
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <input type="text" OnlyNumber="true" maxlength="10" class="form-control" placeholder="HSN Code" name="hsn_code" id="hsn_code" required
                     formControlName="hsn_code">
-                  <small *ngIf="goodsForm.controls.hsn_code.valid && submitted">
+                  <small *ngIf="goodsForm.controls['hsn_code'].valid && submitted">
                     HSN Code is required !
                   </small>
                 </div>
@@ -322,7 +322,7 @@
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <textarea rows="4" type="text" maxlength="5000" class="form-control" placeholder="Description" name="description" id="description"
                     required formControlName="description"></textarea>
-                  <small [hidden]="goodsForm.controls.description.valid || (goodsForm.controls.description.pristine && !submitted)">
+                  <small [hidden]="goodsForm.controls['description'].valid || (goodsForm.controls['description'].pristine && !submitted)">
                     Description is required !
                   </small>
                 </div>
@@ -332,14 +332,14 @@
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <input type="text" OnlyNumber="true" maxlength="5" class="form-control" placeholder="CGST" name="cgst" required formControlName="cgst">
-                  <small *ngIf="goodsForm.controls.cgst.valid && submitted">
+                  <small *ngIf="goodsForm.controls['cgst'].valid && submitted">
                     CGST is required !
                   </small>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <input type="text" OnlyNumber="true" maxlength="5" class="form-control" placeholder="SGST" name="sgst" required formControlName="sgst">
-                  <small *ngIf="goodsForm.controls.sgst.valid && submitted">
+                  <small *ngIf="goodsForm.controls['sgst'].valid && submitted">
                     SGST is required !
                   </small>
                 </div>
@@ -347,7 +347,7 @@
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <input type="text" OnlyNumber="true" maxlength="5" class="form-control" placeholder="IGST" name="statecode" required
                     formControlName="igst">
-                  <small *ngIf="goodsForm.controls.igst.valid  && submitted">
+                  <small *ngIf="goodsForm.controls['igst'].valid  && submitted">
                     IGST is required !
                   </small>
                 </div>
@@ -392,18 +392,18 @@
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <select formControlName="selectCategory" class="form-control" required [(ngModel)]="selectCategory">
-                    <option value="Select Category">Select Category</option>
+                    <option value="">Select Category</option>
                     <option value="Goods">Goods</option>
                     <option value="Services">Services</option>
                   </select>
-                  <small *ngIf="goodsFormEdit.controls.selectCategory=='Select Category' && submitted">
+                  <small *ngIf="goodsFormEdit.controls['selectCategory'].value==='' && submitted">
                     Select Category !
                   </small>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <input type="text" OnlyNumber="true" maxlength="10" class="form-control" placeholder="HSN Code" name="statename" id="statename" required formControlName="hsn_code">
-                  <small *ngIf="goodsFormEdit.controls.hsn_code.valid && submitted">
+                  <small *ngIf="goodsFormEdit.controls['hsn_code'].valid && submitted">
                     HSN Code is required !
                   </small>
                 </div>
@@ -413,7 +413,7 @@
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <textarea rows="4" maxlength="5000" type="text" class="form-control" placeholder="Description" name="description" id="description"
                     required formControlName="description"></textarea>
-                  <small [hidden]="goodsFormEdit.controls.description.valid || (goodsFormEdit.controls.description.pristine && !submitted)">
+                  <small [hidden]="goodsFormEdit.controls['description'].valid || (goodsFormEdit.controls['description'].pristine && !submitted)">
                     Description is required !
                   </small>
                 </div>
@@ -423,21 +423,21 @@
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <input type="text" OnlyNumber="true" maxlength="5" class="form-control" placeholder="CGST" name="cgst" required formControlName="cgst">
-                  <small *ngIf="goodsFormEdit.controls.cgst.valid  && submitted">
+                  <small *ngIf="goodsFormEdit.controls['cgst'].valid  && submitted">
                     CGST is required !
                   </small>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <input type="text" OnlyNumber="true" maxlength="5" class="form-control" placeholder="SGST" name="sgst" required formControlName="sgst">
-                  <small *ngIf="goodsFormEdit.controls.sgst.valid && submitted">
+                  <small *ngIf="goodsFormEdit.controls['sgst'].valid && submitted">
                     SGST is required !
                   </small>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <input type="text" OnlyNumber="true" maxlength="5" class="form-control" placeholder="IGST" name="statecode" required formControlName="igst">
-                  <small *ngIf="goodsFormEdit.controls.igst.valid  && submitted">
+                  <small *ngIf="goodsFormEdit.controls['igst'].valid  && submitted">
                     IGST is required !
                   </small>
                 </div>
@@ -548,8 +548,8 @@
                 <input type="button" class="btn btn-primary" value="Upload" (click)="uploadCsvFileToServer()">
               </div>
             </div>
-            <p *ngIf="ifSuccess==1" class="text-info text-center">Success !</p>
-            <p *ngIf="ifSuccess==-1" class="text-info text-center">Failed !</p>
+            <p *ngIf="ifSuccess===1" class="text-info text-center">Success !</p>
+            <p *ngIf="ifSuccess===-1" class="text-info text-center">Failed !</p>
           </div>
           <div align="center">
             <input type="button" class="btn btn-success" data-dismiss="modal" value="Close">
@@ -581,7 +581,7 @@
                 <input type="button" class="btn btn-primary" value="Download" (click)="downloadJSONTOCSV()">
               </div>
             </div>
-            <p *ngIf="isDownloadSuccessful==true" class="text-info text-center">Download Complete !</p>
+            <p *ngIf="isDownloadSuccessful===true" class="text-info text-center">Download Complete !</p>
           </div>
           <div align="center">
             <input type="button" (click)="closeDownloadModal()" class="btn btn-success" data-dismiss="modal" value="Close">

@@ -28,7 +28,7 @@ export class AdminGovNotificationComponent implements OnInit {
   pager: any = {};
   backupNotificationPager:any={};
   backupNotificationList=[];
-
+  searchString:string;
   // paged items
   pagedItems: any[];
   

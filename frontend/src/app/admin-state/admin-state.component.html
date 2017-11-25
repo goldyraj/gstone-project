@@ -32,7 +32,7 @@
 
       <div class="col-md-3 col-xs-12">
         <div class="input-group section-bottom-20">
-          <input type="text" placeholder="Search Name" (input)="searchKeyword($event.target.value)" (ngModel)="searchString" class="form-control"
+          <input type="text" placeholder="Search Name" (input)="searchKeyword($event.target.value)" [(ngModel)]=searchString class="form-control"
             data-inputmask="'alias': 'ip'" data-mask>
           <div class="input-group-addon">
             <i class="fa fa-search" (click)="searchKeyword(searchString)">

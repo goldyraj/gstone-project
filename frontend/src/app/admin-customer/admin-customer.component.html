@@ -32,7 +32,7 @@
 
       <div class="col-md-3 col-xs-12">
         <div class="input-group section-bottom-20">
-          <input type="text" placeholder="Search Name" (input)="searchKeyword($event.target.value)" (ngModel)="searchString" class="form-control"
+          <input type="text" placeholder="Search Name" (input)="searchKeyword($event.target.value)" [(ngModel)]=searchString class="form-control"
             data-inputmask="'alias': 'ip'" data-mask>
           <div class="input-group-addon">
             <i class="fa fa-search" (click)="searchKeyword(searchString)">
@@ -142,42 +142,42 @@
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-12 form-group">
                   <input type="text" class="form-control" formControlName="name" placeholder="Name">
-                  <small [hidden]="myForm.controls.name.valid || (myForm.controls.name.pristine && !submitted)">
+                  <small [hidden]="myForm.controls['name'].valid || (myForm.controls['name'].pristine && !submitted)">
                     Name is required
                   </small>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-12 form-group">
                   <input type="text" class="form-control" formControlName="contact" placeholder="Contact No." pattern="^(?:(?:\+|0{0,2})91(\s*[\ -]\s*)?|[0]?)?[789]\d{9}|(\d[ -]?){10}\d$">
 
-                  <small [hidden]="myForm.controls.contact.valid || (myForm.controls.contact.pristine && !submitted)">
-                    <span style="color:red" [hidden]="myForm.controls.contact.valid">Contact no is required.</span>
-                    <b [hidden]="myForm.controls.contact.pristine">characters not allowed.</b>
+                  <small [hidden]="myForm.controls['contact'].valid || (myForm.controls['contact'].pristine && !submitted)">
+                    <span style="color:red" [hidden]="myForm.controls['contact'].valid">Contact no is required.</span>
+                    <b [hidden]="myForm.controls['contact'].pristine">characters not allowed.</b>
                   </small>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-12 form-group">
                   <input type="text" class="form-control" formControlName="pan_no" placeholder="PAN No." pattern="[A-Za-z]{5}\d{4}[A-Za-z]{1}">
-                  <small [hidden]="myForm.controls.pan_no.valid || (myForm.controls.pan_no.pristine && !submitted)">
-                    <span style="color:red" [hidden]="myForm.controls.pan_no.valid">Pan No is required.</span>
-                    <b [hidden]="myForm.controls.pan_no.pristine">YHSDS2345E</b>
+                  <small [hidden]="myForm.controls['pan_no'].valid || (myForm.controls['pan_no'].pristine && !submitted)">
+                    <span style="color:red" [hidden]="myForm.controls['pan_no'].valid">Pan No is required.</span>
+                    <b [hidden]="myForm.controls['pan_no'].pristine">YHSDS2345E</b>
                   </small>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-12 form-group">
                   <input type="text" class="form-control" formControlName="email" placeholder="Email Id" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
-                  <small [hidden]="myForm.controls.email.valid || (myForm.controls.email.pristine && !submitted)">
-                    <span style="color:red" [hidden]="myForm.controls.email.valid">Email is required </span>
-                    <b [hidden]="myForm.controls.email.pristine">joe@abc.com</b>
+                  <small [hidden]="myForm.controls['email'].valid || (myForm.controls['email'].pristine && !submitted)">
+                    <span style="color:red" [hidden]="myForm.controls['email'].valid">Email is required </span>
+                    <b [hidden]="myForm.controls['email'].pristine">joe@abc.com</b>
                   </small>
 
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-12 form-group">
                   <input type="text" class="form-control" formControlName="gstin" placeholder="GSTIN" name="gstin" id="gstin">
-                  <small [hidden]="myForm.controls.gstin.valid || (myForm.controls.gstin.pristine && !submitted)">
+                  <small [hidden]="myForm.controls['gstin'].valid || (myForm.controls['gstin'].pristine && !submitted)">
                     GSTIN is required .
                   </small>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-12 form-group">
                   <input type="text" class="form-control" formControlName="address" placeholder="Address" name="address" id="address">
-                  <small [hidden]="myForm.controls.address.valid || (myForm.controls.address.pristine && !submitted)">
+                  <small [hidden]="myForm.controls['address'].valid || (myForm.controls['address'].pristine && !submitted)">
                     Address is required .
                   </small>
                 </div>
@@ -199,7 +199,7 @@
 
                 <div class="col-md-6 col-sm-6 col-xs-12 form-group">
                   <input type="text" class="form-control" placeholder="City" formControlName="city" name="city" id="city">
-                  <small [hidden]="myForm.controls.city.valid || (myForm.controls.city.pristine && !submitted)">
+                  <small [hidden]="myForm.controls['city'].valid || (myForm.controls['city'].pristine && !submitted)">
                     City is required.
                   </small>
                 </div>
@@ -218,7 +218,7 @@
                     <option value="" selected="selected">Select State</option>
                     <option *ngFor="let item of stateDropDownList" value="{{item.name}}">{{item.name}}</option>
                   </select>
-                  <small *ngIf="myForm.controls.state.value ==='' && submitted">
+                  <small *ngIf="myForm.controls['state'].value ==='' && submitted">
                     Please select state !
                   </small>
                 </div>
@@ -228,7 +228,7 @@
                     <option value="" selected="selected">Select User Type</option>
                     <option *ngFor="let item of userTypeList" value="{{item}}">{{item}}</option>
                   </select>
-                  <small *ngIf="myForm.controls.userType.value ==='' && submitted">
+                  <small *ngIf="myForm.controls['userType'].value ==='' && submitted">
                     Please select user type !
                   </small>
                 </div>

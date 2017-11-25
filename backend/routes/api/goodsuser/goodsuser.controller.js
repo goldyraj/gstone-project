@@ -1,5 +1,5 @@
 const Goodsuser = require('../../../models/goodsuser')
-
+const Goods = require('../../../models/goods')
 var usingItNow = function(req) {
 if(req.type=="agentuser"||req.type=="admin"){
   return false;

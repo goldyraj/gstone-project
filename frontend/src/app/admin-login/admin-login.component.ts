@@ -3,11 +3,13 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { RouterModule, Routes, Router } from '@angular/router';
+import {ApiserviceService} from '../apiservice.service';
 
 @Component({
   selector: 'app-admin-login',
   templateUrl: './admin-login.component.html',
-  styleUrls: ['./admin-login.component.css']
+  styleUrls: ['./admin-login.component.css'],
+  providers:[ApiserviceService]
 })
 export class AdminLoginComponent implements OnInit {
 
@@ -18,7 +20,7 @@ export class AdminLoginComponent implements OnInit {
   public submittedEdit: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
   public loginSuccess=0;
-  constructor(private _fb: FormBuilder,private router: Router, private http: Http) {
+  constructor(private _fb: FormBuilder,private router: Router, private http: Http,public ApiserviceService:ApiserviceService) {
   }
 
   ngOnInit() {
@@ -41,7 +43,7 @@ export class AdminLoginComponent implements OnInit {
         "username": this.adminLoginForm.value.email,
         "password": this.adminLoginForm.value.password
       };
-      this.url = "http://localhost:3000/api/auth/login";
+      this.url = this.ApiserviceService.BASE_URL+"auth/login";
       return this.http.post(this.url, body)
         .subscribe(
         response => {

@@ -3,11 +3,13 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { RouterModule, Routes, Router } from '@angular/router';
+import {ApiserviceService} from '../apiservice.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
+  providers:[ApiserviceService]
 })
 export class HomeComponent implements OnInit {
   @ViewChild('closeBtn') closeBtn: ElementRef;
@@ -46,7 +48,7 @@ export class HomeComponent implements OnInit {
   public submitted: boolean; // keep track on whether form is submitted
   public LoginSubmitted: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
-  constructor(public http: Http, private router: Router, private _fb: FormBuilder) {
+  constructor(public http: Http, private router: Router, private _fb: FormBuilder,public apiserviceService: ApiserviceService) {
     // this.getNotificationList();
     // this.getVideosList();
     // this.getInternalUpdateList();
@@ -65,17 +67,17 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
 
     this.myForm = new FormGroup({
-      name: new FormControl('asd', [Validators.required, Validators.pattern('.*\\S.*')]),
-      contact: new FormControl('9713270396', [<any>Validators.required, <any>Validators.minLength(10)]),
-      pan_no: new FormControl('YHSDS2345E', [<any>Validators.required, <any>Validators.minLength(10)]),
-      email: new FormControl('asdg@adsf.ocm', [<any>Validators.required]),
-      gstin: new FormControl('asdf', [<any>Validators.required, Validators.pattern('.*\\S.*')]),
-      address: new FormControl('asdf', [<any>Validators.required, Validators.pattern('.*\\S.*')]),
-      city: new FormControl('asdf', [<any>Validators.required, Validators.pattern('.*\\S.*')]),
+      name: new FormControl('', [Validators.required, Validators.pattern('.*\\S.*')]),
+      contact: new FormControl('', [<any>Validators.required, <any>Validators.minLength(10)]),
+      pan_no: new FormControl('', [<any>Validators.required, <any>Validators.minLength(10)]),
+      email: new FormControl('', [<any>Validators.required]),
+      gstin: new FormControl('', [<any>Validators.required, Validators.pattern('.*\\S.*')]),
+      address: new FormControl('', [<any>Validators.required, Validators.pattern('.*\\S.*')]),
+      city: new FormControl('', [<any>Validators.required, Validators.pattern('.*\\S.*')]),
       userType: new FormControl('', [<any>Validators.required]),
-      password: new FormControl('asdfgh', [<any>Validators.required, <any>Validators.minLength(5)]),
-      confirm_paasword: new FormControl('asdfhh', [<any>Validators.required, <any>Validators.minLength(5)]),
-      state: new FormControl('madhya pradesh', [<any>Validators.required]),
+      password: new FormControl('', [<any>Validators.required, <any>Validators.minLength(5)]),
+      confirm_paasword: new FormControl('', [<any>Validators.required, <any>Validators.minLength(5)]),
+      state: new FormControl('', [<any>Validators.required]),
 
     });
     this.LoginForm = new FormGroup({
@@ -94,7 +96,7 @@ export class HomeComponent implements OnInit {
 
   checkAuth() {
     console.log('auth called');
-    this.http.get('http://localhost:3000/api/auth/check?token=' + this.access_token).subscribe(data => {
+    this.http.get(this.apiserviceService.BASE_URL+'auth/check?token=' + this.access_token).subscribe(data => {
       this.userDetails = data.json().info;
       this.userIsLogged = data.json().success;
       console.log('State  PArse', this.userDetails);
@@ -109,7 +111,7 @@ export class HomeComponent implements OnInit {
 
   getStateList() {
     console.log('list called');
-    this.http.get('http://localhost:3000/api/state/list').subscribe(data => {
+    this.http.get(this.apiserviceService.BASE_URL+'state/list').subscribe(data => {
       this.stateList = data.json().state;
       this.TotalPages = data.json().total;
       this.pageSize = this.Paging.limit;
@@ -133,12 +135,12 @@ export class HomeComponent implements OnInit {
         'username': this.LoginForm.value.email,
         'password': this.LoginForm.value.password
       };
-      this.url = 'http://localhost:3000/api/auth/login';
+      this.url = this.apiserviceService.BASE_URL+'auth/login';
       return this.http.post(this.url, body)
         .subscribe(
         response => {
           // localStorage.setItem('user_token', response.json().token);
-          this.http.get('http://localhost:3000/api/auth/check?token=' + response.json().token).subscribe(data => {
+          this.http.get(this.apiserviceService.BASE_URL+'auth/check?token=' + response.json().token).subscribe(data => {
             this.userDetails = data.json().info;
             this.userIsLogged = data.json().success;
             console.log(response.json().message);
@@ -213,7 +215,7 @@ export class HomeComponent implements OnInit {
       };
 
 
-      this.url = 'http://localhost:3000/api/auth/register';
+      this.url = this.apiserviceService.BASE_URL+'auth/register';
       return this.http.post(this.url, body, requestOptions)
         .subscribe(
         response => {

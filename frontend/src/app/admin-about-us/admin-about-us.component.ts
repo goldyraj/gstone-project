@@ -3,11 +3,13 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { RouterModule, Routes, Router } from '@angular/router';
+import {ApiserviceService} from '../apiservice.service';
 
 @Component({
   selector: 'app-admin-about-us',
   templateUrl: './admin-about-us.component.html',
-  styleUrls: ['./admin-about-us.component.css']
+  styleUrls: ['./admin-about-us.component.css'],
+  providers:[ApiserviceService]
 })
 export class AdminAboutUsComponent implements OnInit {
   @ViewChild('closeBtn') closeBtn: ElementRef;
@@ -26,7 +28,7 @@ export class AdminAboutUsComponent implements OnInit {
   pager: any = {};
   pagedItems: any[];
   updateAboutUs;
-  constructor(private _fb: FormBuilder, private http: Http,public Router:Router) {
+  constructor(private _fb: FormBuilder, private http: Http,public Router:Router,public ApiserviceService:ApiserviceService) {
     this.access_token = localStorage.getItem("admin_token");
     this.getAboutUsList();
   }
@@ -47,7 +49,7 @@ export class AdminAboutUsComponent implements OnInit {
   }
   getAboutUsList() {
     console.log('list called');
-    this.http.get('http://localhost:3000/api/about/list?token='+this.access_token).subscribe(data => {
+    this.http.get(this.ApiserviceService.BASE_URL+'about/list?token='+this.access_token).subscribe(data => {
       
       this.aboutUs = data.json().about[0];
       console.log("DATA", this.aboutUs);
@@ -95,7 +97,7 @@ export class AdminAboutUsComponent implements OnInit {
         };
         console.log("body",body);
   
-        this.url = "http://localhost:3000/api/about/update?token="+this.access_token;
+        this.url = this.ApiserviceService.BASE_URL+"about/update?token="+this.access_token;
         return this.http.put(this.url, body, requestOptions)
           .subscribe(
           response => {
@@ -123,7 +125,7 @@ export class AdminAboutUsComponent implements OnInit {
         };
         console.log("body",body);
   
-        this.url = "http://localhost:3000/api/about/create?token="+this.access_token;
+        this.url = this.ApiserviceService.BASE_URL+"about/create?token="+this.access_token;
         return this.http.post(this.url, body, requestOptions)
           .subscribe(
           response => {

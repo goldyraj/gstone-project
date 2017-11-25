@@ -12,12 +12,27 @@ import { PagerService } from '../service/pager.service';
   selector: 'app-goodservices',
   templateUrl: './goodservices.component.html',
   styleUrls: ['./goodservices.component.css'],
-  providers: [PagerService, ExcelServiceService]
+  providers: [PagerService, ExcelServiceService, ApiserviceService]
 })
 export class GoodservicesComponent implements OnInit {
 
-  @ViewChild('closeChoose') closeChoose: ElementRef;
   @ViewChild('closeCsv') closeCsv: ElementRef;
+  @ViewChild('closeChoose') closeChoose: ElementRef;
+  @ViewChild('closeBtn') closeBtn: ElementRef;
+  @ViewChild('closeEditModal') closeEditModal: ElementRef;
+  @ViewChild('clearInputFile') clearInputFile: ElementRef;
+
+  errorMsg:string;
+  filename;
+  isDownloadSuccessful: boolean;
+  headers: Headers;
+  branchesList = [];
+  isEditingClicked: boolean;
+  publicBranchData;
+  selectedDealerStateEdit = '0';
+  selectedDealerStateNew = '0';
+  jsonString: string;
+
   rowDataIndex;
   GoodsRowData;
   public addStateForm: FormGroup; // our model driven form
@@ -26,7 +41,7 @@ export class GoodservicesComponent implements OnInit {
   public editSubmitted: boolean = false; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
 
-  public ifSuccess: boolean = false;
+  public ifSuccess: number = 0;
   goodsData = Array();
   url = "";
   pager: any = {};
@@ -45,10 +60,8 @@ export class GoodservicesComponent implements OnInit {
   rateList = [];
   unitList = [];
   typeList = [];
-  @ViewChild('closeBtn') closeBtn: ElementRef;
-  @ViewChild('closeEditModal') closeEditModal: ElementRef;
 
-  constructor(private http: Http, private pagerService: PagerService, public excelServiceService: ExcelServiceService, private router: Router) {
+  constructor(private http: Http, private pagerService: PagerService, public excelServiceService: ExcelServiceService, private router: Router, public apiserviceService: ApiserviceService) {
     this.access_token = localStorage.getItem("user_token");
     console.log("user_token", this.access_token);
     this.getGoodService(1);
@@ -64,11 +77,56 @@ export class GoodservicesComponent implements OnInit {
       { "id": 6, "name": "18%" },
       { "id": 7, "name": "28%" },
     ];
-    this.unitList = [
-      { "id": 1, "name": "Kilogram" },
-      { "id": 2, "name": "Gram" },
-      { "id": 3, "name": "Meter" }
+    this.unitList =[
+      'SELECT',
+      'CAN-CANS',
+      'CBM-CUBIC',
+      'METERS',
+      'CCM-CUBIC',
+      'CENTIMETERS',
+      'CMS-CENTIMETERS',
+      'CTN-CARTONS',
+      'DOZ-DOZENS',
+      'DRM-DRUMS',
+      'GGK-GREAT',
+      'GROSS',
+      'GMS-GRAMMES',
+      'GRS-GROSS',
+      'GYD-GROSS',
+      'YARDS',
+      'KGS-KILOGRAMS',
+      'KLR-KILOLITRE',
+      'KME-KILOMETRE',
+      'MLT-MILILITRE',
+      'MTR-METERS',
+      'MTS-METRIC',
+      'TON',
+      'NOS-NUMBERS',
+      'PAC-PACKS',
+      'PCS-PIECES',
+      'PRS-PAIRS',
+      'QTL-QUINTAL',
+      'ROL-ROLLS',
+      'SET-SETS',
+      'SQF-SQUARE',
+      'FEET',
+      'SQM-SQUARE',
+      'METERS',
+      'SQY-SQUARE',
+      'YARDS',
+      'TBS-TABLETS',
+      'TGM-TEN',
+      'GROSS',
+      'THD-THOUSANDS',
+      'TON-TONNES',
+      'TUB-TUBES',
+      'UGS-US',
+      'GALLONS',
+      'UNT-UNITS',
+      'YDS-YARDS',
+      'OTH-OTHERS'
     ];
+
     this.typeList = [
       { "id": 1, "name": "Goods" },
       { "id": 2, "name": "Services" }
@@ -98,7 +156,7 @@ export class GoodservicesComponent implements OnInit {
   getGoodService(page: number) {
     let myHeaders = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: myHeaders });
-    this.http.get('http://localhost:3000/api/goodsuser/index?token=' + this.access_token + '&limit=2&page=' + this.pager.currentPage, options)
+    this.http.get(this.apiserviceService.BASE_URL + 'goodsuser/index?token=' + this.access_token + '&limit=10&page=' + this.pager.currentPage, options)
       .subscribe(
       response => {
         console.log("googservice list", response.json().docs);
@@ -141,7 +199,7 @@ export class GoodservicesComponent implements OnInit {
         "type": this.goodsForm.value.type
       };
 
-      this.url = "http://localhost:3000/api/goodsuser/create?token=" + this.access_token;
+      this.url = this.apiserviceService.BASE_URL + "goodsuser/create?token=" + this.access_token;
       return this.http.post(this.url, body, requestOptions)
         .subscribe(
         response => {
@@ -210,7 +268,7 @@ export class GoodservicesComponent implements OnInit {
       };
       console.log("body", body);
 
-      this.url = "http://localhost:3000/api/vendor/update?token=" + this.access_token;
+      this.url = this.apiserviceService.BASE_URL + "vendor/update?token=" + this.access_token;
       return this.http.put(this.url, body, requestOptions)
         .subscribe(
         response => {
@@ -227,5 +285,117 @@ export class GoodservicesComponent implements OnInit {
     }
   }
 
+  onCSVFilePicked(files: FileList) {
+    console.log(files);
+    if (files && files.length > 0) {
+      let file: File = files.item(0);
+      console.log(file.name);
+      console.log(file.size);
+      console.log(file.type);
+      let reader: FileReader = new FileReader();
+      reader.readAsText(file);
+      reader.onload = (e) => {
+        let csv: string = reader.result;
+        console.log(csv);
+        var csvString = this.excelServiceService.CSV2JSON(csv);
+        this.jsonString = csvString;
+        // var csvString=this.CSV2JSON(csv);
+        // this.uploadCsvFileToServer(csvString);
+      }
+    }
+  }
+
+  uploadCsvFileToServer() {
+
+    const headers = new Headers();
+
+    headers.append('Content-Type', 'application/json');
+    headers.append('x-access-token', this.access_token);
+    const requestOptions = new RequestOptions({ headers: headers });
+    const body = {
+      'data': JSON.parse(this.jsonString)
+    };
+
+    console.log('CSV_DATA', body);
+
+    this.url = this.apiserviceService.BASE_URL + 'branch/uploadFile?token=' + this.access_token;
+
+    return this.http.post(this.url, body, requestOptions)
+      .subscribe(
+      response => {
+        console.log('suceessfull data', response.json().message);
+        var errorval;
+
+        if (response.json().error) {
+          this.ifSuccess = 1;
+          errorval = response.json().error;
+          if (errorval.substr(56, 9) === 'contact_1') {
+            this.errorMsg = 'Contact No is already registered !';
+          } else if (errorval.substr(56, 8) === 'pan_no_1') {
+            this.errorMsg = 'Pan No is already registered !';
+          } else {
+            this.errorMsg = 'Email id is already registered !';
+          }
+        }
+        else {
+          this.errorMsg = "";
+          // this.closeModal();
+          this.closeCsv.nativeElement.click();
+          this.closeChoose.nativeElement.click();
+          this.clearInputFile.nativeElement.value = "";
+          this.ifSuccess = -1;
+          this.getGoodService(this.pager.currentPage);
+        }
+      },
+      error => {
+        this.ifSuccess = -1;
+        console.log('error', error.message);
+        console.log(error.text());
+      }
+      );
+  }
+
+  downloadJSONTOCSV() {
+    let response: any;
+    let myHeaders = new Headers({ 'Content-Type': 'application/json' });
+    var exportedList;
+    myHeaders.append('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization, x-access-token');
+    myHeaders.append('Access-Control-Allow-Methods', 'GET, OPTIONS, POST');
+    myHeaders.append('Access-Control-Allow-Origin', '*');
+
+    myHeaders.append('Access-Control-Allow-Credentials', 'true');
+
+    let options = new RequestOptions({ headers: myHeaders });
+
+    this.http.get(this.apiserviceService.BASE_URL + 'branch/index?token=' + this.access_token, options)
+      .subscribe(
+      response => {
+        exportedList = response.json().docs;
+        this.excelServiceService.exportAsExcelFile(exportedList, String(this.excelServiceService.getCurrentDateAndTime()));
+        this.isDownloadSuccessful = true;
+      },
+      error => {
+        // alert(error.text());
+        console.log(error.text());
+      }
+      );
+  }
+
+  closeDownloadModal() {
+    this.isDownloadSuccessful = false;
+  }
+
+  resetForm() {
+    this.goodsForm.reset();
+  }
+
+  clearCSVForm() {
+    this.clearInputFile.nativeElement.value = "";
+    this.ifSuccess = 0;
+  }
+
+  private closeModal(): void {
+    this.closeBtn.nativeElement.click();
+  }
 
 }

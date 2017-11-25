@@ -43,16 +43,16 @@
 <form [formGroup]="reimburshForm" novalidate="">
   <div>
     <!-- <form [formGroup]="invoiceTypeRadioForm" novalidate> -->
-      <label>
-        <input type="radio" [checked]="true" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Normal_Invoice">Normal Invoice</label>
-      <label>
-        <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Reverse_Charge">Reverse Charge</label>
-      <label>
-        <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="E_Commerce">E-commerce</label>
-      <label>
-        <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Debit_Note">Debit Note</label>
-      <label>
-        <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Credit_Note">Credit Note</label>
+    <label>
+      <input type="radio" [checked]="true" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Normal_Invoice">Normal Invoice</label>
+    <label>
+      <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Reverse_Charge">Reverse Charge</label>
+    <label>
+      <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="E_Commerce">E-commerce</label>
+    <label>
+      <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Debit_Note">Debit Note</label>
+    <label>
+      <input type="radio" (change)=selectRadio() formControlName="invoiceTypeRadio" name="invoiceTypeRadio" value="Credit_Note">Credit Note</label>
     <!-- </form> -->
   </div>
 
@@ -147,7 +147,7 @@
 
         <!-- <div  *ngFor="let item of invoiceList ;let i = index;"> -->
         <tr *ngFor="let saleList of salesListArray.controls;let i = index" [formGroupName]="i">
-          <td align="center"> 1</td>
+          <td align="center"> {{i+1}}</td>
           <td>
             <!-- <input type="text" class="form-control" value="Mesuarement"> -->
             <input type="text" class="form-control" formControlName="description" required>
@@ -180,7 +180,7 @@
             </select>
           </td>
           <td>
-            <input type="text" class="form-control" formControlName="sgst" required>
+            <input type="text" class="form-control" formControlName="sgst"  required>
             <!-- <input type="text" class="form-control" value="345"> -->
           </td>
           <td>
@@ -201,11 +201,13 @@
           </td>
           <td>
             <!-- <input type="text" class="form-control" value="500"> -->
-            <input type="text" class="form-control" formControlName="val4" required>
+            <input type="text" class="form-control" formControlName="val4"  required>
           </td>
           <td>
             <!-- <input type="text" class="form-control" value="500"> -->
-            <input type="text" class="form-control" formControlName="val5" required>
+            <!-- <span *ngIf="myModel.saleList[0].val5">Hellooo {{myModel.saleList[0].val5}}</span> -->
+            <input type="text" class="form-control" formControlName="val5"     required>
+           
           </td>
           <td>
             <button (click)="deleteRow(i)">Remove</button>
@@ -213,19 +215,20 @@
         </tr>
 
 
-        <!-- <tr>
-            <td>
-              <input type="text" class="form-control" value="">
-            </td>
-            <td></td>
-            <td colspan="8" align="right" class="Total_word">Total in Words</td>
-            <td colspan="4" align="right" class="Grand_total">
-              <b>Grand Total =</b>
-            </td>
-            <td>
-              <input type="text" class="form-control" value="500">
-            </td>
-          </tr> -->
+        <tr>
+          <td colspan="2"></td>
+          <td colspan="7" align="right" class="Total_word">Total in Words</td>
+          <td colspan="4" align="right" class="Grand_total">
+            <b>Grand Total =</b>
+          </td>
+          <td>
+            <input type="text" class="form-control" value="500">
+          </td>
+          <td>
+            <input type="text" class="form-control" [value]="sumPayOffs()">
+            
+          </td>
+        </tr>
       </tbody>
 
     </table>
@@ -234,4 +237,7 @@
   <div class="text-center section-bottom-60">
     <button class="btn btn-success btnSave_data" (click)='submitForm(reimburshForm.value)'> Save Data</button>
   </div>
+
+  <!-- <pre>{{ myModel | json }}</pre>
+  <pre>{{ myModel.salesList[0].val5 | json}}</pre> -->
 </form>

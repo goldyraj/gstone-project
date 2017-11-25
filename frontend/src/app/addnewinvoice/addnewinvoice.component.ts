@@ -20,17 +20,13 @@ export class AddnewinvoiceComponent implements OnInit {
   descriptionQuery:string;
   reimburshForm: FormGroup;
   salesListArray: FormArray;
-<<<<<<< HEAD
   myModel: any;
   public selectedAll: boolean;
   a: number;
-=======
   filteredDescriptionList=[];
   // public addTableForm: FormGroup;
   // public addInvoiceForm: FormGroup;
-  public selectedAll: boolean;
   customersGoodsAndServciesList=[];
->>>>>>> 2fa45991480b5b7ac4ec7ae9c60a9b7489d762ed
   access_token: string;
   selectedName: string;
   customersNamesList = [];

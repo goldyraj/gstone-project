@@ -105,11 +105,6 @@ export class AdminStateComponent implements OnInit {
 
   saveState(isValid: boolean) {
     this.submitted = true; // set form submit to true
-    console.log(isValid);
-    console.log("hi form module is called from page");
-    console.log("form val", this.myForm.value.name);
-    this.StateVal = this.myForm.value;
-    console.log("form valuse", this.StateVal);
 
     if (isValid == true) {
 

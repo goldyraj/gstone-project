@@ -16,12 +16,14 @@ import {ApiserviceService} from '../apiservice.service';
   providers:[ApiserviceService]
 })
 export class AddnewinvoiceComponent implements OnInit {
+  descriptionQuery:string;
   reimburshForm: FormGroup;
   salesListArray: FormArray;
+  filteredDescriptionList=[];
   // public addTableForm: FormGroup;
   // public addInvoiceForm: FormGroup;
   public selectedAll: boolean;
-
+  customersGoodsAndServciesList=[];
   access_token: string;
   selectedName: string;
   customersNamesList = [];
@@ -112,6 +114,7 @@ export class AddnewinvoiceComponent implements OnInit {
     this.buildForm();
     this.getCustomerNames();
     this.getStateList();
+    this.getCustomersGoodsAndServices();
   }
 
   buildForm() {
@@ -356,6 +359,51 @@ export class AddnewinvoiceComponent implements OnInit {
     }
     else if (control === "description") {
       this.invoiceDynList[i].description = $event.target.value;
+    }
+  }
+
+  getCustomersGoodsAndServices()
+  {
+    let response: any;
+    let myHeaders = new Headers({ 'Content-Type': 'application/json' });
+    myHeaders.append('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization, x-access-token');
+    myHeaders.append('Access-Control-Allow-Methods', 'GET, OPTIONS, POST');
+    myHeaders.append('Access-Control-Allow-Origin', '*');
+    myHeaders.append('Access-Control-Allow-Credentials', 'true');
+
+    let options = new RequestOptions({ headers: myHeaders });
+
+    this.http.get(this.apiserviceService.BASE_URL+'goodsuser/index?token=' + this.access_token + '&limit=5000', options)
+      .subscribe(
+      response => {
+        this.customersGoodsAndServciesList = response.json().docs;
+        console.log("GOODSSERVICES",this.customersGoodsAndServciesList);
+      },
+      error => {
+        console.log(error.text());
+      }
+      );
+  }
+
+  selectDesciption(item)
+  {
+    this.descriptionQuery = item.description;
+    this.filteredDescriptionList = [];
+    this.reimburshForm.get('hsn').setValue(item.hsn_code);
+    // this.reimburshForm.get('qty').setValue(item.qty);
+    this.reimburshForm.get('goodservice').setValue(item.type)
+  }
+
+  searchDescription()
+  {
+    if (this.descriptionQuery !== "") {
+
+      this.filteredDescriptionList = this.customersGoodsAndServciesList.filter(function (el) {
+        return el.description.toString().toLowerCase().indexOf(this.descriptionQuery.toString().toLowerCase()) > -1;
+      }.bind(this));
+      console.log("filteredDescriptionList", this.filteredDescriptionList);
+    } else {
+      this.filteredDescriptionList = [];
     }
   }
 }

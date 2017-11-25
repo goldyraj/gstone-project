@@ -338,11 +338,11 @@ export class CustomerComponent implements OnInit {
           this.ifSuccess=false;
           errorval = response.json().error;
           if (errorval.substr(56, 9) === 'contact_1') {
-            this.errorMsg = 'Contact No is already register.';
+            this.errorMsg = 'Contact No is already registered !';
           } else if (errorval.substr(56, 8) === 'pan_no_1') {
-            this.errorMsg = 'Pan No is already register.';
+            this.errorMsg = 'Pan No is already registered !';
           } else {
-            this.errorMsg = 'Email id is already register.';
+            this.errorMsg = 'Email id is already registered !';
           }
         }
         else

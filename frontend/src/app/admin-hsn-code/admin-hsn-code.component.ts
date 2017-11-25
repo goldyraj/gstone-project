@@ -17,45 +17,47 @@ import {ApiserviceService} from '../apiservice.service';
 })
 export class AdminHsnCodeComponent implements OnInit {
 
+  public codeSerValue:string;
   public addStateForm: FormGroup; // our model driven form
   public submitted: boolean = false; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
-  backupGoodsDataList;
-  backupServicesDataList;
+  public  backupGoodsDataList=Array();
+  public  backupServicesDataList=Array();
   public ifSuccess: number = 0;
-  goodsData = Array();
-  servicesData = Array();
-  hsnRowData;
-  hsnCodeSubmitData = {};
-  goodsKeyWord;
-  servicesKeyWord;
-  modelHide = '';
-  public selectedStatusType;
-  url = "";
-  backupGoodsPager:any={};
-  backupServicesPager:any={};
-  selectedStatusTypeDrop;
-  public hsn_code_status = "0";
+  public  goodsData = Array();
+  public  servicesData = Array();
+  public  hsnRowData;
+  public  hsnCodeSubmitData = {};
+  public  goodsKeyWord:string;
+  public  searchDescString:string;
+  public selectedStatusType:string;
+  public  url:string = "";
+  public  backupGoodsPager:any={};
+  public  backupServicesPager:any={};
+  public selectedStatusTypeDrop:string;
+  public hsn_code_status:string = "0";
   public statusDropDown = Array();
-  rowIndexToModify;
-  goodsForm: FormGroup;
-  goodsFormEdit: FormGroup;
+  public rowIndexToModify:number;
+  public goodsForm: FormGroup;
+  public goodsFormEdit: FormGroup;
   // sortBy = "created_at";
-  sortBy = "hsn_code";
-  jsonString;
-  access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
-  goodsPager: any = {};
-  servicesPager: any = {};
-  goodsPagedItems: any = [];
-  servicesPagedItems: any = [];
+  public  sortBy:string = "hsn_code";
+  public  jsonString:string;
+  public  access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWYwNWRjZmNlNzE1YzIyNjBlYTc0YTMiLCJ1c2VybmFtZSI6Im1heXVyIiwiYWRtaW4iOnRydWUsImlhdCI6MTUwODkzODk1MCwiZXhwIjoxNTA5NTQzNzUwLCJpc3MiOiJ2ZWxvcGVydC5jb20iLCJzdWIiOiJ1c2VySW5mbyJ9.lXiq1kueJTk8qhgNJS89ANtTOWughJkqGz8OaF5xbaw";
+  public  goodsPager: any = {};
+  public servicesPager: any = {};
+  public goodsPagedItems: any = [];
+ public servicesPagedItems: any = [];
   @ViewChild('closeBtn') closeBtn: ElementRef;
   @ViewChild('closeEditModal') closeEditModal: ElementRef;
   @ViewChild('closeChoose') closeChoose: ElementRef;
   @ViewChild('closeCsv') closeCsv: ElementRef;
   @ViewChild('clearInputFile') clearInputFile:ElementRef;
-  public selectCategory;
+  public selectCategory:string;
   public isDownloadSuccessful:boolean;
-  isGoodsSelected:boolean = true;
+  public isGoodsSelected:boolean = true;
+  public searchString:string;
+  public codeValue:number;
 
   constructor(private http: Http, private pagerService: PagerService, public excelServiceService: ExcelServiceService, private router: Router,public ApiserviceService:ApiserviceService) {
     this.goodsPager.pageSize=0;
@@ -71,7 +73,7 @@ export class AdminHsnCodeComponent implements OnInit {
       sgst: new FormControl(0,[Validators.required,, NumberValidatorsService.min(0)]),
       igst: new FormControl(0,[Validators.required,, NumberValidatorsService.min(0)]),
       description: new FormControl('',[Validators.required,Validators.pattern(".*\\S.*")]),
-      selectCategory: new FormControl('Select Category'),
+      selectCategory: new FormControl(''),
       comment: new FormControl()
     });
 
@@ -81,7 +83,7 @@ export class AdminHsnCodeComponent implements OnInit {
       sgst: new FormControl(0,[Validators.required,, NumberValidatorsService.min(0)]),
       igst: new FormControl(0,[Validators.required,, NumberValidatorsService.min(0)]),
       description: new FormControl('',[Validators.required,Validators.pattern(".*\\S.*")]),
-      selectCategory: new FormControl('Select Category'),
+      selectCategory: new FormControl(''),
       comment: new FormControl()
     });
 
@@ -436,7 +438,7 @@ export class AdminHsnCodeComponent implements OnInit {
     }
     else if(!isGoods && this.backupServicesDataList)
     {
-      this.searchServicesKeyword(this.servicesKeyWord);
+      this.searchServicesKeyword(this.searchDescString);
     }
     else{
       this.getAllServices(this.servicesPager.currentPage);
@@ -519,6 +521,7 @@ export class AdminHsnCodeComponent implements OnInit {
   }
 
   searchGoodsKeyword(searchString) {
+    this.searchString=searchString;
     console.log("SEARCH_HIT");
     this.goodsKeyWord=searchString;
 
@@ -538,11 +541,11 @@ export class AdminHsnCodeComponent implements OnInit {
     }
   }
 
-  searchServicesKeyword(searchString) {
+  searchServicesKeyword(searchDescString) {
     console.log("SEARCH_HIT");
-    this.servicesKeyWord=searchString;
-    if (searchString) {
-      this.http.get(this.ApiserviceService.BASE_URL+'services/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + searchString).subscribe(data => {
+    this.searchDescString=searchDescString;
+    if (searchDescString) {
+      this.http.get(this.ApiserviceService.BASE_URL+'services/index?token=' + this.access_token + '&limit=' + 1000 + "&search=" + this.searchString).subscribe(data => {
         this.servicesData = data.json().docs;
         this.servicesPager.pageSize = data.json().limit;
         this.servicesPager.totalItems = data.json().total;

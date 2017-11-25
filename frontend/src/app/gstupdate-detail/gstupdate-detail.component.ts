@@ -14,7 +14,8 @@ import {ApiserviceService} from '../apiservice.service';
 export class GstupdateDetailComponent implements OnInit {
   id: number;
   private sub: any;
-  GstUpdateDetails = "";
+  GstUpdateDetails:any;
+  details:string;
   constructor(private route: ActivatedRoute,public http: Http,public apiserviceService: ApiserviceService) { 
     // this.getInternalUpdateList();
   }

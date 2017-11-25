@@ -11,7 +11,7 @@ import {ApiserviceService} from '../apiservice.service';
   providers:[ApiserviceService]
 })
 export class AboutUsComponent implements OnInit {
-  aboutUs ="";
+  aboutUs:any;
   constructor(private _fb: FormBuilder, private http: Http,public apiserviceService: ApiserviceService) {
     this.getAboutUsList();
   }

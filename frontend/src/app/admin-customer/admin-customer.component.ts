@@ -18,6 +18,9 @@ import {ApiserviceService} from '../apiservice.service';
 export class AdminCustomerComponent implements OnInit {
 
   pager: any = {};
+  errorType:boolean;
+  errorMsg:string;
+  searchString:string;
   searchedStringPager: any = {};
   sortBy = "created_at";
   backupPager:any={};

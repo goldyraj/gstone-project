@@ -68,7 +68,6 @@ import { videosPipe } from './admin-gstone-videos/videos.pipe';
 import { GstupdateDetailComponent } from './gstupdate-detail/gstupdate-detail.component';
 import { CharOnlyDirective } from './Directives/char-only.directive';
 import { NumbersOnlyDirective } from './Directives/numbers-only.directive';
-import { AdminInternalUpdateInnerpageComponent } from './admin-internal-update-innerpage/admin-internal-update-innerpage.component';
 import { AdminUserComponent } from './admin-user/admin-user.component';
 import { AdminCustomerComponent } from './admin-customer/admin-customer.component';
 import { AdminVendorComponent } from './admin-vendor/admin-vendor.component';
@@ -130,7 +129,6 @@ import { ProfileComponent } from './profile/profile.component';
     GstupdateDetailComponent,
     CharOnlyDirective,
     NumbersOnlyDirective,
-    AdminInternalUpdateInnerpageComponent,
     AdminUserComponent,
     AdminCustomerComponent,
     AdminVendorComponent,

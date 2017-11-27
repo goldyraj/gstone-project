@@ -34,7 +34,7 @@ Invoice.statics.create = function(gstin,fp,gt,inum,cur_gt,b2b,b2cl,cdnr,b2cs,exp
   var created_at=  Date.now();
    var status ="N";
     const Invoice = new this({
-  gstin,fp,gt,inum,cur_gt,b2b,b2cl,cdnr,b2cs,exp,hsn,nil,txpd,at,doc_issue,cdnur,userid,created_at ,status   
+     gstin,fp,gt,inum,cur_gt,b2b,b2cl,cdnr,b2cs,exp,hsn,nil,txpd,at,doc_issue,cdnur,userid,created_at ,status   
     })
 
     // return the Promise

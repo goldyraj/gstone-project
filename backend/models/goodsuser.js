@@ -4,23 +4,23 @@ const Schema = mongoose.Schema
 const crypto = require('crypto')
 const config = require('../config')
 
-   var mongoosePaginate = require('mongoose-paginate');
+var mongoosePaginate = require('mongoose-paginate');
 const Goodsuser = new Schema({
     description: String,
     hsn_code: String,
     unit: String,
     rate: String,
-     type: String,
-    userid : { type: Schema.Types.ObjectId, ref: 'User' },
-    created_at:  { type: Date},
-    updated_at:  { type: Date}
+    type: String,
+    userid: { type: Schema.Types.ObjectId, ref: 'User' },
+    created_at: { type: Date },
+    updated_at: { type: Date }
 })
 
 // create new User document
-Goodsuser.statics.create = function(description, hsn_code,unit,rate,type,userid) {
-   var created_at=  Date.now();
+Goodsuser.statics.create = function (description, hsn_code, unit, rate, type, userid) {
+    var created_at = Date.now();
     const Goodsuser = new this({
-        description, hsn_code,unit,rate,type,created_at,userid    
+        description, hsn_code, unit, rate, type, created_at, userid
     })
 
     // return the Promise
@@ -28,9 +28,9 @@ Goodsuser.statics.create = function(description, hsn_code,unit,rate,type,userid)
 }
 
 // find one user by using username
-Goodsuser.statics.findOneByUsername = function(description) {
+Goodsuser.statics.findOneByUsername = function (description) {
     return this.findOne({
-        description        
+        description
     }).exec()
 }
 

@@ -5,26 +5,26 @@ const Schema = mongoose.Schema
 const crypto = require('crypto')
 const config = require('../config')
 var mongoosePaginate = require('mongoose-paginate');
-  //var uniqueValidator = require('mongoose-unique-validator');
+//var uniqueValidator = require('mongoose-unique-validator');
 const Hsn = new Schema({
     description: String,
     code: { type: String, unique: true },
-    rate:String,
-    status:String,
-     created_at:  { type: Date,default: Date.now},
-  updated_at:  { type: Date}
-  
+    rate: String,
+    status: String,
+    created_at: { type: Date, default: Date.now },
+    updated_at: { type: Date }
+
 })
 
 // create new User document
-Hsn.statics.create = function(description, code,rate,status) {
- var created_at=  Date.now();
+Hsn.statics.create = function (description, code, rate, status) {
+    var created_at = Date.now();
 
     const Hsn = new this({
         description,
         code,
         rate,
-        status  ,created_at      
+        status, created_at
     })
 
     // return the Promise
@@ -32,9 +32,9 @@ Hsn.statics.create = function(description, code,rate,status) {
 }
 
 // find one user by using username
-Hsn.statics.findOneByUsername = function(code) {
+Hsn.statics.findOneByUsername = function (code) {
     return this.findOne({
-        code        
+        code
     }).exec()
 }
 

@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 const crypto = require('crypto')
 const config = require('../config')
 
-   var mongoosePaginate = require('mongoose-paginate');
+var mongoosePaginate = require('mongoose-paginate');
 const Services = new Schema({
     description: String,
     hsn_code: String,
@@ -13,16 +13,16 @@ const Services = new Schema({
     sgst: String,
     igst: String,
     condition: String,
-            userid : { type: Schema.Types.ObjectId, ref: 'User' },
-      created_at:  { type: Date,default: Date.now},
-  updated_at:  { type: Date}
+    userid: { type: Schema.Types.ObjectId, ref: 'User' },
+    created_at: { type: Date, default: Date.now },
+    updated_at: { type: Date }
 })
 
 // create new User document
-Services.statics.create = function(description, hsn_code,cgst,sgst,igst,condition,userid) {
-   var created_at=  Date.now();
+Services.statics.create = function (description, hsn_code, cgst, sgst, igst, condition, userid) {
+    var created_at = Date.now();
     const Services = new this({
-        description, hsn_code,cgst,sgst,igst,condition,userid,created_at     
+        description, hsn_code, cgst, sgst, igst, condition, userid, created_at
     })
 
     // return the Promise
@@ -30,9 +30,9 @@ Services.statics.create = function(description, hsn_code,cgst,sgst,igst,conditio
 }
 
 // find one user by using username
-Services.statics.findOneByUsername = function(description) {
+Services.statics.findOneByUsername = function (description) {
     return this.findOne({
-        description        
+        description
     }).exec()
 }
 

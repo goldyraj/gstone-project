@@ -1,0 +1,94 @@
+{
+	"id": "fea35be9-e9de-4ac1-d1c5-557d6072f856",
+	"name": "EncryptAPIs",
+	"description": "",
+	"order": [
+		"256b7b0b-bc42-387a-1064-40c4b3df4795"
+	],
+	"folders": [],
+	"folders_order": [],
+	"timestamp": 1511763732555,
+	"owner": 0,
+	"public": false,
+	"requests": [
+		{
+			"id": "256b7b0b-bc42-387a-1064-40c4b3df4795",
+			"headers": "Content-Type: application/json\nclient-secret: 5a35ac266ea44bc18fdeb4bed07529d5\ntxn: GSTONE0000000001\nclientid: l7xxda1af7c62c6c40449602e5a9f448f2ef\nip-usr: 192.168.1.209\nstate-cd: 33\nusername: GSTONE.TN.TP.2\ngstin: 33GSPTN8152G3Z0\nOcp-Apim-Subscription-Key: 5e2fcec9bb28457da5b6c9b8efcbb072\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "client-secret",
+					"value": "5a35ac266ea44bc18fdeb4bed07529d5",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "txn",
+					"value": "GSTONE0000000001",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "clientid",
+					"value": "l7xxda1af7c62c6c40449602e5a9f448f2ef",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "ip-usr",
+					"value": "192.168.1.209",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "state-cd",
+					"value": "33",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "username",
+					"value": "GSTONE.TN.TP.2",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "gstin",
+					"value": "33GSPTN8152G3Z0",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "Ocp-Apim-Subscription-Key",
+					"value": "5e2fcec9bb28457da5b6c9b8efcbb072",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "https://api.alankitgst.com/commonapi/dev/authenticate",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "POST",
+			"collectionId": "fea35be9-e9de-4ac1-d1c5-557d6072f856",
+			"data": [],
+			"dataMode": "raw",
+			"name": "https://api.alankitgst.com/commonapi/dev/authenticate",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1511763738436,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"rawModeData": "{\r\n  \"action\": \"OTPREQUEST\",\r\n  \"app_key\": \"k6xgB15nCqnR6yoJzyVmBq9D0PAySLZhANphzZSD3duwuyOwj7s7JZKwMLvla/L3KzuFAS0SC/3dUfiJPoPRkW4STJLAnugrG4hVAfr75p0PrhmUt2/Bea5ZOpZag8AESKl4MzkWydxV7xJ7df4QiAvdifARy3qhizOmWUE6Fsv1KB2P8JJDuHQ8HYez0KzC0K9PtapSk/j+EwGOKkFXNTTy4A8pQZq9llO0aj0hDUqPmGEoi1moV8smgHSAI9cFtlfUtERPTX+HDU2bk4uct40i9ERj0VlTaHqx+OvQgzRjvkyFCWjS+O/PuNDAyv4MZGpvJV4khQXzAOVqXjSRAQ==\",\r\n  \"username\": \"GSTONE.TN.TP.2\"\r\n}"
+		}
+	]
+}

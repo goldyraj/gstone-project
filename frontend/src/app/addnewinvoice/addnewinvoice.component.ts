@@ -41,7 +41,6 @@ export class AddnewinvoiceComponent implements OnInit {
   stateList = [];
   selectedCustomerData: any;
   disableEcommerceInput: boolean = false;
-  isloaded: boolean = false;
   invoiceDynList = [];
 
 
@@ -164,7 +163,6 @@ export class AddnewinvoiceComponent implements OnInit {
         let parsed = parseInt(x.get('val4').value);
         // console.log("valsss",x);
         this.total += parsed;
-        // this.isloaded = true;
         // this.ref.detectChanges();
 
         console.log("inside total", this.total);

@@ -17,6 +17,9 @@ import {ApiserviceService} from '../apiservice.service';
 })
 export class AdminBranchComponent implements OnInit {
   pager: any = {};
+  searchString:string;
+  errorMsg:string;
+  public errorType:boolean;
   searchedStringPager: any = {};
   sortBy = "created_at";
   backupPager:any={};
@@ -25,17 +28,17 @@ export class AdminBranchComponent implements OnInit {
   public myForm: FormGroup;
   public submitted: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
-  access_token = "";
+  access_token:string = "";
   pagedSearchedItems;
   dataList;
   backupdataList;
   stateDropDownList=[];
-  apiMessage;
-  apiResult;
+  apiMessage:string;
+  apiResult:number;
   rowData;
   userTypeList=[];
   selectedState:string;
-  selectedUserType;
+  selectedUserType:string;
 
   @ViewChild('closeBtn') closeBtn:ElementRef;
   @ViewChild('closeBtn2') closeBtn2:ElementRef;

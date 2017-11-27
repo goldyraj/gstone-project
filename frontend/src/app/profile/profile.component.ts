@@ -21,20 +21,20 @@ export class ProfileComponent implements OnInit {
   public vendorList: boolean; // keep track on whether form is submitted
   public submittedEdit: boolean; // keep track on whether form is submitted
   public isBranchList: boolean; // keep track on whether form is submitted
-  access_token;
-  user_name;
-  vender = [];
-  url = "";
-  errorMsg;
-  userDetail = [];
-  branchesList = [];
-  pagedItems: any[];
+  access_token:string;
+  user_name:string;
+  vender:any;
+  url:string = "";
+  errorMsg:string;
+  userDetail:any;
+  branchesList:any;
+  pagedItems: any;
   pager: any = {};
-  branchRowData;
-  selectedState = '';
-  selectedDealer = '';
-  stateList = [];
-  dealerType = [];
+  branchRowData:any;
+  selectedState:string = '';
+  selectedDealer:string = '';
+  stateList:any;
+  dealerType :any;
   public errorType: boolean;
 
 

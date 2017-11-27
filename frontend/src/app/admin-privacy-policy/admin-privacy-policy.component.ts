@@ -12,7 +12,7 @@ import {ApiserviceService} from '../apiservice.service';
 })
 export class AdminPrivacyPolicyComponent implements OnInit {
 
-  PrivacyPolicy = "";
+  PrivacyPolicy:any;
   @ViewChild('closeBtn') closeBtn: ElementRef;
   @ViewChild('closeBtn2') closeBtn2: ElementRef;
   @ViewChild('closeBtn3') closeBtn3: ElementRef;

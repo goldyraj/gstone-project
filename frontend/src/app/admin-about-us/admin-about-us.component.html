@@ -67,7 +67,7 @@
             <div class="box-body">
               <div class="form-group">
                 <textarea rows="15" type="text" placeholder="Description" formControlName="discription" class="form-control" id="exampleInputEmail1" value=""></textarea>
-                <small [hidden]="editAbout.controls.discription.valid || (editAbout.controls.discription.pristine && !submitted)">
+                <small [hidden]="editAbout.controls['discription'].valid || (editAbout.controls['discription'].pristine && !submitted)">
                   Title is required .
                 </small>
               </div>

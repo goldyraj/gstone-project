@@ -120,13 +120,13 @@
 					</label>
              -->
   <div class="radio">
-    <label><input type="radio" [(ngModel)]="type" name="type" value="INV">Invoice</label>
+    <label><input type="radio"  name="type" value="INV">Invoice</label>
   </div>
   <div class="radio">
-    <label><input type="radio" [(ngModel)]="type" name="type" value= "BOS">Bill of Supply</label>
+    <label><input type="radio"  name="type" value= "BOS">Bill of Supply</label>
   </div>
   <div class="radio">
-    <label><input type="radio" [(ngModel)]="type" name="type" value="EXINV">Export Invoice</label>
+    <label><input type="radio"  name="type" value="EXINV">Export Invoice</label>
   </div>
 </div>
 
@@ -134,7 +134,7 @@
 <div class="clearfix"></div>
 
 
-<div *ngIf="type === 'INV'">
+<div>
 
 
   <!-- Invoice -->
@@ -420,7 +420,7 @@
 </div>
 
 
-<div *ngIf="type === 'BOS'">
+<div >
 
   <!-- bos -->
   <div class="section-top-20 section-bottom-10 row">

@@ -19,7 +19,7 @@ export class UserComponent implements OnInit {
   // constructor() { }
   @ViewChild('closeBtn') closeBtn: ElementRef;
   modelHide = '';
-  userDetails =[];
+  userDetails:any;
   public userIsLogged :boolean;
   url = "";
   cutomer = {};

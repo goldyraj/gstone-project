@@ -45,8 +45,7 @@ import { AboutUsComponent } from './about-us/about-us.component';
 import { ContactComponent } from './contact/contact.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 import { PreventLoggedInAccess } from './PreventLoggedInAccess';
-import { GstupdateDetailComponent } from './gstupdate-detail/gstupdate-detail.component';
-import { AdminInternalUpdateInnerpageComponent } from './admin-internal-update-innerpage/admin-internal-update-innerpage.component';
+import { GstupdateDetailComponent } from './gstupdate-detail/gstupdate-detail.component'
 import { AdminUserComponent } from './admin-user/admin-user.component';
 import { AdminCustomerComponent } from './admin-customer/admin-customer.component';
 import { AdminVendorComponent } from './admin-vendor/admin-vendor.component';
@@ -118,8 +117,7 @@ const routes: Routes = [
       { path: 'admin-about-us', component: AdminAboutUsComponent, canActivate: [PreventLoggedInAccess] },
       { path: 'admin-privacy-policy', component: AdminPrivacyPolicyComponent, canActivate: [PreventLoggedInAccess] },
       { path: 'admin-contact-us', component: AdminContactUsComponent, canActivate: [PreventLoggedInAccess] },
-      { path: 'admin-faqs', component: AdminFaqsComponent, canActivate: [PreventLoggedInAccess] },
-      { path: 'admin-internal-updates-edit', component: AdminInternalUpdateInnerpageComponent }
+      { path: 'admin-faqs', component: AdminFaqsComponent, canActivate: [PreventLoggedInAccess] }
     ]
 
   }

@@ -12,7 +12,7 @@ import {ApiserviceService} from '../apiservice.service';
   providers:[ApiserviceService]
 })
 export class PrivacyPolicyComponent implements OnInit {
-  policyList = [];
+  policyList:any;
   constructor(public http: Http, private router: Router, private _fb: FormBuilder,public apiserviceService: ApiserviceService) {
     this.getPolicyList();
   }

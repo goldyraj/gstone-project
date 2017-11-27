@@ -135,10 +135,9 @@
       </thead>
       <tbody formArrayName="salesList">
 
-        <tr *ngFor="let saleList of reimburshForm.controls.salesList.controls;let i = index" [formGroupName]="i">
+        <tr *ngFor="let saleList of reimburshForm.controls['salesList'].controls;let i = index" [formGroupName]="i">
           <td align="center"> {{i+1}}</td>
           <td>
-            <!-- <input type="text" class="form-control" formControlName="description" > -->
             <input type="text" formControlName="description" class="validate filter-input form-control" [(ngModel)]=descriptionQuery
               (keyup)=searchDescription() required>
             <div *ngIf="filteredDescriptionList.length > 0">
@@ -195,7 +194,7 @@
             <input type="text" class="form-control" formControlName="val4" [ngModel]="saleList.get('val2').value * saleList.get('val3').value">
           </td>
           <td>
-            <a *ngIf="reimburshForm.controls.salesList.controls.length > 1" (click)="deleteRow(i)">
+            <a *ngIf="reimburshForm.controls['salesList'].controls.length > 1" (click)="deleteRow(i)">
               <i class="fa fa-trash-o fa-2x"></i>
             </a>
           </td>
@@ -220,13 +219,12 @@
           <td colspan="1" class="tbbgcolor" align="right">
             <input readonly class="form-control" value="500">
           </td>
-          <td colspan="3" align="right">
+          <td colspan="2" align="right">
 
           </td>
           <td class="tbbgcolor">
             <input readonly class="form-control" value="500">
           </td>
-          <!-- toale{{total}} -->
           <td class="tbbgcolor">
             <input readonly class="form-control" [value]="total" formControlName="total">
           </td>
@@ -238,41 +236,4 @@
   <div class="text-center section-bottom-60">
     <button class="btn btn-success btnSave_data" (click)='submitForm(reimburshForm.value)'> Save Data</button>
   </div>
-
-  <!-- <pre>{{ myModel | json }}</pre>
-  <pre>{{ myModel.salesList[0].val5 | json}}</pre> -->
-</form>
-<form [formGroup]="invoiceForm">
-  <table>
-    <thead>
-      <tr>
-        <th>Quantity</th>
-        <th>Rate</th>
-        <th>Amount</th>
-      </tr>
-    </thead>
-    <tbody formArrayName="itemRows">
-      <tr *ngFor="let itemrow of invoiceForm.controls.itemRows.controls; let i=index" [formGroupName]="i">
-        <td>
-          <input type="text" class="form-control" formControlName="itemqty">
-        </td>
-        <td>
-          <input type="text" class="form-control" formControlName="itemrate">
-        </td>
-        <td>
-          <input type="text" class="form-control" readonly formControlName="itemamt" [ngModel]="itemrow.get('itemqty').value * itemrow.get('itemrate').value">
-        </td>
-        <td>
-          <button *ngIf="invoiceForm.controls.itemRows.controls.length > 1" (click)="deleteRow(i)" class="btn btn-danger">
-            <i>Delete</i>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <br> Total sum:
-  <input readonly [ngModel]="summed" formControlName="summed" />
-  <br>
-  <br>
-  <button type="button" (click)="addNewRow()" class="btn btn-primary">Add New Row</button>
 </form>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { ViewChild, ElementRef } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
@@ -17,16 +17,18 @@ import { concat } from 'rxjs/operator/concat';
   providers: [ApiserviceService]
 })
 export class AddnewinvoiceComponent implements OnInit {
-  descriptionQuery:string;
-  reimburshForm: FormGroup;
+  descriptionQuery: string;
+  public reimburshForm: FormGroup;
+  public invoiceForm: FormGroup;
   salesListArray: FormArray;
   myModel: any;
   public selectedAll: boolean;
   a: number;
-  filteredDescriptionList=[];
+  total: number;
+  filteredDescriptionList = [];
   // public addTableForm: FormGroup;
   // public addInvoiceForm: FormGroup;
-  customersGoodsAndServciesList=[];
+  customersGoodsAndServciesList = [];
   access_token: string;
   selectedName: string;
   customersNamesList = [];
@@ -39,6 +41,7 @@ export class AddnewinvoiceComponent implements OnInit {
   stateList = [];
   selectedCustomerData: any;
   disableEcommerceInput: boolean = false;
+  isloaded: boolean = false;
   invoiceDynList = [];
 
 
@@ -107,23 +110,74 @@ export class AddnewinvoiceComponent implements OnInit {
     'UNT-UNITS',
     'YDS-YARDS',
     'OTH-OTHERS'
-  ]
-  constructor(private formBuilder: FormBuilder, private pagerService: PagerService, private router: Router, public http: Http, public apiserviceService: ApiserviceService) {
-    this.myModel = {
-      salesList: [
-        { val5: 111.11 },
-        { val5: 222.22 }
-      ]
-    };
-    console.log("mymodel", this.myModel.salesList);
+  ];
+  summed: number;
+  constructor(private formBuilder: FormBuilder, private ref: ChangeDetectorRef, private fb: FormBuilder, private pagerService: PagerService, private router: Router, public http: Http, public apiserviceService: ApiserviceService) {
+    // this.myModel = {
+    //   salesList: [
+    //     { val5: 111.11 },
+    //     { val5: 222.22 }
+    //   ]
+    // };
+    // console.log("mymodel", this.myModel.salesList);
   }
 
   ngOnInit() {
 
-    this.access_token = localStorage.getItem('user_token');
-    this.buildForm();
-    this.getCustomerNames();
-    this.getStateList();
+    this.invoiceForm = this.fb.group({
+      itemRows: this.fb.array([this.initItemRows()]),
+      summed: [null]
+    });
+    this.reimburshForm = this.formBuilder.group({
+      name: this.formBuilder.control(null),
+      invoiceNo: this.formBuilder.control({ value: null, disabled: true }),
+      date: this.formBuilder.control(null),
+      gstin: this.formBuilder.control(null),
+      pos: this.formBuilder.control('0'),
+      eComGstin: this.formBuilder.control(null),
+      salesPerson: this.formBuilder.control(null),
+      invoiceTypeRadio: this.formBuilder.control(null),
+      total: [null],
+      salesList: this.formBuilder.array([this.initIRows()]),
+    });
+
+    this.invoiceForm.get('itemRows').valueChanges.subscribe(values => {
+      this.summed = 0;
+      const ctrl = <FormArray>this.invoiceForm.controls['itemRows'];
+      ctrl.controls.forEach(x => {
+        let parsed = parseInt(x.get('itemamt').value)
+        this.summed += parsed;
+        this.ref.detectChanges();
+        console.log("summed", this.summed);
+      });
+    });
+
+
+    // this.reimburshForm.controls.salesList.valueChanges.subscribe(x => {
+    //   console.log("ji");
+    // })
+    this.reimburshForm.get('salesList').valueChanges.subscribe(values => {
+
+      this.total = 0;
+      const ctrl = <FormArray>this.reimburshForm.controls['salesList'];
+      ctrl.controls.forEach(x => {
+        let parsed = parseInt(x.get('val4').value);
+        // console.log("valsss",x);
+        this.total += parsed;
+        // this.isloaded = true;
+        // this.ref.detectChanges();
+
+        console.log("inside total", this.total);
+      });
+      // console.log(" out side total", this.total);
+      return this.total;
+    })
+
+    // console.log("total", this.total);
+    // this.access_token = localStorage.getItem('user_token');
+    // this.buildForm();
+    // this.getCustomerNames();
+    // this.getStateList();
     // this.reimburshForm.valueChanges.subscribe((change) => {
     //   console.log("hi");
     //   const calculateAmount = (salesList: any[]): number => {
@@ -142,19 +196,99 @@ export class AddnewinvoiceComponent implements OnInit {
 
 
   }
+
+  initItemRows() {
+    return this.fb.group({
+      itemqty: null,
+      itemrate: null,
+      itemamt: [null]
+    });
+  }
+
+  initIRows() {
+    // return this.fb.group({
+    //   itemqty: null,
+    //   itemrate: null,
+    //   itemamt: [null]
+    // });
+    return this.formBuilder.group({
+      description: this.formBuilder.control(null),
+      goodservice: this.formBuilder.control(null),
+      hsn: this.formBuilder.control(null),
+      qty: this.formBuilder.control(null),
+      uom: this.formBuilder.control(null),
+      tax: this.formBuilder.control(null),
+      rtax: this.formBuilder.control(null),
+      sgst: this.formBuilder.control(null),
+      igst: this.formBuilder.control(null),
+      val1: this.formBuilder.control(null),
+      val2: this.formBuilder.control(null),
+      val3: this.formBuilder.control(null),
+      val4: this.formBuilder.control(null),
+      val5: this.formBuilder.control(null),
+    });
+  }
+
+  addNewRow() {
+    const control = <FormArray>this.invoiceForm.controls['itemRows'];
+    control.push(this.initItemRows());
+  }
+
+  // deleteRow(index: number) {
+  //   const control = <FormArray>this.invoiceForm.controls['itemRows'];
+  //   control.removeAt(index);
+  // }
   sumPayOffs() {
+    // this.reimburshForm.get('salesList').valueChanges.subscribe(values => {
+    //   this.total = 0;
+    //   const ctrl = <FormArray>this.reimburshForm.controls['salesList'];
+    //   ctrl.controls.forEach(x => {
+    //     let parsed = parseInt(x.get('val4').value);
+    //     // console.log("valsss",x);
+    //     this.total += parsed;
+    //     this.ref.detectChanges()
+
+    //     console.log("total",this.total);
+    //   });
+    // })
+    // return this.total;
     // return this.reimburshForm..reduce((sum, val) => sum + val.val5, 0);
     // var a = 1;
     // return a;
-    
-    this.reimburshForm.get('salesList').valueChanges.subscribe(x => {
-      console.log("changed val", x, x[0].val5, x['val5']);
-      this.a = x[0].val5;
-      console.log("inside", this.a);
-    });
-    console.log("outside", this.a);
-    return this.a;
+    // this.reimburshForm.
+
+    // this.reimburshForm.controls.salesList.val5.
+
+    // this.reimburshForm.controls.salesList.valueChanges
+    // const control = <FormArray>this.reimburshForm.controls['salesList'];
+    // remove the chosen row
+    // control.removeAt(index);
+    // var a = control.get('val5');
+    // console.log("a", control.controls);
+    // control.controls.forEach(s => {
+    //   console.log("s", s.value);
+    // })
+    // console.log("index",index);
+    // this.reimburshForm.get('salesList').valueChanges.subscribe(x => {
+    //   console.log("changed val", x, x[index].val2);
+    //   this.a = x[index].val2;
+    //   console.log("inside", this.a);
+    // });
+
+    // this.reimburshForm.get('salesList').valueChanges.subscribe(values => {
+    //   this.a = 0;
+    //   const ctrl = <FormArray>this.reimburshForm.controls['salesList'];
+    //   ctrl.controls.forEach(x => {
+    //     let parsed = parseInt(x.get('val2').value)
+    //     this.a += parsed
+    //     // this.ref.detectChanges()
+    //   });
+    // })
+    // console.log("outside", this.a);
+    // return this.a;
     // this.getCustomersGoodsAndServices();
+
+
   }
 
   buildForm() {
@@ -167,6 +301,7 @@ export class AddnewinvoiceComponent implements OnInit {
       eComGstin: this.formBuilder.control(null),
       salesPerson: this.formBuilder.control(null),
       invoiceTypeRadio: this.formBuilder.control(null),
+      total: [null],
       salesList: this.formBuilder.array([
         this.formBuilder.group({
           description: this.formBuilder.control(null),
@@ -214,8 +349,11 @@ export class AddnewinvoiceComponent implements OnInit {
       val5: this.formBuilder.control(null),
     });
 
-    this.salesListArray.push(formGroup);
-    console.log("added val", this.salesListArray);
+    const control = <FormArray>this.reimburshForm.controls['salesList'];
+    control.push(this.initIRows());
+
+    // this.salesListArray.push(formGroup);
+    // console.log("added val", this.salesListArray);
   }
 
 
@@ -403,22 +541,21 @@ export class AddnewinvoiceComponent implements OnInit {
     }
   }
 
-  getCustomersGoodsAndServices()
-  {
+  getCustomersGoodsAndServices() {
     let response: any;
     let myHeaders = new Headers({ 'Content-Type': 'application/json' });
-    myHeaders.append('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization, x-access-token');
-    myHeaders.append('Access-Control-Allow-Methods', 'GET, OPTIONS, POST');
-    myHeaders.append('Access-Control-Allow-Origin', '*');
-    myHeaders.append('Access-Control-Allow-Credentials', 'true');
+    // myHeaders.append('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization, x-access-token');
+    // myHeaders.append('Access-Control-Allow-Methods', 'GET, OPTIONS, POST');
+    // myHeaders.append('Access-Control-Allow-Origin', '*');
+    // myHeaders.append('Access-Control-Allow-Credentials', 'true');
 
     let options = new RequestOptions({ headers: myHeaders });
 
-    this.http.get(this.apiserviceService.BASE_URL+'goodsuser/index?token=' + this.access_token + '&limit=5000', options)
+    this.http.get(this.apiserviceService.BASE_URL + 'goodsuser/index?token=' + this.access_token + '&limit=5000', options)
       .subscribe(
       response => {
         this.customersGoodsAndServciesList = response.json().docs;
-        console.log("GOODSSERVICES",this.customersGoodsAndServciesList);
+        console.log("GOODSSERVICES", this.customersGoodsAndServciesList);
       },
       error => {
         console.log(error.text());
@@ -426,8 +563,7 @@ export class AddnewinvoiceComponent implements OnInit {
       );
   }
 
-  selectDesciption(item)
-  {
+  selectDesciption(item) {
     this.descriptionQuery = item.description;
     this.filteredDescriptionList = [];
     this.reimburshForm.get('hsn').setValue(item.hsn_code);
@@ -435,16 +571,26 @@ export class AddnewinvoiceComponent implements OnInit {
     this.reimburshForm.get('goodservice').setValue(item.type)
   }
 
-  searchDescription()
-  {
+  searchDescription() {
     if (this.descriptionQuery !== "") {
-
+      // this.customersGoodsAndServciesList = [
+      //   { "description": "nick" },
+      //   { "description": "shos" },
+      //   { "description": "shirt" },
+      //   { "description": "beg" }
+      // ];
       this.filteredDescriptionList = this.customersGoodsAndServciesList.filter(function (el) {
         return el.description.toString().toLowerCase().indexOf(this.descriptionQuery.toString().toLowerCase()) > -1;
       }.bind(this));
+      if (this.filteredDescriptionList.length == 0) {
+        this.filteredDescriptionList = [{ "description": "No Such Item" }];
+      }
       console.log("filteredDescriptionList", this.filteredDescriptionList);
     } else {
       this.filteredDescriptionList = [];
+
     }
   }
+
+
 }

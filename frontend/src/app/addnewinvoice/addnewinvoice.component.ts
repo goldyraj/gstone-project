@@ -40,7 +40,7 @@ export class AddnewinvoiceComponent implements OnInit {
   selectedCustomerData: any;
   disableEcommerceInput: boolean = false;
   invoiceDynList = [];
-
+  public selectedInvoiceType:string="Normal Invoice";
 
   serice = [
     'SELECT',
@@ -281,7 +281,8 @@ export class AddnewinvoiceComponent implements OnInit {
   }
 
   selectRadio() {
-    if (this.reimburshForm.controls.invoiceTypeRadio.value === "E_Commerce") {
+    this.selectedInvoiceType=this.reimburshForm.controls.invoiceTypeRadio.value;
+    if (this.reimburshForm.controls.invoiceTypeRadio.value === "E Commerce") {
       this.disableEcommerceInput = true;
     }
     else {
